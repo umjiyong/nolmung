@@ -1,38 +1,17 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-
-
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import BottomTabs from './navigation/BottomTabs';
+import {createStackNavigator} from '@react-navigation/stack';
+import AuthStack from './navigation/AuthStack';
 
-
-
+import 'react-native-gesture-handler';
 
 const App = () => {
-  return(
-      <View>
-        <Text>Hello World</Text>
-   
-      </View>
-  )
- 
+  return (
+    <NavigationContainer>
+      <AuthStack />
+    </NavigationContainer>
+  );
 };
-
-const styles = StyleSheet.create({
-  
-});
 
 export default App;
