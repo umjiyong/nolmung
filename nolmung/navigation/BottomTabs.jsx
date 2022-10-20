@@ -22,12 +22,12 @@ const BottomTabs = () => {
         tabBarStyle: {
           position: `absolute`,
           bottom: 25,
-          left: 15,
-          right: 15,
+          left: 20,
+          right: 20,
           elevation: 0,
           backgroundColor: '#ffffff',
           borderRadius: 15,
-          height: 50,
+          height: 60,
           paddingRight: 12,
           paddingLeft: 12,
 
@@ -46,13 +46,13 @@ const BottomTabs = () => {
                 resizeMode="contain"
                 style={{
                   marginTop: 3,
-                  width: 16,
-                  height: 16,
+                  width: 20,
+                  height: 20,
                   tintColor: focused ? '#FF772F' : '#959595',
                 }}
               />
               <Text
-                style={{color: focused ? '#FF772F' : '#959595', fontSize: 8}}>
+                style={{color: focused ? '#FF772F' : '#959595', fontSize: 10}}>
                 커뮤니티
               </Text>
             </View>
@@ -71,13 +71,13 @@ const BottomTabs = () => {
                 resizeMode="contain"
                 style={{
                   marginTop: 3,
-                  width: 16,
-                  height: 16,
+                  width: 20,
+                  height: 20,
                   tintColor: focused ? '#FF772F' : '#959595',
                 }}
               />
               <Text
-                style={{color: focused ? '#FF772F' : '#959595', fontSize: 8}}>
+                style={{color: focused ? '#FF772F' : '#959595', fontSize: 10}}>
                 산책일지
               </Text>
             </View>
@@ -95,15 +95,15 @@ const BottomTabs = () => {
                 source={require('../assets/icons/dog-solid-24.png')}
                 resizeMode="contain"
                 style={{
-                  width: 18,
-                  height: 18,
+                  width: 20,
+                  height: 20,
                   tintColor: focused ? '#FF772F' : '#959595',
                 }}
               />
               <Text
                 style={{
                   color: focused ? '#FF772F' : '#959595',
-                  fontSize: 8,
+                  fontSize: 10,
                 }}>
                 산책하기
               </Text>
@@ -126,13 +126,13 @@ const BottomTabs = () => {
                 source={require('../assets/icons/friend.png')}
                 resizeMode="contain"
                 style={{
-                  width: 18,
-                  height: 18,
+                  width: 20,
+                  height: 20,
                   tintColor: focused ? '#FF772F' : '#959595',
                 }}
               />
               <Text
-                style={{color: focused ? '#FF772F' : '#959595', fontSize: 8}}>
+                style={{color: focused ? '#FF772F' : '#959595', fontSize: 10}}>
                 친구
               </Text>
             </View>
@@ -151,13 +151,13 @@ const BottomTabs = () => {
                 resizeMode="contain"
                 style={{
                   marginTop: 3,
-                  width: 16,
-                  height: 16,
+                  width: 20,
+                  height: 20,
                   tintColor: focused ? '#FF772F' : '#959595',
                 }}
               />
               <Text
-                style={{color: focused ? '#FF772F' : '#959595', fontSize: 8}}>
+                style={{color: focused ? '#FF772F' : '#959595', fontSize: 10}}>
                 프로필
               </Text>
             </View>
@@ -171,7 +171,7 @@ const BottomTabs = () => {
 const style = StyleSheet.create({
   shadow: {
     shadowColor: '#000',
-    elevation: 10,
+    elevation: 7,
   },
 });
 

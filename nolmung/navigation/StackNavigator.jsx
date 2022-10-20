@@ -1,11 +1,11 @@
 import React from 'react';
 
 import LoginScreen from '../Screen/LoginScreen';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import BottomTabs from './BottomTabs';
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
-const AuthStack = () => {
+const StackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={LoginScreen} />
@@ -14,4 +14,4 @@ const AuthStack = () => {
   );
 };
 
-export default AuthStack;
+export default StackNavigator;
