@@ -1,12 +1,17 @@
 import React from 'react';
 import {View, Text, Button, StyleSheet} from 'react-native';
-
+import Header from '../Components/Header';
 function WalkDiaryScreen({navigation}) {
   return (
-    <View style={Styles.container}>
-      <Text>WalkDiaryScreen</Text>
-      <Button title="Click Here" onPress={() => alert('button Clicked!')} />
-    </View>
+    <>
+      {/* Start WalkDiary Header */}
+      <Header HeaderName="산책일지" />
+      {/* END WalkDiary Header */}
+      <View style={Styles.container}>
+        <Text>WalkDiaryScreen</Text>
+        <Button title="Click Here" onPress={() => alert('button Clicked!')} />
+      </View>
+    </>
   );
 }
 

@@ -1,12 +1,16 @@
 import React from 'react';
 import {View, Text, Button, StyleSheet} from 'react-native';
+import Header from '../Components/Header';
 
 function FriendScreen({navigation}) {
   return (
-    <View style={Styles.container}>
-      <Text>Friend</Text>
-      <Button title="Click Here" onPress={() => alert('button Clicked!')} />
-    </View>
+    <>
+      <Header HeaderName="친구 목록" />
+      <View style={Styles.container}>
+        <Text>Friend</Text>
+        <Button title="Click Here" onPress={() => alert('button Clicked!')} />
+      </View>
+    </>
   );
 }
 
