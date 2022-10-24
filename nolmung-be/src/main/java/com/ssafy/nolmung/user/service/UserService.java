@@ -7,6 +7,7 @@ import java.net.URL;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
+
+    @Value("${KAKAO.API}")
+    private String apiKey;
 
     @Transactional
     public String getKakaoAccessToken(String code){
@@ -33,7 +37,7 @@ public class UserService {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=45f20a10b2625b13fe01ac7309bbc83f"); // TODO REST_API_KEY 입력
+            sb.append("&client_id="+apiKey); // TODO REST_API_KEY 입력
             sb.append("&redirect_uri=http://localhost:8080/kakao/code"); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" + code);
             bw.write(sb.toString());
