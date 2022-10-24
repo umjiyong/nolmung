@@ -1,5 +1,5 @@
-import {CardStyleInterpolators} from '@react-navigation/stack';
 import React, {useState} from 'react';
+
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import Header from '../Components/Header';
 import MyDog from '../Components/MyDog';
 
 function MyProfileScreen({navigation}) {
+
   const Friend = 1;
   const Post = 1;
   const userName = '하루';
@@ -72,14 +73,16 @@ function MyProfileScreen({navigation}) {
                 ({userAddress})
               </Text>
             </View>
-            <Image
-              source={require('../assets/icons/menuvertical.png')}
-              resizeMode="contain"
-              style={{
-                width: 25,
-                height: 25,
-              }}
-            />
+            <TouchableOpacity onPress={()=>{navigation.push('MyProfileModify')}}>
+              <Image
+                source={require('../assets/icons/menuvertical.png')}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 25,
+                }}
+              />
+            </TouchableOpacity>
           </View>
           <View
             style={{

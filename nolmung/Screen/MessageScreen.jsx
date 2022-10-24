@@ -32,8 +32,9 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
   },
   HeaderText: {
+    textAlign:'center',
     color: '#282828',
-    fontSize: 22,
+    fontSize: 18,
     fontFamily: 'NotoSansKR-Bold',
     marginLeft: 15,
   },

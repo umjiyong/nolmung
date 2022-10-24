@@ -15,8 +15,8 @@ const Header = Props => {
             source={require('../assets/icons/message.png')}
             resizeMode="contain"
             style={{
-              width: 25,
-              height: 25,
+              width: 23,
+              height: 23,
             }}
           />
         </TouchableOpacity>
@@ -28,8 +28,8 @@ const Header = Props => {
             source={require('../assets/icons/noti.png')}
             resizeMode="contain"
             style={{
-              width: 25,
-              height: 25,
+              width: 23,
+              height: 23,
               marginLeft: 15,
               marginRight: 15,
             }}
@@ -43,8 +43,8 @@ const Header = Props => {
             source={require('../assets/icons/crown.png')}
             resizeMode="contain"
             style={{
-              width: 25,
-              height: 25,
+              width: 23,
+              height: 23,
             }}
           />
         </TouchableOpacity>
@@ -66,7 +66,7 @@ const Styles = StyleSheet.create({
   headerName: {
     color: '#282828',
     fontFamily: 'NotoSansKR-Bold',
-    fontSize: 22,
+    fontSize: 18,
   },
   headerIcon: {
     flexDirection: 'row',
