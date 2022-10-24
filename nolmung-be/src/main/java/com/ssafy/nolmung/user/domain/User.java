@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
-    @Column(name = "userId")
+    @Column(name = "user_id")
     @Id
     @NotBlank
     private String userId;
