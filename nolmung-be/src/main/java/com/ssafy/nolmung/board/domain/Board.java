@@ -45,12 +45,17 @@ public class Board {
     @JsonBackReference
     private List<BoardLike> boardLikeList;
 
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<BoardImage> boardImageList;
+
     @Builder
-    public Board(String boardContent, LocalDateTime boardUpdateDate, int boardClass, User user, Region region) {
+    public Board(String boardContent, LocalDateTime boardUpdateDate, int boardClass, User user, Region region, List<BoardImage> boardImageList) {
         this.boardContent = boardContent;
         this.boardUpdateDate = boardUpdateDate;
         this.boardClass = boardClass;
         this.user = user;
         this.region = region;
+        this.boardImageList = boardImageList;
     }
 }

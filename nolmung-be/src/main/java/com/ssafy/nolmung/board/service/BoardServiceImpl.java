@@ -20,10 +20,11 @@ public class BoardServiceImpl implements BoardService {
     @Autowired
     private BoardRepository boardRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepository; // 수정 필요
 
     @Override
     public int createBoard(BoardRequest boardRequest) {
+        // User user = userRepository.findByUserId(boardRequest.getUserId())
         User user = null;
         Region region = null;
         Board board = Board.builder()
@@ -31,29 +32,43 @@ public class BoardServiceImpl implements BoardService {
                 .boardUpdateDate(LocalDateTime.now())
                 .boardClass(boardRequest.getBoardClass())
                 .user(user)
-                .region(region).build();
+                .region(region)
+                .boardImageList(new ArrayList<>()) // 수정 필요
+                .build();
 
         Board newBoard = boardRepository.save(board);
-        if(newBoard.)
-        return 0;
+        // save 실패 시 에러 처리 필요
+        if(newBoard==null) {
+            return -1;
+        } else return newBoard.getBoardId();
     }
 
     @Override
     public List<BoardResponse> searchAllBoard() {
         List<Board> boards = boardRepository.findAll();
+        List<BoardResponse> result = new ArrayList<>();
+
+        for (Board board : boards) {
+            result.add(BoardResponse.builder()
+                    .boardContent(board.getBoardContent())
+                    .boardUpdateDate(board.getBoardUpdateDate())
+                    .boardClass(board.getBoardClass())
+                    .boardImg(null) // 수정 필요
+                    .build());
+        }
         return result;
     }
 
     @Override
     public List<BoardResponse> searchUserBoard(int userId) {
         List<Board> boards = boardRepository.findAllByUser_UserId(userId);
-        return result;
+        return null;
     }
 
     @Override
     public BoardResponse searchBoard(int boardId) {
         Board boards = boardRepository.findByBoardId(boardId);
-        return result;
+        return null;
     }
 
     @Override
