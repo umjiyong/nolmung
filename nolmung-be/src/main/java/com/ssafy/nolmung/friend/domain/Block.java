@@ -9,32 +9,23 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Friend {
+public class Block {
 
-    @Column(name = "friend_id")
+    @Column(name = "block_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotBlank
-    private int friendId;
+    private int blockId;
 
     @JoinColumn (name = "user_id")
     @ManyToOne(fetch= FetchType.LAZY)
     @Setter(AccessLevel.NONE)
     private int userId;
 
-    @JoinColumn (name = "user_id_2")
-    @ManyToOne(fetch= FetchType.LAZY)
-    @Setter(AccessLevel.NONE)
-    private int userId2;
-
-    @Column(name = "friend_update_date")
-    private LocalDateTime friendUpdateDate;
-
-
     @Builder
-    public Friend (int userId , int userId2) {
+    public Block (int userId ) {
         this.userId = userId;
-        this.userId2 = userId2;
-        this.friendUpdateDate = LocalDateTime.now();
     }
+
+
 }
