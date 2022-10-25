@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
-
+import {View, Image, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 const dogName = '지용';
 const doginfo_species = '믹스견';
 const doginfo_age = 3;
@@ -11,48 +11,51 @@ const doginfo_walkAmount = 3;
 const doginfo_complete = 100;
 
 const MyDog = () => {
+  const navigation = useNavigation();
   return (
-    <View style={Styles.container}>
-      <View style={Styles.dogInfo}>
-        <Image
-          source={require('../assets/image/Dog1.jpg')}
-          resizeMode="contain"
-          style={{
-            width: 125,
-            height: 120,
-            borderRadius: 15,
-          }}
-        />
-        <View style={{}}>
-          <View style={Styles.infoBox}>
-            <View style={Styles.infoHead}>
-              <Text style={Styles.infoText}>{dogName}</Text>
-              <Text style={Styles.infoText}>
-                ({doginfo_species}, {doginfo_age}세)
-              </Text>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-              <View style={Styles.infoContent}>
-                <Text style={{fontWeight: '600', ...Styles.ContentText}}>
-                  권장 산책량
-                </Text>
-                <Text style={Styles.ContentTextMin}>
-                  {doginfo_walkAmount}분
+    <TouchableWithoutFeedback onPress={() => {navigation.push('MyDogInfo')}}>
+      <View  style={Styles.container}>
+        <View style={Styles.dogInfo}>
+          <Image
+            source={require('../assets/image/Dog1.jpg')}
+            resizeMode="contain"
+            style={{
+              width: 125,
+              height: 120,
+              borderRadius: 15,
+            }}
+          />
+          <View style={{}}>
+            <View style={Styles.infoBox}>
+              <View style={Styles.infoHead}>
+                <Text style={Styles.infoText}>{dogName}</Text>
+                <Text style={Styles.infoText}>
+                  ({doginfo_species}, {doginfo_age}세)
                 </Text>
               </View>
-              <View style={Styles.infoContent}>
-                <Text style={{fontWeight: '600', ...Styles.ContentText}}>
-                  산책 달성량
-                </Text>
-                <Text style={Styles.ContentTextComplete}>
-                  {doginfo_complete}%
-                </Text>
+              <View style={{flexDirection: 'row'}}>
+                <View style={Styles.infoContent}>
+                  <Text style={{fontWeight: '600', ...Styles.ContentText}}>
+                    권장 산책량
+                  </Text>
+                  <Text style={Styles.ContentTextMin}>
+                    {doginfo_walkAmount}분
+                  </Text>
+                </View>
+                <View style={Styles.infoContent}>
+                  <Text style={{fontWeight: '600', ...Styles.ContentText}}>
+                    산책 달성량
+                  </Text>
+                  <Text style={Styles.ContentTextComplete}>
+                    {doginfo_complete}%
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

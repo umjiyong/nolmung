@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import { ScrollView,TextInput, StyleSheet, Alert, Text, View, Image, TouchableWithoutFeedback, TouchableOpacity, Button, Modal } from "react-native";
-import DogListItem from "./DogListItem";
-import { useNavigation } from "@react-navigation/native";
+import { ScrollView,TextInput, StyleSheet, Text, View, Image, TouchableWithoutFeedback, TouchableOpacity, Button } from "react-native";
 
-const DogModify = () => {
+import { useNavigation } from "@react-navigation/native";
+import MiddleHeader from "../Components/MiddleHeader";
+const AddDogInfo = () => {
     const navi = useNavigation()
-    const [DogName, setDogName] = useState("두부")
+    const [DogName, setDogName] = useState("")
     const onChangeText = (event) => {
         setDogName(event)
     }
 
-    const [DogSeed, setDogSeed] = useState('믹스견')
+    const [DogSeed, setDogSeed] = useState('')
     const onChangeSeed = (event) => {
         setDogSeed(event)
     }
 
-    const [year, setYear] = useState("1997")
-    const [month, setMonth] = useState("05")
-    const [date, setDate] = useState("30")
+    const [year, setYear] = useState("YYYY")
+    const [month, setMonth] = useState("MM")
+    const [date, setDate] = useState("DD")
 
     const onChangeYear = (event) => {
         setYear(event)
@@ -29,7 +29,7 @@ const DogModify = () => {
         setDate(event)
     } 
 
-    const [dogWeight, setDogWeight] = useState('3')
+    const [dogWeight, setDogWeight] = useState('')
     const onChangeWeight = (event) => {
         setDogWeight(event)
     }
@@ -55,21 +55,9 @@ const DogModify = () => {
     const onChangeX = () => {
         setSelectNeut('X')
     }
-    const [modalVisible, setModalVisible] = useState(false);
     return (
     <>
-    {/*  */}
-   
-        <ScrollView horizontal={true} style={Styles.DogList}>
-            <TouchableOpacity onPress={()=>{navi.push('AddDogInfo')}}>
-                <View style={Styles.plusDog}>
-                    <Text style={{fontSize: 40, fontWeight: '500', color: '#fff',}}>+</Text>
-                </View>
-            </TouchableOpacity>
-            <DogListItem />
-            <DogListItem />
-            <DogListItem />
-        </ScrollView>
+        <MiddleHeader header="강아지 등록"/>
         <ScrollView style={Styles.DogContainer}> 
             <View style={Styles.DogImage}>
                 <Image  
@@ -146,15 +134,17 @@ const DogModify = () => {
                     </TouchableWithoutFeedback>
                 </View>
             </View>
+            <View style={{alignItems:'center'}}>
+                <TouchableOpacity style={{marginHorizontal:0,...Styles.completeBtn}}>
+                    <Text style={{color: '#fff', fontWeight:'500'}}>등록 완료</Text>
+                </TouchableOpacity>
+            </View>
         </ScrollView>
-        <TouchableOpacity style={Styles.completeBtn}>
-            <Text style={{color: '#fff', fontWeight:'500'}}>수정 완료</Text>
-        </TouchableOpacity>
     </>
     ) 
 }
 
-export default DogModify;
+export default AddDogInfo;
 
 const Styles = StyleSheet.create({
     DogList:{
@@ -162,17 +152,16 @@ const Styles = StyleSheet.create({
         // justifyContent:'flex-start',
         // alignItems:'center',
         
-        height: 100,
+        height: 70,
         backgroundColor: '#FFD9C6'
     },
     DogContainer: {
-        marginHorizontal: 20,
-        
+        marginHorizontal: 20,     
     },
     plusDog: {
         marginTop: 15,
-        width: 60,
-        height: 60,
+        width: 37,
+        height: 37,
         backgroundColor: '#FF8544', 
         borderRadius: 50,
         justifyContent:'center',
@@ -237,6 +226,8 @@ const Styles = StyleSheet.create({
         borderRadius: 10,
     },
     completeBtn: {
+        width: '100%',
+        borderRadius:15,
         marginTop: 40,
         height: 43,
         alignItems:'center',

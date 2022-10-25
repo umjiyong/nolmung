@@ -11,6 +11,8 @@ import SettingScreen from '../Screen/SettingScreen';
 import MessageScreen from '../Screen/MessageScreen';
 import RankingScreen from '../Screen/RankingScreen';
 import MyProfileModify from '../Screen/MyProfileModify';
+import AddDogInfo from '../Screen/AddDogInfo';
+import MyDogInfo from '../Screen/MyDogInfo'
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -37,6 +39,8 @@ const StackNavigator = () => {
       <Stack.Screen name="MessageScreen" component={MessageScreen} />
       <Stack.Screen name="RankingScreen" component={RankingScreen} />
       <Stack.Screen name="MyProfileModify" component={MyProfileModify} />
+      <Stack.Screen name="AddDogInfo" component={AddDogInfo} />
+      <Stack.Screen name="MyDogInfo" component={MyDogInfo} />
     </Stack.Navigator>
   );
 };

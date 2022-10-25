@@ -12,7 +12,7 @@ const DogListItem = () => {
                         resizeMode="contain"
                         style={Styles.DogListItemContainer}
                     />
-                    <Text style={{color: '#252525',fontSize: 10,}}>{DogName}</Text> 
+                    <Text style={{color: '#252525',fontSize: 14,}}>{DogName}</Text> 
                 </View>
             </View>
         </>
@@ -24,8 +24,8 @@ export default DogListItem;
 const Styles = StyleSheet.create({
     DogListItemContainer: {
         alignItems: 'center',
-        width: 37,
-        height: 37,
+        width: 60,
+        height: 60,
         borderRadius: 50,
         
     }

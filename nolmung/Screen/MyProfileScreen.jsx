@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import Header from '../Components/Header';
 import MyDog from '../Components/MyDog';

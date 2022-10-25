@@ -18,37 +18,41 @@ const HumanModify = () => {
 
     return (
     <>
-        <ScrollView style={Styles.HumanContainer}>
-            <View style={Styles.HumanNickNameBox}>
-                <Text style={Styles.HumanNickname}>닉네임</Text>
-                <TextInput
-                    onFocus={()=> {setNickName('')}}
-                    value={nickName}
-                    onChangeText={onChangeText}
-                    style={Styles.horizentalLine}
-                />
-            </View>
-            <View style={Styles.HumanIntroBox}>
-                <Text style={Styles.IntroTitle}>자기소개</Text>
-                <TextInput
-                    value={introduce}
-                    onChangeText={onChangeIntro}
-                    style={Styles.TextArea}
-                />
-            </View>
-            <View style={Styles.HumanAddressBox}>
-                <Text style={Styles.AddressText}>주소</Text> 
-                <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                    <Text style={{color: '#282828'}}>{address}</Text>
-                    <Text style={Styles.changeBtn}>변경</Text>
+        <ScrollView>
+            <View style={Styles.HumanContainer}>
+                <View style={Styles.HumanNickNameBox}>
+                    <Text style={Styles.HumanNickname}>닉네임</Text>
+                    <TextInput
+                        onFocus={()=> {setNickName('')}}
+                        value={nickName}
+                        onChangeText={onChangeText}
+                        style={Styles.horizentalLine}
+                    />
                 </View>
-                <View style={Styles.addressBottom}/>
-                
+                <View style={Styles.HumanIntroBox}>
+                    <Text style={Styles.IntroTitle}>자기소개</Text>
+                    <TextInput
+                        value={introduce}
+                        onChangeText={onChangeIntro}
+                        style={Styles.TextArea}
+                    />
+                </View>
+                <View style={Styles.HumanAddressBox}>
+                    <Text style={Styles.AddressText}>주소</Text> 
+                    <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                        <Text style={{color: '#282828'}}>{address}</Text>
+                        <Text style={Styles.changeBtn}>변경</Text>
+                    </View>
+                    <View style={Styles.addressBottom}/>
+                    
+                </View>
+            </View>
+            <View style={{alignItems:'center'}}>
+                <TouchableOpacity style={Styles.completeBtn}>
+                    <Text style={{color: '#fff', fontWeight:'500'}}>수정 완료</Text>
+                </TouchableOpacity>
             </View>
         </ScrollView>
-        <TouchableOpacity style={Styles.completeBtn}>
-            <Text style={{color: '#fff', fontWeight:'500'}}>수정 완료</Text>
-        </TouchableOpacity>
     </>
     )
 }
@@ -119,10 +123,13 @@ const Styles = StyleSheet.create({
         paddingHorizontal:10,
     },
     completeBtn: {
+        marginTop: 100,
+        width: '70%',
         height: 43,
         alignItems:'center',
         justifyContent:'center',
-        backgroundColor: '#FF772F'
+        backgroundColor: '#FF772F',
+        borderRadius:50,
     }
 
 })
