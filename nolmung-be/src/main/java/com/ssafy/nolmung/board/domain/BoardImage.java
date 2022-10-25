@@ -1,5 +1,6 @@
 package com.ssafy.nolmung.board.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +16,13 @@ public class BoardImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="board_image_id")
     private int boardImageId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @JoinColumn(name = "board_id")
+    private Board board;
+
+    @Column(name="board_image_url")
+    private String boardImageUrl;
+
 }

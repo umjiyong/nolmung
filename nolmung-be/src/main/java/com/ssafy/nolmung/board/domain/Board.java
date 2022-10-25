@@ -1,6 +1,7 @@
 package com.ssafy.nolmung.board.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.nolmung.region.domain.Region;
 import com.ssafy.nolmung.user.domain.User;
 import lombok.AccessLevel;
@@ -42,11 +43,11 @@ public class Board {
     private Region region;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonManagedReference
     private List<BoardLike> boardLikeList;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonManagedReference
     private List<BoardImage> boardImageList;
 
     @Builder
