@@ -13,6 +13,7 @@ import RankingScreen from '../Screen/RankingScreen';
 import MyProfileModify from '../Screen/MyProfileModify';
 import AddDogInfo from '../Screen/AddDogInfo';
 import MyDogInfo from '../Screen/MyDogInfo'
+import CutOffList from '../Screen/CutOffList';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -41,6 +42,12 @@ const StackNavigator = () => {
       <Stack.Screen name="MyProfileModify" component={MyProfileModify} />
       <Stack.Screen name="AddDogInfo" component={AddDogInfo} />
       <Stack.Screen name="MyDogInfo" component={MyDogInfo} />
+      <Stack.Screen name="CutOffList" component={CutOffList}
+        options={{
+          title: 'CutOffList',
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        }}  
+      />
     </Stack.Navigator>
   );
 };

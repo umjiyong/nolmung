@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 
 import GoBackHeader from '../Components/GoBackHeader';
-
+import { useNavigation } from '@react-navigation/native';
 const SettingScreen = () => {
+  const navigation = useNavigation()
   return (
     <>
       {/* Start Setting Header */}
@@ -19,7 +20,7 @@ const SettingScreen = () => {
         <TouchableOpacity>
           <Text style={Styles.SettingText}>알림 설정</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{navigation.push('CutOffList')}}>
           <Text style={Styles.SettingText}>친구 차단 목록</Text>
         </TouchableOpacity>
         <TouchableOpacity>
