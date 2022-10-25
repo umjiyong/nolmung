@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BoardRepository extends JpaRepository {
+public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     Board save(Board board);
 

@@ -2,12 +2,18 @@ package com.ssafy.nolmung.landMarkBoard.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.nolmung.user.domain.User;
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LandMarkBoard {
     @Column(name = "landmark_board_id")
     @Id

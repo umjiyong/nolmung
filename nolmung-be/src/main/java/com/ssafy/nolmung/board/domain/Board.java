@@ -2,6 +2,7 @@ package com.ssafy.nolmung.board.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ssafy.nolmung.boardComment.domain.BoardComment;
 import com.ssafy.nolmung.region.domain.Region;
 import com.ssafy.nolmung.user.domain.User;
 import lombok.AccessLevel;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -44,19 +46,25 @@ public class Board {
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<BoardLike> boardLikeList;
+    private List<BoardLike> boardLikeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<BoardImage> boardImageList;
+    private List<BoardImage> boardImageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<BoardComment> boardCommentList = new ArrayList<>();
 
     @Builder
-    public Board(String boardContent, LocalDateTime boardUpdateDate, int boardClass, User user, Region region, List<BoardImage> boardImageList) {
+    public Board(String boardContent, LocalDateTime boardUpdateDate, int boardClass, User user, Region region, List<BoardImage> boardImageList, List<BoardLike> boardLikeList, List<BoardComment> boardCommentList) {
         this.boardContent = boardContent;
         this.boardUpdateDate = boardUpdateDate;
         this.boardClass = boardClass;
         this.user = user;
         this.region = region;
         this.boardImageList = boardImageList;
+        this.boardLikeList = boardLikeList;
+        this.boardCommentList = boardCommentList;
     }
 }

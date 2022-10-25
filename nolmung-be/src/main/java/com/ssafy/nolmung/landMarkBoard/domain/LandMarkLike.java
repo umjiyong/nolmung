@@ -2,10 +2,16 @@ package com.ssafy.nolmung.landMarkBoard.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.nolmung.user.domain.User;
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LandMarkLike {
 
     @Column(name = "landmark_like_id")

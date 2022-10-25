@@ -42,7 +42,7 @@ public class Region {
     @JsonBackReference
     private List<Board> boardList;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "region", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JsonBackReference
     private List<User> userList;
 
