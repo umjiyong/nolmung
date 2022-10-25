@@ -6,7 +6,7 @@
 //import com.ssafy.nolmung.board.dto.response.BoardResponse;
 //import com.ssafy.nolmung.region.domain.Region;
 //import com.ssafy.nolmung.user.domain.User;
-//import com.ssafy.nolmung.user.repository.UserRepository;
+//import com.ssafy.nolmung.user.repository.UserRepositoryImpl;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Service;
 //
@@ -20,7 +20,7 @@
 //    @Autowired
 //    private BoardRepository boardRepository;
 //    @Autowired
-//    private UserRepository userRepository; // 수정 필요
+//    private UserRepositoryImpl userRepository; // 수정 필요
 //
 //    @Override
 //    public int createBoard(BoardRequest boardRequest) {

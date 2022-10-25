@@ -32,7 +32,6 @@ public class User {
     @Column(name = "user_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     private int userId;
 
     @JoinColumn(name = "region_id")

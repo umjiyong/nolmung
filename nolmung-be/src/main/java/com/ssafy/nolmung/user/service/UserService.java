@@ -5,7 +5,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.ssafy.nolmung.user.domain.User;
+import com.ssafy.nolmung.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,8 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final UserRepository userRepository;
+
     @Value("${KAKAO.API}")
     private String apiKey;
+
+    @Transactional
+    public String regist(User user){
+
+        userRepository.save(user);
+
+        return "UserService : 유저 등록완료";
+    }
 
     @Transactional
     public String getKakaoAccessToken(String code){
@@ -38,7 +51,7 @@ public class UserService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id="+apiKey); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://localhost:8080/kakao/code"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&redirect_uri=http://localhost:8080/user/kakao"); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -108,14 +121,27 @@ public class UserService {
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
-            int id = element.getAsJsonObject().get("id").getAsInt();
+            String id = element.getAsJsonObject().get("id").getAsString();
             boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
+            boolean checkEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().has("email");
             String email = "";
-            if(hasEmail){
+            String profileImage="";
+            String nickname = "";
+            System.out.println("checkEmail : " + checkEmail);
+            boolean isProperties = element.getAsJsonObject().has("properties");
+            if(isProperties && element.getAsJsonObject().get("properties").getAsJsonObject().has("nickname")){
+                nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
+            }
+            if(isProperties && element.getAsJsonObject().get("properties").getAsJsonObject().has("profile_image")){
+                profileImage = element.getAsJsonObject().get("properties").getAsJsonObject().get("profile_image").getAsString();
+            }
+            if(hasEmail && checkEmail) {
                 email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
             }
 
             System.out.println("id : " + id);
+            System.out.println("nickname : " + nickname);
+            System.out.println("profile : " + profileImage);
             System.out.println("email : " + email);
 
             br.close();
