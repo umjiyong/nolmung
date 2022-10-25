@@ -1,5 +1,6 @@
 package com.ssafy.nolmung.friend.repository;
 
+import com.ssafy.nolmung.friend.domain.Block;
 import com.ssafy.nolmung.friend.domain.Friend;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -9,25 +10,25 @@ import javax.persistence.EntityManager;
 @Repository
 @RequiredArgsConstructor
 
-public class FriendRepository {
+public class BlockRepository {
 
     private final EntityManager em;
 
-    public void regist (Friend friend) {
+    public void regist (Block block) {
 
-        em.persist(friend);
-
-    }
-
-    public Friend findById (int id) {
-
-       return em.find(Friend.class,id);
+        em.persist(block);
 
     }
 
-    public void delete (Friend friend) {
+    public Block findById (int id) {
 
-        em.remove(friend);
+       return em.find(Block.class,id);
+
+    }
+
+    public void delete (Block block) {
+
+        em.remove(block);
 
     }
 

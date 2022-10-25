@@ -1,5 +1,6 @@
 package com.ssafy.nolmung.friend.domain;
 
+import com.ssafy.nolmung.user.domain.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,21 +21,19 @@ public class Friend {
     @JoinColumn (name = "user_id")
     @ManyToOne(fetch= FetchType.LAZY)
     @Setter(AccessLevel.NONE)
-    private int userId;
+    private User user;
 
-    @JoinColumn (name = "user_id_2")
-    @ManyToOne(fetch= FetchType.LAZY)
-    @Setter(AccessLevel.NONE)
-    private int userId2;
+    @Column(name = "sub_user_id")
+    private int subUserId;
 
     @Column(name = "friend_update_date")
     private LocalDateTime friendUpdateDate;
 
 
     @Builder
-    public Friend (int userId , int userId2) {
-        this.userId = userId;
-        this.userId2 = userId2;
+    public Friend (User user , int subUserId) {
+        this.user = user;
+        this.subUserId = subUserId;
         this.friendUpdateDate = LocalDateTime.now();
     }
 }
