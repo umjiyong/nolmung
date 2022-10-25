@@ -1,6 +1,8 @@
 package com.ssafy.nolmung.friend.service;
 
+import com.ssafy.nolmung.friend.domain.Block;
 import com.ssafy.nolmung.friend.domain.Friend;
+import com.ssafy.nolmung.friend.repository.BlockRepository;
 import com.ssafy.nolmung.friend.repository.FriendRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,27 +11,27 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class FriendService {
+public class BlockService {
 
-    private final FriendRepository friendRepository;
-
-    @Transactional
-    public void regist (Friend friend){
-
-        friendRepository.regist(friend);
-
-    }
-    public Friend findById (int id) {
-
-        return friendRepository.findById(id);
-
-    }
-
+    private final BlockRepository blockRepository;
 
     @Transactional
-    public void delete (Friend friend) {
+    public void regist (Block block){
 
-        friendRepository.delete(friend);
+        blockRepository.regist(block);
+
+    }
+    public Block findById (int id) {
+
+        return blockRepository.findById(id);
+
+    }
+
+
+    @Transactional
+    public void delete (Block block) {
+
+        blockRepository.delete(block);
 
     }
 

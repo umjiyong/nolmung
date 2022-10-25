@@ -1,5 +1,6 @@
 package com.ssafy.nolmung.friend.domain;
 
+import com.ssafy.nolmung.user.domain.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,11 +21,11 @@ public class Block {
     @JoinColumn (name = "user_id")
     @ManyToOne(fetch= FetchType.LAZY)
     @Setter(AccessLevel.NONE)
-    private int userId;
+    private User user;
 
     @Builder
-    public Block (int userId ) {
-        this.userId = userId;
+    public Block (User user) {
+        this.user = user;
     }
 
 
