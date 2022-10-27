@@ -1,6 +1,5 @@
 package com.ssafy.nolmung.boardComment.service;
 
-import com.ssafy.nolmung.boardComment.domain.BoardComment;
 import com.ssafy.nolmung.boardComment.dto.response.BoardCommentResponseDto;
 import com.ssafy.nolmung.boardComment.dto.response.MyCommentResponseDto;
 

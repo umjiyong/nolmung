@@ -1,4 +1,4 @@
 package com.ssafy.nolmung.walk.service;
 
-public interface PuppyService {
+public interface ex {
 }

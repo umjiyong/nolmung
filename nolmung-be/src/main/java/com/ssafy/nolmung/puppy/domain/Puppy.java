@@ -57,10 +57,10 @@ public class Puppy {
     @Column(name = "puppy_img")
     private String puppyImg;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @JsonBackReference
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    @JsonBackReference
+//    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "breed_id")
@@ -75,7 +75,8 @@ public class Puppy {
     @JsonManagedReference
     private List<Walk> walkList = new ArrayList<>();
 
-    public Puppy(int puppyId, String puppyName, LocalDate puppyBirth, int puppyWeight, int puppySex, boolean puppyIsNeutered, String puppyCharacter, int puppyWalkNeeds, String puppyCode, LocalDateTime puppyUpdateDate, String puppyImg, User user, Breed breed, List<FamilyConnect> familyConnectList, List<Walk> walkList) {
+    @Builder
+    public Puppy(int puppyId, String puppyName, LocalDate puppyBirth, int puppyWeight, int puppySex, boolean puppyIsNeutered, String puppyCharacter, int puppyWalkNeeds, String puppyCode, LocalDateTime puppyUpdateDate, String puppyImg, Breed breed, List<FamilyConnect> familyConnectList, List<Walk> walkList) {
         this.puppyId = puppyId;
         this.puppyName = puppyName;
         this.puppyBirth = puppyBirth;
@@ -87,7 +88,6 @@ public class Puppy {
         this.puppyCode = puppyCode;
         this.puppyUpdateDate = puppyUpdateDate;
         this.puppyImg = puppyImg;
-        this.user = user;
         this.breed = breed;
         this.familyConnectList = familyConnectList;
         this.walkList = walkList;

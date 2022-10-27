@@ -1,4 +1,4 @@
 package com.ssafy.nolmung.familyConnect.service;
 
-public interface PuppyService {
+public interface ex {
 }

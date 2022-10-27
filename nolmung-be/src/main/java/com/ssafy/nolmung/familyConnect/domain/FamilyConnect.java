@@ -21,9 +21,6 @@ public class FamilyConnect {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int familyConnectId;
 
-    @Column(name = "family_connect_name")
-    private String familyConnectName;
-
     @Column(name = "family_connect_update_date")
     private LocalDateTime familyConnectUpdateDate;
 
@@ -38,9 +35,8 @@ public class FamilyConnect {
     private Puppy puppy;
 
     @Builder
-    public FamilyConnect(int familyConnectId, String familyConnectName, LocalDateTime familyConnectUpdateDate, User user, Puppy puppy) {
+    public FamilyConnect(int familyConnectId, LocalDateTime familyConnectUpdateDate, User user, Puppy puppy) {
         this.familyConnectId = familyConnectId;
-        this.familyConnectName = familyConnectName;
         this.familyConnectUpdateDate = familyConnectUpdateDate;
         this.user = user;
         this.puppy = puppy;

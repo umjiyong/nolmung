@@ -23,6 +23,12 @@ public class Breed {
     @Column(name = "breed_name")
     private String breedName;
 
+    @Column(name = "needs_walk_times")
+    private int needsWalkTimes;
+
+    @Column(name="upto_morethan")
+    private int uptoMorethan;
+
     @OneToMany(mappedBy = "breed")
     @JsonManagedReference
     private List<Puppy> puppyList = new ArrayList<>();
