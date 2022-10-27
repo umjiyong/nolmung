@@ -9,6 +9,7 @@ import com.ssafy.nolmung.boardComment.domain.BoardComment;
 import com.ssafy.nolmung.familyConnect.domain.FamilyConnect;
 import com.ssafy.nolmung.friend.domain.Block;
 import com.ssafy.nolmung.friend.domain.Friend;
+import com.ssafy.nolmung.global.util.SHA256;
 import com.ssafy.nolmung.landMarkBoard.domain.LandMarkBoard;
 import com.ssafy.nolmung.landMarkBoard.domain.LandMarkLike;
 import com.ssafy.nolmung.puppy.domain.Puppy;
@@ -17,6 +18,7 @@ import com.ssafy.nolmung.walk.domain.Walk;
 import lombok.*;
 
 import javax.persistence.*;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,6 +131,15 @@ public class User {
                  String userEmail,
                  String userKakaoUuid
                  ) {
+
+        SHA256 sha256 = new SHA256();
+
+//        try {
+//            this.userId = sha256.encrypt(LocalDateTime.now().toString()+userKakaoUuid.substring(0, 3));
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
+
         this.userId = userId;
         this.region = region;
         this.userIntroduction = userIntroduction;

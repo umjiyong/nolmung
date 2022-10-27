@@ -4,6 +4,7 @@ package com.ssafy.nolmung.user.controller;
 //import com.ssafy.nolmung.region.service.RegionService;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.dto.MessageResponseDto;
+import com.ssafy.nolmung.user.dto.ResultDto;
 import com.ssafy.nolmung.user.dto.request.UserRequestDto;
 import com.ssafy.nolmung.user.dto.response.UserResponseDto;
 import com.ssafy.nolmung.user.repository.UserRepository;
@@ -24,6 +25,13 @@ public class UserController {
 //    private final RegionService regionService;
 
 
+    @GetMapping("/{userId}")
+    public UserResponseDto readByUserId(@PathVariable ("userId") int userId){
+
+        User user = userservice.findById(userId);
+
+        return new UserResponseDto(user);
+    }
 
     @ResponseBody
     @GetMapping("/kakao")
@@ -51,9 +59,10 @@ public class UserController {
         user.setUserIntroduction(request.getUserIntroduction());
 //        user.setRegion(regionService.getRegionById(request.getRegionId()));
 
+        user.setUserNickname(request.getUserNickname());
         user.setUserImg(request.getUserImg());
         user.setUserLat(request.getUserLat());
-        user.setUserLot(request.getUserLat());
+        user.setUserLot(request.getUserLot());
         user.setUserAddressText(request.getUserAddressText());
 
         userservice.userRegist(user);

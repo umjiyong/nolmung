@@ -32,6 +32,13 @@ public class UserService {
     private String apiKey;
 
 
+    public User findByIdForUser (int id){
+        Optional<User>  optionalUser = userRepository.findById(id);
+
+        return optionalUser.get();
+    }
+
+
     public User findById (int id){
 
         Optional<User> optionalUser = userRepository.findById(id);

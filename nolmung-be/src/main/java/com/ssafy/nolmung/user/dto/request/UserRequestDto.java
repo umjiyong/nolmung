@@ -19,4 +19,5 @@ public class UserRequestDto {
     private String userImg;
     private String userEmail;
     private String userKakaoUuid;
+    private String userNickname;
 }
