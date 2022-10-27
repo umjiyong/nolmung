@@ -20,9 +20,8 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @ApiOperation(value = "강아지 정보 조회", notes = "puppyId로 강아지 정보 조회에 필요한 데이터를 받아오는 API")
-    @RequestMapping("/{boardId}")
-    public ResponseEntity getAllBoard(@PathVariable int boardId){
+    @ApiOperation(value = "게시물 조회", notes = "boardId로 강아지 정보 조회에 필요한 데이터를 받아오는 API")
+    public ResponseEntity getAllBoard(){
         List<BoardResponse> result = new ArrayList<>();
         return new ResponseEntity(result, HttpStatus.OK);
     }
