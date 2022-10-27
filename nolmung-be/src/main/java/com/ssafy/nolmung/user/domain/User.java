@@ -15,17 +15,14 @@ import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.region.domain.Region;
 import com.ssafy.nolmung.walk.domain.Walk;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class RegistUserRequestDto {
+public class UserRequestDto {
 
     private int userId;
     private int regionId;

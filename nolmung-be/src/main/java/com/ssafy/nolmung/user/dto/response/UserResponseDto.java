@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @RequiredArgsConstructor
-public class ReadUserResponseDto {
+public class UserResponseDto {
 
     private int userId;
     private int regionId;
@@ -23,7 +23,7 @@ public class ReadUserResponseDto {
     private String userEmail;
     private String userKakaoUuid;
 
-    public ReadUserResponseDto(User user){
+    public UserResponseDto(User user){
         this.userId = user.getUserId();
         this.regionId = user.getRegion().getRegionId();
         this.userLat = user.getUserLat();
