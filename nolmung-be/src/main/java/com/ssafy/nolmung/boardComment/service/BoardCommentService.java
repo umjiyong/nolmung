@@ -11,4 +11,8 @@ public interface BoardCommentService {
 
     List<BoardCommentResponseDto> getBoardCommentList(int userId, int boardId);
 
+    void insertComment(int boardId, int userId, String content);
+
+    void deleteComment(int userId, int boardCommentId);
+
 }

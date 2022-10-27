@@ -28,8 +28,6 @@ public class BoardComment {
     @Column(name = "board_comment_create_date")
     private LocalDateTime boardCommentCreateDate;
 
-    @Column(name = "board_comment_update_date")
-    private LocalDateTime boardCommentUpdateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -42,11 +40,10 @@ public class BoardComment {
     private Board board;
 
     @Builder
-    public BoardComment(int boardCommentId, String boardCommentContent, LocalDateTime boardCommentUpdateDate, LocalDateTime boardCommentCreateDate, User user, Board board) {
+    public BoardComment(int boardCommentId, String boardCommentContent, LocalDateTime boardCommentCreateDate, User user, Board board) {
         this.boardCommentId = boardCommentId;
         this.boardCommentContent = boardCommentContent;
         this.boardCommentCreateDate = boardCommentCreateDate;
-        this.boardCommentUpdateDate = boardCommentUpdateDate;
         this.user = user;
         this.board = board;
     }
