@@ -1,19 +1,35 @@
 import React, {useState} from 'react';
-import {View, Text, Button, StyleSheet, Image, TouchableHighlight, Pressable, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Text, Button, StyleSheet, Image, TouchableHighlight, Pressable, ScrollView, TouchableOpacity, TextInput, TouchableWithoutFeedback} from 'react-native';
 import FriendRecommand from '../Components/FriendRecommand';
 import FriendRequest from '../Components/FriendRequest';
 import Header from '../Components/Header';
 import MyFriend from '../Components/MyFriend';
+import Modal from "react-native-modal";
+import SearchFriendList from '../Components/SearchFriendList';
+
 
 function FriendScreen({navigation}) {
   const [openFI, setOpenFI] = useState(false)
   const onPressArrow = () => {
     setOpenFI(prev => !prev)
   }
+  const [isModalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+    console.log(isModalVisible)
+  };
+  const backdropOpacity = 0.5
+
+  const [search, setSearch] = useState(false)
+  const searchFriend = () => {
+    setSearch(!search)
+    console.log(search)
+  }
+  const [text, setText] = useState('')
   return (
     <>
       <Header HeaderName="친구 목록" />
-      <ScrollView style={Styles.container}> 
+      <ScrollView style={Styles.container} showsVerticalScrollIndicator={false}> 
         <View style={Styles.friendSignalToMe}> 
           <Text style={{color: '#282828', fontSize: 18, fontWeight: '500'}}>나에게 온 친구 신청</Text>
           <TouchableOpacity onPress={onPressArrow}>
@@ -78,10 +94,11 @@ function FriendScreen({navigation}) {
         <View style={Styles.MyFriend}>
             <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
               <Text style={{color: '#282828', fontSize: 18, fontWeight:'500'}}>내 친구 보기</Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={toggleModal}>
                 <Text style={{color: '#282828', fontSize: 28, fontWeight: '600', marginRight: 10,}}>+</Text>
               </TouchableOpacity>
             </View>
+           
             <ScrollView style={Styles.MyFriendBox}>
               
                 <MyFriend/>
@@ -96,6 +113,35 @@ function FriendScreen({navigation}) {
             </ScrollView>
         </View>
       </ScrollView>
+      {/* 친구 코드 입력 모달 시작*/}
+        <Modal 
+          isVisible={isModalVisible}
+          onBackdropPress={toggleModal}
+          backdropOpacity = {backdropOpacity}
+        >
+          <View style={Styles.modal}>
+              <Text style={Styles.ModalText}>친구 코드 입력</Text>
+              <View style={{flexDirection:'row', alignItems:'center',}}>
+                <TextInput onChangeText={(e)=>setText(e)} value={text} style={Styles.ModalInput}/>
+                <TouchableWithoutFeedback onPress={searchFriend}>
+                  <View>
+                    <Image 
+                      source={require('../assets/icons/search.png')}
+                      resizeMode="contain"
+                      style={{
+                        width: 20,
+                        height: 20,
+                        marginTop: 13,
+                        marginLeft: 10,
+                        tintColor: '#FF772F'
+                      }}/>
+                  </View>  
+                </TouchableWithoutFeedback>
+              </View>
+              {search ? <View><SearchFriendList /></View> : null }
+          </View>
+        </Modal>
+      {/* 친구 코드 입력 모달 끝 */}
     </>
   );
 }
@@ -147,6 +193,38 @@ const Styles = StyleSheet.create({
     paddingTop:22,
     paddingLeft:20,
     marginBottom: 100,
+  },
+
+  modal : {
+    flex:0.5,
+    marginHorizontal: -20,
+    height: '50%', 
+    backgroundColor: '#fff', 
+    marginTop:'auto',
+    borderTopLeftRadius:15,
+    borderTopRightRadius:15,
+    borderBottomLeftRadius:0,
+    borderBottomRightRadius:0,
+    alignItems:'center',
+    paddingTop: 15,
+    marginBottom: -20,
+  },
+  ModalText: {
+    color: '#282828',
+    fontWeight:'600',
+    fontSize: 18,
+  },
+  ModalInput: {
+    borderWidth: 0.5,
+    borderColor: '#525252',
+    width: '80%',
+    height: 40,
+    marginTop: 15,
+    borderRadius: 5,
+    color: '#282828',
+    paddingHorizontal: 20,
+    textAlign:'center'
+
   }
 
 });

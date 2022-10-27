@@ -9,26 +9,35 @@ import {
   Image,
   StyleSheet,
   Alert,
+  TextInput,
 } from 'react-native';
 import Header from '../Components/Header';
 import MyDog from '../Components/MyDog';
-import MyFamily from '../Components/MyFamily';
+import Modal from "react-native-modal";
+import LandMark from '../Components/LandMark';
 
 function MyProfileScreen({navigation}) {
 
   const Friend = 1;
   const Post = 1;
-  const userName = '하루';
-  const userAddress = '전남 여수시 선원동';
+  const FriendName = '미이';
+  const FriendAddress = '서울 종로구 난계로';
   const friendCode = '#E1VH64';
   const [intro, setIntro] = useState('소개글이 없습니다');
   const introText = {
     // text: '있습니다.'
   };
+  const backdropOpacity = 0.5
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [text, setText] = useState('')
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+    console.log(isModalVisible)
+  };
 
   return (
     <>
-      <Header HeaderName="마이 페이지" />
+      <Header HeaderName="프로필" />
       <ScrollView style={Styles.container} showsVerticalScrollIndicator={false}>
         {/* Start Header */}
         {/* End Header */}
@@ -36,23 +45,67 @@ function MyProfileScreen({navigation}) {
         {/* touchablewithoutfeedback 검색 */}
         <View style={Styles.profile}>
           <Image
-            source={require('../assets/icons/man1Avatar.png')}
+            source={require('../assets/icons/Ellipse.png')}
             resizeMode="contain"
             style={{
               width: 80,
               height: 80,
             }}
           />
-          <View style={Styles.friendPostBox}>
-            <View style={Styles.friendBox}>
-              <Text style={Styles.FriendCountText}>{Friend}</Text>
-              <Text style={Styles.FriendText}>친구</Text>
+          <TouchableOpacity onPress={toggleModal}>
+            <View style={{ paddingVertical:5, paddingHorizontal:15, backgroundColor:'#fff',borderRadius: 15, shadowColor:'#959595', elevation:3}}>
+                <Text style={{fontSize: 16, color: '#FF772F'}}>친구 신청</Text>
             </View>
-            <View style={Styles.PostBox}>
-              <Text style={Styles.PostCountText}>{Post}</Text>
-              <Text style={Styles.PostText}>게시글</Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity onPress={toggleModal}>
+            <View style={{ paddingVertical:5, paddingHorizontal:15, backgroundColor:'#fff',borderRadius: 15, shadowColor:'#959595', elevation:3}}>
+                <Text style={{fontSize: 16, color: '#FF772F'}}>친구</Text>
             </View>
-          </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleModal}>
+            <View style={{ paddingVertical:5, paddingHorizontal:15, backgroundColor:'#fff',borderRadius: 15, shadowColor:'#959595', elevation:3}}>
+                <Text style={{fontSize: 16, color: '#FF772F'}}>차단된 사용자</Text>
+            </View>
+          </TouchableOpacity> */}
+          {/* 친구신청모달 시작 */}
+          
+          
+          
+          
+          <Modal 
+            isVisible={isModalVisible}
+            onBackdropPress={toggleModal}
+            backdropOpacity = {backdropOpacity}
+            
+          >
+            <View style={Styles.modalStyle}>
+                
+                <Text style={Styles.modalText}>친구 신청</Text>
+                <TextInput multiline={true} style={Styles.modalInput} value={text} onChangeText={(e)=>{setText(e)}}/>
+        
+                <View style={{flexDirection:'row',justifyContent:'space-between', marginTop:'auto', marginBottom: 30}}>
+                    <TouchableOpacity style={{marginHorizontal:80,}} onPress={toggleModal}>
+                        <View>
+                            <Text style={{color: '#282828', fontSize: 20,}}>
+                                취소
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{marginHorizontal:80,}}>
+                        <View>
+                            <Text style={{color: '#282828', fontSize: 20,}}>
+                                전송
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+          </Modal>
+
+
+
+
         </View>
         <View style={Styles.profileInfo}>
           <View style={Styles.infoBox}>
@@ -64,7 +117,7 @@ function MyProfileScreen({navigation}) {
                   fontFamily: 'NotoSansKR-Medium',
                   marginRight: 5,
                 }}>
-                {userName}
+                {FriendName}
               </Text>
               <Text
                 style={{
@@ -72,19 +125,10 @@ function MyProfileScreen({navigation}) {
                   fontSize: 18,
                   fontFamily: 'NotoSansKR-Medium',
                 }}>
-                ({userAddress})
+                ({FriendAddress})
               </Text>
             </View>
-            <TouchableOpacity onPress={()=>{navigation.push('MyProfileModify')}}>
-              <Image
-                source={require('../assets/icons/menuvertical.png')}
-                resizeMode="contain"
-                style={{
-                  width: 25,
-                  height: 25,
-                }}
-              />
-            </TouchableOpacity>
+            
           </View>
           <View
             style={{
@@ -121,20 +165,6 @@ function MyProfileScreen({navigation}) {
           </View>
         )}
         {/* End Profile */}
-        {/*나의 가족  Start*/}
-        <View style={Styles.MyFamily}>
-          <Text style={Styles.MyFamilyText}>나의 가족</Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <MyFamily img={require('../assets/icons/32.png')}/>
-            <MyFamily img={require('../assets/icons/33.png')}/>
-            <MyFamily img={require('../assets/icons/34.png')}/>
-            <MyFamily img={require('../assets/icons/34.png')}/>
-            <MyFamily img={require('../assets/icons/34.png')}/>
-            <MyFamily img={require('../assets/icons/34.png')}/>
-
-          </ScrollView>
-        </View> 
-        {/*나의 가족  End*/}
         <View style={Styles.myDog}>
           <View style={{marginTop: -8}}>
             <Text style={Styles.myDogTitle}>나의 반려견</Text>
@@ -148,9 +178,9 @@ function MyProfileScreen({navigation}) {
         <MyDog />
         <MyDog />
         {/* End Dog Component */}
-        <TouchableOpacity style={Styles.MyPost}>
+        <TouchableOpacity style={{...Styles.MyPost}}>
           <View style={Styles.MyPostBtn}>
-            <Text style={Styles.MyPostText}>내 게시글</Text>
+            <Text style={Styles.MyPostText}>게시글</Text>
             <Image
               source={require('../assets/icons/RightArrow.png')}
               resizeMode="contain"
@@ -162,22 +192,20 @@ function MyProfileScreen({navigation}) {
             />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={Styles.Setting}
-          onPress={() => navigation.push('SettingScreen')}>
-          <View style={Styles.SettingBtn}>
-            <Text style={Styles.SettingText}>설정</Text>
-            <Image
-              source={require('../assets/icons/RightArrow.png')}
-              resizeMode="contain"
-              style={{
-                width: 25,
-                height: 25,
-                tintColor: '#FF772F',
-              }}
-            />
-          </View>
-        </TouchableOpacity>
+        <View style={Styles.Landmark}>
+            <Text style={Styles.LandmarkHeader}>자주 가는 랜드마크 </Text>
+        </View>
+        <ScrollView horizontal={true} style={{marginBottom:30,}} showsHorizontalScrollIndicator={false}>
+              <LandMark name="땡땡 놀이터"/>
+              <LandMark name="우리집"/>
+              <LandMark name="태경이형 집"/>
+              <LandMark name="레고 랜드"/>
+              <LandMark name="잠실 롯데타워" />
+              <LandMark name="태경이형 앞마당"/>
+              <LandMark name="태경이형 방"/>
+              <LandMark name="태경이형 화장실"/>
+              
+        </ScrollView>
       </ScrollView>
     </>
   );
@@ -259,7 +287,7 @@ const Styles = StyleSheet.create({
     flex: 0.8,
     marginHorizontal: 20,
     marginTop: 10,
-    marginBottom: 7,
+    marginBottom: 15,
   },
   introBox: {
     height: 100,
@@ -287,16 +315,19 @@ const Styles = StyleSheet.create({
   },
   MyPost: {
     marginHorizontal: 20,
+    
   },
   MyPostText: {
     fontSize: 18,
     color: '#282828',
     fontFamily: 'NotoSansKR-Bold',
+    
   },
   MyPostBtn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    
   },
   Setting: {
     marginHorizontal: 20,
@@ -312,12 +343,42 @@ const Styles = StyleSheet.create({
     color: '#282828',
     fontFamily: 'NotoSansKR-Bold',
   },
-  MyFamily: {
+  modalStyle: {
+    flex:0.5,
+    marginHorizontal: -20,
+    height: '50%', 
+    backgroundColor: '#fff', 
+    marginTop:'auto',
+    borderTopLeftRadius:15,
+    borderTopRightRadius:15,
+    borderBottomLeftRadius:0,
+    borderBottomRightRadius:0,
+    alignItems:'center',
+    paddingTop: 15,
+    marginBottom: -20,
+  },
+  modalText: {
+    color: '#282828',
+    fontWeight:'600',
+    fontSize: 18,
+  },
+  modalInput: {
+    borderWidth: 0.5,
+    borderColor: '#525252',
+    width: '80%',
+    height: 80,
+    marginTop: 30,
+    borderRadius: 15,
+    color: '#282828',
+    paddingHorizontal: 20,
+    textAlign:'center'
+  },
+  Landmark:{
     marginHorizontal:20,
   },
-  MyFamilyText:{
+  LandmarkHeader:{
     fontSize: 18,
-    fontFamily: 'NotoSansKR-Bold',
     color: '#282828',
+    fontFamily: 'NotoSansKR-Bold',
   }
 });

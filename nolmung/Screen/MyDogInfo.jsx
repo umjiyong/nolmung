@@ -60,7 +60,7 @@ const MyDogInfo = () => {
     return (
     <>
         <MiddleHeader header={DogName}/>
-        <ScrollView style={Styles.DogContainer}> 
+        <ScrollView style={Styles.DogContainer} showsVerticalScrollIndicator={false}> 
             <View style={Styles.DogImage}>
                 <Image  
                     source={require('../assets/image/Dog1.jpg')}
