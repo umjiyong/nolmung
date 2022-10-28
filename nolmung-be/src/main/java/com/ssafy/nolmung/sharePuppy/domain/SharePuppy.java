@@ -1,4 +1,4 @@
-package com.ssafy.nolmung.familyConnect.domain;
+package com.ssafy.nolmung.sharePuppy.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.nolmung.puppy.domain.Puppy;
@@ -14,18 +14,15 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access  = AccessLevel.PROTECTED)
-public class FamilyConnect {
+public class SharePuppy {
 
-    @Column(name = "family_connect_id")
+    @Column(name = "share_puppy_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int familyConnectId;
+    private int sharePuppyId;
 
-    @Column(name = "family_connect_name")
-    private String familyConnectName;
-
-    @Column(name = "family_connect_update_date")
-    private LocalDateTime familyConnectUpdateDate;
+    @Column(name = "share_puppy_create_date")
+    private LocalDateTime sharePuppyCreateDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -38,10 +35,9 @@ public class FamilyConnect {
     private Puppy puppy;
 
     @Builder
-    public FamilyConnect(int familyConnectId, String familyConnectName, LocalDateTime familyConnectUpdateDate, User user, Puppy puppy) {
-        this.familyConnectId = familyConnectId;
-        this.familyConnectName = familyConnectName;
-        this.familyConnectUpdateDate = familyConnectUpdateDate;
+    public SharePuppy(int sharePuppyId, LocalDateTime sharePuppyCreateDate, User user, Puppy puppy) {
+        this.sharePuppyId = sharePuppyId;
+        this.sharePuppyCreateDate = sharePuppyCreateDate;
         this.user = user;
         this.puppy = puppy;
     }

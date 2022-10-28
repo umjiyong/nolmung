@@ -1,7 +1,6 @@
 package com.ssafy.nolmung.puppy.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ssafy.nolmung.familyConnect.domain.FamilyConnect;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +21,12 @@ public class Breed {
 
     @Column(name = "breed_name")
     private String breedName;
+
+    @Column(name = "needs_walk_times")
+    private int needsWalkTimes;
+
+    @Column(name="upto_morethan")
+    private int uptoMorethan;
 
     @OneToMany(mappedBy = "breed")
     @JsonManagedReference

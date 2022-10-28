@@ -47,7 +47,6 @@ public class Walk {
     @JsonBackReference
     private Puppy puppy;
 
-
     @Builder
     public Walk(int walkId, Puppy puppy, User user, int walkDistance, LocalDateTime walkStartTime, LocalDateTime walkEndTime, String walkImg, int walkCoordinatedId) {
         this.walkId = walkId;
