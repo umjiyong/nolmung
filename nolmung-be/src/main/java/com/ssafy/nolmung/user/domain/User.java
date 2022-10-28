@@ -71,7 +71,6 @@ public class User {
     @JsonManagedReference
     private List<SharePuppy> sharePuppies = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     @JsonIgnore
