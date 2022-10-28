@@ -3,21 +3,107 @@ package com.ssafy.nolmung.user.service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.Random;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.ssafy.nolmung.user.domain.User;
+import com.ssafy.nolmung.user.repository.UserRepository;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
 
+    private final UserRepository userRepository;
+
     @Value("${KAKAO.API}")
     private String apiKey;
+
+
+    public User findByIdForUser (int id){
+        Optional<User>  optionalUser = userRepository.findById(id);
+
+        return optionalUser.get();
+    }
+
+
+    public User findById (int id){
+
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if(optionalUser.isPresent()) return optionalUser.get();
+        else return null;
+    }
+
+    public User findByKakaoUuid (String uuid){
+
+        return userRepository.findByUserKakaoUuid(uuid);
+    }
+
+    @Transactional
+    public String kakaoRegist(JsonElement element){
+
+        String id = element.getAsJsonObject().get("id").getAsString();
+        String email = "";
+        String profileImage="";
+        String nickname = "";
+        boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
+        boolean checkEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().has("email");
+        boolean isProperties = element.getAsJsonObject().has("properties");
+        if(isProperties && element.getAsJsonObject().get("properties").getAsJsonObject().has("nickname")){
+            nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
+        }
+        if(isProperties && element.getAsJsonObject().get("properties").getAsJsonObject().has("profile_image")){
+            profileImage = element.getAsJsonObject().get("properties").getAsJsonObject().get("profile_image").getAsString();
+        }
+        if(hasEmail && checkEmail) {
+            email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
+        }
+
+        //랜덤 코드 생성기
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 8;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit,rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        User user = User.builder()
+                .userEmail(email)
+                .userKakaoUuid(id)
+                .userNickname(nickname)
+                .userImg(profileImage)
+                .userUpdateDate(LocalDateTime.now())
+                .userCode(generatedString)
+                .build();
+
+        userRepository.save(user);
+
+        return "UserService : 신규 (카카오) 유저 등록완료";
+    }
+
+    @Transactional
+    public String userRegist(User user){
+        userRepository.save(user);
+
+        return "UserService : 유저 정보 등록완료";
+    }
 
     @Transactional
     public String getKakaoAccessToken(String code){
@@ -38,7 +124,7 @@ public class UserService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id="+apiKey); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://localhost:8080/kakao/code"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&redirect_uri=http://localhost:8080/user/kakao"); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -76,6 +162,9 @@ public class UserService {
         return access_Token;
     }
 
+    /**
+     * 카카오 로그인시 UUID, 이름, 프로필사진, email 카카오에서 받아오기, userId는 AutoIncrement
+     */
     @Transactional
     public void createKakaoUser(String token) throws RuntimeException {
 
@@ -108,15 +197,11 @@ public class UserService {
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
-            int id = element.getAsJsonObject().get("id").getAsInt();
-            boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
-            String email = "";
-            if(hasEmail){
-                email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
-            }
+            String id = element.getAsJsonObject().get("id").getAsString();
 
-            System.out.println("id : " + id);
-            System.out.println("email : " + email);
+            if(userRepository.findByUserKakaoUuid(id) == null){
+                kakaoRegist(element);
+            }
 
             br.close();
 
@@ -124,4 +209,6 @@ public class UserService {
             e.printStackTrace();
         }
     }
+
+
 }
