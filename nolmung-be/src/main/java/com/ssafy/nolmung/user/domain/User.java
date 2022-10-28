@@ -17,8 +17,10 @@ import com.ssafy.nolmung.landMarkBoard.domain.LandMarkLike;
 import com.ssafy.nolmung.region.domain.Region;
 import com.ssafy.nolmung.walk.domain.Walk;
 import lombok.*;
+import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +42,6 @@ public class User {
 
     @Column(name = "user_introduction")
     private String userIntroduction;
-
-    @Column(name = "user_lat")
-    private double userLat;
-
-    @Column(name = "user_lot")
-    private double userLot;
 
     @Column(name = "user_address_text")
     private String userAddressText;
@@ -132,8 +128,6 @@ public class User {
     public User (int userId,
                  Region region,
                  String userIntroduction,
-                 double userLat,
-                 double userLot,
                  String userAddressText,
                  String userCode,
                  int userScore,
@@ -157,7 +151,7 @@ public class User {
         SHA256 sha256 = new SHA256();
 
         try {
-            this.userKakaoUuid = sha256.encrypt(LocalDateTime.now().toString()+userKakaoUuid.substring(0, 3));
+            this.userKakaoUuid = sha256.encrypt(LocalDateTime.now().toString() + userKakaoUuid.substring(0, 3));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -165,8 +159,6 @@ public class User {
         this.userId = userId;
         this.region = region;
         this.userIntroduction = userIntroduction;
-        this.userLat = userLat;
-        this.userLot = userLot;
         this.userAddressText = userAddressText;
         this.userCode = userCode;
         this.userScore = userScore;
@@ -174,7 +166,6 @@ public class User {
         this.userImg = userImg;
         this.userNickname = userNickname;
         this.userEmail = userEmail;
-        this.userKakaoUuid = userKakaoUuid;
         this.sharePuppies = sharePuppies;
         this.walks = walks;
         this.inAppAlarms = inAppAlarms;
