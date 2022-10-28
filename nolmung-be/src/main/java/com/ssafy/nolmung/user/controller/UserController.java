@@ -59,11 +59,13 @@ public class UserController {
     @ResponseBody
     @GetMapping("/kakao")
     @ApiOperation(value="카카오 로그인 요청 시", notes="kakaoAccessCode를 파라미터로 받아, 사용자의 accessToken, refreshToken을 반환")
-    public void KakaoLogin(@RequestParam String code){
+    public String KakaoLogin(@RequestParam String code){
 
         System.out.println("Kakao AccessCode : " + code);
         String access_token = userservice.getKakaoAccessToken(code);
         userservice.createKakaoUser(access_token);
+
+        return "씨빨";
 
     }
 
