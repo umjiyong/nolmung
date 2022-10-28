@@ -194,7 +194,7 @@ public class PuppyServiceImpl implements PuppyService{
 
         int leftLimit = 48;
         int rightLimit = 122;
-        int length = 6;
+        int length = 10;
 
         Random random = new Random();
 
