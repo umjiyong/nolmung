@@ -5,13 +5,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.querydsl.core.Tuple;
 import com.ssafy.nolmung.user.domain.User;
+import com.ssafy.nolmung.user.dto.response.UserResponseDto;
 import com.ssafy.nolmung.user.repository.UserRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +35,20 @@ public class UserService {
     private String apiKey;
 
 
+//    public List<Tuple> findAllUser () {
+//
+//        List<Tuple> users = userRepository.findAllUser();
+//
+//        return users;
+//    }
+
+    public List<User> findAllUser(){
+        List<User> userList = userRepository.findAll();
+        return userList;
+    }
+
     public User findByIdForUser (int id){
+
         Optional<User>  optionalUser = userRepository.findById(id);
 
         return optionalUser.get();
