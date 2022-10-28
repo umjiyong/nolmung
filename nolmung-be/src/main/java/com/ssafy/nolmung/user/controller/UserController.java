@@ -86,8 +86,6 @@ public class UserController {
 
         user.setUserNickname(request.getUserNickname());
         user.setUserImg(request.getUserImg());
-        user.setUserLat(request.getUserLat());
-        user.setUserLot(request.getUserLot());
         user.setUserAddressText(request.getUserAddressText());
 
         userservice.userRegist(user);
