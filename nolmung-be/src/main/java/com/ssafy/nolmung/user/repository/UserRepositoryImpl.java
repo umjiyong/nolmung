@@ -25,8 +25,6 @@ public abstract class UserRepositoryImpl implements UserRepository{
 //        List<Tuple> list = jpaQueryFactory.select(u.userId,
 //                u.region.regionId,
 //                u.userIntroduction,
-//                u.userLat,
-//                u.userLot,
 //                u.userAddressText,
 //                u.userCode,
 //                u.userUpdateDate,
