@@ -2,6 +2,7 @@ package com.ssafy.nolmung.board.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ssafy.nolmung.board.dto.response.BoardResponse;
 import com.ssafy.nolmung.boardComment.domain.BoardComment;
 import com.ssafy.nolmung.region.domain.Region;
 import com.ssafy.nolmung.user.domain.User;
@@ -46,15 +47,15 @@ public class Board {
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<BoardLike> boardLikeList = new ArrayList<>();
+    private List<BoardLike> boardLikeList;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<BoardImage> boardImageList = new ArrayList<>();
+    private List<BoardImage> boardImageList;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<BoardComment> boardCommentList = new ArrayList<>();
+    private List<BoardComment> boardCommentList;
 
     @Builder
     public Board(String boardContent, LocalDateTime boardUpdateDate, int boardClass, User user, Region region, List<BoardImage> boardImageList, List<BoardLike> boardLikeList, List<BoardComment> boardCommentList) {
@@ -66,5 +67,22 @@ public class Board {
         this.boardImageList = boardImageList;
         this.boardLikeList = boardLikeList;
         this.boardCommentList = boardCommentList;
+    }
+
+    public List<String> getImageUrls() {
+        List<String> result = new ArrayList<>();
+        for (BoardImage image : this.boardImageList) {
+            result.add(image.getBoardImageUrl());
+        }
+        return result;
+    }
+
+    public BoardResponse toBoardResponse(){
+        return BoardResponse.builder()
+                .boardContent(this.getBoardContent())
+                .boardUpdateDate(this.getBoardUpdateDate())
+                .boardClass(this.getBoardClass())
+                .boardImg(this.getImageUrls())
+                .build();
     }
 }
