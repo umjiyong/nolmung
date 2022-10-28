@@ -92,11 +92,6 @@ public class User {
     @JsonIgnore
     private List<Block> blocks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    @JsonIgnore
-    private List<Puppy> puppies = new ArrayList<>();
-
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
