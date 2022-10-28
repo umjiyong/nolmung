@@ -1,11 +1,13 @@
 package com.ssafy.nolmung.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.nolmung.InAppAlarm.domain.InAppAlarm;
 import com.ssafy.nolmung.board.domain.Board;
 import com.ssafy.nolmung.board.domain.BoardLike;
 import com.ssafy.nolmung.boardComment.domain.BoardComment;
+import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.sharePuppy.domain.SharePuppy;
 import com.ssafy.nolmung.friend.domain.Block;
 import com.ssafy.nolmung.friend.domain.Friend;
@@ -15,8 +17,10 @@ import com.ssafy.nolmung.landMarkBoard.domain.LandMarkLike;
 import com.ssafy.nolmung.region.domain.Region;
 import com.ssafy.nolmung.walk.domain.Walk;
 import lombok.*;
+import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +42,6 @@ public class User {
 
     @Column(name = "user_introduction")
     private String userIntroduction;
-
-    @Column(name = "user_lat")
-    private double userLat;
-
-    @Column(name = "user_lot")
-    private double userLot;
 
     @Column(name = "user_address_text")
     private String userAddressText;
@@ -75,42 +73,53 @@ public class User {
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Walk> walks = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<InAppAlarm> inAppAlarms = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Friend> friends = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Block> blocks = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonManagedReference
-//    private List<Puppy> puppies = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
+    private List<Puppy> puppies = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @JsonIgnore
     private List<LandMarkBoard> landMarkBoards = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<LandMarkLike> landMarkLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Board> boards = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<BoardComment> boardComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<BoardLike> boardLikes = new ArrayList<>();
 
 
@@ -118,8 +127,6 @@ public class User {
     public User (int userId,
                  Region region,
                  String userIntroduction,
-                 double userLat,
-                 double userLot,
                  String userAddressText,
                  String userCode,
                  int userScore,
@@ -142,17 +149,15 @@ public class User {
 
         SHA256 sha256 = new SHA256();
 
-//        try {
-//            this.userId = sha256.encrypt(LocalDateTime.now().toString()+userKakaoUuid.substring(0, 3));
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            this.userKakaoUuid = sha256.encrypt(LocalDateTime.now().toString() + userKakaoUuid.substring(0, 3));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
 
         this.userId = userId;
         this.region = region;
         this.userIntroduction = userIntroduction;
-        this.userLat = userLat;
-        this.userLot = userLot;
         this.userAddressText = userAddressText;
         this.userCode = userCode;
         this.userScore = userScore;
@@ -160,7 +165,6 @@ public class User {
         this.userImg = userImg;
         this.userNickname = userNickname;
         this.userEmail = userEmail;
-        this.userKakaoUuid = userKakaoUuid;
         this.sharePuppies = sharePuppies;
         this.walks = walks;
         this.inAppAlarms = inAppAlarms;
