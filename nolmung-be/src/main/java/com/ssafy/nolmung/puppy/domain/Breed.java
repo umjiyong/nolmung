@@ -1,7 +1,6 @@
 package com.ssafy.nolmung.puppy.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.ssafy.nolmung.familyConnect.domain.FamilyConnect;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

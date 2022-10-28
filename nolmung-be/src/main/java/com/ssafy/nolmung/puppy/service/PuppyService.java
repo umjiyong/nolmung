@@ -2,6 +2,7 @@ package com.ssafy.nolmung.puppy.service;
 
 import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoRequestDto;
+import com.ssafy.nolmung.puppy.dto.request.PuppyInfoUpdateRequestDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyInfoResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyListResponseDto;
 
@@ -17,5 +18,9 @@ public interface PuppyService {
 
     PuppyListResponseDto searchPuppyByCode(String puppyCode);
 
-    void registerMyPuppy(int puppyId, int userId);
+    void shareAndRegisterMyPuppy(int puppyId, int userId);
+
+    void updatePuppyInfo(PuppyInfoUpdateRequestDto puppyInfoUpdateRequestDto);
+
+    void deletePuppyInfo(int puppyId, int userId);
 }

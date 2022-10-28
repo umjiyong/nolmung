@@ -6,19 +6,17 @@ import com.ssafy.nolmung.InAppAlarm.domain.InAppAlarm;
 import com.ssafy.nolmung.board.domain.Board;
 import com.ssafy.nolmung.board.domain.BoardLike;
 import com.ssafy.nolmung.boardComment.domain.BoardComment;
-import com.ssafy.nolmung.familyConnect.domain.FamilyConnect;
+import com.ssafy.nolmung.sharePuppy.domain.SharePuppy;
 import com.ssafy.nolmung.friend.domain.Block;
 import com.ssafy.nolmung.friend.domain.Friend;
 import com.ssafy.nolmung.global.util.SHA256;
 import com.ssafy.nolmung.landMarkBoard.domain.LandMarkBoard;
 import com.ssafy.nolmung.landMarkBoard.domain.LandMarkLike;
-import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.region.domain.Region;
 import com.ssafy.nolmung.walk.domain.Walk;
 import lombok.*;
 
 import javax.persistence.*;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +71,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<FamilyConnect> familyConnects = new ArrayList<>();
+    private List<SharePuppy> sharePuppies = new ArrayList<>();
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -129,7 +127,17 @@ public class User {
                  String userImg,
                  String userNickname,
                  String userEmail,
-                 String userKakaoUuid
+                 String userKakaoUuid,
+                 List<SharePuppy> sharePuppies,
+                 List<Walk> walks,
+                 List<InAppAlarm> inAppAlarms,
+                 List<Friend> friends,
+                 List<Block> blocks,
+                 List<LandMarkBoard> landMarkBoards,
+                 List<LandMarkLike> landMarkLikes,
+                 List<Board> boards,
+                 List<BoardComment> boardComments,
+                 List<BoardLike> boardLikes
                  ) {
 
         SHA256 sha256 = new SHA256();
@@ -153,5 +161,15 @@ public class User {
         this.userNickname = userNickname;
         this.userEmail = userEmail;
         this.userKakaoUuid = userKakaoUuid;
+        this.sharePuppies = sharePuppies;
+        this.walks = walks;
+        this.inAppAlarms = inAppAlarms;
+        this.friends = friends;
+        this.blocks = blocks;
+        this.landMarkBoards = landMarkBoards;
+        this.landMarkLikes = landMarkLikes;
+        this.boards = boards;
+        this.boardComments = boardComments;
+        this.boardLikes = boardLikes;
     }
 }

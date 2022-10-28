@@ -1,4 +1,4 @@
-package com.ssafy.nolmung.puppy.dto.response;
+package com.ssafy.nolmung.puppy.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -6,12 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PuppyInfoResponseDto {
+public class PuppyInfoUpdateRequestDto {
     int puppyId;
     String puppyName;
     int breedId;
@@ -22,14 +20,8 @@ public class PuppyInfoResponseDto {
     boolean puppyIsNeutered;
     String puppyImg;
 
-    String puppyCode;
-
-    List<String> shareUserImageList = new ArrayList<>();
-
-
-
     @Builder
-    public PuppyInfoResponseDto(int puppyId, String puppyName, int breedId, LocalDate puppyBirth, int puppyWeight, String puppyCharacter, int puppySex, boolean puppyIsNeutered, String puppyImg, String puppyCode, List<String> shareUserImageList){
+    public PuppyInfoUpdateRequestDto(int puppyId, String puppyName, int breedId, LocalDate puppyBirth, int puppyWeight, String puppyCharacter, int puppySex, boolean puppyIsNeutered, String puppyImg){
         this.puppyId = puppyId;
         this.puppyName = puppyName;
         this.breedId = breedId;
@@ -39,8 +31,5 @@ public class PuppyInfoResponseDto {
         this.puppySex = puppySex;
         this.puppyIsNeutered = puppyIsNeutered;
         this.puppyImg = puppyImg;
-        this.puppyCode = puppyCode;
-        this.shareUserImageList = shareUserImageList;
     }
-
 }

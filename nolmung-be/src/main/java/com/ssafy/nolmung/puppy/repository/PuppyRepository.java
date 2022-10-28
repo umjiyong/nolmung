@@ -9,7 +9,7 @@ public interface PuppyRepository extends JpaRepository<Puppy, Integer> {
 
     int countByPuppyCode(String puppyCode);
 
-    List<Puppy> findAllByUserId(int userId);
+//    List<Puppy> findAllByUserId(int userId);
 
     Puppy findByPuppyCode(String puppyCode);
 }

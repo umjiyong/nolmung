@@ -3,10 +3,13 @@ package com.ssafy.nolmung.puppy.service;
 import com.ssafy.nolmung.puppy.domain.Breed;
 import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoRequestDto;
+import com.ssafy.nolmung.puppy.dto.request.PuppyInfoUpdateRequestDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyInfoResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyListResponseDto;
 import com.ssafy.nolmung.puppy.repository.BreedRepository;
 import com.ssafy.nolmung.puppy.repository.PuppyRepository;
+import com.ssafy.nolmung.sharePuppy.domain.SharePuppy;
+import com.ssafy.nolmung.sharePuppy.repository.SharePuppyRepository;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -29,16 +32,20 @@ public class PuppyServiceImpl implements PuppyService{
 
     private final PuppyRepository puppyRepository;
 
-    public PuppyServiceImpl(UserRepository userRepository, BreedRepository breedRepository, PuppyRepository puppyRepository) {
+    private final SharePuppyRepository sharePuppyRepository;
+
+    public PuppyServiceImpl(UserRepository userRepository, BreedRepository breedRepository, PuppyRepository puppyRepository, SharePuppyRepository sharePuppyRepository) {
         this.userRepository = userRepository;
         this.breedRepository = breedRepository;
         this.puppyRepository = puppyRepository;
+        this.sharePuppyRepository = sharePuppyRepository;
     }
 
     @Override
     public void insertPuppy(PuppyInfoRequestDto puppyInfoRequestDto) {
         User user = userRepository.findById(puppyInfoRequestDto.getUserId()).get();
         Breed breed = breedRepository.findById(puppyInfoRequestDto.getBreedId()).get();
+
         int puppyWalkNeeds;
         String puppyCode;
 
@@ -52,6 +59,7 @@ public class PuppyServiceImpl implements PuppyService{
 
         puppyCode = makePuppyCode();
 
+        // 새로운 강아지 정보를 입력받아서 puppy 생성
         Puppy puppy = Puppy.builder()
                 .puppyName(puppyInfoRequestDto.getPuppyName())
                 .puppyBirth(puppyInfoRequestDto.getPuppyBirth())
@@ -64,18 +72,32 @@ public class PuppyServiceImpl implements PuppyService{
                 .puppyWalkNeeds(puppyWalkNeeds)
                 .puppyUpdateDate(LocalDateTime.now())
                 .puppyCode(puppyCode)
+                .build();
 
-        .build();
+        // 입력받은 user와 puppy를 sharePuppy로 연결
+        SharePuppy connectUserAndPuppy = SharePuppy.builder()
+                .sharePuppyCreateDate(LocalDateTime.now())
+                .puppy(puppy)
+                .user(user)
+                .build();
 
+        sharePuppyRepository.save(connectUserAndPuppy);
         puppyRepository.save(puppy);
     }
 
     @Override
     public PuppyInfoResponseDto getPuppyInfo(int puppyId) {
         Puppy puppy = puppyRepository.findById(puppyId).get();
+        List<SharePuppy> sharePuppyList = sharePuppyRepository.findAllByPuppyPuppyId(puppyId);
+        List<String> userImgList = new ArrayList<>();
         int breedId = puppy.getBreed().getBreedId();
 
+        for (int i = 0; i < sharePuppyList.size(); i++){
+            userImgList.add(sharePuppyList.get(i).getUser().getUserImg());
+        }
+
         PuppyInfoResponseDto puppyInfo = PuppyInfoResponseDto.builder()
+                .puppyId(puppy.getPuppyId())
                 .puppyCode(puppy.getPuppyCode())
                 .puppyName(puppy.getPuppyName())
                 .puppyBirth(puppy.getPuppyBirth())
@@ -84,6 +106,7 @@ public class PuppyServiceImpl implements PuppyService{
                 .puppyIsNeutered(puppy.isPuppyIsNeutered())
                 .puppyImg(puppy.getPuppyImg())
                 .breedId(breedId)
+                .shareUserImageList(userImgList)
                 .build();
 
         return puppyInfo;
@@ -91,11 +114,12 @@ public class PuppyServiceImpl implements PuppyService{
 
     @Override
     public List<PuppyListResponseDto> getMyPuppyList(int userId) {
-        List<Puppy> puppyList = puppyRepository.findAllByUserId(userId);
+//        List<Puppy> puppyList = puppyRepository.findAllByUserId(userId);
+        List<SharePuppy> sharePuppyList = sharePuppyRepository.findAllByUserUserId(userId);
         List<PuppyListResponseDto> myPuppyList = new ArrayList<>();
 
-        for(int i = 0; i < puppyList.size(); i++){
-            Puppy puppy = puppyList.get(i);
+        for(int i = 0; i < sharePuppyList.size(); i++){
+            Puppy puppy = sharePuppyList.get(i).getPuppy();
 
             PuppyListResponseDto myPuppy = PuppyListResponseDto.builder()
                                                     .puppyId(puppy.getPuppyId())
@@ -123,10 +147,44 @@ public class PuppyServiceImpl implements PuppyService{
     }
 
     @Override
-    public void registerMyPuppy(int puppyId, int userId) {
+    public void shareAndRegisterMyPuppy(int puppyId, int userId) {
         Puppy myPuppy = puppyRepository.findById(puppyId).get();
         User user = userRepository.findById(userId).get();
+        SharePuppy sharePuppy = SharePuppy.builder()
+                .user(user)
+                .puppy(myPuppy)
+                .sharePuppyCreateDate(LocalDateTime.now())
+                .build();
 
+        sharePuppyRepository.save(sharePuppy);
+    }
+
+    @Transactional
+    @Override
+    public void updatePuppyInfo(PuppyInfoUpdateRequestDto puppyInfoUpdateRequestDto) {
+        Puppy targetPuppy = puppyRepository.findById(puppyInfoUpdateRequestDto.getPuppyId()).get();
+        Breed newBreed = breedRepository.findById(puppyInfoUpdateRequestDto.getBreedId()).get();
+
+        targetPuppy.changePuppyInfo(puppyInfoUpdateRequestDto, newBreed);
+        puppyRepository.save(targetPuppy);
+
+    }
+
+    @Override
+    public void deletePuppyInfo(int puppyId, int userId) {
+        int sharePeopleCount = sharePuppyRepository.countByPuppyPuppyId(puppyId);
+        Puppy targetPuppy = puppyRepository.findById(puppyId).get();
+        SharePuppy removeShareConnect = sharePuppyRepository.findByPuppyPuppyIdAndUserUserId(puppyId, userId);
+
+        // 강아지와 연결된 user가 1명이고, userId가 같은 경우에는 share 테이블과 puppy 테이블에서 모두 삭제
+        if(sharePeopleCount == 1){
+            if(removeShareConnect != null){
+                puppyRepository.delete(targetPuppy);
+            }
+        }
+
+        // 그렇지 않고, 연결된 user가 여럿인 경우에는 해당 user와 puppy와의 share 관계만 해제시킴
+        sharePuppyRepository.delete(removeShareConnect);
     }
 
     // 강아지 랜덤 코드를 생성하는 함수
