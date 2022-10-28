@@ -1,5 +1,6 @@
 package com.ssafy.nolmung.region.domain;
 
+//import org.locationtech.jts.geom.Point;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.nolmung.board.domain.Board;
 import com.ssafy.nolmung.user.domain.User;
@@ -7,8 +8,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.util.List;
 
 @Getter
@@ -35,8 +38,8 @@ public class Region {
     @Column(name="region_lat")
     private Double regionLat;
 
-    @Column(name="region_lot")
-    private Double regionLot;
+    @Column(name="region_lon")
+    private Double regionLon;
 
     @OneToMany(mappedBy = "region", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JsonBackReference
@@ -47,12 +50,12 @@ public class Region {
     private List<User> userList;
 
     @Builder
-    public Region(String sido, String sigungu, String eupMyeonDong, String nearRegionId, Double regionLat, Double regionLot) {
+    public Region(String sido, String sigungu, String eupMyeonDong, String nearRegionId, Double regionLat, Double regionLon) {
         this.sido = sido;
         this.sigungu = sigungu;
         this.eupMyeonDong = eupMyeonDong;
         this.nearRegionId = nearRegionId;
         this.regionLat = regionLat;
-        this.regionLot = regionLot;
+        this.regionLon = regionLon;
     }
 }
