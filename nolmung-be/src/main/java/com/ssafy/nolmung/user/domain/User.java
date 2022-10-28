@@ -1,6 +1,7 @@
 package com.ssafy.nolmung.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.nolmung.InAppAlarm.domain.InAppAlarm;
 import com.ssafy.nolmung.board.domain.Board;
@@ -73,46 +74,57 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<FamilyConnect> familyConnects = new ArrayList<>();
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Walk> walks = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<InAppAlarm> inAppAlarms = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Friend> friends = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Block> blocks = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Puppy> puppies = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<LandMarkBoard> landMarkBoards = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<LandMarkLike> landMarkLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Board> boards = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<BoardComment> boardComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<BoardLike> boardLikes = new ArrayList<>();
 
 
@@ -134,11 +146,11 @@ public class User {
 
         SHA256 sha256 = new SHA256();
 
-//        try {
-//            this.userId = sha256.encrypt(LocalDateTime.now().toString()+userKakaoUuid.substring(0, 3));
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            this.userKakaoUuid = sha256.encrypt(LocalDateTime.now().toString()+userKakaoUuid.substring(0, 3));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
 
         this.userId = userId;
         this.region = region;
@@ -152,6 +164,5 @@ public class User {
         this.userImg = userImg;
         this.userNickname = userNickname;
         this.userEmail = userEmail;
-        this.userKakaoUuid = userKakaoUuid;
     }
 }

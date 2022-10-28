@@ -2,18 +2,23 @@ package com.ssafy.nolmung.user.controller;
 
 //import com.ssafy.nolmung.region.domain.Region;
 //import com.ssafy.nolmung.region.service.RegionService;
+import com.querydsl.core.Tuple;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.dto.MessageResponseDto;
 import com.ssafy.nolmung.user.dto.ResultDto;
 import com.ssafy.nolmung.user.dto.request.UserRequestDto;
 import com.ssafy.nolmung.user.dto.response.UserResponseDto;
-import com.ssafy.nolmung.user.repository.UserRepository;
 import com.ssafy.nolmung.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -21,9 +26,27 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
+    @Autowired
     private final UserService userservice;
 //    private final RegionService regionService;
 
+//    @GetMapping("/findAll")
+//    public List<Tuple> readAllUser(){
+//
+//        List<Tuple> userList = userservice.findAllUser();
+//        return userList;
+//    }
+
+
+    @GetMapping("/findAll")
+    @ApiOperation(value="(개발용)전체 사용자 조회", notes="전체 사용자 반환")
+    public ResultDto readAllUser(){
+        List<UserResponseDto> userList = new ArrayList<>();
+
+        userList = userservice.findAllUser().stream().map(user -> new UserResponseDto(user)).collect(Collectors.toList());
+        return new ResultDto(userList) {
+        };
+    }
 
     @GetMapping("/{userId}")
     public UserResponseDto readByUserId(@PathVariable ("userId") int userId){

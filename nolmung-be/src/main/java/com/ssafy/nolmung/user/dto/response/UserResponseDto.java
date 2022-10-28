@@ -21,6 +21,7 @@ public class UserResponseDto {
     private LocalDateTime userUpdateDate;
     private String userImg;
     private String userEmail;
+//    private String userKakaoUuid;
 
     public UserResponseDto(User user){
         this.userId = user.getUserId();
@@ -28,11 +29,12 @@ public class UserResponseDto {
         this.userLat = user.getUserLat();
         this.userLot = user.getUserLot();
         this.userAddressText = user.getUserAddressText();
-//        this.userIntroduction = user.getUserIntroduction();
+        this.userIntroduction = user.getUserIntroduction();
         this.userCode = user.getUserCode();
         this.userScore = user.getUserScore();
         this.userUpdateDate = user.getUserUpdateDate();
         this.userImg = user.getUserImg();
         this.userEmail = user.getUserEmail();
+//        this.userKakaoUuid = user.getUserKakaoUuid();
     }
 }
