@@ -40,6 +40,10 @@ public class Util {
             return result;
         }
 
+        public void deleteImage(String url) {
+            File file = new File(url);
+            file.delete();
+        }
     }
 
 }
