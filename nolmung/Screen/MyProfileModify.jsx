@@ -21,14 +21,14 @@ const MyProfileModify = () =>{
             <View style={Styles.selectBox}>
                 <TouchableOpacity onPress={onPressHuman} style={select =='human' ? Styles.bottomBorder : Styles.selectTextHuman}>
                     <View>
-                        <Text style={{color: '#282828'}}>
+                        <Text style={{color: '#282828',textAlign:'center',marginBottom:5,}}>
                             보호자 정보
                         </Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={onPressDog} style={select =='dog' ? Styles.bottomBorder : Styles.selectTextHuman}>
                     <View>
-                        <Text style={{color: '#282828'}}>
+                        <Text style={{color: '#282828',textAlign:'center',marginBottom:5}}>
                             강아지 정보
                         </Text>
                     </View>
@@ -41,7 +41,7 @@ const MyProfileModify = () =>{
                 </>
             ) : 
             (
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                    <DogModify />
                 </ScrollView>
             )}
@@ -63,11 +63,13 @@ const Styles = StyleSheet.create({
     selectTextHuman: {
         // borderBottomColor: 'gray',
         // borderBottomWidth: 2,
+        width:'50%',
     },
     selectTextDog: {
 
     },
     bottomBorder: {
+        width:'50%',
         borderBottomColor: '#FF8544',
         borderBottomWidth: 1.5,
     },

@@ -3,6 +3,7 @@ import { ScrollView,TextInput, StyleSheet, Text, View, Image, TouchableWithoutFe
 
 import { useNavigation } from "@react-navigation/native";
 import MiddleHeader from "../Components/MiddleHeader";
+import MyFamily from '../Components/MyFamily';
 const MyDogInfo = () => {
     const navi = useNavigation()
     const [DogName, setDogName] = useState("지용")
@@ -60,7 +61,7 @@ const MyDogInfo = () => {
     return (
     <>
         <MiddleHeader header={DogName}/>
-        <ScrollView style={Styles.DogContainer}> 
+        <ScrollView style={Styles.DogContainer} showsVerticalScrollIndicator={false}> 
             <View style={Styles.DogImage}>
                 <Image  
                     source={require('../assets/image/Dog1.jpg')}
@@ -137,6 +138,20 @@ const MyDogInfo = () => {
                     </View>
                 </View>
             </View>
+            {/*나의 가족  Start*/}
+            <View style={Styles.MyFamily}>
+                <Text style={Styles.MyFamilyText}>강아지를 공유하는 가족</Text>
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                    <MyFamily img={require('../assets/icons/32.png')}/>
+                    <MyFamily img={require('../assets/icons/33.png')}/>
+                    <MyFamily img={require('../assets/icons/34.png')}/>
+                    <MyFamily img={require('../assets/icons/34.png')}/>
+                    <MyFamily img={require('../assets/icons/34.png')}/>
+                    <MyFamily img={require('../assets/icons/34.png')}/>
+
+                </ScrollView>
+            </View> 
+        {/*나의 가족  End*/}
         </ScrollView>
         <TouchableOpacity style={Styles.completeBtn} onPress={()=>{navi.goBack()}}>
             <Text style={{color: '#fff', fontWeight:'500'}}>확인</Text>
@@ -228,11 +243,19 @@ const Styles = StyleSheet.create({
         borderRadius: 10,
     },
     completeBtn: {
-        marginTop: 40,
+        marginTop: 0,
         height: 43,
         alignItems:'center',
         justifyContent:'center',
         backgroundColor: '#FF772F'
+    },
+    MyFamily: {
+       
+      },
+    MyFamilyText:{
+    fontSize: 16,
+    fontFamily: 'NotoSansKR-Medium',
+    color: '#282828',
     }
-
+    
 })
