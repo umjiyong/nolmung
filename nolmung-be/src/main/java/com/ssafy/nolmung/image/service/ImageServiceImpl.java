@@ -6,8 +6,10 @@ import com.ssafy.nolmung.global.util.Util;
 import com.ssafy.nolmung.image.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class ImageServiceImpl implements ImageService {
     BoardRepository boardRepository;
 
     @Override
+    @Transactional
     public List<String> uploadBoardImages(int boardId, List<MultipartFile> files) {
         List<String> result = new ArrayList<>();
         for (MultipartFile file : files) {
@@ -37,11 +40,14 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void deleteBoardImages(int boardId) {
-        imageRepository.deleteAllByBoard_BoardId(boardId);
+    public void deleteBoardImages(List<String> imageUrls) {
+        for (String url : imageUrls) {
+            imageUtil.deleteImage(url);
+        }
     }
 
     @Override
+    @Transactional
     public String uploadImage(String path, MultipartFile file) {
         String imageUrl = imageUtil.uploadImage(path, file);
         return imageUrl;

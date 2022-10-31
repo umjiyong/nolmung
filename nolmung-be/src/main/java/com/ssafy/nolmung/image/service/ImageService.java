@@ -10,6 +10,6 @@ import java.util.List;
 public interface ImageService {
 
     List<String> uploadBoardImages(int boardId, List<MultipartFile> files);
-    void deleteBoardImages(int boardId);
+    void deleteBoardImages(List<String> imageUrls);
     String uploadImage(String path, MultipartFile file);
 }
