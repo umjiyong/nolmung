@@ -15,6 +15,7 @@ import AddDogInfo from '../Screen/AddDogInfo';
 import MyDogInfo from '../Screen/MyDogInfo'
 import CutOffList from '../Screen/CutOffList';
 import FriendProfile from '../Screen/FriendProfile'
+import MessageRoomScreen from '../Screen/MessageRoomScreen';
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,7 @@ const StackNavigator = () => {
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}  
       />
+      <Stack.Screen name="MessageRoomScreen" component={MessageRoomScreen} />
     </Stack.Navigator>
   );
 };
