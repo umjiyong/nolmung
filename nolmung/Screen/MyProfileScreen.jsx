@@ -121,20 +121,7 @@ function MyProfileScreen({navigation}) {
           </View>
         )}
         {/* End Profile */}
-        {/*나의 가족  Start*/}
-        <View style={Styles.MyFamily}>
-          <Text style={Styles.MyFamilyText}>나의 가족</Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <MyFamily img={require('../assets/icons/32.png')}/>
-            <MyFamily img={require('../assets/icons/33.png')}/>
-            <MyFamily img={require('../assets/icons/34.png')}/>
-            <MyFamily img={require('../assets/icons/34.png')}/>
-            <MyFamily img={require('../assets/icons/34.png')}/>
-            <MyFamily img={require('../assets/icons/34.png')}/>
-
-          </ScrollView>
-        </View> 
-        {/*나의 가족  End*/}
+        
         <View style={Styles.myDog}>
           <View style={{marginTop: -8}}>
             <Text style={Styles.myDogTitle}>나의 반려견</Text>
@@ -312,12 +299,5 @@ const Styles = StyleSheet.create({
     color: '#282828',
     fontFamily: 'NotoSansKR-Bold',
   },
-  MyFamily: {
-    marginHorizontal:20,
-  },
-  MyFamilyText:{
-    fontSize: 18,
-    fontFamily: 'NotoSansKR-Bold',
-    color: '#282828',
-  }
+
 });

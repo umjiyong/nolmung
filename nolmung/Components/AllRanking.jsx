@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View,Text, Image, Pressable, TouchableWithoutFeedback, } from "react-native";
+import { StyleSheet, View,Text, Image, ScrollView, Pressable, TouchableWithoutFeedback, } from "react-native";
 import MedalRanking from "./MedalRanking";
 import MyRanking from './MyRanking'
 function AllRanking() {
@@ -57,9 +57,8 @@ function AllRanking() {
                         <MedalRanking firstName="이동일" mung="10324" img={require('../assets/icons/medal.png')} color="gold"/>
                         <MedalRanking firstName="이동이" mung="10314" img={require('../assets/icons/medal.png')} color="silver"/>
                         <MedalRanking firstName="이동삼" mung="10304" img={require('../assets/icons/medal.png')} color="brown"/>
-                        <View>
-                            <MyRanking firstName="내 랭킹" mung="8080" rank="128"/>
-                        </View>
+                        <MyRanking firstName="내 랭킹" mung="8080" rank="148"/>
+                        
                     </View>
                 </View>
             </View>
@@ -90,7 +89,6 @@ const Styles = StyleSheet.create({
     },
     MainRankingContainer: {
         marginTop:20,
-        marginHorizontal:23,
         backgroundColor:'#fff',
         borderRadius: 30,
         paddingTop: 25,
