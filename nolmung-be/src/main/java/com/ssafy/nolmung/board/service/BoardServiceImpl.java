@@ -11,6 +11,7 @@ import com.ssafy.nolmung.user.repository.UserRepository;
 import com.ssafy.nolmung.user.repository.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class BoardServiceImpl implements BoardService {
     private UserRepository userRepository;
 
     @Override
+    @Transactional
     public int createBoard(BoardRequest boardRequest) {
         User user = userRepository.findById(boardRequest.getUserId()).orElseThrow();
         Region region = null;
@@ -100,6 +102,7 @@ public class BoardServiceImpl implements BoardService {
 
     // 게시물 삭제(이미지 삭제는 따로 처리)
     @Override
+    @Transactional
     public int deleteBoard(int boardId) {
         // 존재하는 게시물일 경우 삭제 후 boardId 리턴
         if(boardRepository.findById(boardId).isPresent()) {
