@@ -4,16 +4,14 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.querydsl.core.Tuple;
 import com.ssafy.nolmung.user.domain.User;
+import com.ssafy.nolmung.user.dto.ResultDto;
 import com.ssafy.nolmung.user.dto.response.UserResponseDto;
 import com.ssafy.nolmung.user.repository.UserRepository;
 import lombok.Builder;
@@ -122,7 +120,7 @@ public class UserService {
     }
 
     @Transactional
-    public String getKakaoAccessToken(String code){
+    public List getKakaoAccessToken(String code){
         String access_Token="";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -140,7 +138,7 @@ public class UserService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id="+apiKey); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://localhost:8080/user/kakao"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&redirect_uri=http://localhost:3000/redirect"); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -156,7 +154,7 @@ public class UserService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
+            System.out.println("여기의 response body : " + result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
 
@@ -175,7 +173,11 @@ public class UserService {
             e.printStackTrace();
         }
 
-        return access_Token;
+        List<String> list = new ArrayList<>();
+        list.add(access_Token);
+        list.add(refresh_Token);
+
+        return list;
     }
 
     /**
@@ -217,13 +219,17 @@ public class UserService {
 
             if(userRepository.findByUserKakaoUuid(id) == null){
                 kakaoRegist(element);
+                System.out.println("유저 등록 성공!!!");
             }
+
+            System.out.println("유저 등록 안했음! " + id);
 
             br.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
 
