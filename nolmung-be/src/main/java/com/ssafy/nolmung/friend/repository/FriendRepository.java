@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -32,4 +33,12 @@ public class FriendRepository {
     }
 
 
+    public List<Friend> findFriendListByUserId(int userId) {
+
+        List<Friend> friendList =  em.createQuery("SELECT f FROM Friend f WHERE f.userId = :user_id",Friend.class)
+                .setParameter("user_id",userId).getResultList();
+
+
+        return friendList;
+    }
 }

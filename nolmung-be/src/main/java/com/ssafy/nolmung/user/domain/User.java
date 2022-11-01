@@ -15,11 +15,11 @@ public class User {
     @Column(name = "user_id")
     @Id
     @NotBlank
-    private String userId;
+    private int userId;
 
 
     @Builder
-    public User (String userId) {
+    public User (int userId) {
         this.userId = userId;
     }
 }
