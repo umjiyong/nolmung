@@ -38,7 +38,7 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
 //                .globalOperationParameters(aParameters)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ssafy.gorda")) //문서화 진행할 경로
+                .apis(RequestHandlerSelectors.basePackage("com.ssafy.nolmung")) //문서화 진행할 경로
                 .paths(PathSelectors.any()) // Path 선택 옵션은 -> PathSelectors.ant("/api/*"))
                 .build();
 //                .securityContexts(Arrays.asList(securityContext())) //전역 변수 설정을 위한 환경
@@ -49,9 +49,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Project Gorda Spring Boot RESTful API")
+                .title("Project Nolmung Spring Boot RESTful API")
                 .version("1.0.1")
-                .description("Swagger-Ui for Gorda<br/> <mark>태그적용</mark>")
+                .description("Swagger-Ui for Nolmung<br/> <mark>태그적용</mark>")
                 .build();
     }
 
