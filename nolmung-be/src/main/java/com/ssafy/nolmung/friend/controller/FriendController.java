@@ -1,14 +1,18 @@
 package com.ssafy.nolmung.friend.controller;
 
+import com.ssafy.nolmung.friend.domain.Block;
 import com.ssafy.nolmung.friend.domain.Friend;
 import com.ssafy.nolmung.friend.domain.FriendProposal;
+import com.ssafy.nolmung.friend.dto.request.BlockFriendRequestDto;
 import com.ssafy.nolmung.friend.dto.request.DeleteFriendRequestDto;
 import com.ssafy.nolmung.friend.dto.request.SendFriendProposalRequestDto;
+import com.ssafy.nolmung.friend.dto.response.ReadBlockedUserResponseDto;
 import com.ssafy.nolmung.friend.dto.response.ReadFriendProposalResponseDto;
 import com.ssafy.nolmung.friend.dto.response.ReadFriendResponseDto;
 import com.ssafy.nolmung.friend.service.BlockService;
 import com.ssafy.nolmung.friend.service.FriendProposalService;
 import com.ssafy.nolmung.friend.service.FriendService;
+import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +28,7 @@ import java.util.List;
 @Slf4j
 public class FriendController {
 
-    private UserService userService;
+    private final UserService userService;
     private final FriendService friendService;
     private final BlockService blockService;
 
@@ -74,15 +79,15 @@ public class FriendController {
     @PostMapping("proposal/{friendProposalId}")
     public String acceptFriendProposal (@RequestParam("friendProposalId") int friendProposalId) {
 
-        FriendProposal tempFriendProposal = friendProposalService.findById(friendProposalId);
+        FriendProposal foundFriendProposal = friendProposalService.findById(friendProposalId);
 
-        int userId1 = tempFriendProposal.getFromUserId();
-        int userId2 = tempFriendProposal.getToUserId();
+        int userId1 = foundFriendProposal.getFromUserId();
+        int userId2 = foundFriendProposal.getToUserId();
 
-//        friendService.regist(new Friend(유저서비스 파인드 바이아이디 유저 1,userId2));
-//        friendService.regist(new Friend(유저서비스 파인드 바이아이디 유저 2,userId1));
+        friendService.regist(new Friend(userService.findById(userId1),userId2));
+        friendService.regist(new Friend(userService.findById(userId2),userId1));
 
-        friendProposalService.delete(tempFriendProposal);
+        friendProposalService.delete(foundFriendProposal);
 
         return "친구 추가 완료";
     }
@@ -90,21 +95,67 @@ public class FriendController {
     @DeleteMapping("proposal/{friendProposalId}")
     public String denyFriendProposal (@RequestParam("friendProposalId") int friendProposalId) {
 
-        FriendProposal tempFriendProposal = friendProposalService.findById(friendProposalId);
+        FriendProposal foundFriendProposal = friendProposalService.findById(friendProposalId);
 
-        friendProposalService.delete(tempFriendProposal);
+        friendProposalService.delete(foundFriendProposal);
 
         return "친구 신청 거절 완료";
     }
 
 
     @DeleteMapping("/delete")
-    public void deleteFriend (@RequestBody DeleteFriendRequestDto request) {
+    public String deleteFriend (@RequestBody DeleteFriendRequestDto request) {
 
-//        양쪽에서 삭제해주어야 하므로 friend 연관 2개를 찾아야 함.
+        int tempUserId = request.getUserId();
+        int tempSubUserId = request.getSubUserId();
 
-//        friendService.delete(friendService.findBy);
+        friendService.delete(friendService.findFriendByDuoId(tempUserId,tempSubUserId));
+        friendService.delete(friendService.findFriendByDuoId(tempSubUserId,tempUserId));
 
+        return "친구 삭제 완료";
+    }
+
+    @PostMapping("/block")
+    public String blockFriend (@RequestBody BlockFriendRequestDto request) {
+
+        Block tempBlock = Block.builder()
+                .user(userService.findById(request.getUserId()))
+                .blockedUserId(request.getBlockedUserId())
+                .build();
+
+        blockService.regist(tempBlock);
+
+        return "친구 차단 완료";
+    }
+
+    @DeleteMapping("block/{blockId}")
+    public String cancelBlock (@RequestParam("blockId") int blockId) {
+
+        Block foundBlock = blockService.findById(blockId);
+
+        blockService.delete(foundBlock);
+
+        return "친구 차단 해제 완료";
+    }
+
+    @GetMapping("/block/{userId}")
+    public List<ReadBlockedUserResponseDto> readBlockedUserList (@RequestParam("userId") int userId) {
+
+        List<Block> blockList = blockService.findBlockListByUserId(userId);
+        List<ReadBlockedUserResponseDto> resultBlockList = new ArrayList<>();
+
+
+        for (Block b : blockList) {
+            resultBlockList.add(new ReadBlockedUserResponseDto(b));
+        }
+
+        return resultBlockList;
+    }
+
+    @GetMapping("/search/{userCode}")
+    public User readUserByUserCode (@RequestParam("userCode") int userCode) {
+
+       return friendService.findByUserCode(userCode);
     }
 
 }

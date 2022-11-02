@@ -1,6 +1,7 @@
 package com.ssafy.nolmung.friend.repository;
 
 import com.ssafy.nolmung.friend.domain.Friend;
+import com.ssafy.nolmung.friend.domain.FriendProposal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -35,10 +36,18 @@ public class FriendRepository {
 
     public List<Friend> findFriendListByUserId(int userId) {
 
-        List<Friend> friendList =  em.createQuery("SELECT f FROM Friend f WHERE f.userId = :user_id",Friend.class)
+        List<Friend> friendList =  em.createQuery("SELECT f FROM Friend f WHERE f.user.userId = :user_id",Friend.class)
                 .setParameter("user_id",userId).getResultList();
 
 
         return friendList;
+    }
+
+    public Friend findFriendByDuoId(int userId, int subUserId) {
+
+        Friend friend =  em.createQuery("SELECT f FROM Friend f WHERE f.user.userId = :user_id AND f.subUserId = :sub_user_id",Friend.class)
+                .setParameter("user_id",userId).setParameter("sub_user_id",subUserId).getSingleResult();
+
+        return friend;
     }
 }

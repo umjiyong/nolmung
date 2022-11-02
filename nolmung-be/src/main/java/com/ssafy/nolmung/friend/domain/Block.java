@@ -23,9 +23,14 @@ public class Block {
     @Setter(AccessLevel.NONE)
     private User user;
 
+    @Column(name = "blocked_user_id")
+    private int blockedUserId;
+
     @Builder
-    public Block (User user) {
+    public Block (User user, int blockedUserId) {
+
         this.user = user;
+        this.blockedUserId = blockedUserId;
     }
 
 

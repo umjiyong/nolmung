@@ -41,4 +41,12 @@ public class FriendProposalRepository {
 
         return friendProposalList;
     }
+
+    public FriendProposal findFriendProposalByDuoId(int userId,int subUserId) {
+
+        FriendProposal friendProposal =  em.createQuery("SELECT fp FROM FriendProposal fp WHERE fp.fromUserId = :user_id AND fp.toUserId = :sub_user_id",FriendProposal.class)
+                .setParameter("user_id",userId).setParameter("sub_user_id",subUserId).getSingleResult();
+
+        return friendProposal;
+    }
 }

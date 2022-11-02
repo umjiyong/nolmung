@@ -2,10 +2,12 @@ package com.ssafy.nolmung.friend.repository;
 
 import com.ssafy.nolmung.friend.domain.Block;
 import com.ssafy.nolmung.friend.domain.Friend;
+import com.ssafy.nolmung.friend.domain.FriendProposal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,6 +32,14 @@ public class BlockRepository {
 
         em.remove(block);
 
+    }
+
+    public List<Block> findBlockListByUserId(int userId) {
+
+        List<Block> blockList =  em.createQuery("SELECT b FROM Block b WHERE b.user.userId = :user_id",Block.class)
+                .setParameter("user_id",userId).getResultList();
+
+        return blockList;
     }
 
 
