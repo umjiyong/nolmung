@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text,TouchableOpacity, Button, StyleSheet} from 'react-native';
 import Header from '../Components/Header';
 import MyWalkRecord from '../Components/MyWalkRecord';
+import WalkStatistic from '../Components/WalkStatistic';
 function WalkDiaryScreen({navigation}) {
     const [select, setSelect] = useState('myWalk')
     const onPressMyWalk = () => {
@@ -42,7 +43,7 @@ function WalkDiaryScreen({navigation}) {
           ) : 
           (
             <>
-             
+                <WalkStatistic />
             </>
           )}     
       </View>

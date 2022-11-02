@@ -39,8 +39,8 @@ const MyWalkRecordInfo = (Props) => {
                 backdropOpacity = {backdropOpacity}
             >
                 <View style={Styles.ModalContainer}>
-                    <View style={{width: '100%', height: 250, backgroundColor:'#959595', marginBottom:50,}}></View>
-                    <View style={{flexDirection:'row', justifyContent:'space-between', marginBottom:20,}}>
+                    <View style={{flex:1,width: '100%', height: 200, backgroundColor:'#959595', marginBottom:30,}}></View>
+                    <View style={{flex:0.5,flexDirection:'row', justifyContent:'space-between', marginBottom:20,}}>
                         <View style={Styles.ModalInfoBox}>
                             <Text style={Styles.ModalInfoBoxText}>총 거리</Text>
                             <Text style={Styles.ModalInfoBoxTextColor}>{km}Km</Text>
@@ -54,9 +54,9 @@ const MyWalkRecordInfo = (Props) => {
                             <Text style={Styles.ModalInfoBoxTextColor}>{perc}%</Text>
                         </View>
                     </View>
-                    <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                        <View style={{backgroundColor:'#f1f1f1', width:150, height: 300}}></View>
-                        <View style={{backgroundColor:'#f1f1f1', width:150, height: 300}}></View>
+                    <View style={{flex:1,flexDirection:'row', justifyContent:'space-between'}}>
+                        <View style={{backgroundColor:'#f1f1f1', width:150, height: 150}}></View>
+                        <View style={{backgroundColor:'#f1f1f1', width:150, height: 150}}></View>
                     </View>
                 </View>
             </Modal>
@@ -99,7 +99,7 @@ const Styles = StyleSheet.create({
         justifyContent:'space-evenly',
     },
     ModalContainer:{
-        flex:0.9,
+        flex:0.93,
         backgroundColor:'#fff',
         marginTop:'auto',
         marginBottom: -20,
@@ -110,7 +110,7 @@ const Styles = StyleSheet.create({
         paddingTop: 30,
     },
     ModalInfoBox:{
-        width: 110,
+        width: 105,
         height: 100,
         backgroundColor:'white',
         shadowColor:'#282828',
@@ -124,15 +124,15 @@ const Styles = StyleSheet.create({
     },
     ModalInfoBoxText:{
         color:'#282828',
-        fontSize: 16, 
+        fontSize: 13, 
         fontWeight:'600',
         marginBottom: 10,
+        textAlign:'center'
     },
     ModalInfoBoxTextColor:{
         color:'#FF772F',
-        fontSize: 16, 
+        fontSize: 14, 
         fontWeight:'600',
 
     }
-    
 })
