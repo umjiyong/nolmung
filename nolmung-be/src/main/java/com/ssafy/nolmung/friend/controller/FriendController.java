@@ -9,6 +9,7 @@ import com.ssafy.nolmung.friend.dto.response.ReadFriendResponseDto;
 import com.ssafy.nolmung.friend.service.BlockService;
 import com.ssafy.nolmung.friend.service.FriendProposalService;
 import com.ssafy.nolmung.friend.service.FriendService;
+import com.ssafy.nolmung.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -78,8 +79,8 @@ public class FriendController {
         int userId1 = tempFriendProposal.getFromUserId();
         int userId2 = tempFriendProposal.getToUserId();
 
-        friendService.regist(new Friend(유저서비스 파인드 바이아이디 유저 1,userId2));
-        friendService.regist(new Friend(유저서비스 파인드 바이아이디 유저 2,userId1));
+//        friendService.regist(new Friend(유저서비스 파인드 바이아이디 유저 1,userId2));
+//        friendService.regist(new Friend(유저서비스 파인드 바이아이디 유저 2,userId1));
 
         friendProposalService.delete(tempFriendProposal);
 
@@ -100,9 +101,9 @@ public class FriendController {
     @DeleteMapping("/delete")
     public void deleteFriend (@RequestBody DeleteFriendRequestDto request) {
 
-        양쪽에서 삭제해주어야 하므로 friend 연관 2개를 찾아야 함.
+//        양쪽에서 삭제해주어야 하므로 friend 연관 2개를 찾아야 함.
 
-        friendService.delete(friendService.findBy);
+//        friendService.delete(friendService.findBy);
 
     }
 
