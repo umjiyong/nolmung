@@ -3,7 +3,7 @@ package com.ssafy.nolmung.friend.service;
 import com.ssafy.nolmung.friend.domain.Friend;
 import com.ssafy.nolmung.friend.repository.FriendRepository;
 import com.ssafy.nolmung.user.domain.User;
-import com.ssafy.nolmung.user.repository.UserRepositoryImpl;
+import com.ssafy.nolmung.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,7 @@ import java.util.List;
 public class FriendService {
 
     private final FriendRepository friendRepository;
-    private final UserRepositoryImpl userRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void regist (Friend friend){
