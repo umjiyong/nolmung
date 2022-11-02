@@ -94,6 +94,14 @@ public class UserController {
     }
 
 
+    @GetMapping("/findByUuid/{KakaoUuid}")
+    public UserResponseDto SearchByKakaoUuid(@PathVariable ("KakaoUuid") String uuid){
+        User user = userservice.findByKakaoUuid(uuid);
+
+        return new UserResponseDto(user);
+    }
+
+
     @GetMapping("/findAll")
     @IsLogined(role = IsLoginedCheck.NOTLOGIN)
     @ApiOperation(value="(개발용)전체 사용자 조회", notes="전체 사용자 반환")
