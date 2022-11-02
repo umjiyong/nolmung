@@ -9,11 +9,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class ReadFriendResponseDto {
 
- private int userId;
- private String userNickname;
+ private int subUserId;
 
  public ReadFriendResponseDto (Friend friend) {
-   this.userId = friend.getUser().getUserId();
+
+   this.subUserId = friend.getSubUserId();
 
  }
 
