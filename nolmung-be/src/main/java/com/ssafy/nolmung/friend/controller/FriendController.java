@@ -92,7 +92,7 @@ public class FriendController {
         FriendProposal tempFriendProposal = friendProposalService.findById(friendProposalId);
 
         friendProposalService.delete(tempFriendProposal);
-
+ㄴ
         return "친구 신청 거절 완료";
     }
 
