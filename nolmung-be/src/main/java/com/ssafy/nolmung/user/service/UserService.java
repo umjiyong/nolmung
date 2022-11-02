@@ -184,9 +184,11 @@ public class UserService {
      * 카카오 로그인시 UUID, 이름, 프로필사진, email 카카오에서 받아오기, userId는 AutoIncrement
      */
     @Transactional
-    public void createKakaoUser(String token) throws RuntimeException {
+    public int createKakaoUser(String token) throws RuntimeException {
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
+
+        int userId = -1;
 
         //access_token을 이용하여 사용자 정보 조회
         try {
@@ -222,6 +224,8 @@ public class UserService {
                 System.out.println("유저 등록 성공!!!");
             }
 
+            userId = userRepository.findByUserKakaoUuid(id).getUserId();
+
             System.out.println("유저 등록 안했음! " + id);
 
             br.close();
@@ -229,6 +233,8 @@ public class UserService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return userId;
 
     }
 

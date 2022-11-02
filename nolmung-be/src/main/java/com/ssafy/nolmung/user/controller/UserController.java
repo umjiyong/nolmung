@@ -77,7 +77,7 @@ public class UserController {
         List<String> list = userservice.getKakaoAccessToken(code);
         String access_token = list.get(0);
         String refresh_token = list.get(1);
-        userservice.createKakaoUser(access_token);
+        int userId = userservice.createKakaoUser(access_token);
 
         System.out.println("컨트롤러에서 확인"+access_token+" , "+refresh_token);
 
@@ -85,16 +85,19 @@ public class UserController {
         hashMap.put("accessToken", access_token);
         hashMap.put("refreshToken", refresh_token);
 
+        if(userId == -1) hashMap.put("userId", "Error");
+        else hashMap.put("userId", Integer.toString(userId));
+
         return hashMap;
     }
 
-//    @ㅎㄷBody
-//    @GetMapping("/kakao")
+//    @ResponseBody
+//    @GetMapping("/kakao/{accessCode}")
 //    @ApiOperation(value="카카오 로그인 요청 시", notes="kakaoAccessCode를 파라미터로 받아, 사용자의 accessToken, refreshToken을 반환")
-//    public ResponseEntity<?> KakaoLogin(@RequestParam String code) throws URISyntaxException{
-//        URI redirectUri = new URI("http://localhost:3000/redirect");
+//    public ResponseEntity<?> KakaoLogin(@PathVariable ("accessCode") String code) throws URISyntaxException{
+////        URI redirectUri = new URI("http://localhost:3000/redirect");
 //        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.setLocation(redirectUri);
+////        httpHeaders.setLocation(redirectUri);
 //
 //        List<String> list = userservice.getKakaoAccessToken(code);
 //        System.out.println("Kakao AccessCode : " + code);
@@ -109,10 +112,11 @@ public class UserController {
 //
 //        ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refresh_token)
 //                .httpOnly(true)
-//                .maxAge(60)
+//                .maxAge(3600)
 //                .build();
 //
-//        System.out.println("쿠키 찍어보기 : " + responseCookie.toString());
+//        System.out.println("쿠키 찍어보기 : " + cookie.toString());
+//        System.out.println("리스폰스쿠키 찍어보기 : " + responseCookie.toString());
 //        System.out.println("헤더 찍어보기 : " + httpHeaders.toString());
 //
 //        HashMap<String, String> hashMap = new HashMap<>();
@@ -145,4 +149,9 @@ public class UserController {
 
         return new MessageResponseDto("회원정보 입력 완료");
     }
+
+//    @ResponseBody
+//    @DeleteMapping("/delete/{userId}")
+//    @ApiOperation(value = "회원정보 삭제")
+//    public ResponseEntity deleteUser()
 }
