@@ -1,7 +1,8 @@
 # OSX
 #
 .DS_Store
-
+#google
+google-services.json
 # Xcode
 #
 build/
