@@ -2,23 +2,22 @@ import React, { useState } from "react";
 import { ScrollView,TextInput, StyleSheet, Text, View, Image, TouchableWithoutFeedback, TouchableOpacity, Button } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
-import MiddleHeader from "../Components/MiddleHeader";
-import MyFamily from '../Components/MyFamily';
-const MyDogInfo = () => {
+import MiddleHeader from "../components/MiddleHeader";
+const AddDogInfo = () => {
     const navi = useNavigation()
-    const [DogName, setDogName] = useState("지용")
+    const [DogName, setDogName] = useState("")
     const onChangeText = (event) => {
         setDogName(event)
     }
 
-    const [DogSeed, setDogSeed] = useState('믹스견')
+    const [DogSeed, setDogSeed] = useState('')
     const onChangeSeed = (event) => {
         setDogSeed(event)
     }
 
-    const [year, setYear] = useState("1997")
-    const [month, setMonth] = useState("11")
-    const [date, setDate] = useState("11")
+    const [year, setYear] = useState("YYYY")
+    const [month, setMonth] = useState("MM")
+    const [date, setDate] = useState("DD")
 
     const onChangeYear = (event) => {
         setYear(event)
@@ -30,7 +29,7 @@ const MyDogInfo = () => {
         setDate(event)
     } 
 
-    const [dogWeight, setDogWeight] = useState('3')
+    const [dogWeight, setDogWeight] = useState('')
     const onChangeWeight = (event) => {
         setDogWeight(event)
     }
@@ -40,7 +39,7 @@ const MyDogInfo = () => {
         setDogChar(e)
     }
 
-    const [selectSex, setSelectSex] = useState('man')
+    const [selectSex, setSelectSex] = useState()
     const onChangeMan = () => {
         setSelectSex('man');
        
@@ -49,19 +48,17 @@ const MyDogInfo = () => {
         setSelectSex('woman');
      
     }
-    const [selectNeut, setSelectNeut ] = useState('X')
+    const [selectNeut, setSelectNeut ] = useState()
     const onChangeO = () => {
         setSelectNeut('O')
     }
     const onChangeX = () => {
         setSelectNeut('X')
     }
-
-    const dogFriendCode = "#ECS10P"
     return (
     <>
-        <MiddleHeader header={DogName}/>
-        <ScrollView style={Styles.DogContainer} showsVerticalScrollIndicator={false}> 
+        <MiddleHeader header="강아지 등록"/>
+        <ScrollView style={Styles.DogContainer}> 
             <View style={Styles.DogImage}>
                 <Image  
                     source={require('../assets/image/Dog1.jpg')}
@@ -72,95 +69,82 @@ const MyDogInfo = () => {
                         borderRadius: 50,
                     }}
                 />
-                <Text style={{color: '#282828', marginTop: 6, fontSize: 14}}>{dogFriendCode}</Text>
+                <Text style={{color: '#282828', marginTop: 6, fontSize: 14}}>강아지 프로필</Text>
             </View>
             <View style={{marginBottom: 20}}>
                 <Text style={{color: '#282828', fontWeight: '600', fontSize: 16, marginBottom: 10,}}>강아지 이름</Text>
-                <Text style={{color: '#282828',borderBottomColor:'gray', borderBottomWidth:1, paddingBottom:5}}>{DogName}</Text>
+                <TextInput onChangeText={onChangeText} onFocus={()=>setDogName('')} value={DogName} style={{color: '#282828',borderBottomColor:'gray', borderBottomWidth:1}} />
             </View>
             <View style={{marginBottom: 20}}>
                 <Text style={{color: '#282828', fontWeight: '600', fontSize: 16, marginBottom: 10,}}>견종</Text>
-                <Text style={{color: '#282828',borderBottomColor:'gray', borderBottomWidth:1, paddingBottom:5}}>{DogSeed}</Text>
+                <TextInput onChangeText={onChangeSeed} onFocus={()=>setDogSeed('')} value={DogSeed} style={{color: '#282828',borderBottomColor:'gray', borderBottomWidth:1}} />
             </View>
             <View>
                 <Text style={{color: '#282828', fontWeight: '600', fontSize: 16, marginBottom: 10,}}>생년월일</Text>    
-                <View style={{flexDirection:'row', justifyContent:'space-around',alignItems:'center'}}>
-                    <Text style={Styles.BirthConatiner}>{year}</Text>
-                    <Text style={{marginHorizontal:0, ...Styles.BirthConatiner}}>{month}</Text>
-                    <Text style={Styles.BirthConatiner}>{date}</Text>
+                <View style={{flexDirection:'row', justifyContent:'center',alignItems:'center'}}>
+                    <TextInput maxLength={4} keyboardType="number-pad" onChangeText={onChangeYear} style={Styles.BirthConatiner} value={year}/>
+                    <TextInput maxLength={2} keyboardType="number-pad" onChangeText={onChangeMonth} style={{marginHorizontal:6, ...Styles.BirthConatiner}} value={month}/>
+                    <TextInput maxLength={2} keyboardType="number-pad" onChangeText={onChangeDate} style={Styles.BirthConatiner} value={date}/>
                 </View>
             </View>
             <View style={{marginTop: 20}}>
                 <Text style={{color: '#282828', fontWeight: '600', fontSize: 16, marginBottom: 10,}}>몸무게</Text>
-                <View>
-                    <Text style={{color: '#282828',}}>{dogWeight} Kg</Text>
+                <View style={{flexDirection:'row',}}>
+                    <TextInput keyboardType="number-pad" onChangeText={onChangeWeight} onFocus={()=>setDogWeight('')} value={dogWeight} style={{color: '#282828', marginTop: -15}} />
+                    <Text style={{color: '#282828'}}>Kg</Text>
                 </View>
-                <View style={{borderBottomColor:'gray', borderBottomWidth:1, marginTop: 5, }}></View>
+                <View style={{borderBottomColor:'gray', borderBottomWidth:1, marginTop: -5, }}></View>
             </View>
             <View style={{marginTop: 20}}>
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                     <Text style={{color: '#282828', fontWeight: '600', fontSize: 16, marginBottom: 10,}}>강아지 성격</Text>
                     <Text style={{color: '#959595'}}>(최대 40자)</Text>
                 </View>
-                <View style={{ height: 70, borderColor: '#959595', borderWidth: 1, borderRadius: 15, justifyContent:'center' }}>
-                    <Text style={{textAlign: 'center',color: '#282828'}}>{dogChar}</Text>           
-                </View>
+                <TextInput maxLength={40} multiline={true} onChangeText={onChangeDogChar} onFocus={()=>setDogChar('')} value={dogChar} style={{textAlign: 'center',color: '#282828', height: 70, borderColor: '#959595', borderWidth: 1, borderRadius: 15,}} />
             </View>
             <View style={{marginTop: 20}}>
                 <Text style={{color: '#282828', fontWeight: '600', fontSize: 16, marginBottom: 10,}}>강아지 성별</Text>
                 <View style={Styles.BtnContainer}>
                     {/*  */}
-                    <View>
+                    <TouchableWithoutFeedback  onPress={onChangeMan}>
                         <View style={selectSex =='man' ? Styles.SelectsexBtn : Styles.sexBtn}>
                             <Text style={selectSex == 'man' ? Styles.SelectBtnText: Styles.BtnText}>남성</Text>
                         </View>
-                    </View>
-                    <View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback  onPress={onChangeWoman}>
                         <View style={selectSex == 'woman' ? Styles.SelectsexBtn: Styles.sexBtn}>
                             <Text style={selectSex == 'woman'? Styles.SelectBtnText : Styles.BtnText}>여성</Text>
                         </View>
-                    </View>
+                    </TouchableWithoutFeedback>
                 </View>
             </View>
             <View style={{marginTop: 20}}>
                 <Text style={{color: '#282828', fontWeight: '600', fontSize: 16, marginBottom: 10,}}>강아지 중성화 여부</Text>
                 <View style={{flexDirection:'row', justifyContent:'space-around'}}>
                     {/*  */}
-                    <View>
+                    <TouchableWithoutFeedback  onPress={onChangeO}>
                         <View style={selectNeut =='O' ? Styles.SelectNeutBtn : Styles.NeutBtn}>
                             <Text style={selectNeut == 'O' ? Styles.SelectBtnText: Styles.BtnText}>O</Text>
                         </View>
-                    </View>
-                    <View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback  onPress={onChangeX}>
                         <View style={selectNeut == 'X' ? Styles.SelectNeutBtn: Styles.NeutBtn}>
                             <Text style={selectNeut == 'X'? Styles.SelectBtnText : Styles.BtnText}>X</Text>
                         </View>
-                    </View>
+                    </TouchableWithoutFeedback>
                 </View>
             </View>
-            {/*나의 가족  Start*/}
-            <View style={Styles.MyFamily}>
-                <Text style={Styles.MyFamilyText}>강아지를 공유하는 가족</Text>
-                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    <MyFamily img={require('../assets/icons/32.png')}/>
-                    <MyFamily img={require('../assets/icons/33.png')}/>
-                    <MyFamily img={require('../assets/icons/34.png')}/>
-                    <MyFamily img={require('../assets/icons/34.png')}/>
-                    <MyFamily img={require('../assets/icons/34.png')}/>
-                    <MyFamily img={require('../assets/icons/34.png')}/>
-
-                </ScrollView>
-            </View> 
-        {/*나의 가족  End*/}
+            <View style={{alignItems:'center'}}>
+                <TouchableOpacity style={{marginHorizontal:0,...Styles.completeBtn}}>
+                    <Text style={{color: '#fff', fontWeight:'500'}}>등록 완료</Text>
+                </TouchableOpacity>
+            </View>
         </ScrollView>
-        <TouchableOpacity style={Styles.completeBtn} onPress={()=>{navi.goBack()}}>
-            <Text style={{color: '#fff', fontWeight:'500'}}>확인</Text>
-        </TouchableOpacity>
     </>
     ) 
 }
 
-export default MyDogInfo;
+export default AddDogInfo;
 
 const Styles = StyleSheet.create({
     DogList:{
@@ -172,8 +156,7 @@ const Styles = StyleSheet.create({
         backgroundColor: '#FFD9C6'
     },
     DogContainer: {
-        marginHorizontal: 20,
-        
+        marginHorizontal: 20,     
     },
     plusDog: {
         marginTop: 15,
@@ -195,7 +178,7 @@ const Styles = StyleSheet.create({
         borderColor: 'gray',
         borderRadius: 15,
         color: '#282828',
-        paddingVertical: 10,
+        paddingVertical: 6,
         paddingHorizontal:42,
     },
     BtnContainer:{
@@ -243,19 +226,13 @@ const Styles = StyleSheet.create({
         borderRadius: 10,
     },
     completeBtn: {
-        marginTop: 0,
+        width: '100%',
+        borderRadius:15,
+        marginTop: 40,
         height: 43,
         alignItems:'center',
         justifyContent:'center',
         backgroundColor: '#FF772F'
-    },
-    MyFamily: {
-       
-      },
-    MyFamilyText:{
-    fontSize: 16,
-    fontFamily: 'NotoSansKR-Medium',
-    color: '#282828',
     }
-    
+
 })

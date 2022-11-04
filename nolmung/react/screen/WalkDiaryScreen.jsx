@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {View, Text,TouchableOpacity, Button, StyleSheet} from 'react-native';
-import Header from '../Components/Header';
-import MyWalkRecord from '../Components/MyWalkRecord';
-import WalkStatistic from '../Components/WalkStatistic';
+import Header from '../components/Header';
+import MyWalkRecord from '../components/MyWalkRecord';
+import WalkStatistic from '../components/WalkStatistic';
 function WalkDiaryScreen({navigation}) {
     const [select, setSelect] = useState('myWalk')
     const onPressMyWalk = () => {
