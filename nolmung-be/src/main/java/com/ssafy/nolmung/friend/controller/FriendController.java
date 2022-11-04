@@ -64,7 +64,11 @@ public class FriendController {
     @PostMapping("/send")
     public String sendFriendProposal (@RequestBody SendFriendProposalRequestDto request) {
 
-        //이미 친구인지 체크하는 것 넣어야함
+        //이미 친구인지 체크
+
+        //to from 역치
+
+        //차단되었음
 
         FriendProposal tempFriendProposal = FriendProposal.builder()
                                .toUserId(request.getToUserId())
