@@ -16,7 +16,7 @@ import MyDogInfo from '../Screen/MyDogInfo'
 import CutOffList from '../Screen/CutOffList';
 import FriendProfile from '../Screen/FriendProfile'
 import MessageRoomScreen from '../Screen/MessageRoomScreen';
-
+import ArticleItemDetail from '../Screen/ArticleItemDetail'
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -53,6 +53,11 @@ const StackNavigator = () => {
         }}  
       />
       <Stack.Screen name="MessageRoomScreen" component={MessageRoomScreen} />
+      <Stack.Screen name="ArticleItemDetail" component={ArticleItemDetail}
+        options={{
+          title:'ArticleItemDetail',
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS
+        }} />
     </Stack.Navigator>
   );
 };

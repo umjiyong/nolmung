@@ -27,13 +27,13 @@ function AllRanking() {
             <View style={Styles.Container}>
                 <View style={Styles.selectBtn}>
                     <Pressable onPress={selectDate}>
-                            <Text style={select=='date' ? Styles.SelectText : Styles.NoSelectText}>일간</Text>
+                            <Text style={select==='date' ? Styles.SelectText : Styles.NoSelectText}>일간</Text>
                     </Pressable>
                     <Pressable onPress={selectWeek}>
-                            <Text style={select=='week' ? Styles.SelectText : Styles.NoSelectText}>주간</Text>
+                            <Text style={select==='week' ? Styles.SelectText : Styles.NoSelectText}>주간</Text>
                     </Pressable>
                     <Pressable onPress={selectMonth}>
-                            <Text style={select=='month' ? Styles.SelectText : Styles.NoSelectText}>월간</Text>
+                            <Text style={select==='month' ? Styles.SelectText : Styles.NoSelectText}>월간</Text>
                     </Pressable>
                 </View>
                 <View style={Styles.MainRankingContainer}>
