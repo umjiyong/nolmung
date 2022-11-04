@@ -13,7 +13,7 @@ function LoginScreen({navigation}) {
   const [Login, setLogin] = useState(true);
 
   const getTestData = async () => {
-    try{
+    try{  
       await getTest(
         (response) => {
           console.log("리스폰스는", response);
@@ -28,13 +28,11 @@ function LoginScreen({navigation}) {
     }
   }
 
-  useEffect(() => {
-    getTestData();
-  }, [])
-
   return (
     <View style={style.container}>
       <Text style={style.text}>놀면 멍하니</Text>
+
+      <TouchableOpacity onPress={getTestData}><Text>테스트</Text></TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => {

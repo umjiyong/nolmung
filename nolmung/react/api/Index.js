@@ -1,16 +1,16 @@
 import axios from "axios";
 // const base_URL = "http://localhost:8080/";
-const base_URL = "httpbin.org/";
+const base_URL = "https://httpbin.org/";
 
 export function ApiInstance(){
-    const instace = axios.create({
+    const instance = axios.create({
       baseURL: base_URL,
-      headers: {
-        "Content-type" : "application/json",
-        // Authorizatino : `Bearer ${localStorage.getItem("accessToken")}`,
-        // Cookie: "refreshToken = value",
-      },
+      // headers: {
+      //   "Content-type" : "multipart/form-data",
+      //   // Authorizatino : `Bearer ${localStorage.getItem("accessToken")}`,
+      //   // Cookie: "refreshToken = value",
+      // },
       
     })
-    return instace;
+    return instance;
   }
