@@ -118,6 +118,9 @@ public class FriendController {
     @PostMapping("/block")
     public String blockFriend (@RequestBody BlockFriendRequestDto request) {
 
+        if (blockService.findBlockByDuoId(request.getUserId(), request.getBlockedUserId()) != null )
+            return  "이미 차단되어 있습니다.";
+
         Block tempBlock = Block.builder()
                 .user(userService.findById(request.getUserId()))
                 .blockedUserId(request.getBlockedUserId())

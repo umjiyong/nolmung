@@ -35,6 +35,12 @@ public class BlockService {
 
     }
 
+    public Block findBlockByDuoId (int userId, int blockedUserId) {
+
+        return blockRepository.findBlockByDuoId(userId,blockedUserId);
+
+    }
+
     @Transactional
     public void delete (Block block) {
 
