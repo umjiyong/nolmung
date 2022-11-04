@@ -16,6 +16,7 @@ import MyDogInfo from '../screen/MyDogInfo'
 import CutOffList from '../screen/CutOffList';
 import FriendProfile from '../screen/FriendProfile'
 import MessageRoomScreen from '../screen/MessageRoomScreen';
+import ArticleItemDetail from '../screen/ArticleItemDetail';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
