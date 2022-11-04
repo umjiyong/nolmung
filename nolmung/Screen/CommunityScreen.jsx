@@ -11,7 +11,9 @@ function CommunityScreen({navigation}) {
         console.log(isModalVisible)
     };
   const backdropOpacity = 0.3
-
+  
+  
+  
   return (
     <>
       <View style={Styles.container}>
@@ -189,7 +191,8 @@ const Styles = StyleSheet.create({
     marginHorizontal: -20,
     flex: 0.3,
     backgroundColor:'#fff',
-    borderRadius: 30,
+    borderTopStartRadius:30,
+    borderTopRightRadius:30,
     justifyContent:'space-evenly',
   },
   ModalMenuText: {
@@ -203,5 +206,6 @@ const Styles = StyleSheet.create({
   },
   ScrollView: {
     paddingTop: 10,
+    paddingBottom: 200,
   }
 });
