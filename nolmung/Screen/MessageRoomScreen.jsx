@@ -37,12 +37,8 @@ import {State} from 'react-native-gesture-handler';
 // }
 
 function printMessage(messages, userId, route) {
-  console.log('messages: ' + JSON.stringify(messages));
-  console.log('print Message!');
   let result = [];
   for (let i = 0; i < messages.length; i++) {
-    console.log('message: ' + messages[i].userId);
-    console.log('userId: ' + userId);
     if (messages[i].userId != userId) {
       result.push(
         <ReceiveMessage
@@ -76,8 +72,6 @@ const MessageRoomScreen = ({navigation: {navigate}, route}) => {
   const [cutOffUser, setCutOffUser] = useState(false);
   const [cancle, setCancle] = useState(false);
   const backdropOpacity = 0.5;
-
-  console.log('messages:');
 
   const ref = firestore()
     .collection('chatrooms')
