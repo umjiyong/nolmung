@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableHighlight,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -16,25 +15,6 @@ import SendMessage from '../Components/SendMessage';
 import Modal from 'react-native-modal';
 import firestore from '@react-native-firebase/firestore';
 import {State} from 'react-native-gesture-handler';
-
-// async function getMessages(chatroomId, isFirst) {
-//   let result = [];
-//   if (isFirst) {
-//     result = (await ref.get()).docs.map(doc => ({
-//       id: doc.id,
-//       ...doc.data(),
-//     }));
-//     return result;
-//   } else {
-//     ref.onSnapshot(snapshot => {
-//       result = snapshot.docs.map(doc => ({
-//         id: doc.id,
-//         ...doc.data(),
-//       }));
-//       return result;
-//     });
-//   }
-// }
 
 function printMessage(messages, userId, route) {
   let result = [];
@@ -63,6 +43,8 @@ const MessageRoomScreen = ({navigation: {navigate}, route}) => {
   const receive = true;
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
+  const [userId, setUserId] = useState(route.params.userId);
+  const [userName, setUserName] = useState(route.params.userName);
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -73,21 +55,28 @@ const MessageRoomScreen = ({navigation: {navigate}, route}) => {
   const [cancle, setCancle] = useState(false);
   const backdropOpacity = 0.5;
 
+  const myId = '1';
+  const myName = '김싸피';
+
   const ref = firestore()
     .collection('chatrooms')
     .doc(route.params.chatroomId)
-    .collection('messages')
-    .orderBy('sendTime')
-    .limitToLast(10);
+    .collection('messages');
 
   useEffect(() => {
-    ref.onSnapshot(snapshot => {
-      const result = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setMessages(result);
-    });
+    const unsubscribe = ref
+      .orderBy('sendTime')
+      .limitToLast(10)
+      .onSnapshot(snapshot => {
+        const result = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setMessages(result);
+      });
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
@@ -154,11 +143,25 @@ const MessageRoomScreen = ({navigation: {navigate}, route}) => {
           placeholder="메세지를 입력하세요..."
           placeholderTextColor="#959595"
         />
-        <Image
-          source={require('../assets/icons/send.png')}
-          resizeMode="contain"
-          style={{position: 'absolute', right: 20}}
-        />
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            right: 20,
+          }}
+          onPress={() => {
+            ref.add({
+              userId: myId,
+              userName: myName,
+              sendTime: firestore.Timestamp.now(),
+              content: message,
+            });
+            setMessage('');
+          }}>
+          <Image
+            source={require('../assets/icons/send.png')}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
 
       <Modal
