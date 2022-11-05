@@ -11,30 +11,43 @@ import {useNavigation} from '@react-navigation/native';
 import MessageRoom from '../Components/MessageRoom';
 import firestore from '@react-native-firebase/firestore';
 
-let chatroomList = [];
+// let chatroomList = [];
 
-async function getUserChatroom(userId, isFirst) {
-  chatroomList = [];
+// async function getUserChatroom(userId, isFirst) {
+//   chatroomList = [];
+//   const ref = firestore()
+//     .collection('userChatrooms')
+//     .doc(userId + '');
+
+//   if (isFirst) {
+//     chatroomList = (await ref.get()).data().chatroomList;
+//   } else {
+//     ref.onSnapshot(snapshot => {
+//       console.log('chatroomList1: ' + chatroomList);
+//       chatroomList = snapshot.data().chatroomList;
+//     });
+//   }
+// }
+
+const MessageScreen = () => {
+  const [chatroomList, setChatroomList] = useState([]);
+  const [userId, setUserId] = useState('1');
+  // 하드코딩
+
   const ref = firestore()
     .collection('userChatrooms')
     .doc(userId + '');
 
-  if (isFirst) {
-    chatroomList = (await ref.get()).data().chatroomList;
-  } else {
+  useEffect(() => {
     ref.onSnapshot(snapshot => {
       console.log('chatroomList1: ' + chatroomList);
-      chatroomList = snapshot.data().chatroomList;
+      const result = snapshot.data().chatroomList;
+      setChatroomList(result);
     });
-  }
-}
-
-const MessageScreen = () => {
-  // 하드코딩
-  const [userId, setUserId] = useState('1');
-  useEffect(() => {
-    getUserChatroom(1, true);
   }, []);
+  // useEffect(() => {
+  //   getUserChatroom(1, true);
+  // }, []);
   console.log('chatroomList2: ' + chatroomList);
 
   const navigation = useNavigation(chatroomList);

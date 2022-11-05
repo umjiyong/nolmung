@@ -17,31 +17,27 @@ import Modal from 'react-native-modal';
 import firestore from '@react-native-firebase/firestore';
 import {State} from 'react-native-gesture-handler';
 
-// const chatroomCollection = firestore()
-//   .collection('chatrooms')
-//   .doc('messages')
-//   .onSnapshot(result => {
-//     console.log(result.data());
-//   });
-
-let messages = [];
-
-function getMessages(chatroomId) {
-  firestore()
-    .collection('chatrooms')
-    .doc(chatroomId)
-    .collection('messages')
-    .orderBy('sendTime')
-    .onSnapshot(snapshot => {
-      messages = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      console.log('messages: ' + messages);
-    });
-}
+// async function getMessages(chatroomId, isFirst) {
+//   let result = [];
+//   if (isFirst) {
+//     result = (await ref.get()).docs.map(doc => ({
+//       id: doc.id,
+//       ...doc.data(),
+//     }));
+//     return result;
+//   } else {
+//     ref.onSnapshot(snapshot => {
+//       result = snapshot.docs.map(doc => ({
+//         id: doc.id,
+//         ...doc.data(),
+//       }));
+//       return result;
+//     });
+//   }
+// }
 
 function printMessage(messages, userId, route) {
+  console.log('messages: ' + JSON.stringify(messages));
   console.log('print Message!');
   let result = [];
   for (let i = 0; i < messages.length; i++) {
@@ -65,12 +61,11 @@ function printMessage(messages, userId, route) {
 
 const MessageRoomScreen = ({navigation: {navigate}, route}) => {
   console.log(route.params.userName);
-  getMessages(route.params.chatroomId);
-
   const navi = useNavigation();
   const dogInfo = '지용 (믹스견, 3세)';
   const send = true;
   const receive = true;
+  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
@@ -81,6 +76,26 @@ const MessageRoomScreen = ({navigation: {navigate}, route}) => {
   const [cutOffUser, setCutOffUser] = useState(false);
   const [cancle, setCancle] = useState(false);
   const backdropOpacity = 0.5;
+
+  console.log('messages:');
+
+  const ref = firestore()
+    .collection('chatrooms')
+    .doc(route.params.chatroomId)
+    .collection('messages')
+    .orderBy('sendTime')
+    .limitToLast(10);
+
+  useEffect(() => {
+    ref.onSnapshot(snapshot => {
+      const result = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setMessages(result);
+    });
+  }, []);
+
   return (
     <>
       <View style={Styles.messageHeader}>
@@ -135,13 +150,6 @@ const MessageRoomScreen = ({navigation: {navigate}, route}) => {
           ...Styles.MessageContainer,
         }}>
         {printMessage(messages, 1, route)}
-        {/* {userId===State.userId ? (
-          <ReceiveMessage
-            userName={route.params.userName}
-            img={route.params.img}
-          />
-        ) : null}
-        {send ? <SendMessage /> : null} */}
       </ScrollView>
       {/* 채팅 입력창 */}
       <View style={{marginTop: 'auto', justifyContent: 'center'}}>
