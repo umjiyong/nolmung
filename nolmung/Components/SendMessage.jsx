@@ -12,7 +12,6 @@ const SendMessage = Props => {
   // const Time = "오후 10:40"
   // const Message = "아니요..."
   console.log(Props.userName);
-  console.log('SendMessage: ' + JSON.stringify(Props.message));
   return (
     <>
       <View style={Styles.sendMessageContainer}>
