@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "919696272806",
+    "firebase_url": "https://nolmung-chatting-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "nolmung-chatting",
+    "storage_bucket": "nolmung-chatting.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919696272806:android:701e3ad0e98418b5673367",
+        "android_client_info": {
+          "package_name": "com.nolmung"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919696272806-kfnrucf4v6mqlfbkcmcpthfou2lfvpma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN4-jEw-ykDK_dzdAwhLgBM244ODs3xlI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919696272806-kfnrucf4v6mqlfbkcmcpthfou2lfvpma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
