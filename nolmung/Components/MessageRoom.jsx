@@ -1,9 +1,38 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
+import 'moment/locale/ko';
 
 const MessageRoom = Props => {
-  const lastMessage = '강아지 데리고 산책 갑시다!';
+  // const [lastMessage, setLastMessage] = useState({});
+  const [content, setContent] = useState('');
+  const [sendTime, setSendTime] = useState({});
+
+  const ref = firestore()
+    .collection('chatrooms')
+    .doc(Props.chatroomId)
+    .collection('messages');
+
+  useEffect(() => {
+    const unsubscribe = ref
+      .orderBy('sendTime', 'desc')
+      .limitToLast(1)
+      .onSnapshot(snapshot => {
+        const result = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        // setLastMessage(result[0]);
+        setContent(result[0].content);
+        setSendTime(result[0].sendTime);
+      });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   const Navigation = useNavigation();
   return (
     <>
@@ -11,6 +40,7 @@ const MessageRoom = Props => {
         onPress={() =>
           Navigation.push('MessageRoomScreen', {
             userName: Props.userName,
+            userId: Props.userId,
             img: Props.img,
             chatroomId: Props.chatroomId,
           })
@@ -28,11 +58,15 @@ const MessageRoom = Props => {
           />
           <View style={Styles.fontBlock}>
             <Text style={Styles.userNameText}>{Props.userName}</Text>
-            <Text style={Styles.lastMessageText}>{lastMessage}</Text>
+            <Text style={Styles.lastMessageText}>{content}</Text>
           </View>
         </View>
         <View>
-          <Text style={{color: '#959595'}}>{Props.messageTime}</Text>
+          <Text style={{color: '#959595'}}>
+            {moment(new Date(sendTime.seconds * 1000))
+              .utcOffset('+09:00')
+              .format('LT')}
+          </Text>
         </View>
       </Pressable>
     </>

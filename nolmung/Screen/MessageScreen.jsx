@@ -21,11 +21,30 @@ const MessageScreen = () => {
     .doc(userId + '');
 
   useEffect(() => {
-    ref.onSnapshot(snapshot => {
+    const unsubscribe = ref.onSnapshot(snapshot => {
       const result = snapshot.data().chatroomList;
       setChatroomList(result);
     });
+    return () => {
+      unsubscribe();
+    };
   }, []);
+
+  function printChatroomList() {
+    let result = [];
+    for (let i = 0; i < chatroomList.length; i++) {
+      result.push(
+        <MessageRoom
+          img={require('../assets/icons/33.png')}
+          userName={chatroomList[i].opponentName}
+          userId={chatroomList[i].opponentId}
+          chatroomId={chatroomList[i].chatroomId}
+          key={chatroomList[i].chatroomId}
+        />,
+      );
+    }
+    return result;
+  }
 
   const navigation = useNavigation(chatroomList);
   return (
@@ -49,10 +68,12 @@ const MessageScreen = () => {
         contentContainerStyle={{padding: 20}}
         showsVerticalScrollIndicator={false}
         style={Styles.messagnerContainer}>
-        <MessageRoom
+        {printChatroomList()}
+        {/* <MessageRoom
           img={require('../assets/icons/33.png')}
           userName="옆집 눈나"
           messageTime="오후 8:10"
+          userId={userId}
           chatroomId={chatroomList[0]}
         />
         <MessageRoom
@@ -69,7 +90,7 @@ const MessageScreen = () => {
           img={require('../assets/icons/man1Avatar.png')}
           userName="옆집 형님"
           messageTime="오후 5:10"
-        />
+        /> */}
       </ScrollView>
     </>
   );
