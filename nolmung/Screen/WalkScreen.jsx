@@ -115,6 +115,7 @@ function WalkScreen({navigation}) {
   const [min, setmin] = useState(0);
   const [speed, setspeed] = useState(0);
   let watchId;
+  const [Landmark, setLandmark] = useState(true);
 
   //효정test
   // BackgroundTimer.runBackgroundTimer(() => {
@@ -334,7 +335,6 @@ function WalkScreen({navigation}) {
           style={Styles.buttonTest}
         /> */}
         {/* <Text>이동 거리 : {distance.toFixed(2)}</Text> */}
-
         {startlocation.latitude && ondo ? (
           <>
             <Text>
@@ -370,9 +370,7 @@ function WalkScreen({navigation}) {
                   }}
                   image={require('../assets/icons/map_marker64.png')}
                   onPress={() => {
-                    Login
-                      ? navigation.navigate('BottomTabs')
-                      : alert('로그인하세요');
+                    Landmark ? navigation.push('Login') : alert('????');
                   }}
                 />
               ))}
