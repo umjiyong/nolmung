@@ -17,6 +17,7 @@ import CutOffList from '../screen/CutOffList';
 import FriendProfile from '../screen/FriendProfile'
 import MessageRoomScreen from '../screen/MessageRoomScreen';
 import ArticleItemDetail from '../screen/ArticleItemDetail'
+import SearchFriendList from '../screen/SearchFriendList'
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -53,6 +54,11 @@ const StackNavigator = () => {
         }}  
       />
       <Stack.Screen name="MessageRoomScreen" component={MessageRoomScreen} />
+      <Stack.Screen name="SearchFriendList" component={SearchFriendList} 
+        options={{
+          title:'ArticleItemDetail',
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS
+        }}/>
       <Stack.Screen name="ArticleItemDetail" component={ArticleItemDetail}
         options={{
           title:'ArticleItemDetail',

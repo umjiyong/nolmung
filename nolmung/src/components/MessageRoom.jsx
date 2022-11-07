@@ -25,8 +25,13 @@ const MessageRoom = Props => {
           id: doc.id,
           ...doc.data(),
         }));
+        if(result.length===0){
+          setContent('');
+          setSendTime('');
+        } else {
         setContent(result[0].content);
         setSendTime(result[0].sendTime);
+        }
       });
     return () => {
       unsubscribe();

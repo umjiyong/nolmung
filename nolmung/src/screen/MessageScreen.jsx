@@ -84,13 +84,18 @@ const MessageScreen = () => {
           img={require('../assets/icons/image22.png')}
           userName="옆집 형"
           messageTime="오후 6:10"
-        />
-        <MessageRoom
-          img={require('../assets/icons/man1Avatar.png')}
-          userName="옆집 형님"
-          messageTime="오후 5:10"
         /> */}
+
       </ScrollView>
+      <TouchableOpacity style={Styles.FriendListCheckBtn} onPress={()=>{navigation.navigate('SearchFriendList')}}>
+        <Image 
+          source={require('../assets/icons/message.png')}
+          style={{
+            tintColor:'#fff',
+            width: 34,
+            height: 34,
+          }}/>
+      </TouchableOpacity>
     </>
   );
 };
@@ -113,7 +118,19 @@ const Styles = StyleSheet.create({
   },
   messagnerContainer: {
     marginTop: 25,
-    overflow: 'visible',
   },
   messageRoom: {},
+  FriendListCheckBtn: {
+    width: 80,
+    height: 80, 
+    backgroundColor:'#FF772F',
+    borderRadius: 50,
+    position: 'absolute',
+    bottom: 40,
+    right: 20,
+    justifyContent:'center',
+    alignItems:'center',
+    shadowColor:'#828282',
+    elevation: 4
+  }
 });
