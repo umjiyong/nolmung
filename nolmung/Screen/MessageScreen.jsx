@@ -35,8 +35,8 @@ const MessageScreen = () => {
     for (let i = 0; i < chatroomList.length; i++) {
       result.push(
         <MessageRoom
-          img={require('../assets/icons/33.png')}
-          userName={chatroomList[i].opponentName}
+          img={require('../assets/icons/33.png')} // opponentInfo.userImg 로 수정 필요
+          userName={opponentInfo.userName}
           userId={chatroomList[i].opponentId}
           chatroomId={chatroomList[i].chatroomId}
           key={chatroomList[i].chatroomId}
