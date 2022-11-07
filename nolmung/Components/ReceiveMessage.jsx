@@ -54,6 +54,7 @@ const Styles = StyleSheet.create({
     marginRight: 'auto',
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 3,
   },
   Message: {
     color: '#282828',

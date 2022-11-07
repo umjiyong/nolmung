@@ -33,6 +33,7 @@ const Styles = StyleSheet.create({
     marginLeft: 'auto',
     flexDirection: 'row',
     alignItems: 'flex-end',
+    marginVertical: 3,
   },
   messageTime: {
     color: '#959595',
