@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import ReceiveMessage from "../Components/ReceiveMessage";
-import SendMessage from "../Components/SendMessage";
+import ReceiveMessage from "../components/ReceiveMessage";
+import SendMessage from "../components/SendMessage";
 import Modal from 'react-native-modal'
 const MessageRoomScreen = ({navigation: {navigate}, route}) => {
     console.log(route.params.userName)

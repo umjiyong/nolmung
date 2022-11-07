@@ -20,7 +20,7 @@ function LoginScreen({navigation}) {
           Login ? navigation.navigate('BottomTabs') : alert('로그인하세요');
         }}>
         <Image
-          source={require('../assets/kakaoLogin/kakao_login_large_narrow.png')}
+          source={require('../assets/kakaoLogin/kakao_login_large_wide.png')}
           resizeMode="contain"
           style={{
             height: 50,

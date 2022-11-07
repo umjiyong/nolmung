@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, View, Image, StyleSheet,ScrollView,Dimensions,TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import CommentList from "../Components/CommentList";
+import CommentList from "../components/CommentList";
 import Modal from "react-native-modal"
 
 const ArticleItem = Props => {
