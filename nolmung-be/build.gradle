@@ -39,6 +39,9 @@ dependencies {
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
 
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+
 //	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 //	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
