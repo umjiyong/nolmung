@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Image, Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import AllRanking from '../Components/AllRanking';
-import FriendRanking from '../Components/FriendRanking';
+import AllRanking from '../components/AllRanking';
+import FriendRanking from '../components/FriendRanking';
 const MessageScreen = () => {
   const navigation = useNavigation();
   const [select, setSelect] = useState('All')
@@ -29,33 +29,33 @@ const onPressFriend = () => {
         </TouchableOpacity>
         <Text style={Styles.HeaderText}>랭킹</Text>
       </View>
-            <View style={Styles.selectBox}>
-                <TouchableOpacity onPress={onPressAll} style={select =='All' ? Styles.bottomBorder : Styles.selectTextHuman}>
-                    <View>
-                        <Text style={{fontSize:15, color: '#282828',textAlign:'center',marginBottom:5,}}>
-                            전체
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={onPressFriend} style={select =='Friend' ? Styles.bottomBorder : Styles.selectTextHuman}>
-                    <View>
-                        <Text style={{fontSize:15, color: '#282828',textAlign:'center',marginBottom:5,}}>
-                            친구
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-            {select == 'All' ? 
-            (
-                <>
-                    <AllRanking />
-                </>
-            ) : 
-            (
-              <>
-                <FriendRanking />
-              </>
-            )}     
+      <View style={Styles.selectBox}>
+          <TouchableOpacity onPress={onPressAll} style={select =='All' ? Styles.bottomBorder : Styles.selectTextHuman}>
+              <View>
+                  <Text style={{fontSize:15, color: '#282828',textAlign:'center',marginBottom:5,}}>
+                      전체
+                  </Text>
+              </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onPressFriend} style={select =='Friend' ? Styles.bottomBorder : Styles.selectTextHuman}>
+              <View>
+                  <Text style={{fontSize:15, color: '#282828',textAlign:'center',marginBottom:5,}}>
+                      친구
+                  </Text>
+              </View>
+          </TouchableOpacity>
+      </View>
+      {select == 'All' ? 
+      (
+          <>
+              <AllRanking />
+          </>
+      ) : 
+      (
+        <>
+          <FriendRanking />
+        </>
+      )}     
     </>
   );
 };
@@ -85,9 +85,7 @@ const Styles = StyleSheet.create({
       // borderBottomWidth: 2,
       width: '50%'
   },
-  selectTextDog: {
 
-  },
   bottomBorder: {
       borderBottomColor: '#FF8544',
       borderBottomWidth: 1.5,

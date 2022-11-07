@@ -1,22 +1,22 @@
 import React from 'react';
 
-import LoginScreen from '../Screen/LoginScreen';
+import LoginScreen from '../screen/LoginScreen';
 import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
 import BottomTabs from './BottomTabs';
-import NotiScreen from '../Screen/NotiScreen';
-import SettingScreen from '../Screen/SettingScreen';
-import MessageScreen from '../Screen/MessageScreen';
-import RankingScreen from '../Screen/RankingScreen';
-import MyProfileModify from '../Screen/MyProfileModify';
-import AddDogInfo from '../Screen/AddDogInfo';
-import MyDogInfo from '../Screen/MyDogInfo'
-import CutOffList from '../Screen/CutOffList';
-import FriendProfile from '../Screen/FriendProfile'
-import MessageRoomScreen from '../Screen/MessageRoomScreen';
-
+import NotiScreen from '../screen/NotiScreen';
+import SettingScreen from '../screen/SettingScreen';
+import MessageScreen from '../screen/MessageScreen';
+import RankingScreen from '../screen/RankingScreen';
+import MyProfileModify from '../screen/MyProfileModify';
+import AddDogInfo from '../screen/AddDogInfo';
+import MyDogInfo from '../screen/MyDogInfo'
+import CutOffList from '../screen/CutOffList';
+import FriendProfile from '../screen/FriendProfile'
+import MessageRoomScreen from '../screen/MessageRoomScreen';
+import ArticleItemDetail from '../screen/ArticleItemDetail'
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -53,6 +53,11 @@ const StackNavigator = () => {
         }}  
       />
       <Stack.Screen name="MessageRoomScreen" component={MessageRoomScreen} />
+      <Stack.Screen name="ArticleItemDetail" component={ArticleItemDetail}
+        options={{
+          title:'ArticleItemDetail',
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS
+        }} />
     </Stack.Navigator>
   );
 };

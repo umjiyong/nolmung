@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import MessageRoom from '../Components/MessageRoom';
+import MessageRoom from '../components/MessageRoom';
 import firestore from '@react-native-firebase/firestore';
 
 const MessageScreen = () => {

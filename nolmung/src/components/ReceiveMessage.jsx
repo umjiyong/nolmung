@@ -12,7 +12,6 @@ const ReceiveMessage = Props => {
   // const Time = "오후 10:40"
   // const Message = "산책가자..."
   console.log(Props.userName);
-  console.log('ReceiveMessage: ' + JSON.stringify(Props.message));
 
   return (
     <>

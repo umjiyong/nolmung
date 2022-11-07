@@ -10,8 +10,8 @@ import {
   View,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import ReceiveMessage from '../Components/ReceiveMessage';
-import SendMessage from '../Components/SendMessage';
+import ReceiveMessage from '../components/ReceiveMessage';
+import SendMessage from '../components/SendMessage';
 import Modal from 'react-native-modal';
 import firestore from '@react-native-firebase/firestore';
 import {State} from 'react-native-gesture-handler';
