@@ -99,7 +99,11 @@ async function requestPermission2() {
 // }, []);
 
 function WalkScreen({navigation}) {
-  const [locations, setLocations] = useState([]);
+  const [locations, setLocations] = useState([
+    {latitude: 37.50202794087094, longitude: 127.041301445791},
+    {latitude: 37.50148996696899, longitude: 127.03293235165089},
+    {latitude: 37.49761475728036, longitude: 127.03596135511745},
+  ]);
   let [curlocation, setCurlocation] = useState([]);
   const [startlocation, setstartlocation] = useState({});
   const [test, setTest] = useState([]);
@@ -357,6 +361,21 @@ function WalkScreen({navigation}) {
                 strokeColor="#000"
                 coordinates={curlocation}
               />
+              {locations.map((location, index) => (
+                <Marker
+                  key={`location-${index}`}
+                  coordinate={{
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                  }}
+                  image={require('../assets/icons/map_marker64.png')}
+                  onPress={() => {
+                    Login
+                      ? navigation.navigate('BottomTabs')
+                      : alert('로그인하세요');
+                  }}
+                />
+              ))}
             </Map>
             {flag === 0 ? (
               <TouchableOpacity onPress={StartCount} style={Styles.buttonTest}>
