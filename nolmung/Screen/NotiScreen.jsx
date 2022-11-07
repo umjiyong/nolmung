@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, Image, TouchableOpacity, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import NotiItem from '../components/NotiItem';
+import NotiItem from '../Components/NotiItem';
 import {useNavigation} from '@react-navigation/native';
-import GoBackHeader from '../components/GoBackHeader';
+import GoBackHeader from '../Components/GoBackHeader';
 const NotiScreen = () => {
   const navigation = useNavigation();
   return (

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Text, View, Image, StyleSheet,ScrollView,Dimensions,TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import CommentList from "../components/CommentList";
+import CommentList from "../Components/CommentList";
 import Modal from "react-native-modal"
 
-const ArticleItemDetail = Props => {
+const ArticleItem = Props => {
 
     const userNickName = 'aJumoney__'
     const region = '서울특별시 강남구 역삼동'
@@ -146,7 +146,7 @@ const ArticleItemDetail = Props => {
     )
 }
 
-export default ArticleItemDetail
+export default ArticleItem
 
 const Styles = StyleSheet.create({
     ArticleContainer:{

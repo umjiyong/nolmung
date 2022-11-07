@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { ScrollView,TextInput, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import DogModify from "../components/DogModifty";
-import HumanModify from "../components/HumanModify";
-import MiddleHeader from "../components/MiddleHeader";
+import DogModify from "../Components/DogModifty";
+import HumanModify from "../Components/HumanModify";
+import MiddleHeader from "../Components/MiddleHeader";
 
 const MyProfileModify = () =>{
     const [select, setSelect] = useState('human')

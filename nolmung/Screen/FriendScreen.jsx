@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {View, Text, Button, StyleSheet, Image, TouchableHighlight, Pressable, ScrollView, TouchableOpacity, TextInput, TouchableWithoutFeedback} from 'react-native';
-import FriendRecommand from '../components/FriendRecommand';
-import FriendRequest from '../components/FriendRequest';
-import Header from '../components/Header';
-import MyFriend from '../components/MyFriend';
+import FriendRecommand from '../Components/FriendRecommand';
+import FriendRequest from '../Components/FriendRequest';
+import Header from '../Components/Header';
+import MyFriend from '../Components/MyFriend';
 import Modal from "react-native-modal";
-import SearchFriendList from '../components/SearchFriendList';
+import SearchFriendList from '../Components/SearchFriendList';
 
 
 function FriendScreen({navigation}) {

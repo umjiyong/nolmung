@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet, TouchableHighlight, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import Modal from "react-native-modal"
-import ArticleItem from '../components/ArticleItem';
+import ArticleItem from '../Components/ArticleItem';
 
 function CommunityScreen({navigation}) {
   const [HeaderName, setHeaderName] =  useState("모든 동네")

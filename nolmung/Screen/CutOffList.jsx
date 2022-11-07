@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet,ScrollView, Text, View } from "react-native";
-import CutOffListItem from "../components/CutOffListItem";
-import GoBackHeader from "../components/GoBackHeader";
+import CutOffListItem from "../Components/CutOffListItem";
+import GoBackHeader from "../Components/GoBackHeader";
 
 const CutOffList = ()=>{
     return (

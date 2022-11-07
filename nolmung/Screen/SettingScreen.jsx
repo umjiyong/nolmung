@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import GoBackHeader from '../components/GoBackHeader';
+import GoBackHeader from '../Components/GoBackHeader';
 import { useNavigation } from '@react-navigation/native';
 const SettingScreen = () => {
   const navigation = useNavigation()

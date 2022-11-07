@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import CommunityScreen from '../screen/CommunityScreen';
-import FriendScreen from '../screen/FriendScreen';
-import MyProfileScreen from '../screen/MyProfileScreen';
-import WalkDiaryScreen from '../screen/WalkDiaryScreen';
-import WalkScreen from '../screen/WalkScreen';
+import CommunityScreen from '../Screen/CommunityScreen';
+import FriendScreen from '../Screen/FriendScreen';
+import MyProfileScreen from '../Screen/MyProfileScreen';
+import WalkDiaryScreen from '../Screen/WalkDiaryScreen';
+import WalkScreen from '../Screen/WalkScreen';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
 const Tab = createBottomTabNavigator();

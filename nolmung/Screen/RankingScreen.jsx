@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Image, Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import AllRanking from '../components/AllRanking';
-import FriendRanking from '../components/FriendRanking';
+import AllRanking from '../Components/AllRanking';
+import FriendRanking from '../Components/FriendRanking';
 const MessageScreen = () => {
   const navigation = useNavigation();
   const [select, setSelect] = useState('All')

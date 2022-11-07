@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, Text, View,ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import MessageRoom from '../components/MessageRoom';
+import MessageRoom from '../Components/MessageRoom';
 const MessageScreen = () => {
   const navigation = useNavigation();
   return (

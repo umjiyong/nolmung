@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Image,
@@ -7,32 +7,13 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-import { getTest } from '../api/test';
 
 function LoginScreen({navigation}) {
   const [Login, setLogin] = useState(true);
 
-  const getTestData = async () => {
-    try{  
-      await getTest(
-        (response) => {
-          console.log("리스폰스는", response);
-        },
-        (err) => {
-          console.log("에러는", err);
-        }
-      );
-    }
-    catch(err) {
-      console.log("씨빨에러", err);
-    }
-  }
-
   return (
     <View style={style.container}>
       <Text style={style.text}>놀면 멍하니</Text>
-
-      <TouchableOpacity onPress={getTestData}><Text>테스트</Text></TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => {
