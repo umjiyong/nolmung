@@ -171,7 +171,10 @@ const MessageRoomScreen = ({navigation: {navigate}, route}) => {
         <View style={Styles.ChatSetting}>
           {/* <TouchableOpacity onPress={onPressFriend} style={select =='Friend' ? Styles.bottomBorder : Styles.selectTextHuman}> */}
           <TouchableOpacity
-            onPress={() => navi.goBack()}
+            onPress={() => {
+              ref.parent.delete().then(console.log('chatroom deleted!'));
+              navi.goBack();
+            }}
             style={{width: '100%', alignItems: 'center'}}>
             <Text style={{color: '#282828', fontSize: 20}}>채팅방 나가기</Text>
           </TouchableOpacity>
