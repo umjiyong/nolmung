@@ -9,6 +9,7 @@ const MessageRoom = Props => {
   // const [lastMessage, setLastMessage] = useState({});
   const [content, setContent] = useState('');
   const [sendTime, setSendTime] = useState({});
+  const [userInfo, setUserInfo] = useState({});
 
   const ref = firestore()
     .collection('chatrooms')
@@ -18,18 +19,30 @@ const MessageRoom = Props => {
   useEffect(() => {
     const unsubscribe = ref
       .orderBy('sendTime', 'desc')
-      .limitToLast(1)
+      .limit(1)
       .onSnapshot(snapshot => {
         const result = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
         }));
-        // setLastMessage(result[0]);
         setContent(result[0].content);
         setSendTime(result[0].sendTime);
       });
     return () => {
       unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const info = firestore()
+      .collection('users')
+      .doc(Props.userId + '')
+      .onSnapshot(snapshot => {
+        const result = snapshot.data();
+        setUserInfo(result);
+      });
+    return () => {
+      info();
     };
   }, []);
 
@@ -39,8 +52,9 @@ const MessageRoom = Props => {
       <Pressable
         onPress={() =>
           Navigation.push('MessageRoomScreen', {
-            userName: Props.userName,
-            userId: Props.userId,
+            // 나중에 userName, userId, img => userInfo: userInfo 로 수정 필요
+            userName: userInfo.userName,
+            userId: userInfo.userId,
             img: Props.img,
             chatroomId: Props.chatroomId,
           })
@@ -48,7 +62,7 @@ const MessageRoom = Props => {
         style={Styles.messageContainer}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Image
-            source={Props.img}
+            source={Props.img} // userInfo.userImg 로 수정 필요
             resizeMode="contain"
             style={{
               width: 100,
@@ -57,7 +71,7 @@ const MessageRoom = Props => {
             }}
           />
           <View style={Styles.fontBlock}>
-            <Text style={Styles.userNameText}>{Props.userName}</Text>
+            <Text style={Styles.userNameText}>{userInfo.userName}</Text>
             <Text style={Styles.lastMessageText}>{content}</Text>
           </View>
         </View>
