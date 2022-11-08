@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 public class RedisConfig {
 
-    @Value("localhost")
+    @Value("k7a502.p.ssafy.io")
     private String host;
 
     @Value("6379")
