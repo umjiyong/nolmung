@@ -29,7 +29,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Value("${KAKAO.API}")
+//    @Value("${KAKAO.API}")
     private String apiKey;
 
 

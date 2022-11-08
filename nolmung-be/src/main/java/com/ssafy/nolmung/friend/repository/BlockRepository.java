@@ -42,5 +42,13 @@ public class BlockRepository {
         return blockList;
     }
 
+    public Block findBlockByDuoId(int userId , int blockedUserId) {
+
+        Block block =  em.createQuery("SELECT b FROM Block b WHERE b.user.userId = :user_id AND b.blockedUserId = :blocked_user_id",Block.class)
+                .setParameter("user_id",userId).setParameter("blocked_user_id",blockedUserId).getSingleResult();
+
+        return block;
+    }
+
 
 }
