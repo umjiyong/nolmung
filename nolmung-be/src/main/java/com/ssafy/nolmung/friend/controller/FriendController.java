@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/friend")
+@RequestMapping("/friend")
 @Slf4j
 public class FriendController {
 
