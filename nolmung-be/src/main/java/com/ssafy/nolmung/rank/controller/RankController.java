@@ -22,7 +22,7 @@ public class RankController {
     private final RankService rankService;
 
     @GetMapping("/{category}/findAll")
-    public PriorityQueue<ReadRankResponseDto> findRankAll (@RequestParam("category")RankCategory rankCategory){
+    public PriorityQueue<ReadRankResponseDto> findRankAll (@PathVariable("category")RankCategory rankCategory){
 
         PriorityQueue<ReadRankResponseDto> rankList = new PriorityQueue<>();
 
@@ -53,7 +53,7 @@ public class RankController {
     }
 
     @PostMapping("/regist/{category}/{userId}")
-    public void registRank(@RequestParam("category")RankCategory rankCategory, @RequestParam("userId") int userId){
+    public void registRank(@PathVariable("category")RankCategory rankCategory, @PathVariable("userId") int userId){
 
         switch (rankCategory) {
             case daily: rankService.registDailyRank(userId);
@@ -70,7 +70,7 @@ public class RankController {
     }
 
     @GetMapping("/{category}/{userId}")
-    public ReadRankResponseDto findRankById (@RequestParam("category")RankCategory rankCategory, @RequestParam("userId") int userId) {
+    public ReadRankResponseDto findRankById (@PathVariable("category")RankCategory rankCategory, @PathVariable("userId") int userId) {
 
 
         switch (rankCategory) {
@@ -84,17 +84,17 @@ public class RankController {
     }
 
     @PutMapping("/plus/{userId}/{rankScore}")
-    public void plusRankScore(@RequestParam("userId") int userId, @RequestParam("rankScore")int rankScore) {
+    public void plusRankScore(@PathVariable("userId") int userId, @PathVariable("rankScore")int rankScore) {
         rankService.plusRankScore(userId,rankScore);
     }
 
     @DeleteMapping("/reset/{category}")
-    public void resetRankScore (@RequestParam("category") RankCategory rankCategory) {
+    public void resetRankScore (@PathVariable("category") RankCategory rankCategory) {
         rankService.resetRankScore(rankCategory);
     }
 
     @GetMapping("/{category}/friend/{userId}")
-    public PriorityQueue<ReadRankResponseDto> findFriendRank (@RequestParam("category")RankCategory rankCategory, @RequestParam("userId") int userId){
+    public PriorityQueue<ReadRankResponseDto> findFriendRank (@PathVariable("category")RankCategory rankCategory, @PathVariable("userId") int userId){
 
         PriorityQueue<ReadRankResponseDto> rankList = new PriorityQueue<>();
 

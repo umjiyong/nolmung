@@ -35,7 +35,7 @@ public class FriendController {
     private final FriendProposalService friendProposalService;
 
     @GetMapping("/{userId}")
-    public List<ReadFriendResponseDto> readFriendList (@RequestParam("userId") int userId){
+    public List<ReadFriendResponseDto> readFriendList (@PathVariable("userId") int userId){
 
         List<Friend> friendList = friendService.findFriendListByUserId(userId);
         List<ReadFriendResponseDto> resultFriendList = new ArrayList<>();
@@ -48,7 +48,7 @@ public class FriendController {
     }
 
     @GetMapping("/proposal/{userId}")
-    public List<ReadFriendProposalResponseDto> readFriendProposalList (@RequestParam("userId") int userId){
+    public List<ReadFriendProposalResponseDto> readFriendProposalList (@PathVariable("userId") int userId){
 
         List<FriendProposal> friendProposalList = friendProposalService.findFriendListByToUserId(userId);
         List<ReadFriendProposalResponseDto> resultFriendProposalList = new ArrayList<>();
@@ -81,7 +81,7 @@ public class FriendController {
     }
 
     @PostMapping("proposal/{friendProposalId}")
-    public String acceptFriendProposal (@RequestParam("friendProposalId") int friendProposalId) {
+    public String acceptFriendProposal (@PathVariable("friendProposalId") int friendProposalId) {
 
         FriendProposal foundFriendProposal = friendProposalService.findById(friendProposalId);
 
@@ -97,7 +97,7 @@ public class FriendController {
     }
 
     @DeleteMapping("proposal/{friendProposalId}")
-    public String denyFriendProposal (@RequestParam("friendProposalId") int friendProposalId) {
+    public String denyFriendProposal (@PathVariable("friendProposalId") int friendProposalId) {
 
         FriendProposal foundFriendProposal = friendProposalService.findById(friendProposalId);
 
@@ -136,7 +136,7 @@ public class FriendController {
     }
 
     @DeleteMapping("block/{blockId}")
-    public String cancelBlock (@RequestParam("blockId") int blockId) {
+    public String cancelBlock (@PathVariable("blockId") int blockId) {
 
         Block foundBlock = blockService.findById(blockId);
 
@@ -146,7 +146,7 @@ public class FriendController {
     }
 
     @GetMapping("/block/{userId}")
-    public List<ReadBlockedUserResponseDto> readBlockedUserList (@RequestParam("userId") int userId) {
+    public List<ReadBlockedUserResponseDto> readBlockedUserList (@PathVariable("userId") int userId) {
 
         List<Block> blockList = blockService.findBlockListByUserId(userId);
         List<ReadBlockedUserResponseDto> resultBlockList = new ArrayList<>();
@@ -160,7 +160,7 @@ public class FriendController {
     }
 
     @GetMapping("/search/{userCode}")
-    public User readUserByUserCode (@RequestParam("userCode") int userCode) {
+    public User readUserByUserCode (@PathVariable("userCode") int userCode) {
 
        return friendService.findByUserCode(userCode);
     }
