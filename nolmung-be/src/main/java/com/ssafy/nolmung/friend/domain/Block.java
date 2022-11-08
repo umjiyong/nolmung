@@ -15,7 +15,6 @@ public class Block {
     @Column(name = "block_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     private int blockId;
 
     @JoinColumn (name = "user_id")

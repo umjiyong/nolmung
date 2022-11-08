@@ -18,7 +18,6 @@ public class FriendProposal {
     @Column(name = "friend_proposal_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     private int friendProposalId;
 
     @Column(name = "to_user_id")
