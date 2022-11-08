@@ -57,11 +57,11 @@ public class RankController {
 
         switch (rankCategory) {
             case daily: rankService.registDailyRank(userId);
-                break;
+                        break;
             case weekly: rankService.registWeeklyRank(userId);
-                break;
+                        break;
             case monthly: rankService.registMonthlyRank(userId);
-                break;
+                       break;
 
             default: throw new RuntimeException("카테고리가 맞지 않습니다.");
         }
