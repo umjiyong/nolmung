@@ -18,11 +18,15 @@ const MessageScreen = () => {
 
   const ref = firestore()
     .collection('userChatrooms')
-    .doc(userId + '');
+    .doc(userId + '')
+    .collection('chatroomList');
 
   useEffect(() => {
     const unsubscribe = ref.onSnapshot(snapshot => {
-      const result = snapshot.data().chatroomList;
+      const result = snapshot.docs.map(doc => ({
+        opponentId: doc.id,
+        ...doc.data(),
+      }));
       setChatroomList(result);
     });
     return () => {
@@ -85,16 +89,20 @@ const MessageScreen = () => {
           userName="옆집 형"
           messageTime="오후 6:10"
         /> */}
-
       </ScrollView>
-      <TouchableOpacity style={Styles.FriendListCheckBtn} onPress={()=>{navigation.navigate('SearchFriendList')}}>
-        <Image 
+      <TouchableOpacity
+        style={Styles.FriendListCheckBtn}
+        onPress={() => {
+          navigation.navigate('SearchFriendList');
+        }}>
+        <Image
           source={require('../assets/icons/message.png')}
           style={{
-            tintColor:'#fff',
+            tintColor: '#fff',
             width: 34,
             height: 34,
-          }}/>
+          }}
+        />
       </TouchableOpacity>
     </>
   );
@@ -122,15 +130,15 @@ const Styles = StyleSheet.create({
   messageRoom: {},
   FriendListCheckBtn: {
     width: 80,
-    height: 80, 
-    backgroundColor:'#FF772F',
+    height: 80,
+    backgroundColor: '#FF772F',
     borderRadius: 50,
     position: 'absolute',
     bottom: 40,
     right: 20,
-    justifyContent:'center',
-    alignItems:'center',
-    shadowColor:'#828282',
-    elevation: 4
-  }
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#828282',
+    elevation: 4,
+  },
 });
