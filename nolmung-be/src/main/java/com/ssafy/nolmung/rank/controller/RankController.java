@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.PriorityQueue;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -22,9 +19,9 @@ public class RankController {
     private final RankService rankService;
 
     @GetMapping("/{category}/findAll")
-    public PriorityQueue<ReadRankResponseDto> findRankAll (@PathVariable("category")RankCategory rankCategory){
+    public ArrayList<ReadRankResponseDto> findRankAll (@PathVariable("category")RankCategory rankCategory){
 
-        PriorityQueue<ReadRankResponseDto> rankList = new PriorityQueue<>();
+        ArrayList<ReadRankResponseDto> rankList = new ArrayList<>();
 
         switch (rankCategory) {
             case daily: {
@@ -48,6 +45,8 @@ public class RankController {
 
             default: throw new RuntimeException("카테고리가 맞지 않습니다.");
         }
+
+        Collections.sort(rankList);
 
         return rankList;
     }
