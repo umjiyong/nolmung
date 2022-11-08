@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet, TouchableHighlight, TouchableWithoutFeedback, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, Image, StyleSheet, TouchableHighlight, TouchableWithoutFeedback, ScrollView, Pressable} from 'react-native';
 import Modal from "react-native-modal"
 import ArticleItem from '../components/ArticleItem';
-
-function CommunityScreen({navigation}) {
+import { useNavigation } from '@react-navigation/native';
+function CommunityScreen() {
+  const Navigation = useNavigation()
   const [HeaderName, setHeaderName] =  useState("모든 동네")
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
@@ -71,7 +72,7 @@ function CommunityScreen({navigation}) {
             <View style={Styles.headerIcon}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.push('MessageScreen');
+                  Navigation.push('MessageScreen');
                 }}>
                 <Image
                   source={require('../assets/icons/message.png')}
@@ -84,7 +85,7 @@ function CommunityScreen({navigation}) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.push('NotiScreen');
+                  Navigation.push('NotiScreen');
                 }}>
                 <Image
                   source={require('../assets/icons/noti.png')}
@@ -99,7 +100,7 @@ function CommunityScreen({navigation}) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.push('RankingScreen');
+                  Navigation.push('RankingScreen');
                 }}>
                 <Image
                   source={require('../assets/icons/crown.png')}
@@ -153,8 +154,12 @@ function CommunityScreen({navigation}) {
                 </View>
               </ScrollView> 
             </>
-          ): null}      
+          ): null} 
+             
       </View>
+      <TouchableOpacity style={Styles.PlusArticleBtn} onPress={()=> Navigation.navigate('NewArticle')}>
+          <Text style={Styles.TextShadow}>+</Text>
+      </TouchableOpacity>
     </>
   );
 }
@@ -207,5 +212,26 @@ const Styles = StyleSheet.create({
   ScrollView: {
     paddingTop: 10,
     paddingBottom: 200,
+  },
+  PlusArticleBtn:{
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+    backgroundColor:'#FF772F',
+    position:'absolute',
+    bottom: 100,
+    right: 20,
+    justifyContent:'center',
+    alignItems:'center',
+    shadowColor:'#282828',
+    elevation: 3,
+    borderColor:'#fff',
+    borderWidth:1,
+  },
+  TextShadow:{
+    color:'#FFF', 
+    fontSize: 30, 
+    fontWeight: '600',
+    
   }
 });

@@ -17,6 +17,7 @@ import CutOffList from '../screen/CutOffList';
 import FriendProfile from '../screen/FriendProfile'
 import MessageRoomScreen from '../screen/MessageRoomScreen';
 import ArticleItemDetail from '../screen/ArticleItemDetail'
+import NewArticle from '../screen/NewArticle';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -58,6 +59,8 @@ const StackNavigator = () => {
           title:'ArticleItemDetail',
           cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS
         }} />
+      <Stack.Screen name="NewArticle" component={NewArticle} />
+      
     </Stack.Navigator>
   );
 };
