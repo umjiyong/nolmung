@@ -1,21 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View,Text, Image, ScrollView, Pressable, TouchableWithoutFeedback, } from "react-native";
 import MedalRanking from "./MedalRanking";
 import MyRanking from './MyRanking'
+import getAllRanking_daily from '../api/ranking'
+import axios from "axios";
 function AllRanking() {
-    const [select, setSelect] = useState('date')
+    const [dailyData, setDailyData] = useState([])
+    const getDailyRanking = async () => {
+        try{
+            const response =  await axios.get(
+                `http://k7a502.p.ssafy.io/nolmung/rank/daily/findAll`
+            )
+                // console.log(res.data)
+            setDailyData(response.data)
+        } catch(e){
+            console.log(e)
+        }
+        
+    }
+    useEffect(()=>{
+        getDailyRanking();
+    },[])
+    
+    console.log(dailyData)
+    
+
+
+    const [select, setSelect] = useState('daily')
     const selectDate = () => {
-        setSelect('date')
+        setSelect('daily')
         console.log(select)
     }
 
     const selectWeek = () => {
-        setSelect('week')
+        setSelect('weekly')
         console.log(select)
     }
 
     const selectMonth = () => {
-        setSelect('month')
+        setSelect('monthly')
         console.log(select)
     }
     const mung = 2000
@@ -27,40 +50,107 @@ function AllRanking() {
             <View style={Styles.Container}>
                 <View style={Styles.selectBtn}>
                     <Pressable onPress={selectDate}>
-                            <Text style={select==='date' ? Styles.SelectText : Styles.NoSelectText}>일간</Text>
+                            <Text style={select==='daily' ? Styles.SelectText : Styles.NoSelectText}>일간</Text>
                     </Pressable>
                     <Pressable onPress={selectWeek}>
-                            <Text style={select==='week' ? Styles.SelectText : Styles.NoSelectText}>주간</Text>
+                            <Text style={select==='weekly' ? Styles.SelectText : Styles.NoSelectText}>주간</Text>
                     </Pressable>
                     <Pressable onPress={selectMonth}>
-                            <Text style={select==='month' ? Styles.SelectText : Styles.NoSelectText}>월간</Text>
+                            <Text style={select==='monthly' ? Styles.SelectText : Styles.NoSelectText}>월간</Text>
                     </Pressable>
                 </View>
-                <View style={Styles.MainRankingContainer}>
-                    <Image 
-                        source={require('../assets/icons/DogImg.png')}
-                        resizeMode="cover"
-                        style={{
-                        width: 100,
-                        height: 100,
-                        
-                        }}    
-                    />
-                    <Text style={{color:'#282828', marginTop: 10, fontSize: 24, fontWeight: 'bold', marginBottom: 5,}}>{mung} 멍</Text>
-                    <Text style={{color:'#282828', marginTop: -10, fontSize: 20, fontFamily:'NotoSansKR-Bold',}}> {rank}위</Text>
-                    <Text style={{color:'#282828', fontSize: 16, marginBottom: 5,}}>가장 높았던 순위</Text>
-                    <Text style={{color:'#282828', fontSize: 16, marginBottom: 5,}}>{highRank}위</Text>
-                </View>
-                <View style={Styles.totalRankingContainer}>
-                    <Text style={{color:'#282828', fontSize: 18, marginBottom:10,}}>종합 랭킹</Text>
-                    <View>
-                        <MedalRanking firstName="이동일" mung="10324" img={require('../assets/icons/medal.png')} color="gold"/>
-                        <MedalRanking firstName="이동이" mung="10314" img={require('../assets/icons/medal.png')} color="silver"/>
-                        <MedalRanking firstName="이동삼" mung="10304" img={require('../assets/icons/medal.png')} color="brown"/>
-                        <MyRanking firstName="내 랭킹" mung="8080" rank="148"/>
-                        
+                {/* daily일때 */}
+                {select === 'daily' ? (
+                <>
+                    <View style={Styles.MainRankingContainer}>
+                        <Image 
+                            source={require('../assets/icons/DogImg.png')}
+                            resizeMode="cover"
+                            style={{
+                            width: 100,
+                            height: 100,
+                            
+                            }}    
+                        />
+                        <Text style={{color:'#282828', marginTop: 10, fontSize: 24, fontWeight: 'bold', marginBottom: 5,}}>{mung} 멍</Text>
+                        <Text style={{color:'#282828', marginTop: -10, fontSize: 20, fontFamily:'NotoSansKR-Bold',}}> {rank}위</Text>
+                        <Text style={{color:'#282828', fontSize: 16, marginBottom: 5,}}>가장 높았던 순위</Text>
+                        <Text style={{color:'#282828', fontSize: 16, marginBottom: 5,}}>{highRank}위</Text>
                     </View>
-                </View>
+                    <View style={Styles.totalRankingContainer}>
+                        <Text style={{color:'#282828', fontSize: 18, marginBottom:10,}}>종합 랭킹</Text>
+                        <View>
+                            {dailyData.length>0 ? (
+                            <>
+                                <MedalRanking firstName="이동일" mung={dailyData[0].rankScore} img={require('../assets/icons/medal.png')} color="gold"/>
+                                <MedalRanking firstName="이동이" mung={dailyData[1].rankScore}img={require('../assets/icons/medal.png')} color="silver"/>
+                                <MedalRanking firstName="이동삼" mung={dailyData[2].rankScore} img={require('../assets/icons/medal.png')} color="brown"/>
+                                <MyRanking firstName="내 랭킹" mung={dailyData[4].rankScore} rank="148"/>
+                            </>) : null}
+                        </View>
+                    </View>
+                </>
+                ) : <></>}
+                {/* weekly일때 */}
+                {select === 'weekly' ? (
+                <>
+                    <View style={Styles.MainRankingContainer}>
+                        <Image 
+                            source={require('../assets/icons/DogImg.png')}
+                            resizeMode="cover"
+                            style={{
+                            width: 100,
+                            height: 100,
+                            
+                            }}    
+                        />
+                        <Text style={{color:'#282828', marginTop: 10, fontSize: 24, fontWeight: 'bold', marginBottom: 5,}}>{mung} 멍</Text>
+                        <Text style={{color:'#282828', marginTop: -10, fontSize: 20, fontFamily:'NotoSansKR-Bold',}}> {rank}위</Text>
+                        <Text style={{color:'#282828', fontSize: 16, marginBottom: 5,}}>가장 높았던 순위</Text>
+                        <Text style={{color:'#282828', fontSize: 16, marginBottom: 5,}}>{highRank}위</Text>
+                    </View>
+                    <View style={Styles.totalRankingContainer}>
+                        <Text style={{color:'#282828', fontSize: 18, marginBottom:10,}}>종합 랭킹</Text>
+                        <View>
+                            <MedalRanking firstName="김동일" mung="10324" img={require('../assets/icons/medal.png')} color="gold"/>
+                            <MedalRanking firstName="김동이" mung="10314" img={require('../assets/icons/medal.png')} color="silver"/>
+                            <MedalRanking firstName="김동삼" mung="10304" img={require('../assets/icons/medal.png')} color="brown"/>
+                            <MyRanking firstName="내 랭킹" mung="8080" rank="148"/>
+                            
+                        </View>
+                    </View>
+                </>
+                ) : <></>}
+                {/* monthly일때 */}
+                {select === 'monthly' ? (
+                <>
+                    <View style={Styles.MainRankingContainer}>
+                        <Image 
+                            source={require('../assets/icons/DogImg.png')}
+                            resizeMode="cover"
+                            style={{
+                            width: 100,
+                            height: 100,
+                            
+                            }}    
+                        />
+                        <Text style={{color:'#282828', marginTop: 10, fontSize: 24, fontWeight: 'bold', marginBottom: 5,}}>{mung} 멍</Text>
+                        <Text style={{color:'#282828', marginTop: -10, fontSize: 20, fontFamily:'NotoSansKR-Bold',}}> {rank}위</Text>
+                        <Text style={{color:'#282828', fontSize: 16, marginBottom: 5,}}>가장 높았던 순위</Text>
+                        <Text style={{color:'#282828', fontSize: 16, marginBottom: 5,}}>{highRank}위</Text>
+                    </View>
+                    <View style={Styles.totalRankingContainer}>
+                        <Text style={{color:'#282828', fontSize: 18, marginBottom:10,}}>종합 랭킹</Text>
+                        <View>
+                            <MedalRanking firstName="박동일" mung="10324" img={require('../assets/icons/medal.png')} color="gold"/>
+                            <MedalRanking firstName="박동이" mung="10314" img={require('../assets/icons/medal.png')} color="silver"/>
+                            <MedalRanking firstName="박동삼" mung="10304" img={require('../assets/icons/medal.png')} color="brown"/>
+                            <MyRanking firstName="내 랭킹" mung="8080" rank="148"/>
+                            
+                        </View>
+                    </View>
+                </>
+                ) : <></>}
             </View>
         </>
     )
