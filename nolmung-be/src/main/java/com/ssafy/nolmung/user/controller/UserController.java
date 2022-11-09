@@ -77,6 +77,12 @@ public class UserController {
         return new UserResponseDto(user);
     }
 
+    @GetMapping("/test/{test}")
+    public ResultDto test(@PathVariable ("test") int test){
+        System.out.println("통신 성공!");
+        return new ResultDto(test*10);
+    }
+
 
     @ResponseBody
     @GetMapping("/kakao/{accessCode}")
