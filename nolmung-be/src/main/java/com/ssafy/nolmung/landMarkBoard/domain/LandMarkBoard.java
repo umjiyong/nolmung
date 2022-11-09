@@ -39,6 +39,10 @@ public class LandMarkBoard {
     @JsonBackReference
     private LandMark landMark;
 
+    public void changeBoardImage(String boardImgUrl){
+        this.landMarkBoardImg = boardImgUrl;
+    }
+
     @Builder
     public LandMarkBoard(int landMarkBoardId, String landMarkBoardContent, LocalDateTime landMarkBoardUpdateDate, String landMarkBoardImg, User user, LandMark landMark){
         this.landMarkBoardId = landMarkBoardId;
