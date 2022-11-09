@@ -7,7 +7,12 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class Webconfig  implements WebMvcConfigurer {
+public class Webconfig implements WebMvcConfigurer {
+
+    @Bean
+    public WebClient webClient() {
+        return WebClient.create("http://localhost:3000");
+    }
 
     @Bean
     public WebClient webClient(){
@@ -17,11 +22,11 @@ public class Webconfig  implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedMethods("*")
-                .allowedOrigins(
-                        "http://localhost:3000"
-                )
+                .allowedOriginPatterns("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowCredentials(true)
+                .maxAge(3000);
 
-        ;
+
     }
 }

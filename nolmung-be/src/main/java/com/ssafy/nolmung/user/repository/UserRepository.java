@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByUserKakaoUuid(String uuid);
 
+    User findByUserCode(int userCode);
+
 //    List<Tuple> findAllUser();
 
 //    HashMap findByUserIdForUser(String userId);

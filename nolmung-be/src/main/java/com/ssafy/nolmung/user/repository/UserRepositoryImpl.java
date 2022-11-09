@@ -2,7 +2,7 @@ package com.ssafy.nolmung.user.repository;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.nolmung.user.domain.QUser;
+//import com.ssafy.nolmung.user.domain.QUser;
 import com.ssafy.nolmung.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public abstract class UserRepositoryImpl implements UserRepository{
     @Autowired
     private final JPAQueryFactory jpaQueryFactory;
 
-    private final QUser u = QUser.user;
+//    private final QUser u = QUser.user;
 
 //    @Override
 //    public List<Tuple> findAllUser() {
