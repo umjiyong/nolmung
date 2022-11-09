@@ -87,6 +87,10 @@ public class Puppy {
         this.puppyImg = puppyInfoUpdateRequestDto.getPuppyImg();
     }
 
+    public void changePuppyImage(String puppyImgUrl){
+        this.puppyImg = puppyImgUrl;
+    }
+
     @Builder
     public Puppy(int puppyId, String puppyName, LocalDate puppyBirth, int puppyWeight, int puppySex, boolean puppyIsNeutered, String puppyCharacter, int puppyWalkNeeds, String puppyCode, LocalDateTime puppyUpdateDate, String puppyImg, Breed breed, List<SharePuppy> familyConnectList, List<Walk> walkList) {
         this.puppyId = puppyId;

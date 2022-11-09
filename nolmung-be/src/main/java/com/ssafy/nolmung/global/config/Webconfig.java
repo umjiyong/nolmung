@@ -14,6 +14,11 @@ public class Webconfig implements WebMvcConfigurer {
         return WebClient.create("http://localhost:3000");
     }
 
+    @Bean
+    public WebClient webClient(){
+        return WebClient.create("http://localhost:3000");
+    }
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

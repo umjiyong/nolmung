@@ -12,4 +12,7 @@ public interface ImageService {
     List<String> uploadBoardImages(int boardId, List<MultipartFile> files);
     void deleteBoardImages(List<String> imageUrls);
     String uploadImage(String path, MultipartFile file);
+
+    String uploadPuppyImage(int puppyId, MultipartFile file);
+
 }
