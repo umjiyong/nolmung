@@ -49,5 +49,43 @@ public class ImageController {
         }
     }
 
+    @ApiOperation(value = "랜드마크 방명록 이미지 업로드", notes = "이미지의 url을 통해 S3에 이미지를 업로드하는 API")
+    @PostMapping(value="/landmarkBoard/{landmarkBoardId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity uploadlandmarkBoardImage(@PathVariable int landmarkBoardId, @RequestPart("files") MultipartFile file) {
+        HashMap<String, Object> result = new HashMap<>();
+        String imageUrl;
+
+        try {
+            imageUrl = imageService.uploadlandmarkBoardImage(landmarkBoardId, file);
+            result.put("message", "success");
+            result.put("boardImgUrl", imageUrl);
+            result.put("landmarkBoardId", landmarkBoardId);
+            return new ResponseEntity(result, HttpStatus.OK);
+        }catch (Exception e){
+            result.put("message", "[error] - 랜드마크 방명록 이미지 업로드 오류");
+            result.put("landmarkBoardId", landmarkBoardId);
+            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @ApiOperation(value = "산책 기록 이미지 업로드", notes = "이미지의 url을 통해 S3에 이미지를 업로드하는 API")
+    @PostMapping(value="/walk/{walkId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity uploadWalkImage(@PathVariable int walkId, @RequestPart("files") MultipartFile file) {
+        HashMap<String, Object> result = new HashMap<>();
+        String imageUrl;
+
+        try {
+            imageUrl = imageService.uploadWalkImage(walkId, file);
+            result.put("message", "success");
+            result.put("boardImgUrl", imageUrl);
+            result.put("walkId", walkId);
+            return new ResponseEntity(result, HttpStatus.OK);
+        }catch (Exception e){
+            result.put("message", "[error] - 산책 기록 이미지 업로드 오류");
+            result.put("walkId", walkId);
+            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }
