@@ -1,16 +1,57 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 
 const FriendListItem = Props => {
   const Navigation = useNavigation();
+
+  let chatroomId = '';
+
   const ref = firestore()
     .collection('userChatrooms')
     .doc('1')
     .collection('chatroomList')
     .doc(Props.userId);
   // 하드코딩
+
+  function addNewChatroom(userId, friendId, chatroomId) {
+    firestore().collection('userChatrooms').doc(userId).set({});
+    const docRef = firestore().collection('userChatrooms').doc(userId);
+
+    docRef.collection('chatroomList').doc(friendId).set({
+      chatroomId: chatroomId,
+    });
+  }
+
+  async function createChatroom(userId, friendId) {
+    console.log('create Chatroom with ' + userId + ' and ' + friendId);
+    firestore()
+      .collection('chatrooms')
+      .add({})
+      .then(docRef => {
+        chatroomId = docRef.id;
+        docRef.collection('users').doc(userId).set({});
+        docRef.collection('users').doc(friendId).set({});
+        addNewChatroom(userId, friendId, chatroomId);
+        addNewChatroom(friendId, userId, chatroomId);
+        console.log('newChatroomId: ' + chatroomId);
+      });
+  }
+
+  async function findChatroom(userId, friendId) {
+    console.log('find Chatroom with ' + userId + ' and ' + friendId);
+    const unsubscribe = firestore()
+      .collection('userChatrooms')
+      .doc(userId)
+      .collection('chatroomList')
+      .doc(friendId)
+      .onSnapshot(snapshot => {
+        chatroomId = snapshot.data().chatroomId;
+        console.log('founded chatroom: ' + chatroomId);
+      });
+    return () => unsubscribe();
+  }
 
   return (
     <>
@@ -37,30 +78,39 @@ const FriendListItem = Props => {
         <TouchableOpacity
           style={Styles.StartChat}
           onPress={() => {
-            if (
-              ref.onSnapshot(snapshot => {
-                if (!snapshot.exists) {
-                  let newChatroomId;
-                  firestore()
-                    .collection('chatrooms')
-                    .add()
-                    .then(docRef => {
-                      newChatroomId = docRef.id;
-                      docRef.add('users');
-                      docRef.add('messages');
-                    });
-                  ref.set({
-                    chatroomId: newChatroomId,
-                    opponentName: Props.userName,
+            ref.onSnapshot(snapshot => {
+              if (!snapshot.exists) {
+                firestore()
+                  .collection('chatrooms')
+                  .add({})
+                  .then(docRef => {
+                    chatroomId = docRef.id;
+                    docRef.collection('users').doc('1').set({});
+                    docRef.collection('users').doc(Props.userId).set({});
+                    addNewChatroom('1', Props.userId, chatroomId);
+                    addNewChatroom(Props.userId, '1', chatroomId);
+                    console.log('newChatroomId: ' + chatroomId);
                   });
-                }
-              })
-            )
+              } else {
+                firestore()
+                  .collection('userChatrooms')
+                  .doc('1')
+                  .collection('chatroomList')
+                  .doc(Props.userId)
+                  .onSnapshot(snapshot => {
+                    chatroomId = snapshot.data().chatroomId;
+                    console.log('founded chatroom: ' + chatroomId);
+                  });
+              }
+
+              console.log("friendListItem's chatroomId: " + chatroomId);
               Navigation.navigate('MessageRoomScreen', {
                 img: Props.img,
                 userId: '2',
-                userName: Props.name,
+                userName: Props.userName,
+                chatroomId: chatroomId,
               });
+            });
           }}>
           <Text
             style={{

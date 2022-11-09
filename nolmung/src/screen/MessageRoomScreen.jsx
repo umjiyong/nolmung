@@ -36,7 +36,8 @@ function printMessage(messages, userId, route) {
 }
 
 const MessageRoomScreen = ({navigation: {navigate}, route}) => {
-  console.log(route.params.userName);
+  // console.log(route.params.userName);
+  // console.log("messageRoom's chatroomId: " + route.params.chatroomId);
   const navi = useNavigation();
   const dogInfo = '지용 (믹스견, 3세)';
   const send = true;
@@ -62,6 +63,19 @@ const MessageRoomScreen = ({navigation: {navigate}, route}) => {
     .collection('chatrooms')
     .doc(route.params.chatroomId)
     .collection('messages');
+
+  function deleteChatroom(chatroomId) {
+    ref.parent.delete();
+    deleteUserChatroom(myId, userId);
+    deleteUserChatroom(userId, myId);
+    console.log('chatroom ' + chatroomId + 'is deleted!');
+  }
+
+  function deleteUserChatroom(myId, friendId) {
+    console.log('user1: ' + myId + ', user2: ' + friendId);
+    const userChatroom = firestore().collection('userChatrooms');
+    userChatroom.doc(myId).collection('chatroomList').doc(friendId).delete();
+  }
 
   useEffect(() => {
     const unsubscribe = ref
@@ -172,7 +186,7 @@ const MessageRoomScreen = ({navigation: {navigate}, route}) => {
           {/* <TouchableOpacity onPress={onPressFriend} style={select =='Friend' ? Styles.bottomBorder : Styles.selectTextHuman}> */}
           <TouchableOpacity
             onPress={() => {
-              ref.parent.delete().then(console.log('chatroom deleted!'));
+              deleteChatroom(route.params.chatroomId);
               navi.goBack();
             }}
             style={{width: '100%', alignItems: 'center'}}>
