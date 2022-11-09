@@ -18,7 +18,7 @@ public class Util {
     @Component
     public class ImageUtil {
 
-        @Value("{S3.URL}")
+        @Value("${S3.URL}")
         private String uploadPath;
 
         public String uploadImage(String folderName, MultipartFile file) {
