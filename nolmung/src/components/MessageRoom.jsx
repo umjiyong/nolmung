@@ -10,8 +10,6 @@ const MessageRoom = Props => {
   const [content, setContent] = useState('');
   const [sendTime, setSendTime] = useState({});
 
-  console.log('Props in MessageRoom: ' + JSON.stringify(Props));
-
   const ref = firestore()
     .collection('chatrooms')
     .doc(Props.chatroomId)
