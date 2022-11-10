@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 
-function TestScreen({navigation}) {
+function LandmarkScreen({navigation}) {
   const [Login, setLogin] = useState(true);
 
   return (
@@ -31,7 +31,7 @@ function TestScreen({navigation}) {
   );
 }
 
-export default TestScreen;
+export default LandmarkScreen;
 
 const style = StyleSheet.create({
   container: {

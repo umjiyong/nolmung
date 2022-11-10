@@ -10,6 +10,7 @@ import NotiScreen from '../Screen/NotiScreen';
 import SettingScreen from '../Screen/SettingScreen';
 import MessageScreen from '../Screen/MessageScreen';
 import RankingScreen from '../Screen/RankingScreen';
+import LandmarkScreen from '../Screen/LandmarkScreen';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -35,6 +36,7 @@ const StackNavigator = () => {
       />
       <Stack.Screen name="MessageScreen" component={MessageScreen} />
       <Stack.Screen name="RankingScreen" component={RankingScreen} />
+      <Stack.Screen name="LandmarkScreen" component={LandmarkScreen} />
     </Stack.Navigator>
   );
 };

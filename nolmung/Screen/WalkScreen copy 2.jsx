@@ -40,30 +40,25 @@ async function requestPermission() {
 
 async function requestPermission2() {
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
-      {
-        title: '위치 권한',
-        message: '앱 위치 정보를 항상 허용해주세요!',
-        buttonNeutral: '나중에',
-        buttonNegative: '거부',
-        buttonPositive: '승인',
-      }
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('You can use the location in background');
-      return true;
-    } else {
-      console.log('Location permission denied');
-      return false;
+    // 안드로이드 위치 정보 수집 권한 요청
+    if (Platform.OS === 'android') {
+      return await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION
+      );
+
+      console.log(Platform.OS);
     }
-  } catch (err) {
-    console.warn(err);
-    return false;
+  } catch (e) {
+    console.log(e);
   }
 }
 
 function WalkScreen({navigation}) {
+  const [landmark, setLocations] = useState([
+    {latitude: 37.50202794087094, longitude: 127.041301445791},
+    {latitude: 37.50148996696899, longitude: 127.03293235165089},
+    {latitude: 37.49761475728036, longitude: 127.03596135511745},
+  ]);
   let [curlocation, setCurlocation] = useState([]);
   let [circleLocation, setCircleLocation] = useState([
     {
@@ -79,19 +74,9 @@ function WalkScreen({navigation}) {
   const [sec, setsec] = useState(0);
   const [min, setmin] = useState(0);
   const [speed, setspeed] = useState(0);
-  const appState = useRef(AppState.currentState);
-  const [landmark, setLocations] = useState([
-    {landmarkId: 1, latitude: 37.50202794087094, longitude: 127.041301445791},
-    {landmarkId: 2, latitude: 37.50148996696899, longitude: 127.03293235165089},
-    {landmarkId: 3, latitude: 37.49761475728036, longitude: 127.03596135511745},
-    {landmarkId: 4, latitude: 37.4982761803595, longitude: 127.01112323944},
-    {landmarkId: 5, latitude: 37.4949943443586, longitude: 127.012134384912},
-    {landmarkId: 6, latitude: 37.4936599915248, longitude: 127.012626632694},
-    {landmarkId: 7, latitude: 37.4928178646055, longitude: 127.013838469407},
-  ]);
-  const accessableLength = 200; // 사용자 원의 반경, 접근할 수 있는 랜드마크까지의 거리
+  // const [Landmark, setLandmark] = useState();
 
-  useInterval(() => {
+  const example = useInterval(() => {
     // console.log('inter내부로그', AppState.currentState);
     Geolocation.getCurrentPosition(
       position => {
@@ -147,48 +132,21 @@ function WalkScreen({navigation}) {
         setmin(min + 1);
       }
     }
-    // getLandmarkAccessibility(() => {});
+    getLandmarkAccessibility(() => {});
   }, 2000);
 
-  const handleAppStateChange = nextAppState => {
-    console.log('⚽️appState nextAppState', appState.current, nextAppState);
-    if (
-      appState.current.match(/inactive|background/) &&
-      nextAppState === 'active'
-    ) {
-      console.log('⚽️⚽️App has come to the foreground!');
-    }
-    if (
-      appState.current.match(/inactive|active/) &&
-      nextAppState === 'background'
-    ) {
-      console.log('⚽️⚽️App has come to the background!');
-    }
-    appState.current = nextAppState;
-  };
-
-  // console.log('example의 타입은?' + typeof example);`
-
-  // AppState.addEventListener('change', handleAppStateChange);
-  // useEffect(() => {
-  //   AppState.addEventListener('change', handleAppStateChange);
-  //   return () => {
-  //     AppState.removeEventListener('change', handleAppStateChange);
-  //   };
-  // }, []);
-
-  // if (AppState.currentState === 'active') {
-  //   console.log('active', AppState.currentState);
-  //   example;
-  // } else {
-  //   console.log('BBBBB', AppState.currentState);
-  //   example;
-  // }
+  if (AppState.currentState === 'background') {
+    console.log('backgroud', AppState.currentState);
+    example;
+  } else {
+    console.log('active');
+    example;
+  }
 
   useEffect(() => {
     requestPermission().then(result => {
       if (result === 'granted') {
-        requestPermission2();
+        requestPermission2().then();
         console.log('실행');
         Geolocation.getCurrentPosition(
           position => {
@@ -242,43 +200,21 @@ function WalkScreen({navigation}) {
     console.log(flag);
   }
 
-  // 위,경도 좌표 2개 사이의 거리를 구하는 메서드
-  function getDistanceFromLatLonInKm(lat1, lng1, lat2, lng2) {
-    function deg2rad(deg) {
-      return deg * (Math.PI / 180);
-    }
-    var r = 6371; //지구의 반지름(km)
-    var dLat = deg2rad(lat2 - lat1);
-    var dLon = deg2rad(lng2 - lng1);
-    var a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(deg2rad(lat1)) *
-        Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = r * c; // Distance in km
-    return Math.round(d * 1000);
-  }
-
-  // 거리를 구해서 일정 범위 이내인지 판단하는 메서드
-  function getLandmarkAccessibility(landmark) {
-    var myLat = circleLocation[circleLocation.length - 1].latitude;
-    var myLng = circleLocation[circleLocation.length - 1].longitude;
-    var landmarkLat = landmark.latitude;
-    var landmarkLng = landmark.longitude;
-
-    if (
-      getDistanceFromLatLonInKm(myLat, myLng, landmarkLat, landmarkLng) <=
-      accessableLength
-    )
-      return true;
-    return false;
+  function getLandmarkAccessibility() {
+    console.log('랜드마크 관련 함수 호출되고 있음!!!!');
   }
 
   return (
     <>
       <View>
+        {/* {console.log(curlocation)} */}
+        {/* <Button
+          onPress={StartCount}
+          title="시작"
+          color="#841584"
+          style={Styles.buttonTest}
+        /> */}
+        {/* <Text>이동 거리 : {distance.toFixed(2)}</Text> */}
         {startlocation.latitude && ondo ? (
           <>
             <Text>
@@ -314,12 +250,9 @@ function WalkScreen({navigation}) {
                   }}
                   image={require('../assets/icons/map_marker64.png')}
                   onPress={() => {
-                    console.log(landmark.landmarkId, '번 랜드마크');
-                    if (getLandmarkAccessibility(landmark)) {
-                      navigation.push('LandmarkScreen');
-                    } else {
-                      alert('접근할 수 없는 거리에 위치한 랜드마크입니다.');
-                    }
+                    landmark
+                      ? navigation.push('LandmarkScreen')
+                      : alert('랜드마크입니다.');
                   }}
                 />
               ))}
@@ -329,7 +262,7 @@ function WalkScreen({navigation}) {
                   longitude:
                     circleLocation[circleLocation.length - 1].longitude,
                 }}
-                radius={accessableLength}
+                radius={200}
                 strokeWidth={2}
                 strokeColor="#FF0000"
                 fillColor="#FF0000"
@@ -356,6 +289,10 @@ function WalkScreen({navigation}) {
 const View = styled.View`
   flex: 1;
 `;
+
+// const Text = styled.Text`
+//   flex: 1;
+// `;
 
 const Map = styled(MapView)`
   flex: 1;
