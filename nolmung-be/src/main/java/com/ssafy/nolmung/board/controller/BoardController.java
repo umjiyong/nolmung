@@ -22,6 +22,7 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
+    @GetMapping
     @ApiOperation(value = "전체 게시물 조회", notes = "전체 게시물의 데이터를 받아오는 API")
     public ResponseEntity getAllBoard() {
         List<BoardResponse> result = boardService.searchAllBoard();
@@ -51,10 +52,24 @@ public class BoardController {
         }
     }
     // 카테고리별 게시물 조회
-    @ApiOperation(value = "특정 카테고리의 게시물 조회", notes = "특정 카테고리의 게시물 데이터를 받아오는 API")
+    @ApiOperation(value = "게시판 주제별 게시물 조회", notes = "특정 게시판(자유게시판 등)의 게시물 데이터를 받아오는 API")
     @GetMapping("/category/{boardClass}")
     public ResponseEntity getBoardByBoardClass(@PathVariable int boardClass) {
         List<BoardResponse> result = boardService.searchAllByBoardCategory(boardClass);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "우리 동네 게시판 조회", notes = "지역 id를 기준으로 근처 지역의 게시물 데이터를 받아오는 API")
+    @GetMapping("/region/{userId}")
+    public ResponseEntity getTownBoard(@PathVariable int userId) {
+        List<BoardResponse> result = boardService.searchTownBoard(userId);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "친구 게시판 조회", notes = "친구들의 게시물 데이터를 받아오는 API")
+    @GetMapping("/friend/{userId}")
+    public ResponseEntity getFriendBoard(@PathVariable int userId) {
+        List<BoardResponse> result = boardService.searchFriendBoard(userId);
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
