@@ -165,7 +165,6 @@ const MessageRoomScreen = ({navigation: {navigate}, route}) => {
           onPress={() => {
             ref.add({
               userId: myId,
-              userName: myName,
               sendTime: firestore.Timestamp.now(),
               content: message,
             });

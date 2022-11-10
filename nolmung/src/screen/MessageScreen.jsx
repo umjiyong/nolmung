@@ -41,6 +41,8 @@ const MessageScreen = () => {
         <MessageRoom
           img={require('../assets/icons/33.png')} // MessageRoom에서 불러오기
           userId={chatroomList[i].opponentId}
+          userName="mySQL에 요청"
+          // userName은 MySQL에 요청해서 받아오기
           chatroomId={chatroomList[i].chatroomId}
           key={chatroomList[i].chatroomId}
         />,

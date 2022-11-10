@@ -27,7 +27,7 @@ const ReceiveMessage = Props => {
         />
         <View style={{marginLeft: 5}}>
           <Text style={{color: '#282828', marginBottom: 5}}>
-            {Props.message.userName}
+            {Props.userName}
           </Text>
           <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
             <Text style={Styles.Message}>{Props.message.content}</Text>
