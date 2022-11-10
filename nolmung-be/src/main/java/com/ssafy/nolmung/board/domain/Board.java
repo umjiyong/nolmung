@@ -81,11 +81,13 @@ public class Board {
         return BoardResponse.builder()
                 .boardId(this.getBoardId())
                 .userId(this.getUser().getUserId())
+                .userName(this.getUser().getUserNickname())
                 .userImg(this.getUser().getUserImg())
                 .boardContent(this.getBoardContent())
                 .boardUpdateDate(this.getBoardUpdateDate())
                 .boardClass(this.getBoardClass())
                 .boardImg(this.getImageUrls())
+                .likeCnt(this.getBoardLikeList().size())
                 .build();
     }
 }
