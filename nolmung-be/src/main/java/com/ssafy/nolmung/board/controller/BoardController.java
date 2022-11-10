@@ -22,6 +22,7 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
+    @GetMapping
     @ApiOperation(value = "전체 게시물 조회", notes = "전체 게시물의 데이터를 받아오는 API")
     public ResponseEntity getAllBoard() {
         List<BoardResponse> result = boardService.searchAllBoard();
