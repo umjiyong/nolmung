@@ -8,6 +8,8 @@ import {
   View,
   Button,
   Image,
+  Text,
+  TouchableOpacity,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 // import {RootStackParamList} from '../AppInner';
@@ -45,6 +47,8 @@ function SignIn({navigation}: SignInScreenProps) {
   const [password, setPassword] = useState('');
   const emailRef = useRef<TextInput | null>(null);
   const passwordRef = useRef<TextInput | null>(null);
+  const [kakaoToken, setKakaoToken] = useState('');
+  const [isLogin, setIsLogin] = useState(false);
 
   const onChangeEmail = useCallback(text => {
     setEmail(text.trim());
@@ -70,23 +74,8 @@ function SignIn({navigation}: SignInScreenProps) {
 
   const [user, setUser] = useState({});
 
-
-  const findAll = async(): Promise<void> => {
-    try{
-      findAllUser(
-        (res) => {
-          console.log(res.data);
-        },
-        (err) => {
-          console.log("왜 안됨", err);
-        }
-      )
-    } catch(err) {
-      console.log("안됨", err);
-    }
-  }
-
   const signInWithKakao = async (): Promise<void> => {
+    console.log("누름?!");
     const token: KakaoOAuthToken = await login().then(token => {
       console.log(11, token);
       if (token) {
@@ -97,7 +86,10 @@ function SignIn({navigation}: SignInScreenProps) {
           {"accessToken" : token.accessToken,
           "refreshToken" : token.refreshToken},
           (res) => {
-            console.log("무엇일까요?", res);
+            console.log("무엇일까요?", res.data.data);
+              AsyncStorage.setItem('userId', res.data.data, () => {
+                console.log("사용자 아이디 저장 완료");
+              });
             },
             // const {id, email, name, image, nickname, profileOpen} =
             //   res.data.user;
@@ -112,18 +104,43 @@ function SignIn({navigation}: SignInScreenProps) {
 
   AsyncStorage.getItem('accessToken', (err, result) => {
     console.log("저장소 확인", result);
+    if(result!=null) setIsLogin(true);
+    else setIsLogin(false);
+
+    setKakaoToken(JSON.stringify(result));
   });
 
+  const deleteAsync = () => {
+    console.log("삭제했당");
+    AsyncStorage.clear();
+
+  }
+
   return (
-    <View style={styles.container}>
-      <Image source={require('../assets/image/Dog1.jpg')} style={styles.logo} />
-      <View style={styles.buttonContainer}>
+    <View style={style.container}>
+      <Text style={style.text}>놀면 멍하니</Text>
+      <Image source={require('../assets/image/Dog1.jpg')} style={style.logo} />
+      <TouchableOpacity
+        onPress={() => {
+          isLogin ? navigation.navigate('BottomTabs') : signInWithKakao();
+        }}>
+          {console.log(isLogin)}
+        <Image
+          source={require('../assets/kakaoLogin/kakao_login_large_wide.png')}
+          resizeMode="contain"
+          style={{
+            height: 50,
+          }}
+        />
+      </TouchableOpacity>
+      
+      {/* <View style={style.buttonContainer}>
         <Pressable style={{marginTop: 10}} onPress={signInWithKakao}>
           <Image source={require('../assets/kakaoLogin/kakao_login_large_wide.png')} />
         </Pressable>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Pressable style={{marginTop: 10}} onPress={findAll}>
+      </View> */}
+      <View style={style.buttonContainer}>
+        <Pressable style={{marginTop: 10}} onPress={deleteAsync}>
           <Image source={require('../assets/kakaoLogin/kakao_login_large_wide.png')} />
         </Pressable>
       </View>
@@ -131,11 +148,11 @@ function SignIn({navigation}: SignInScreenProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'space-around',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   logo: {
     height: (height * 2) / 7,
@@ -145,6 +162,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  text: {
+    color: '#000',
+    fontSize: 24,
+    fontFamily: 'NotoSansKR-Bold',
   },
 });
 
