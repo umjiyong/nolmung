@@ -23,7 +23,7 @@ import {
 } from '@react-native-seoul/kakao-login';
 import axios from 'axios';
 
-import {loginKakao} from '../api/User';
+import {findAllUser, loginCheckNewUser} from '../api/User';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -70,50 +70,48 @@ function SignIn({navigation}: SignInScreenProps) {
 
   const [user, setUser] = useState({});
 
-  type tokenType = {
-    accessToken: string;
-    refreshToken: string;
-    idToken: string;
-    accessTokenExpiresAt: Date;
-    refreshTokenExpiresAt: Date;
-    scopes: string[];
-};
+
+  const findAll = async(): Promise<void> => {
+    try{
+      findAllUser(
+        (res) => {
+          console.log(res.data);
+        },
+        (err) => {
+          console.log("왜 안됨", err);
+        }
+      )
+    } catch(err) {
+      console.log("안됨", err);
+    }
+  }
 
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login().then(token => {
-    // const signInWithKakao = async () => {
-    //     const token = await login().then(token => {
       console.log(11, token);
       if (token) {
-        loginKakao(
-          token.accessToken,
-          res => {
-            AsyncStorage.setItem('accessToken', res.data.accessToken, () => {
-              console.log('토큰 저장 완료');
-            });
-            const {id, email, name, image, nickname, profileOpen} =
-              res.data.user;
-
-        // dispatch(
-        //   userSlice.actions.setUser({
-        //     email: email,
-        //     userName: name,
-        //     userImage: image,
-        //     loggedIn: true,
-        //   }),
-        // );
-      },
-      err => {
-        console.log(err);
-      },
-    );
-  }
-});
-setUser(token);
+        AsyncStorage.setItem('accessToken', token.accessToken, () => {
+          console.log("토큰 저장 완료");
+        })
+        loginCheckNewUser(
+          {"accessToken" : token.accessToken,
+          "refreshToken" : token.refreshToken},
+          (res) => {
+            console.log("무엇일까요?", res);
+            },
+            // const {id, email, name, image, nickname, profileOpen} =
+            //   res.data.user;
+          (err) => {
+            console.log("에러다", err);
+          },
+        );
+      }
+    });
+    setUser(token);
   };
 
   AsyncStorage.getItem('accessToken', (err, result) => {
-    console.log(result);
+    console.log("저장소 확인", result);
   });
 
   return (
@@ -121,6 +119,11 @@ setUser(token);
       <Image source={require('../assets/image/Dog1.jpg')} style={styles.logo} />
       <View style={styles.buttonContainer}>
         <Pressable style={{marginTop: 10}} onPress={signInWithKakao}>
+          <Image source={require('../assets/kakaoLogin/kakao_login_large_wide.png')} />
+        </Pressable>
+      </View>
+      <View style={styles.buttonContainer}>
+        <Pressable style={{marginTop: 10}} onPress={findAll}>
           <Image source={require('../assets/kakaoLogin/kakao_login_large_wide.png')} />
         </Pressable>
       </View>
