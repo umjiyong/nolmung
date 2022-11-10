@@ -128,17 +128,9 @@ public class BoardServiceImpl implements BoardService {
         List<BoardResponse> result = new ArrayList<>();
 
         int regionId = userRepository.findById(userId).orElseThrow().getRegion().getRegionId();
-        System.out.println("user's regionId: " + regionId);
         String nearRegionInfo = regionRepository.findById(regionId).orElseThrow().getNearRegionId();
-        System.out.println("nearRegionInfo: " + nearRegionInfo);
-
         List<String> nearRegions = new ArrayList<String>(Arrays.asList(nearRegionInfo.split(",")));
         nearRegions.add(Integer.toString(regionId));
-        System.out.print("nearRegion: ");
-        for(String region : nearRegions) {
-            System.out.print(region + ",");
-        }
-        System.out.println();
 
         for (String nearRegion : nearRegions) {
             int nearRegionId = Integer.parseInt(nearRegion);
