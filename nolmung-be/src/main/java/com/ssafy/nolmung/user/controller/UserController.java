@@ -10,14 +10,27 @@ import com.ssafy.nolmung.user.dto.request.UserRequestDto;
 import com.ssafy.nolmung.user.dto.response.UserResponseDto;
 import com.ssafy.nolmung.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -56,18 +69,62 @@ public class UserController {
         return new UserResponseDto(user);
     }
 
+
     @ResponseBody
-    @GetMapping("/kakao")
+    @GetMapping("/kakao/{accessCode}")
     @ApiOperation(value="카카오 로그인 요청 시", notes="kakaoAccessCode를 파라미터로 받아, 사용자의 accessToken, refreshToken을 반환")
-    public String KakaoLogin(@RequestParam String code){
+    public HashMap<String, String> KakaoLogin(@PathVariable ("accessCode") String code) {
+        List<String> list = userservice.getKakaoAccessToken(code);
+        String access_token = list.get(0);
+        String refresh_token = list.get(1);
+        int userId = userservice.createKakaoUser(access_token);
 
-        System.out.println("Kakao AccessCode : " + code);
-        String access_token = userservice.getKakaoAccessToken(code);
-        userservice.createKakaoUser(access_token);
+        System.out.println("컨트롤러에서 확인"+access_token+" , "+refresh_token);
 
-        return "씨빨";
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("accessToken", access_token);
+        hashMap.put("refreshToken", refresh_token);
 
+        if(userId == -1) hashMap.put("userId", "Error");
+        else hashMap.put("userId", Integer.toString(userId));
+
+        return hashMap;
     }
+
+//    @ResponseBody
+//    @GetMapping("/kakao/{accessCode}")
+//    @ApiOperation(value="카카오 로그인 요청 시", notes="kakaoAccessCode를 파라미터로 받아, 사용자의 accessToken, refreshToken을 반환")
+//    public ResponseEntity<?> KakaoLogin(@PathVariable ("accessCode") String code) throws URISyntaxException{
+////        URI redirectUri = new URI("http://localhost:3000/redirect");
+//        HttpHeaders httpHeaders = new HttpHeaders();
+////        httpHeaders.setLocation(redirectUri);
+//
+//        List<String> list = userservice.getKakaoAccessToken(code);
+//        System.out.println("Kakao AccessCode : " + code);
+//        String access_token = list.get(0);
+//        String refresh_token = list.get(1);
+//
+//        Cookie cookie = new Cookie("RefreshToken", refresh_token);
+//        cookie.setPath("/");
+//        httpHeaders.add("cookie", cookie.toString());
+//
+//        userservice.createKakaoUser(access_token);
+//
+//        ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refresh_token)
+//                .httpOnly(true)
+//                .maxAge(3600)
+//                .build();
+//
+//        System.out.println("쿠키 찍어보기 : " + cookie.toString());
+//        System.out.println("리스폰스쿠키 찍어보기 : " + responseCookie.toString());
+//        System.out.println("헤더 찍어보기 : " + httpHeaders.toString());
+//
+//        HashMap<String, String> hashMap = new HashMap<>();
+//        hashMap.put("accessToken", access_token);
+//        hashMap.put("refreshToken", refresh_token);
+//
+//        return new ResponseEntity<>(access_token, httpHeaders, HttpStatus.SEE_OTHER);
+//    }
 
     @ResponseBody
     @PutMapping("/regist/{userId}")
@@ -92,4 +149,9 @@ public class UserController {
 
         return new MessageResponseDto("회원정보 입력 완료");
     }
+
+//    @ResponseBody
+//    @DeleteMapping("/delete/{userId}")
+//    @ApiOperation(value = "회원정보 삭제")
+//    public ResponseEntity deleteUser()
 }

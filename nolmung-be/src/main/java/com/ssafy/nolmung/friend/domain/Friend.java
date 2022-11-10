@@ -15,7 +15,6 @@ public class Friend {
     @Column(name = "friend_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     private int friendId;
 
     @JoinColumn (name = "user_id")

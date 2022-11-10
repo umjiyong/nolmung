@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoRequestDto;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoUpdateRequestDto;
 import com.ssafy.nolmung.sharePuppy.domain.SharePuppy;
+import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.walk.domain.Walk;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -57,10 +58,10 @@ public class Puppy {
     @Column(name = "puppy_img")
     private String puppyImg;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    @JsonBackReference
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "breed_id")
@@ -84,6 +85,10 @@ public class Puppy {
         this.puppySex = puppyInfoUpdateRequestDto.getPuppySex();
         this.puppyIsNeutered = puppyInfoUpdateRequestDto.isPuppyIsNeutered();
         this.puppyImg = puppyInfoUpdateRequestDto.getPuppyImg();
+    }
+
+    public void changePuppyImage(String puppyImgUrl){
+        this.puppyImg = puppyImgUrl;
     }
 
     @Builder

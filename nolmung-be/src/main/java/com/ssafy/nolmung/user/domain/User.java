@@ -142,14 +142,15 @@ public class User {
                  List<BoardLike> boardLikes
                  ) {
 
-        SHA256 sha256 = new SHA256();
+//        SHA256 sha256 = new SHA256();
+//
+//        try {
+//            this.userKakaoUuid = sha256.encrypt(userKakaoUuid);
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
 
-        try {
-            this.userKakaoUuid = sha256.encrypt(LocalDateTime.now().toString() + userKakaoUuid.substring(0, 3));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
+        this.userKakaoUuid = userKakaoUuid;
         this.userId = userId;
         this.region = region;
         this.userIntroduction = userIntroduction;
