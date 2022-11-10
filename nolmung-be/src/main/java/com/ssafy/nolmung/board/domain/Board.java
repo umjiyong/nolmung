@@ -86,6 +86,7 @@ public class Board {
                 .boardContent(this.getBoardContent())
                 .boardUpdateDate(this.getBoardUpdateDate())
                 .boardClass(this.getBoardClass())
+                .region(this.getRegion().getRegionAddress())
                 .boardImg(this.getImageUrls())
                 .likeCnt(this.getBoardLikeList().size())
                 .build();
