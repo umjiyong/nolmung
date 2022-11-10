@@ -1,17 +1,106 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet, TouchableHighlight, TouchableWithoutFeedback, ScrollView, Pressable} from 'react-native';
 import Modal from "react-native-modal"
 import ArticleItem from '../components/ArticleItem';
 import { useNavigation } from '@react-navigation/native';
+import {getArticles_all,getArticles_friend,getArticles_qna,getArticles_region} from "../api/article"
+
 function CommunityScreen() {
   const Navigation = useNavigation()
   const [HeaderName, setHeaderName] =  useState("모든 동네")
   const [isModalVisible, setModalVisible] = useState(false);
+  const [articleall,setArticleall] = useState([])
+  const [articlefriend,setArticlefriend] = useState([])
+  const [articleqna,setArticleqna] = useState([])
+  const [articleregion,setArticleregion] = useState([])
+
+  
   const toggleModal = () => {
         setModalVisible(!isModalVisible);
         console.log(isModalVisible)
     };
   const backdropOpacity = 0.3
+  
+  const getArticle_all_func = async () => {
+    try {
+      await getArticles_all(
+        
+        (response) => {
+          setArticleall(response.data);
+        },
+        (err) => {
+          console.log("아티클올 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+  
+
+  const getArticle_friend_func = async () => {
+    try {
+      
+      await getArticles_friend(
+        { userId: 1 },
+        (response) => {
+          setArticlefriend(response.data);
+        },
+        (err) => {
+          console.log("아티클친구 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
+
+  const getArticle_qna_func = async () => {
+    try {
+      
+      await getArticles_qna(
+        { index: 1 },
+        (response) => {
+          setArticleqna(response.data);
+        },
+        (err) => {
+          console.log("아티클질문 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+  
+
+  const getArticle_region_func = async () => {
+    try {
+      
+      await getArticles_region(
+        { userId: 1 },
+        (response) => {
+          setArticleregion(response.data);
+        },
+        (err) => {
+          console.log("아티클질문 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
+  useEffect(() => {
+    getArticle_all_func();
+    getArticle_friend_func();
+    getArticle_qna_func();
+    getArticle_region_func();
+  }, []);
   
   
   
@@ -113,48 +202,96 @@ function CommunityScreen() {
               </TouchableOpacity>
             </View>
           </View>
-          {/* Header End */}
-          {HeaderName ==='모든 동네' ? (
+        
+
+          {HeaderName ==='모든 동네' && articleall ? (
             <>
               <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={Styles.ScrollView}>
-                <ArticleItem />
-                <ArticleItem />
-                <ArticleItem />
-                <ArticleItem />
-                <ArticleItem />
+                {articleall.map((item,index)=>{
+                  
+                  return (<ArticleItem 
+                  key = {index}
+                  boardId = {item.boardId}
+                  userId = {item.userId}
+                  region = {item.region}
+                  boardContent = {item.boardContent}
+                  boardUpdateDate = {item.boardUpdateDate}
+                  boardImg = {item.boardImg}
+                  likeCnt = {item.likeCnt}
+                  userImg = {item.userImg}/>)
+                })}
+                
+               
               </ScrollView> 
             </>
           ): null}       
 
-          {HeaderName ==='우리 동네' ? (
-            <>
-              <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={Styles.ScrollView}>
-                <View>
-                  <Text style={{color:'#282828',}}>우리 동네</Text>
-                </View>
-              </ScrollView> 
-            </>
-          ): null}  
 
-          {HeaderName ==='내 친구 글' ? (
+          {HeaderName ==='우리 동네' && articleregion ? (
             <>
               <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={Styles.ScrollView}>
-                <View>
-                  <Text style={{color:'#282828',}}>내 친구 글</Text>
-                </View>
+                {articleregion.map((item,index)=>{
+                  
+                  return (<ArticleItem 
+                  key = {index}
+                  boardId = {item.boardId}
+                  userId = {item.userId}
+                  region = {item.region}
+                  boardContent = {item.boardContent}
+                  boardUpdateDate = {item.boardUpdateDate}
+                  boardImg = {item.boardImg}
+                  likeCnt = {item.likeCnt}
+                  userImg = {item.userImg}/>)
+                })}
+                
+               
               </ScrollView> 
             </>
           ): null}            
 
-          {HeaderName ==='질문 있어요' ? (
+          {HeaderName ==='내 친구 글' && articlefriend ? (
             <>
               <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={Styles.ScrollView}>
-                <View>
-                  <Text style={{color:'#282828',}}>질문 있어요</Text>
-                </View>
+                {articlefriend.map((item,index)=>{
+                  
+                  return (<ArticleItem 
+                  key = {index}
+                  boardId = {item.boardId}
+                  userId = {item.userId}
+                  region = {item.region}
+                  boardContent = {item.boardContent}
+                  boardUpdateDate = {item.boardUpdateDate}
+                  boardImg = {item.boardImg}
+                  likeCnt = {item.likeCnt}
+                  userImg = {item.userImg}/>)
+                })}
+                
+               
               </ScrollView> 
             </>
-          ): null} 
+          ): null}            
+
+          {HeaderName ==='질문 있어요' && articleqna ? (
+            <>
+              <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={Styles.ScrollView}>
+                {articleqna.map((item,index)=>{
+                  
+                  return (<ArticleItem 
+                  key = {index}
+                  boardId = {item.boardId}
+                  userId = {item.userId}
+                  region = {item.region}
+                  boardContent = {item.boardContent}
+                  boardUpdateDate = {item.boardUpdateDate}
+                  boardImg = {item.boardImg}
+                  likeCnt = {item.likeCnt}
+                  userImg = {item.userImg}/>)
+                })}
+                
+               
+              </ScrollView> 
+            </>
+          ): null}
              
       </View>
       <TouchableOpacity style={Styles.PlusArticleBtn} onPress={()=> Navigation.navigate('NewArticle')}>

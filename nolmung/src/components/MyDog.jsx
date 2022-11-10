@@ -10,14 +10,14 @@ const doginfo_age = 3;
 const doginfo_walkAmount = 3;
 const doginfo_complete = 100;
 
-const MyDog = () => {
+const MyDog = (Props) => {
   const navigation = useNavigation();
   return (
     <TouchableWithoutFeedback onPress={() => {navigation.push('MyDogInfo')}}>
       <View  style={Styles.container}>
         <View style={Styles.dogInfo}>
           <Image
-            source={require('../assets/image/Dog1.jpg')}
+            source={{uri : Props.puppyImg}}
             resizeMode="contain"
             style={{
               width: 125,
@@ -28,7 +28,7 @@ const MyDog = () => {
           <View style={{}}>
             <View style={Styles.infoBox}>
               <View style={Styles.infoHead}>
-                <Text style={Styles.infoText}>{dogName}</Text>
+                <Text style={Styles.infoText}>{Props.puppyName}</Text>
                 <Text style={Styles.infoText}>
                   ({doginfo_species}, {doginfo_age}세)
                 </Text>

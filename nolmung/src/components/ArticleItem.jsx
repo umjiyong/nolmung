@@ -3,19 +3,21 @@ import { Text, View, Image, StyleSheet,ScrollView,Dimensions, TouchableWithoutFe
 import { useNavigation } from "@react-navigation/native";
 import Modal from "react-native-modal"
 
-const ArticleItem = Props => {
+const ArticleItem = (Props) => {
     const Navigation = useNavigation()
-    const userNickName = 'aJumoney__'
-    const region = '서울특별시 강남구 역삼동'
+    const userNickName = Props.userId
+    const region = Props.region
     const windowWidth = Dimensions.get('window').width;
-    const like = 200
+    const like = Props.likeCnt
     const comment = 5
+    const img = Props.boardImg
     const [isModalVisible, setModalVisible] = useState(false);
     const toggleModal = () => {
           setModalVisible(!isModalVisible);
           console.log(isModalVisible)
       };
     const backdropOpacity = 0.3
+   
     return (
         <>
                 <View style={Styles.ArticleContainer}>
@@ -23,21 +25,23 @@ const ArticleItem = Props => {
                     <View style={Styles.ArticleHeader}>
                         <View style={{flexDirection:'row',}}>
                             <Image 
-                                source={require('../assets/icons/32.png')}
+                                source={{uri : Props.userImg }}//프로필사진
                                 resizeMode="contain"
+                                
                                 style={{
+                                    borderRadius:100,
                                     width: 40,
                                     height: 40,
                                 }}    
                             />
                             <View style={{marginLeft: 5,}}>
                                 <Text style={Styles.Nickname}>{userNickName}</Text>
-                                <Text style={Styles.region}>{region}</Text>
+                                <Text style={Styles.region}>{region ? {region}  : "ㅎㅇ"}</Text>
                             </View>
                         </View>
                         <TouchableWithoutFeedback onPress={toggleModal}>
                             <Image
-                                source={require('../assets/icons/Group.png')}
+                                source={require('../assets/icons/Group.png')}//쩜3개
                                 resizeMode="contain"
                                 style={{
                                     width: 20,
@@ -68,24 +72,32 @@ const ArticleItem = Props => {
 
 
                     </View>
-                    {/* Header End */}
-                    {/* Image Start*/}
+                    
                     <ScrollView contentContainerStyle={Styles.ImageContainer} pagingEnabled={true} horizontal={true}>
-                        <Image 
-                            source={require('../assets/icons/image12.png')}
-                            resizeMode="cover"
-                            style={{
-                                width: windowWidth,
-                                
-                            }}
-                        />
-                        <Image 
+                      
+                        {img.map((item,index)=>{
+                     
+                            
+                            return(<Image
+                                key = {index}
+                                source={{uri : item}}
+                                resizeMode="cover"
+                                style={{
+                                    width: windowWidth,
+                                    height:400,
+                                    
+                                }}
+                            />)
+                        })}
+                        
+                        {/* <Image 
                             source={require('../assets/icons/Rectangle5962.png')}
                             resizeMode="cover"
                             style={{
-                                width: windowWidth
+                                width: windowWidth,
+                                // height: 600,
                             }}
-                        />
+                        /> */}
                     </ScrollView>
                     {/* Image End */}
                     <View style={Styles.likeAndComment}>
@@ -111,7 +123,7 @@ const ArticleItem = Props => {
                         <View style={Styles.Contents}>
                             <Text style={{color:'#282828', marginBottom:5,}}>좋아요 {like}개</Text>
                             <Text style={{color:'#282828', fontSize: 16, lineHeight:21, textAlign:'left', marginBottom: 15,}}>
-                                오늘은 날씨가 좋고 어쩌구 저쩌구 다음주 목요일은 점심이 로제떡볶이고 어쩌구저쩌구 멀캠 로제 떡볶이 정말 맛있어요~
+                                {Props.boardContent}
                             </Text>
                             <Text style={{color:'#959595',}}>
                                 댓글 {comment}개 모두 보기

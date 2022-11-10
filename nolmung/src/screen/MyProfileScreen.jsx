@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 
 import {
   View,
@@ -13,9 +13,13 @@ import {
 import Header from '../components/Header';
 import MyDog from '../components/MyDog';
 import MyFamily from '../components/MyFamily';
+import {user_info} from "../api/user"
+import {user_puppy_info} from "../api/puppy"
+
 
 function MyProfileScreen({navigation}) {
-
+  const [userinfo,setuseinfo] = useState([])
+  const [puppyinfo,setpuppyinfo] = useState([])
   const Friend = 1;
   const Post = 1;
   const userName = '하루';
@@ -25,6 +29,52 @@ function MyProfileScreen({navigation}) {
   const introText = {
     // text: '있습니다.'
   };
+
+
+
+  const user_info_func = async () => {
+    try {
+      
+      await user_info(
+        { userId: 1 },
+        (response) => {
+          setuseinfo(response.data);
+        },
+        (err) => {
+          console.log("유저정보 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
+
+  const user_puppy_info_func = async () => {
+    try {
+      
+      await user_puppy_info(
+        { userId: 1 },
+        (response) => {
+          setpuppyinfo(response.data);
+        },
+        (err) => {
+          console.log("강아지정보 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
+  useEffect(() => {
+    user_info_func();
+    user_puppy_info_func();
+  }, []);
+  
+  console.log(puppyinfo.myPuppyList)
 
   return (
     <>
@@ -36,7 +86,7 @@ function MyProfileScreen({navigation}) {
         {/* touchablewithoutfeedback 검색 */}
         <View style={Styles.profile}>
           <Image
-            source={require('../assets/icons/man1Avatar.png')}
+            source={{uri : userinfo.userImg}}
             resizeMode="contain"
             style={{
               width: 80,
@@ -64,7 +114,7 @@ function MyProfileScreen({navigation}) {
                   fontFamily: 'NotoSansKR-Medium',
                   marginRight: 5,
                 }}>
-                {userName}
+                {userinfo.userAddressText}
               </Text>
               <Text
                 style={{
@@ -72,7 +122,7 @@ function MyProfileScreen({navigation}) {
                   fontSize: 18,
                   fontFamily: 'NotoSansKR-Medium',
                 }}>
-                ({userAddress})
+                {userinfo.regionId}
               </Text>
             </View>
             <TouchableOpacity onPress={()=>{navigation.push('MyProfileModify')}}>
@@ -103,20 +153,20 @@ function MyProfileScreen({navigation}) {
               style={{
                 color: '#282828',
               }}>
-              {friendCode}
+              {userinfo.userCode}
             </Text>
           </View>
         </View>
-        {introText.text ? (
+        {userinfo ? (
           <View style={Styles.introInput}>
             <View style={Styles.introBox}>
-              <Text style={{color: '#282828'}}>{introText.text}</Text>
+              <Text style={{color: '#282828'}}>{userinfo.userIntroduction}</Text>
             </View>
           </View>
         ) : (
           <View style={Styles.introInput}>
             <View style={Styles.introBox}>
-              <Text style={Styles.introText}>{intro}</Text>
+              <Text style={Styles.introText}>소개글이 없습니다</Text>
             </View>
           </View>
         )}
@@ -128,12 +178,26 @@ function MyProfileScreen({navigation}) {
           </View>
         </View>
         {/* Dog component */}
-        <MyDog />
-        <MyDog />
-        <MyDog />
-        <MyDog />
-        <MyDog />
-        <MyDog />
+
+
+        {(puppyinfo.myPuppyList).length>1 ? (
+            <>
+                {(puppyinfo.myPuppyList).map((item,index)=>{
+                  
+                  return (<MyDog
+                  key = {index}
+                  puppyId = {item.puppyId}
+                  puppyImg = {item.puppyImg}
+                  puppyName = {item.puppyName}
+                  />)
+                })}
+                
+               
+              
+            </>
+          ): null}       
+      
+        
         {/* End Dog Component */}
         <TouchableOpacity style={Styles.MyPost}>
           <View style={Styles.MyPostBtn}>
