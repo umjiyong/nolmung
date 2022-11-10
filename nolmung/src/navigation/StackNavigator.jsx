@@ -12,12 +12,13 @@ import MessageScreen from '../screen/MessageScreen';
 import RankingScreen from '../screen/RankingScreen';
 import MyProfileModify from '../screen/MyProfileModify';
 import AddDogInfo from '../screen/AddDogInfo';
-import MyDogInfo from '../screen/MyDogInfo'
+import MyDogInfo from '../screen/MyDogInfo';
 import CutOffList from '../screen/CutOffList';
-import FriendProfile from '../screen/FriendProfile'
+import FriendProfile from '../screen/FriendProfile';
 import MessageRoomScreen from '../screen/MessageRoomScreen';
-import ArticleItemDetail from '../screen/ArticleItemDetail'
-import SearchFriendList from '../screen/SearchFriendList'
+import ArticleItemDetail from '../screen/ArticleItemDetail';
+import NewArticle from '../screen/NewArticle';
+import SearchFriendList from '../screen/SearchFriendList';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -47,23 +48,32 @@ const StackNavigator = () => {
       <Stack.Screen name="AddDogInfo" component={AddDogInfo} />
       <Stack.Screen name="MyDogInfo" component={MyDogInfo} />
       <Stack.Screen name="FriendProfile" component={FriendProfile} />
-      <Stack.Screen name="CutOffList" component={CutOffList}
+      <Stack.Screen
+        name="CutOffList"
+        component={CutOffList}
         options={{
           title: 'CutOffList',
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
-        }}  
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
       />
       <Stack.Screen name="MessageRoomScreen" component={MessageRoomScreen} />
-      <Stack.Screen name="SearchFriendList" component={SearchFriendList} 
+      <Stack.Screen
+        name="SearchFriendList"
+        component={SearchFriendList}
         options={{
-          title:'ArticleItemDetail',
-          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS
-        }}/>
-      <Stack.Screen name="ArticleItemDetail" component={ArticleItemDetail}
+          title: 'ArticleItemDetail',
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+        }}
+      />
+      <Stack.Screen
+        name="ArticleItemDetail"
+        component={ArticleItemDetail}
         options={{
-          title:'ArticleItemDetail',
-          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS
-        }} />
+          title: 'ArticleItemDetail',
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+        }}
+      />
+      <Stack.Screen name="NewArticle" component={NewArticle} />
     </Stack.Navigator>
   );
 };

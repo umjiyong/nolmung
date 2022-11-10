@@ -2,19 +2,20 @@ import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import {useNavigation} from '@react-navigation/native';
 const MiddleHeader = (Props) => {
+    console.log(Props)
     const navigation = useNavigation();
     return (
         <>
             <View style={Styles.container}>
-                <TouchableOpacity onPress={navigation.goBack}>
-                <Image
-                    source={require('../assets/icons/GoBack.png')}
-                    resizeMode="contain"
-                    style={{
-                        width: 25,
-                        height: 25,
-                    }}
-                />
+                <TouchableOpacity style={{width: 25, height: 25,}} onPress={navigation.goBack}>
+                    <Image
+                        source={require('../assets/icons/GoBack.png')}
+                        resizeMode="contain"
+                        style={{
+                            width: 25,
+                            height: 25,
+                        }}
+                    />
                 </TouchableOpacity>
             </View>
             <View style={Styles.mainText}>
