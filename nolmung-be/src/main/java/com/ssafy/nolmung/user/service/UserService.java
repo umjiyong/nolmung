@@ -12,6 +12,7 @@ import com.google.gson.JsonParser;
 import com.querydsl.core.Tuple;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.dto.ResultDto;
+import com.ssafy.nolmung.user.dto.request.UserTokenRequestDto;
 import com.ssafy.nolmung.user.dto.response.UserResponseDto;
 import com.ssafy.nolmung.user.repository.UserRepository;
 import lombok.Builder;
@@ -68,7 +69,7 @@ public class UserService {
     }
 
     @Transactional
-    public String kakaoRegist(JsonElement element){
+    public String kakaoRegist(JsonElement element, String refreshToken){
 
         String id = element.getAsJsonObject().get("id").getAsString();
         String email = "";
@@ -106,6 +107,7 @@ public class UserService {
                 .userImg(profileImage)
                 .userUpdateDate(LocalDateTime.now())
                 .userCode(generatedString)
+                .userRefreshToken(refreshToken)
                 .build();
 
         userRepository.save(user);
@@ -185,11 +187,12 @@ public class UserService {
      * 카카오 로그인시 UUID, 이름, 프로필사진, email 카카오에서 받아오기, userId는 AutoIncrement
      */
     @Transactional
-    public int getKakaoUser(String token) throws RuntimeException {
+    public List getKakaoUser(UserTokenRequestDto token) throws RuntimeException {
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
         int userId = -1;
+        int isNewUser = 0;
 
         //access_token을 이용하여 사용자 정보 조회
         try {
@@ -198,7 +201,7 @@ public class UserService {
 
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
-            conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
+            conn.setRequestProperty("Authorization", "Bearer " + token.getAccessToken()); //전송할 header 작성, access_token전송
 
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
@@ -218,17 +221,20 @@ public class UserService {
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
+
             String id = element.getAsJsonObject().get("id").getAsString();
 
             User user = userRepository.findByUserKakaoUuid(id);
 
             if(user == null){
-                kakaoRegist(element);
+                kakaoRegist(element, token.getRefreshToken());
                 userId = userRepository.findByUserKakaoUuid(id).getUserId();
+                isNewUser = 0;
                 System.out.println("유저 등록 성공!!!" + id);
             }
             else {
                 userId = user.getUserId();
+                isNewUser = 1;
 
                 System.out.println("이미 등록된 유저!" + id);
             }
@@ -239,7 +245,11 @@ public class UserService {
             e.printStackTrace();
         }
 
-        return userId;
+        List<Integer> list = new ArrayList<>();
+        list.add(userId);
+        list.add(isNewUser);
+
+        return list;
 
     }
 
