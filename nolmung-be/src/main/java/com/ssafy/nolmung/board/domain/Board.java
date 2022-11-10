@@ -80,6 +80,7 @@ public class Board {
     public BoardResponse toBoardResponse(){
         return BoardResponse.builder()
                 .boardId(this.getBoardId())
+                .userId(this.getUser().getUserId())
                 .boardContent(this.getBoardContent())
                 .boardUpdateDate(this.getBoardUpdateDate())
                 .boardClass(this.getBoardClass())
