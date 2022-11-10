@@ -1,6 +1,7 @@
 import React from 'react';
 
 import LoginScreen from '../screen/LoginScreen';
+import SignIn from '../screen/Test';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -24,7 +25,8 @@ const Stack = createStackNavigator();
 const StackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Login" component={SignIn} />
+      {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
       <Stack.Screen name="BottomTabs" component={BottomTabs} />
       <Stack.Screen
         name="NotiScreen"
