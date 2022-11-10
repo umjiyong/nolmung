@@ -5,7 +5,10 @@ import com.ssafy.nolmung.board.domain.Board;
 import com.ssafy.nolmung.board.domain.BoardImage;
 import com.ssafy.nolmung.board.dto.request.BoardRequest;
 import com.ssafy.nolmung.board.dto.response.BoardResponse;
+import com.ssafy.nolmung.friend.domain.Friend;
+import com.ssafy.nolmung.friend.repository.FriendRepository;
 import com.ssafy.nolmung.region.domain.Region;
+import com.ssafy.nolmung.region.repository.RegionRepository;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.repository.UserRepository;
 import com.ssafy.nolmung.user.repository.UserRepositoryImpl;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -24,6 +28,12 @@ public class BoardServiceImpl implements BoardService {
     private BoardRepository boardRepository;
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RegionRepository regionRepository;
+
+    @Autowired
+    private FriendRepository friendRepository;
 
     @Override
     @Transactional
@@ -88,7 +98,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
 
-    // 우리동네 등 카테고리별 게시물 조회
+    // 카테고리별 게시물 조회
     @Override
     public List<BoardResponse> searchAllByBoardCategory(int boardCategory) {
         List<Board> boards = boardRepository.findAllByBoardClass(boardCategory);
@@ -99,6 +109,40 @@ public class BoardServiceImpl implements BoardService {
         }
         return result;
     }
+
+    @Override
+    public List<BoardResponse> searchFriendBoard(int userId) {
+        List<Friend> friends = friendRepository.findFriendListByUserId(userId);
+        List<BoardResponse> result = new ArrayList<>();
+
+        for (Friend friend : friends) {
+            List<Board> boards = boardRepository.findAllByUser_UserId(friend.getSubUserId());
+            for (Board board : boards) {
+                result.add(board.toBoardResponse());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<BoardResponse> searchTownBoard(int userId) {
+        List<BoardResponse> result = new ArrayList<>();
+
+        int regionId = userRepository.findById(userId).orElseThrow().getRegion().getRegionId();
+        String nearRegionInfo = regionRepository.findById(regionId).orElseThrow().getNearRegionId();
+        List<String> nearRegions = Arrays.asList(nearRegionInfo.split(","));
+        nearRegions.add(Integer.toString(regionId));
+
+        for (String nearRegion : nearRegions) {
+            int nearRegionId = Integer.parseInt(nearRegion);
+            List<Board> boards = boardRepository.findAllByRegion_RegionId(nearRegionId);
+            for (Board board : boards) {
+                result.add(board.toBoardResponse());
+            }
+        }
+        return result;
+    }
+
 
     // 게시물 삭제(이미지 삭제는 따로 처리)
     @Override
