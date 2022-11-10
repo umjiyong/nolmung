@@ -81,6 +81,7 @@ public class Board {
         return BoardResponse.builder()
                 .boardId(this.getBoardId())
                 .userId(this.getUser().getUserId())
+                .userImg(this.getUser().getUserImg())
                 .boardContent(this.getBoardContent())
                 .boardUpdateDate(this.getBoardUpdateDate())
                 .boardClass(this.getBoardClass())
