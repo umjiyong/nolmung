@@ -39,13 +39,12 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public int createBoard(BoardRequest boardRequest) {
         User user = userRepository.findById(boardRequest.getUserId()).orElseThrow();
-        Region region = null;
         Board board = Board.builder()
                 .boardContent(boardRequest.getBoardContent())
                 .boardUpdateDate(LocalDateTime.now())
                 .boardClass(boardRequest.getBoardClass())
                 .user(user)
-                .region(region)
+                .region(user.getRegion())
                 .boardImageList(new ArrayList<>())
                 .build();
 
@@ -129,9 +128,15 @@ public class BoardServiceImpl implements BoardService {
         List<BoardResponse> result = new ArrayList<>();
 
         int regionId = userRepository.findById(userId).orElseThrow().getRegion().getRegionId();
+        System.out.println("user's regionId: " + regionId);
         String nearRegionInfo = regionRepository.findById(regionId).orElseThrow().getNearRegionId();
         List<String> nearRegions = Arrays.asList(nearRegionInfo.split(","));
         nearRegions.add(Integer.toString(regionId));
+        System.out.print("nearRegion: ");
+        for(String region : nearRegions) {
+            System.out.print(region + ",");
+        }
+        System.out.println();
 
         for (String nearRegion : nearRegions) {
             int nearRegionId = Integer.parseInt(nearRegion);
