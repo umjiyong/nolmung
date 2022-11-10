@@ -18,6 +18,8 @@ public class BoardResponse {
 
         @ApiParam(name = "작성자 id")
         private int userId;
+        @ApiParam(name = "작성자 프로필 이미지 링크")
+        private String userImg;
         @ApiParam(name = "게시물의 카테고리 분류")
         private int boardClass;
         @ApiParam(name = "작성자가 속한지역")
@@ -32,9 +34,10 @@ public class BoardResponse {
         private int likeCnt;
 
         @Builder
-        public BoardResponse(int boardId, int userId, int boardClass, String region, String boardContent, LocalDateTime boardUpdateDate, List<String> boardImg, int likeCnt) {
+        public BoardResponse(int boardId, int userId, String userImg, int boardClass, String region, String boardContent, LocalDateTime boardUpdateDate, List<String> boardImg, int likeCnt) {
             this.boardId = boardId;
             this.userId = userId;
+            this.userImg = userImg;
             this.boardClass = boardClass;
             this.region = region;
             this.boardContent = boardContent;
