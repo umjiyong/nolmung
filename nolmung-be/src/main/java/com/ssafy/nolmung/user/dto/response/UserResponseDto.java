@@ -23,7 +23,7 @@ public class UserResponseDto {
 
     public UserResponseDto(User user){
         this.userId = user.getUserId();
-//        this.regionId = user.getRegion().getRegionId();
+        this.regionId = user.getRegion().getRegionId();
         this.userAddressText = user.getUserAddressText();
         this.userIntroduction = user.getUserIntroduction();
         this.userCode = user.getUserCode();
