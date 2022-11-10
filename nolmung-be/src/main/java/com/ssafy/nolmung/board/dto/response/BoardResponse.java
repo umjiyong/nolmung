@@ -32,7 +32,8 @@ public class BoardResponse {
         private int likeCnt;
 
         @Builder
-        public BoardResponse(int userId, int boardClass, String region, String boardContent, LocalDateTime boardUpdateDate, List<String> boardImg, int likeCnt) {
+        public BoardResponse(int boardId, int userId, int boardClass, String region, String boardContent, LocalDateTime boardUpdateDate, List<String> boardImg, int likeCnt) {
+            this.boardId = boardId;
             this.userId = userId;
             this.boardClass = boardClass;
             this.region = region;
