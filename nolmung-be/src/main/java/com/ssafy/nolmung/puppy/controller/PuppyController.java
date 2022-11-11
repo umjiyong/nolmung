@@ -50,7 +50,7 @@ public class PuppyController {
     public ResponseEntity getMyPuppyList(@PathVariable int userId){
         HashMap<String, Object> result = new HashMap<>();
         try {
-            List<Map<String, Object>> myPuppyList = puppyService.getMyPuppyList(userId);
+            List<HashMap<String, Object>> myPuppyList = puppyService.getMyPuppyList(userId);
 
             result.put("myPuppyList", myPuppyList);
             result.put("message", "success");

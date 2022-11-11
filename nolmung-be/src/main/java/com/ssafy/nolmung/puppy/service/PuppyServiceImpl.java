@@ -90,6 +90,7 @@ public class PuppyServiceImpl implements PuppyService{
         List<SharePuppy> sharePuppyList = sharePuppyRepository.findAllByPuppyPuppyId(puppyId);
         List<String> userImgList = new ArrayList<>();
         int breedId = puppy.getBreed().getBreedId();
+        int age = getPuppyAge(puppy.getPuppyBirth());
 
         for (int i = 0; i < sharePuppyList.size(); i++){
             userImgList.add(sharePuppyList.get(i).getUser().getUserImg());
@@ -105,79 +106,27 @@ public class PuppyServiceImpl implements PuppyService{
                 .puppyIsNeutered(puppy.isPuppyIsNeutered())
                 .puppyImg(puppy.getPuppyImg())
                 .breedId(breedId)
+                .puppyCharacter(puppy.getPuppyCharacter())
+                .breedName(puppy.getBreed().getBreedName())
+                .needWalkTime(puppy.getBreed().getNeedsWalkTimes())
+                .puppyAge(age)
                 .shareUserImageList(userImgList)
                 .build();
 
         return puppyInfo;
     }
 
-//    @Override
-//    public List<PuppyListResponseDto> getMyPuppyList(int userId) {
-//        List<SharePuppy> sharePuppyList = sharePuppyRepository.findAllByUserUserId(userId);
-//        List<PuppyListResponseDto> myPuppyList = new ArrayList<>();
-//
-//        for(int i = 0; i < sharePuppyList.size(); i++){
-//            Puppy puppy = sharePuppyList.get(i).getPuppy();
-//            int puppyAge = getPuppyAge(puppy.getPuppyBirth());
-//
-//            PuppyListResponseDto myPuppy = PuppyListResponseDto.builder()
-//                                                    .puppyId(puppy.getPuppyId())
-//                                                    .puppyName(puppy.getPuppyName())
-//                                                    .puppyImg(puppy.getPuppyImg())
-//                                                    .breed(puppy.getBreed().getBreedName())
-//                                                    .needWalkTime(puppy.getBreed().getNeedsWalkTimes())
-//                                                    .age(puppyAge)
-//                                                    .build();
-//
-//            myPuppyList.add(myPuppy);
-//        }
-//
-//        return myPuppyList;
-//    }
-
     @Override
-    public List<Map<String, Object>> getMyPuppyList(int userId) {
+    public List<HashMap<String, Object>> getMyPuppyList(int userId) {
         List<SharePuppy> sharePuppyList = sharePuppyRepository.findAllByUserUserId(userId);
-        List<Map<String, Object>> myPuppyList = new ArrayList<>();
+        List<HashMap<String, Object>> myPuppyList = new ArrayList<>();
 
         for(int i = 0; i < sharePuppyList.size(); i++){
-            Map<String, Object> myPuppy = new HashMap<>();
+            HashMap<String, Object> myPuppy = new HashMap<>();
             Puppy puppy = sharePuppyList.get(i).getPuppy();
-            List<String> userImgList = new ArrayList<>();
-            int puppyAge = getPuppyAge(puppy.getPuppyBirth());
-            int breedId = puppy.getBreed().getBreedId();
-
-//            PuppyListResponseDto myPuppy = PuppyListResponseDto.builder()
-//                    .puppyId(puppy.getPuppyId())
-//                    .puppyName(puppy.getPuppyName())
-//                    .puppyImg(puppy.getPuppyImg())
-//                    .breed(puppy.getBreed().getBreedName())
-//                    .needWalkTime(puppy.getBreed().getNeedsWalkTimes())
-//                    .age(puppyAge)
-//                    .build();
-
-            for (int j = 0; j < sharePuppyList.size(); j++){
-                userImgList.add(sharePuppyList.get(i).getUser().getUserImg());
-            }
-
-            PuppyInfoResponseDto puppyInfo = PuppyInfoResponseDto.builder()
-                    .puppyId(puppy.getPuppyId())
-                    .puppyCode(puppy.getPuppyCode())
-                    .puppyName(puppy.getPuppyName())
-                    .puppyBirth(puppy.getPuppyBirth())
-                    .puppyWeight(puppy.getPuppyWeight())
-                    .puppySex(puppy.getPuppySex())
-                    .puppyIsNeutered(puppy.isPuppyIsNeutered())
-                    .puppyImg(puppy.getPuppyImg())
-                    .breedName(puppy.getBreed().getBreedName())
-                    .needWalkTime(puppy.getBreed().getNeedsWalkTimes())
-                    .puppyAge(puppyAge)
-                    .breedId(breedId)
-                    .shareUserImageList(userImgList)
-                    .build();
 
             myPuppy.put("puppyId", puppy.getPuppyId());
-            myPuppy.put("puppyInfo", puppyInfo);
+            myPuppy.put("puppyInfo", getPuppyInfo(puppy.getPuppyId()));
             myPuppyList.add(myPuppy);
         }
 
@@ -238,6 +187,7 @@ public class PuppyServiceImpl implements PuppyService{
         sharePuppyRepository.delete(removeShareConnect);
     }
 
+    // 강아지 생년월일을 통해 만나이를 구하는 메서드
     @Override
     public int getPuppyAge(LocalDate birthDate) {
         int age;
@@ -246,8 +196,8 @@ public class PuppyServiceImpl implements PuppyService{
         int currentYear  = current.get(Calendar.YEAR);
         int currentMonth = current.get(Calendar.MONTH) + 1;
         int currentDay   = current.get(Calendar.DAY_OF_MONTH);
-        int birthMonth = Integer.parseInt(String.valueOf(birthDate.getMonth()));
-        int birthDay = Integer.parseInt(String.valueOf(birthDate.getDayOfMonth()));
+        int birthMonth = birthDate.getMonthValue();
+        int birthDay = birthDate.getDayOfMonth();
 
         age = currentYear - birthDate.getYear();
 
