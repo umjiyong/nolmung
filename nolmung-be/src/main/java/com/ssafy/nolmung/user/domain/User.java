@@ -67,6 +67,9 @@ public class User {
     @Column(name = "user_kakao_uuid")
     private String userKakaoUuid;
 
+    @Column(name = "user_refresh_token")
+    private String userRefreshToken;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<SharePuppy> sharePuppies = new ArrayList<>();
@@ -130,6 +133,7 @@ public class User {
                  String userNickname,
                  String userEmail,
                  String userKakaoUuid,
+                 String userRefreshToken,
                  List<SharePuppy> sharePuppies,
                  List<Walk> walks,
                  List<InAppAlarm> inAppAlarms,
@@ -161,6 +165,7 @@ public class User {
         this.userImg = userImg;
         this.userNickname = userNickname;
         this.userEmail = userEmail;
+        this.userRefreshToken = userRefreshToken;
         this.sharePuppies = sharePuppies;
         this.walks = walks;
         this.inAppAlarms = inAppAlarms;

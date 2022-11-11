@@ -7,6 +7,7 @@ import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.dto.MessageResponseDto;
 import com.ssafy.nolmung.user.dto.ResultDto;
 import com.ssafy.nolmung.user.dto.request.UserRequestDto;
+import com.ssafy.nolmung.user.dto.request.UserTokenRequestDto;
 import com.ssafy.nolmung.user.dto.response.UserResponseDto;
 import com.ssafy.nolmung.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -25,12 +26,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,6 +48,38 @@ public class UserController {
 //        List<Tuple> userList = userservice.findAllUser();
 //        return userList;
 //    }
+
+    @PostMapping("/kakaoLogin")
+    @ApiOperation(value="카카오 로그인 이벤트", notes="신규 가입자는 0번째에 new, 기존 가입자는 1번째에 old로 표기, 1번째 인덱스에 string으로 유저ID")
+    public ResultDto CheckIsNewUser(@RequestBody UserTokenRequestDto token) {
+
+        System.out.println(token.getAccessToken());
+
+        /**
+         * 0번째는 유저아이디, 1번째는 신규가입인지, 아닌지 판별. 0이면 신규가입, 1이면 기존유저
+         */
+        List userState = userservice.getKakaoUser(token);
+        List<String> list = new ArrayList<>();
+
+        if(userState.get(1) == Integer.valueOf(0)){
+            list.add("new");
+        }
+        else {
+            list.add("old");
+        }
+
+        list.add(String.valueOf(userState.get(0)));
+
+
+        return new ResultDto(list);
+    }
+
+    @GetMapping("/findByUuid/{KakaoUuid}")
+    public UserResponseDto SearchByKakaoUuid(@PathVariable ("KakaoUuid") String uuid){
+        User user = userservice.findByKakaoUuid(uuid);
+
+        return new UserResponseDto(user);
+    }
 
 
     @GetMapping("/findAll")
@@ -69,61 +100,32 @@ public class UserController {
         return new UserResponseDto(user);
     }
 
-
-    @ResponseBody
-    @GetMapping("/kakao/{accessCode}")
-    @ApiOperation(value="카카오 로그인 요청 시", notes="kakaoAccessCode를 파라미터로 받아, 사용자의 accessToken, refreshToken을 반환")
-    public HashMap<String, String> KakaoLogin(@PathVariable ("accessCode") String code) {
-        List<String> list = userservice.getKakaoAccessToken(code);
-        String access_token = list.get(0);
-        String refresh_token = list.get(1);
-        int userId = userservice.createKakaoUser(access_token);
-
-        System.out.println("컨트롤러에서 확인"+access_token+" , "+refresh_token);
-
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("accessToken", access_token);
-        hashMap.put("refreshToken", refresh_token);
-
-        if(userId == -1) hashMap.put("userId", "Error");
-        else hashMap.put("userId", Integer.toString(userId));
-
-        return hashMap;
+    @GetMapping("/test/{test}")
+    public ResultDto test(@PathVariable ("test") int test){
+        System.out.println("통신 성공!");
+        return new ResultDto(test*10);
     }
+
 
 //    @ResponseBody
 //    @GetMapping("/kakao/{accessCode}")
 //    @ApiOperation(value="카카오 로그인 요청 시", notes="kakaoAccessCode를 파라미터로 받아, 사용자의 accessToken, refreshToken을 반환")
-//    public ResponseEntity<?> KakaoLogin(@PathVariable ("accessCode") String code) throws URISyntaxException{
-////        URI redirectUri = new URI("http://localhost:3000/redirect");
-//        HttpHeaders httpHeaders = new HttpHeaders();
-////        httpHeaders.setLocation(redirectUri);
-//
+//    public HashMap<String, String> KakaoLogin(@PathVariable ("accessCode") String code) {
 //        List<String> list = userservice.getKakaoAccessToken(code);
-//        System.out.println("Kakao AccessCode : " + code);
 //        String access_token = list.get(0);
 //        String refresh_token = list.get(1);
+//        int userId = userservice.getKakaoUser(access_token);
 //
-//        Cookie cookie = new Cookie("RefreshToken", refresh_token);
-//        cookie.setPath("/");
-//        httpHeaders.add("cookie", cookie.toString());
-//
-//        userservice.createKakaoUser(access_token);
-//
-//        ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refresh_token)
-//                .httpOnly(true)
-//                .maxAge(3600)
-//                .build();
-//
-//        System.out.println("쿠키 찍어보기 : " + cookie.toString());
-//        System.out.println("리스폰스쿠키 찍어보기 : " + responseCookie.toString());
-//        System.out.println("헤더 찍어보기 : " + httpHeaders.toString());
+//        System.out.println("컨트롤러에서 확인"+access_token+" , "+refresh_token);
 //
 //        HashMap<String, String> hashMap = new HashMap<>();
 //        hashMap.put("accessToken", access_token);
 //        hashMap.put("refreshToken", refresh_token);
 //
-//        return new ResponseEntity<>(access_token, httpHeaders, HttpStatus.SEE_OTHER);
+//        if(userId == -1) hashMap.put("userId", "Error");
+//        else hashMap.put("userId", Integer.toString(userId));
+//
+//        return hashMap;
 //    }
 
     @ResponseBody
