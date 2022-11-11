@@ -58,4 +58,8 @@ public class Region {
         this.regionLat = regionLat;
         this.regionLon = regionLon;
     }
+
+    public String getRegionAddress(){
+        return this.sido + " " + this.sigungu + " " + this.eupMyeonDong;
+    }
 }
