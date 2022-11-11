@@ -7,6 +7,7 @@ import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.dto.MessageResponseDto;
 import com.ssafy.nolmung.user.dto.ResultDto;
 import com.ssafy.nolmung.user.dto.request.UserRequestDto;
+import com.ssafy.nolmung.user.dto.request.UserTokenRequestDto;
 import com.ssafy.nolmung.user.dto.response.UserResponseDto;
 import com.ssafy.nolmung.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +26,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -50,6 +52,13 @@ public class UserController {
 //        return userList;
 //    }
 
+    @GetMapping("/kakaoLogin")
+    public ResultDto CheckIsNewUser(@RequestParam UserTokenRequestDto token) {
+
+        int userId = userservice.getKakaoUser(token.getAccessToken());
+
+        return new ResultDto(userId);
+    }
 
     @GetMapping("/findByUuid/{KakaoUuid}")
     public UserResponseDto SearchByKakaoUuid(@PathVariable ("KakaoUuid") String uuid){
@@ -91,7 +100,7 @@ public class UserController {
         List<String> list = userservice.getKakaoAccessToken(code);
         String access_token = list.get(0);
         String refresh_token = list.get(1);
-        int userId = userservice.createKakaoUser(access_token);
+        int userId = userservice.getKakaoUser(access_token);
 
         System.out.println("컨트롤러에서 확인"+access_token+" , "+refresh_token);
 
@@ -104,41 +113,6 @@ public class UserController {
 
         return hashMap;
     }
-
-//    @ResponseBody
-//    @GetMapping("/kakao/{accessCode}")
-//    @ApiOperation(value="카카오 로그인 요청 시", notes="kakaoAccessCode를 파라미터로 받아, 사용자의 accessToken, refreshToken을 반환")
-//    public ResponseEntity<?> KakaoLogin(@PathVariable ("accessCode") String code) throws URISyntaxException{
-////        URI redirectUri = new URI("http://localhost:3000/redirect");
-//        HttpHeaders httpHeaders = new HttpHeaders();
-////        httpHeaders.setLocation(redirectUri);
-//
-//        List<String> list = userservice.getKakaoAccessToken(code);
-//        System.out.println("Kakao AccessCode : " + code);
-//        String access_token = list.get(0);
-//        String refresh_token = list.get(1);
-//
-//        Cookie cookie = new Cookie("RefreshToken", refresh_token);
-//        cookie.setPath("/");
-//        httpHeaders.add("cookie", cookie.toString());
-//
-//        userservice.createKakaoUser(access_token);
-//
-//        ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refresh_token)
-//                .httpOnly(true)
-//                .maxAge(3600)
-//                .build();
-//
-//        System.out.println("쿠키 찍어보기 : " + cookie.toString());
-//        System.out.println("리스폰스쿠키 찍어보기 : " + responseCookie.toString());
-//        System.out.println("헤더 찍어보기 : " + httpHeaders.toString());
-//
-//        HashMap<String, String> hashMap = new HashMap<>();
-//        hashMap.put("accessToken", access_token);
-//        hashMap.put("refreshToken", refresh_token);
-//
-//        return new ResponseEntity<>(access_token, httpHeaders, HttpStatus.SEE_OTHER);
-//    }
 
     @ResponseBody
     @PutMapping("/regist/{userId}")
