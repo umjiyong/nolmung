@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -49,7 +50,7 @@ public class PuppyController {
     public ResponseEntity getMyPuppyList(@PathVariable int userId){
         HashMap<String, Object> result = new HashMap<>();
         try {
-            List<PuppyListResponseDto> myPuppyList = puppyService.getMyPuppyList(userId);
+            List<Map<String, Object>> myPuppyList = puppyService.getMyPuppyList(userId);
 
             result.put("myPuppyList", myPuppyList);
             result.put("message", "success");

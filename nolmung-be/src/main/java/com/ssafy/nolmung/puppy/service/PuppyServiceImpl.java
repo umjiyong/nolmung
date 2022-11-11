@@ -18,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -114,24 +111,73 @@ public class PuppyServiceImpl implements PuppyService{
         return puppyInfo;
     }
 
+//    @Override
+//    public List<PuppyListResponseDto> getMyPuppyList(int userId) {
+//        List<SharePuppy> sharePuppyList = sharePuppyRepository.findAllByUserUserId(userId);
+//        List<PuppyListResponseDto> myPuppyList = new ArrayList<>();
+//
+//        for(int i = 0; i < sharePuppyList.size(); i++){
+//            Puppy puppy = sharePuppyList.get(i).getPuppy();
+//            int puppyAge = getPuppyAge(puppy.getPuppyBirth());
+//
+//            PuppyListResponseDto myPuppy = PuppyListResponseDto.builder()
+//                                                    .puppyId(puppy.getPuppyId())
+//                                                    .puppyName(puppy.getPuppyName())
+//                                                    .puppyImg(puppy.getPuppyImg())
+//                                                    .breed(puppy.getBreed().getBreedName())
+//                                                    .needWalkTime(puppy.getBreed().getNeedsWalkTimes())
+//                                                    .age(puppyAge)
+//                                                    .build();
+//
+//            myPuppyList.add(myPuppy);
+//        }
+//
+//        return myPuppyList;
+//    }
+
     @Override
-    public List<PuppyListResponseDto> getMyPuppyList(int userId) {
+    public List<Map<String, Object>> getMyPuppyList(int userId) {
         List<SharePuppy> sharePuppyList = sharePuppyRepository.findAllByUserUserId(userId);
-        List<PuppyListResponseDto> myPuppyList = new ArrayList<>();
+        List<Map<String, Object>> myPuppyList = new ArrayList<>();
 
         for(int i = 0; i < sharePuppyList.size(); i++){
+            Map<String, Object> myPuppy = new HashMap<>();
             Puppy puppy = sharePuppyList.get(i).getPuppy();
+            List<String> userImgList = new ArrayList<>();
             int puppyAge = getPuppyAge(puppy.getPuppyBirth());
+            int breedId = puppy.getBreed().getBreedId();
 
-            PuppyListResponseDto myPuppy = PuppyListResponseDto.builder()
-                                                    .puppyId(puppy.getPuppyId())
-                                                    .puppyName(puppy.getPuppyName())
-                                                    .puppyImg(puppy.getPuppyImg())
-                                                    .breed(puppy.getBreed().getBreedName())
-                                                    .needWalkTime(puppy.getBreed().getNeedsWalkTimes())
-                                                    .age(puppyAge)
-                                                    .build();
+//            PuppyListResponseDto myPuppy = PuppyListResponseDto.builder()
+//                    .puppyId(puppy.getPuppyId())
+//                    .puppyName(puppy.getPuppyName())
+//                    .puppyImg(puppy.getPuppyImg())
+//                    .breed(puppy.getBreed().getBreedName())
+//                    .needWalkTime(puppy.getBreed().getNeedsWalkTimes())
+//                    .age(puppyAge)
+//                    .build();
 
+            for (int j = 0; j < sharePuppyList.size(); j++){
+                userImgList.add(sharePuppyList.get(i).getUser().getUserImg());
+            }
+
+            PuppyInfoResponseDto puppyInfo = PuppyInfoResponseDto.builder()
+                    .puppyId(puppy.getPuppyId())
+                    .puppyCode(puppy.getPuppyCode())
+                    .puppyName(puppy.getPuppyName())
+                    .puppyBirth(puppy.getPuppyBirth())
+                    .puppyWeight(puppy.getPuppyWeight())
+                    .puppySex(puppy.getPuppySex())
+                    .puppyIsNeutered(puppy.isPuppyIsNeutered())
+                    .puppyImg(puppy.getPuppyImg())
+                    .breedName(puppy.getBreed().getBreedName())
+                    .needWalkTime(puppy.getBreed().getNeedsWalkTimes())
+                    .puppyAge(puppyAge)
+                    .breedId(breedId)
+                    .shareUserImageList(userImgList)
+                    .build();
+
+            myPuppy.put("puppyId", puppy.getPuppyId());
+            myPuppy.put("puppyInfo", puppyInfo);
             myPuppyList.add(myPuppy);
         }
 
