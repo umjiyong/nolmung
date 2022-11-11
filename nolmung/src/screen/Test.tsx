@@ -101,6 +101,7 @@ function SignIn({navigation}: SignInScreenProps) {
       }
     });
     setUser(token);
+    navigation.navigate('BottomTabs')
   };
 
   AsyncStorage.getItem('accessToken', (err, result) => {
@@ -122,9 +123,7 @@ function SignIn({navigation}: SignInScreenProps) {
       <Text style={style.text}>놀면 멍하니</Text>
       <Image source={require('../assets/image/Dog1.jpg')} style={style.logo} />
       <TouchableOpacity
-        onPress={() => {
-          isLogin ? navigation.navigate('BottomTabs') : signInWithKakao();
-        }}>
+        onPress={signInWithKakao}>
           {console.log(isLogin)}
         <Image
           source={require('../assets/kakaoLogin/kakao_login_large_wide.png')}
@@ -142,7 +141,7 @@ function SignIn({navigation}: SignInScreenProps) {
       </View> */}
       <View style={style.buttonContainer}>
         <Pressable style={{marginTop: 10}} onPress={deleteAsync}>
-          <Image source={require('../assets/kakaoLogin/kakao_login_large_wide.png')} />
+          <Text>async storage 삭제</Text>
         </Pressable>
       </View>
     </View>

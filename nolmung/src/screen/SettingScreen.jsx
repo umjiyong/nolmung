@@ -9,8 +9,15 @@ import {
 
 import GoBackHeader from '../components/GoBackHeader';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const SettingScreen = () => {
   const navigation = useNavigation()
+
+  const deleteAsync = () => {
+    console.log("삭제했당");
+    AsyncStorage.clear();
+
+  }
   return (
     <>
       {/* Start Setting Header */}
@@ -29,7 +36,7 @@ const SettingScreen = () => {
         <TouchableOpacity>
           <Text style={Styles.SettingText}>앱 정보</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={deleteAsync}>
           <Text style={Styles.SettingText}>로그아웃</Text>
         </TouchableOpacity>
         <TouchableOpacity>
