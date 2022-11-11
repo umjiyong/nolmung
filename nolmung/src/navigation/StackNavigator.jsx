@@ -28,7 +28,7 @@ const Stack = createStackNavigator();
 const StackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      {console.log('로그인 상황은? StackNavigator.jsx', isLogin)}
+      {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
       <Stack.Screen name="SplashImg" component= {SplashImage} />
       <Stack.Screen name="Login" component={SignIn} />
       <Stack.Screen name="BottomTabs" component={BottomTabs} />
