@@ -11,7 +11,7 @@ import {
 import MedalRanking from "./MedalRanking";
 import MyRanking from "./MyRanking";
 import axios from "axios";
-import { getAllRanking_daily } from "../api/ranking";
+import { getAllRanking_daily,getAllRanking_weekly,getAllRanking_monthly } from "../api/ranking";
 
 function AllRanking() {
   const [dailyData, setDailyData] = useState([]);
@@ -36,10 +36,11 @@ function AllRanking() {
   };
 
   const getWeekRanking = async () => {
-    try {
+    try { 
       await getAllRanking_weekly(
         { type: "weekly" },
         (response) => {
+          console.log("Asdasd",response.data)
           setWeeklyData(response.data);
         },
         (err) => {
@@ -76,7 +77,7 @@ function AllRanking() {
     getMonthRanking();
   }, []);
 
-  console.log(dailyData);
+  console.log("데이터확인",weeklyData);
   //   console.log(weeklyData);
   //   console.log(monthlyData);
 

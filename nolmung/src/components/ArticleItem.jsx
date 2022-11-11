@@ -5,7 +5,7 @@ import Modal from "react-native-modal"
 
 const ArticleItem = (Props) => {
     const Navigation = useNavigation()
-    const userNickName = Props.userId
+    const userNickName = Props.userName
     const region = Props.region
     const windowWidth = Dimensions.get('window').width;
     const like = Props.likeCnt
@@ -36,7 +36,7 @@ const ArticleItem = (Props) => {
                             />
                             <View style={{marginLeft: 5,}}>
                                 <Text style={Styles.Nickname}>{userNickName}</Text>
-                                <Text style={Styles.region}>{region ? {region}  : "ㅎㅇ"}</Text>
+                                <Text style={Styles.region}>{region}</Text>
                             </View>
                         </View>
                         <TouchableWithoutFeedback onPress={toggleModal}>

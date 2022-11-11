@@ -114,7 +114,7 @@ function MyProfileScreen({navigation}) {
                   fontFamily: 'NotoSansKR-Medium',
                   marginRight: 5,
                 }}>
-                {userinfo.userAddressText}
+                {userinfo.userNickName}
               </Text>
               <Text
                 style={{
@@ -122,7 +122,7 @@ function MyProfileScreen({navigation}) {
                   fontSize: 18,
                   fontFamily: 'NotoSansKR-Medium',
                 }}>
-                {userinfo.regionId}
+                {userinfo.userAddressText}
               </Text>
             </View>
             <TouchableOpacity onPress={()=>{navigation.push('MyProfileModify')}}>
@@ -180,7 +180,7 @@ function MyProfileScreen({navigation}) {
         {/* Dog component */}
 
 
-        {(puppyinfo.myPuppyList).length>1 ? (
+        {(puppyinfo.myPuppyList) ? (
             <>
                 {(puppyinfo.myPuppyList).map((item,index)=>{
                   
@@ -195,7 +195,7 @@ function MyProfileScreen({navigation}) {
                
               
             </>
-          ): null}       
+          ): <Text>반려견을 추가해주세요</Text>}       
       
         
         {/* End Dog Component */}

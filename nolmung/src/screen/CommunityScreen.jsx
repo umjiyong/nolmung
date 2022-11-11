@@ -213,6 +213,7 @@ function CommunityScreen() {
                   key = {index}
                   boardId = {item.boardId}
                   userId = {item.userId}
+                  userName = {item.userName}
                   region = {item.region}
                   boardContent = {item.boardContent}
                   boardUpdateDate = {item.boardUpdateDate}
@@ -236,6 +237,7 @@ function CommunityScreen() {
                   key = {index}
                   boardId = {item.boardId}
                   userId = {item.userId}
+                  userName = {item.userName}
                   region = {item.region}
                   boardContent = {item.boardContent}
                   boardUpdateDate = {item.boardUpdateDate}
@@ -258,6 +260,7 @@ function CommunityScreen() {
                   key = {index}
                   boardId = {item.boardId}
                   userId = {item.userId}
+                  userName = {item.userName}
                   region = {item.region}
                   boardContent = {item.boardContent}
                   boardUpdateDate = {item.boardUpdateDate}
@@ -280,6 +283,7 @@ function CommunityScreen() {
                   key = {index}
                   boardId = {item.boardId}
                   userId = {item.userId}
+                  userName = {item.userName}
                   region = {item.region}
                   boardContent = {item.boardContent}
                   boardUpdateDate = {item.boardUpdateDate}
