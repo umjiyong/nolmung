@@ -16,8 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -114,17 +116,20 @@ public class PuppyServiceImpl implements PuppyService{
 
     @Override
     public List<PuppyListResponseDto> getMyPuppyList(int userId) {
-//        List<Puppy> puppyList = puppyRepository.findAllByUserId(userId);
         List<SharePuppy> sharePuppyList = sharePuppyRepository.findAllByUserUserId(userId);
         List<PuppyListResponseDto> myPuppyList = new ArrayList<>();
 
         for(int i = 0; i < sharePuppyList.size(); i++){
             Puppy puppy = sharePuppyList.get(i).getPuppy();
+            int puppyAge = getPuppyAge(puppy.getPuppyBirth());
 
             PuppyListResponseDto myPuppy = PuppyListResponseDto.builder()
                                                     .puppyId(puppy.getPuppyId())
                                                     .puppyName(puppy.getPuppyName())
                                                     .puppyImg(puppy.getPuppyImg())
+                                                    .breed(puppy.getBreed().getBreedName())
+                                                    .needWalkTime(puppy.getBreed().getNeedsWalkTimes())
+                                                    .age(puppyAge)
                                                     .build();
 
             myPuppyList.add(myPuppy);
@@ -185,6 +190,24 @@ public class PuppyServiceImpl implements PuppyService{
 
         // 그렇지 않고, 연결된 user가 여럿인 경우에는 해당 user와 puppy와의 share 관계만 해제시킴
         sharePuppyRepository.delete(removeShareConnect);
+    }
+
+    @Override
+    public int getPuppyAge(LocalDate birthDate) {
+        int age;
+        Calendar current = Calendar.getInstance();
+
+        int currentYear  = current.get(Calendar.YEAR);
+        int currentMonth = current.get(Calendar.MONTH) + 1;
+        int currentDay   = current.get(Calendar.DAY_OF_MONTH);
+        int birthMonth = Integer.parseInt(String.valueOf(birthDate.getMonth()));
+        int birthDay = Integer.parseInt(String.valueOf(birthDate.getDayOfMonth()));
+
+        age = currentYear - birthDate.getYear();
+
+        if(birthMonth * 100 + birthDay > currentMonth * 100 + currentDay) age--;
+
+        return age;
     }
 
     // 강아지 랜덤 코드를 생성하는 함수

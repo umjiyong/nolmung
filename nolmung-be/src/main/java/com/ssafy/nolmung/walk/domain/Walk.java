@@ -23,7 +23,7 @@ public class Walk {
     private int walkId;
 
     @Column(name = "walk_distance")
-    private int walkDistance;
+    private double walkDistance;
 
     @Column(name = "walk_start_time")
     private LocalDateTime walkStartTime;

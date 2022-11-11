@@ -6,6 +6,7 @@ import com.ssafy.nolmung.puppy.dto.request.PuppyInfoUpdateRequestDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyInfoResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyListResponseDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PuppyService {
@@ -23,4 +24,6 @@ public interface PuppyService {
     void updatePuppyInfo(PuppyInfoUpdateRequestDto puppyInfoUpdateRequestDto);
 
     void deletePuppyInfo(int puppyId, int userId);
+
+    int getPuppyAge(LocalDate birthDate);
 }
