@@ -6,8 +6,11 @@ import com.ssafy.nolmung.puppy.dto.request.PuppyInfoUpdateRequestDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyInfoResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyListResponseDto;
 
+import java.lang.reflect.MalformedParameterizedTypeException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface PuppyService {
 
@@ -15,7 +18,9 @@ public interface PuppyService {
 
     PuppyInfoResponseDto getPuppyInfo(int puppyId);
 
-    List<PuppyListResponseDto> getMyPuppyList(int userId);
+//    List<PuppyListResponseDto> getMyPuppyList(int userId);
+
+    List<Map<String, Object>> getMyPuppyList(int userId);
 
     PuppyListResponseDto searchPuppyByCode(String puppyCode);
 
