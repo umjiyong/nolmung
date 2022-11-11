@@ -18,9 +18,7 @@ public interface PuppyService {
 
     PuppyInfoResponseDto getPuppyInfo(int puppyId);
 
-//    List<PuppyListResponseDto> getMyPuppyList(int userId);
-
-    List<Map<String, Object>> getMyPuppyList(int userId);
+    List<HashMap<String, Object>> getMyPuppyList(int userId);
 
     PuppyListResponseDto searchPuppyByCode(String puppyCode);
 
