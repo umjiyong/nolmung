@@ -14,7 +14,7 @@ const SplashImage = ({navigation}) => {
       //else send to Home Screen
       AsyncStorage.getItem('userId', (err, res) => {
         console.log("스플래시에서 확인", res);
-        navigation.replace(res === null ? 'Login' : 'BottomTabs')
+        navigation.replace(res == null ? 'Login' : 'BottomTabs')
       })
     }, 3000);
   }, []);
