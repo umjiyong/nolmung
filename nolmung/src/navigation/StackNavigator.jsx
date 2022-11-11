@@ -20,13 +20,17 @@ import MessageRoomScreen from '../screen/MessageRoomScreen';
 import ArticleItemDetail from '../screen/ArticleItemDetail';
 import NewArticle from '../screen/NewArticle';
 import SearchFriendList from '../screen/SearchFriendList';
+import {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import SplashImage from '../screen/SplashImage';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Login" component={SignIn} />
       {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
+      <Stack.Screen name="SplashImg" component= {SplashImage} />
+      <Stack.Screen name="Login" component={SignIn} />
       <Stack.Screen name="BottomTabs" component={BottomTabs} />
       <Stack.Screen
         name="NotiScreen"
