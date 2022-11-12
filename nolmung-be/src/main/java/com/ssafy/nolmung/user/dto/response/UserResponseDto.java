@@ -24,7 +24,9 @@ public class UserResponseDto {
 
     public UserResponseDto(User user){
         this.userId = user.getUserId();
-        this.regionId = user.getRegion().getRegionId();
+        if(user.getRegion() != null) {
+            this.regionId = user.getRegion().getRegionId();
+        }
         this.userNickName = user.getUserNickname();
         this.userAddressText = user.getUserAddressText();
         this.userIntroduction = user.getUserIntroduction();
