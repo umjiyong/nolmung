@@ -165,7 +165,9 @@ public class User {
         this.userImg = userImg;
         this.userNickname = userNickname;
         this.userEmail = userEmail;
+
         this.userRefreshToken = userRefreshToken;
+
         this.sharePuppies = sharePuppies;
         this.walks = walks;
         this.inAppAlarms = inAppAlarms;
