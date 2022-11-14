@@ -6,42 +6,94 @@ import {
   Button,
   Text,
   StyleSheet,
+  ScrollView,
+  Pressable
 } from 'react-native';
+import GoBackHeader from '../Components/GoBackHeader';
+import VisitMemo from '../Components/VisitMemo';
+import Visitors from '../Components/Visitors';
 
 function LandmarkScreen({navigation}) {
-  const [Login, setLogin] = useState(true);
+
 
   return (
-    <View style={style.container}>
-      <Text style={style.text}>랜드마크 테스트 페이지입니다</Text>
-
-      <TouchableOpacity
-        onPress={() => {
-          Login ? navigation.navigate('BottomTabs') : alert('로그인하세요');
-        }}>
+    <>
+      <GoBackHeader />
+      
+      <View style={{flex: 1}}>
+         {/* Header start */}
+        <View style={style.Header}>
+         <Text style={{color:'#282828', fontWeight:'600',fontSize: 18,}}>하늘 공원</Text> 
+         <Image 
+            source={require('../assets/icons/Vector.png')}
+            resizeMode="contain"
+         />
+        </View>
+        {/* Header End */}
+        {/* 이미지 */}
         <Image
-          source={require('../assets/kakaoLogin/kakao_login_large_narrow.png')}
-          resizeMode="contain"
+          source={require('../assets/icons/background.png')}
+          resizeMode="cover"
           style={{
-            height: 50,
+            width: '100%',
           }}
         />
-      </TouchableOpacity>
-    </View>
+        <View style={{ justifyContent:'center', paddingLeft: 20, marginTop: 10,}}>
+          <Text style={{color:'#282828', fontSize: 18, fontWeight:'600',marginBottom:10,}}>방문한 사람</Text>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <Visitors/>
+            <Visitors/>
+            <Visitors/>
+            <Visitors/>
+            <Visitors/>
+            <Visitors/>
+            <Visitors/>
+            <Visitors/>
+            <Visitors/>
+          </ScrollView>
+        </View>
+        <View style={style.memo} >
+          <Text style={{color:'#282828', fontSize: 18, fontWeight:'600'}}>방명록</Text>
+          <Pressable style={style.writebtn}>
+            <Text style={{color:'#fff',fontWeight: '500', }}>글쓰기</Text>
+          </Pressable>
+        </View>
+        <ScrollView contentContainerStyle={{padding:20,}}>
+          <VisitMemo />
+          <VisitMemo />
+          <VisitMemo />
+          <VisitMemo />
+          <VisitMemo />
+          <VisitMemo />
+        </ScrollView>
+      </View>
+
+    </>
   );
 }
 
 export default LandmarkScreen;
 
 const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center',
+  Header: {
+    flex: 0.07, 
+    flexDirection:'row', 
+    justifyContent:'space-between',
+    alignItems:'center', 
+    paddingHorizontal:20,
   },
-  text: {
-    color: '#000',
-    fontSize: 24,
-    fontFamily: 'NotoSansKR-Bold',
+  memo: {
+    paddingHorizontal:20,
+    marginTop: 20,
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center',
   },
+  writebtn:{
+    backgroundColor:'#ff772f',
+    paddingVertical:4,
+    paddingHorizontal:13,
+    marginTop: 5,
+    borderRadius: 10,
+  }
 });

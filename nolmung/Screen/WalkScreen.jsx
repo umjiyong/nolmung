@@ -140,15 +140,15 @@ function WalkScreen({navigation}) {
       }
     );
     if (flag === 1 && speed < 4) {
-      if (sec !== 58) {
-        setsec(sec + 2);
+      if (sec !== 59) {
+        setsec(sec + 1);
       } else {
         setsec(0);
         setmin(min + 1);
       }
     }
     // getLandmarkAccessibility(() => {});
-  }, 2000);
+  }, 1000);
 
   const handleAppStateChange = nextAppState => {
     console.log('⚽️appState nextAppState', appState.current, nextAppState);
@@ -278,15 +278,10 @@ function WalkScreen({navigation}) {
 
   return (
     <>
-      <View>
+      <View style={{flex: 1}}>
         {startlocation.latitude && ondo ? (
           <>
-            <Text>
-              온도 : {ondo.toFixed(1)} 날씨 : {weathers}
-            </Text>
-            <Text>
-              이동거리 : {distance.toFixed(1)}m 이동시간 : {min}분 {sec}초
-            </Text>
+
 
             {speed > 4 ? <Text>이동속도가 너무 빠릅니다</Text> : null}
             <Map
@@ -330,9 +325,9 @@ function WalkScreen({navigation}) {
                     circleLocation[circleLocation.length - 1].longitude,
                 }}
                 radius={accessableLength}
-                strokeWidth={2}
-                strokeColor="#FF0000"
-                fillColor="#FF0000"
+                strokeWidth={3}
+                strokeColor="#FF772F"
+                fillColor="rgba(255,255,0,0.2)"
               />
             </Map>
             {flag === 0 ? (
@@ -349,6 +344,34 @@ function WalkScreen({navigation}) {
           <Text>로딩중...</Text>
         )}
       </View>
+      <View style={Styles.weatherBox}>
+        <Text style={{color:'#282828', fontWeight: '600', textAlign:'center',fontSize: 15}}>
+          오늘의 날씨 
+        </Text>
+        <Text style={{color:'#FF772F',fontWeight: '700', textAlign:'center', fontSize: 20}}>
+          {ondo.toFixed(1)}°C
+        </Text>
+      </View>
+      {flag === 1 ? (
+      <View style={Styles.walkInfo}>
+        <View style={{alignItems:'center',}}>
+          <Text style={{color:'#282828', fontWeight:'600'}}>
+            산책한 거리
+          </Text>
+          <Text style={{color:'#FF772F', fontSize: 20, fontWeight: '700', marginTop: 4,}}>
+            {distance.toFixed(1)}m 
+          </Text>
+        </View>
+        <View style={{alignItems:'center',}}>
+          <Text style={{color:'#282828',  fontWeight:'600'}}>
+            산책한 시간
+          </Text>
+          <Text style={{color:'#FF772F', fontSize: 20, fontWeight: '700', marginTop: 4,}}>
+            {min}분 {sec}초
+          </Text>
+        </View>
+      </View>):null}
+      
     </>
   );
 }
@@ -375,5 +398,32 @@ const Styles = StyleSheet.create({
     position: 'absolute',
     bottom: 100,
     width: '90%',
+    shadowColor:'#D9D9D9',
+    elevation:4
   },
+  weatherBox: {
+    position: 'absolute',
+    backgroundColor:'white',
+    top: 10,
+    left: 50,
+    paddingVertical:5,
+    paddingHorizontal:18,
+    borderRadius:15,
+    shadowColor:'#000',
+    elevation:3
+  },
+  walkInfo:{
+    flexDirection:'row',
+    justifyContent:'center',
+    position:'absolute',
+    backgroundColor:'white',
+    bottom: 150,
+    left: 20,
+    right: 20,
+    paddingVertical:20,
+    paddingHorizontal:20,
+    borderRadius: 20,
+    shadowColor:'#D9D9D9',
+    elevation:4
+  }
 });
