@@ -19,19 +19,19 @@ import MiddleHeader from '../components/MiddleHeader';
 
 const NewUserPetInfo = () => {
   const navi = useNavigation();
-  const [DogName, setDogName] = useState('두부');
+  const [DogName, setDogName] = useState('');
   const onChangeText = event => {
     setDogName(event);
   };
 
-  const [DogSeed, setDogSeed] = useState('믹스견');
+  const [DogSeed, setDogSeed] = useState('');
   const onChangeSeed = event => {
     setDogSeed(event);
   };
 
-  const [year, setYear] = useState('1997');
-  const [month, setMonth] = useState('05');
-  const [date, setDate] = useState('30');
+  const [year, setYear] = useState('');
+  const [month, setMonth] = useState('');
+  const [date, setDate] = useState('');
 
   const onChangeYear = event => {
     setYear(event);
@@ -84,9 +84,7 @@ const NewUserPetInfo = () => {
               </Text>
             </View>
           </TouchableOpacity>
-          <DogListItem />
-          <DogListItem />
-          <DogListItem />
+          
         </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}
