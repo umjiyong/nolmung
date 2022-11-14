@@ -281,8 +281,6 @@ function WalkScreen({navigation}) {
       <View style={{flex: 1}}>
         {startlocation.latitude && ondo ? (
           <>
-
-
             {speed > 4 ? <Text>이동속도가 너무 빠릅니다</Text> : null}
             <Map
               provider={PROVIDER_GOOGLE}
@@ -345,33 +343,57 @@ function WalkScreen({navigation}) {
         )}
       </View>
       <View style={Styles.weatherBox}>
-        <Text style={{color:'#282828', fontWeight: '600', textAlign:'center',fontSize: 15}}>
-          오늘의 날씨 
+        <Text
+          style={{
+            color: '#282828',
+            fontWeight: '600',
+            textAlign: 'center',
+            fontSize: 15,
+          }}>
+          오늘의 날씨
         </Text>
-        <Text style={{color:'#FF772F',fontWeight: '700', textAlign:'center', fontSize: 20}}>
+        <Text
+          style={{
+            color: '#FF772F',
+            fontWeight: '700',
+            textAlign: 'center',
+            fontSize: 20,
+          }}>
           {ondo.toFixed(1)}°C
         </Text>
       </View>
       {flag === 1 ? (
-      <View style={Styles.walkInfo}>
-        <View style={{alignItems:'center',}}>
-          <Text style={{color:'#282828', fontWeight:'600'}}>
-            산책한 거리
-          </Text>
-          <Text style={{color:'#FF772F', fontSize: 20, fontWeight: '700', marginTop: 4,}}>
-            {distance.toFixed(1)}m 
-          </Text>
+        <View style={Styles.walkInfo}>
+          <View style={{alignItems: 'center'}}>
+            <Text style={{color: '#282828', fontWeight: '600'}}>
+              산책한 거리
+            </Text>
+            <Text
+              style={{
+                color: '#FF772F',
+                fontSize: 20,
+                fontWeight: '700',
+                marginTop: 4,
+              }}>
+              {distance.toFixed(1)}m
+            </Text>
+          </View>
+          <View style={{alignItems: 'center'}}>
+            <Text style={{color: '#282828', fontWeight: '600'}}>
+              산책한 시간
+            </Text>
+            <Text
+              style={{
+                color: '#FF772F',
+                fontSize: 20,
+                fontWeight: '700',
+                marginTop: 4,
+              }}>
+              {min}분 {sec}초
+            </Text>
+          </View>
         </View>
-        <View style={{alignItems:'center',}}>
-          <Text style={{color:'#282828',  fontWeight:'600'}}>
-            산책한 시간
-          </Text>
-          <Text style={{color:'#FF772F', fontSize: 20, fontWeight: '700', marginTop: 4,}}>
-            {min}분 {sec}초
-          </Text>
-        </View>
-      </View>):null}
-      
+      ) : null}
     </>
   );
 }
@@ -398,32 +420,32 @@ const Styles = StyleSheet.create({
     position: 'absolute',
     bottom: 100,
     width: '90%',
-    shadowColor:'#D9D9D9',
-    elevation:4
+    shadowColor: '#D9D9D9',
+    elevation: 4,
   },
   weatherBox: {
     position: 'absolute',
-    backgroundColor:'white',
+    backgroundColor: 'white',
     top: 10,
     left: 50,
-    paddingVertical:5,
-    paddingHorizontal:18,
-    borderRadius:15,
-    shadowColor:'#000',
-    elevation:3
+    paddingVertical: 5,
+    paddingHorizontal: 18,
+    borderRadius: 15,
+    shadowColor: '#000',
+    elevation: 3,
   },
-  walkInfo:{
-    flexDirection:'row',
-    justifyContent:'center',
-    position:'absolute',
-    backgroundColor:'white',
+  walkInfo: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    position: 'absolute',
+    backgroundColor: 'white',
     bottom: 150,
     left: 20,
     right: 20,
-    paddingVertical:20,
-    paddingHorizontal:20,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
     borderRadius: 20,
-    shadowColor:'#D9D9D9',
-    elevation:4
-  }
+    shadowColor: '#D9D9D9',
+    elevation: 4,
+  },
 });
