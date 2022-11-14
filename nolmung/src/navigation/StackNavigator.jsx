@@ -23,14 +23,18 @@ import SearchFriendList from '../screen/SearchFriendList';
 import {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashImage from '../screen/SplashImage';
+import NewUserInfo from '../screen/NewUserInfo';
+import NewUserPetInfo from '../screen/NewUserPetInfo';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
-      <Stack.Screen name="SplashImg" component= {SplashImage} />
+      <Stack.Screen name="SplashImg" component={SplashImage} />
       <Stack.Screen name="Login" component={SignIn} />
+      <Stack.Screen name="NewUserInfo" component={NewUserInfo} />
+      <Stack.Screen name="NewUserPetInfo" component={NewUserPetInfo} />
       <Stack.Screen name="BottomTabs" component={BottomTabs} />
       <Stack.Screen
         name="NotiScreen"

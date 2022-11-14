@@ -35,7 +35,7 @@ type RootStackParamList = {
   SignUp: undefined;
 };
 
-//NativeStackScreenProps : 
+//NativeStackScreenProps :
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 
 const {width, height} = Dimensions.get('window');
@@ -76,55 +76,53 @@ function SignIn({navigation}: SignInScreenProps) {
   const [user, setUser] = useState({});
 
   const signInWithKakao = async (): Promise<void> => {
-    console.log("누름?!");
-    const token: KakaoOAuthToken = await login().then(token => {
-      console.log(11, token);
-      if (token) {
-        AsyncStorage.setItem('accessToken', token.accessToken, () => {
-          console.log("토큰 저장 완료");
-        })
-        loginCheckNewUser(
-          {accessToken: token.accessToken, refreshToken: token.refreshToken},
-          res => {
-            console.log('무엇일까요?', res.data.data);
-            AsyncStorage.setItem('userId', res.data.data[1], () => {
-              console.log('사용자 아이디 저장 완료');
-            });
-            // navigation.navigate('BottomTabs');
-          },
-          // const {id, email, name, image, nickname, profileOpen} =
-          //   res.data.user;
-          err => {
-            console.log('에러다', err);
-          },
-        );
-      }
-    });
-    setUser(token);
-    navigation.navigate('BottomTabs')
+    // console.log("누름?!");
+    // const token: KakaoOAuthToken = await login().then(token => {
+    //   console.log(11, token);
+    //   if (token) {
+    //     AsyncStorage.setItem('accessToken', token.accessToken, () => {
+    //       console.log("토큰 저장 완료");
+    //     })
+    //     loginCheckNewUser(
+    //       {accessToken: token.accessToken, refreshToken: token.refreshToken},
+    //       res => {
+    //         console.log('무엇일까요?', res.data.data);
+    //         AsyncStorage.setItem('userId', res.data.data[1], () => {
+    //           console.log('사용자 아이디 저장 완료');
+    //         });
+    //         // navigation.navigate('BottomTabs');
+    //       },
+    //       // const {id, email, name, image, nickname, profileOpen} =
+    //       //   res.data.user;
+    //       err => {
+    //         console.log('에러다', err);
+    //       },
+    //     );
+    //   }
+    // });
+    // setUser(token);
+    navigation.navigate('NewUserInfo');
   };
 
-  AsyncStorage.getItem('accessToken', (err, result) => {
-    console.log('저장소 확인 Test.tsx', result);
-    if (result != null) setIsLogin(true);
-    else setIsLogin(false);
+  // AsyncStorage.getItem('accessToken', (err, result) => {
+  //   console.log('저장소 확인 Test.tsx', result);
+  //   if (result != null) setIsLogin(true);
+  //   else setIsLogin(false);
 
-    setKakaoToken(JSON.stringify(result));
-  });
+  //   setKakaoToken(JSON.stringify(result));
+  // });
 
   const deleteAsync = () => {
-    console.log("삭제했당");
-    AsyncStorage.clear();
-
-  }
+    console.log('삭제했당');
+    // AsyncStorage.clear();
+  };
 
   return (
     <View style={style.container}>
       <Text style={style.text}>놀면 멍하니</Text>
       <Image source={require('../assets/image/Dog1.jpg')} style={style.logo} />
-      <TouchableOpacity
-        onPress={signInWithKakao}>
-          {console.log(isLogin)}
+      <TouchableOpacity onPress={signInWithKakao}>
+        {console.log(isLogin)}
         <Image
           source={require('../assets/kakaoLogin/kakao_login_large_wide.png')}
           resizeMode="contain"
@@ -133,7 +131,7 @@ function SignIn({navigation}: SignInScreenProps) {
           }}
         />
       </TouchableOpacity>
-      
+
       {/* <View style={style.buttonContainer}>
         <Pressable style={{marginTop: 10}} onPress={signInWithKakao}>
           <Image source={require('../assets/kakaoLogin/kakao_login_large_wide.png')} />
