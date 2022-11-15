@@ -32,7 +32,7 @@ const NewUserInfo = () => {
     console.log(event);
   };
 
-  const [address, setAddress] = useState('서울시 종로구 난계로 241');
+  const [address, setAddress] = useState('주소를 입력해주세요');
 
   return (
     <>
