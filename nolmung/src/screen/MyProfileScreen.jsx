@@ -9,12 +9,15 @@ import {
   Image,
   StyleSheet,
   Alert,
+  PermissionsAndroid,
+  Pressable
 } from 'react-native';
 import Header from '../components/Header';
 import MyDog from '../components/MyDog';
 import MyFamily from '../components/MyFamily';
 import {user_info} from "../api/user"
 import {user_puppy_info} from "../api/puppy"
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
 
 
 function MyProfileScreen({navigation}) {
@@ -26,11 +29,47 @@ function MyProfileScreen({navigation}) {
   const userAddress = '전남 여수시 선원동';
   const friendCode = '#E1VH64';
   const [intro, setIntro] = useState('소개글이 없습니다');
-  const introText = {
-    // text: '있습니다.'
-  };
+  const [photo,setPhoto] = useState("")
+  
+  
+  // const showPicker = async () =>{
+  //   const grantedcamera = await PermissionsAndroid.request(
+  //     PermissionsAndroid.PERMISSIONS.CAMERA,
+  //     {
+  //       title : "App Camera Permission",
+  //       message : "GOGO",
+  //       buttonNeutral : "Ask me later",
+  //       buttonNegative : "cancel",
+  //       buttonPositive : "OK"
+  //     }
+  //   )
+
+  //   const grantedstorage = await PermissionsAndroid.request(
+  //     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+  //     {
+  //       title : "App Camera Permission",
+  //       message : "GOGO",
+  //       buttonNeutral : "Ask me later",
+  //       buttonNegative : "cancel",
+  //       buttonPositive : "OK"
+  //     }
+  //   )
+  //   console.log(grantedcamera)
+  //   if(grantedcamera ===PermissionsAndroid.RESULTS.GRANTED && grantedstorage===PermissionsAndroid.RESULTS.GRANTED){
+  //     console.log("camera ok")
+  //   }else{
+  //     console.log("camera x")
+  //   }
 
 
+
+  // }
+
+  // const imgChange = () =>{
+  //   showPicker();
+
+  // } 
+  
 
   const user_info_func = async () => {
     try {
@@ -74,25 +113,73 @@ function MyProfileScreen({navigation}) {
     user_puppy_info_func();
   }, []);
   
-  console.log(puppyinfo.myPuppyList)
+  console.log("유저사진",userinfo.userImg)
+ 
+
+
+
+
+  
+
+
+
+  const [response, setResponse] = useState();
+  const onSelectImage = () => {
+    try {
+      
+      launchImageLibrary(
+        {
+          mediaType: "photo",
+          maxWidth: 512,
+          maxHeight: 512,
+          includeBase64: Platform.OS === 'android',
+        },
+        (res) => {
+          console.log(res);
+          if (res.didCancel) return;
+          setResponse(res);
+        })
+      
+    }
+      catch (err) {
+        console.log(err);
+        console.log("심각한 에러;;");
+      }
+      
+    
+    }
+
+
 
   return (
     <>
       <Header HeaderName="마이 페이지" />
       <ScrollView style={Styles.container} showsVerticalScrollIndicator={false}>
-        {/* Start Header */}
-        {/* End Header */}
-        {/* Start Profile */}
-        {/* touchablewithoutfeedback 검색 */}
+        
         <View style={Styles.profile}>
-          <Image
+        <Pressable onPress={onSelectImage}>
+            {response ?  <Image
+              source={{uri: response?.assets[0]?.uri}}
+              
+              resizeMode="contain"
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 100,
+              }}
+            /> : <Image
             source={{uri : userinfo.userImg}}
+            
             resizeMode="contain"
             style={{
               width: 80,
               height: 80,
             }}
-          />
+          />}
+        </Pressable>
+         
+          {/* <Button title="이미지 선택" onPress={showPicker} ></Button>  */}
+          
           <View style={Styles.friendPostBox}>
             <View style={Styles.friendBox}>
               <Text style={Styles.FriendCountText}>{Friend}</Text>
@@ -182,13 +269,17 @@ function MyProfileScreen({navigation}) {
 
         {(puppyinfo.myPuppyList) ? (
             <>
+            
                 {(puppyinfo.myPuppyList).map((item,index)=>{
                   
                   return (<MyDog
                   key = {index}
-                  puppyId = {item.puppyId}
-                  puppyImg = {item.puppyImg}
-                  puppyName = {item.puppyName}
+                  puppyId = {item.puppyInfo.puppyId}
+                  puppyImg = {item.puppyInfo.puppyImg}
+                  puppyName = {item.puppyInfo.puppyName}
+                  puppyAge = {item.puppyInfo.puppyAge}
+                  breedName = {item.puppyInfo.breedName}
+                  
                   />)
                 })}
                 
