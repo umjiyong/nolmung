@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import {Modal, ScrollView,TextInput, StyleSheet, Text, View, TouchableOpacity, Button } from "react-native";
-// import Postcode from "@actbase/react-daum-postcode";
+import { ScrollView,TextInput, StyleSheet, Text, View, TouchableOpacity, Button, Pressable } from "react-native";
+import Postcode from "@actbase/react-daum-postcode";
+import Modal from "react-native-modal"
 const HumanModify = () => {
+    const [isModalVisible, setModalVisible] = useState(false);
+    const toggleModal = () => {
+          setModalVisible(!isModalVisible);
+          console.log(isModalVisible)
+      };
+    const backdropOpacity = 0.3
     const [nickName, setNickName] = useState('닉네임을 입력하세요')
     const onChangeText = (event) => {
         setNickName(event)
@@ -14,7 +21,7 @@ const HumanModify = () => {
         console.log(event)
     }
 
-    const [address, setAddress] = useState('서울시 종로구 난계로 241')
+    const [address, setAddress] = useState('주소를 입력해주세요')
 
     return (
     <>
@@ -41,17 +48,37 @@ const HumanModify = () => {
                     <Text style={Styles.AddressText}>주소</Text> 
                     <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                         <Text style={{color: '#282828'}}>{address}</Text>
-                        <Text style={Styles.changeBtn}>변경</Text>
+                        <Pressable onPress={toggleModal}>
+                            <Text style={Styles.changeBtn}>변경</Text>
+                        </Pressable>
                     </View>
                     <View style={Styles.addressBottom}/>
                     
                 </View>
             </View>
             <View style={{alignItems:'center'}}>
-                <TouchableOpacity style={Styles.completeBtn}>
+                <TouchableOpacity  style={Styles.completeBtn}>
                     <Text style={{color: '#fff', fontWeight:'500'}}>수정 완료</Text>
                 </TouchableOpacity>
             </View>
+
+            <Modal
+                isVisible={isModalVisible}
+                onBackdropPress={toggleModal}
+                backdropOpacity = {backdropOpacity}    
+            >
+                
+                    <Postcode
+                        style={{ flex: 1}}
+                        jsOptions={{ animation: true, hideMapBtn: true }}
+                        onSelected={data => {
+                            console.log(JSON.stringify(data.roadAddress))
+                            setAddress(data.roadAddress.replace(/\"/gi, ""))
+                            toggleModal()
+                        }}
+                    />
+          
+            </Modal>        
         </ScrollView>
     </>
     )

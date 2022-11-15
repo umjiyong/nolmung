@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {
-  Modal,
   ScrollView,
   TextInput,
   StyleSheet,
@@ -9,9 +8,17 @@ import {
   View,
   TouchableOpacity,
   Button,
+  Pressable
 } from 'react-native';
-// import Postcode from "@actbase/react-daum-postcode";
+import Postcode from "@actbase/react-daum-postcode";
+import Modal from "react-native-modal"
 const NewUserInfo = () => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+        console.log(isModalVisible)
+    };
+  const backdropOpacity = 0.3
   const Navigation = useNavigation();
   const [nickName, setNickName] = useState('닉네임을 입력하세요');
   const onChangeText = event => {
@@ -70,7 +77,9 @@ const NewUserInfo = () => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: '#282828'}}>{address}</Text>
-              <Text style={Styles.changeBtn}>변경</Text>
+              <Pressable onPress={toggleModal}>
+                <Text style={Styles.changeBtn}>변경</Text>      
+              </Pressable>
             </View>
             <View style={Styles.addressBottom} />
           </View>
@@ -84,6 +93,24 @@ const NewUserInfo = () => {
             <Text style={{color: '#fff', fontWeight: '500'}}>다음</Text>
           </TouchableOpacity>
         </View>
+
+        <Modal
+          isVisible={isModalVisible}
+          onBackdropPress={toggleModal}
+          backdropOpacity = {backdropOpacity}    
+        >
+              
+          <Postcode
+              style={{ flex: 1}}
+              jsOptions={{ animation: true, hideMapBtn: true }}
+              onSelected={data => {
+                  console.log(JSON.stringify(data.roadAddress))
+                  setAddress(data.roadAddress.replace(/\"/gi, ""))
+                  toggleModal()
+              }}
+          />
+        
+        </Modal>        
       </View>
     </>
   );
