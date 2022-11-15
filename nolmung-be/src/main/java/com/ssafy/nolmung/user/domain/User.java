@@ -121,6 +121,8 @@ public class User {
     private List<BoardLike> boardLikes = new ArrayList<>();
 
 
+
+
     @Builder
     public User (int userId,
                  Region region,

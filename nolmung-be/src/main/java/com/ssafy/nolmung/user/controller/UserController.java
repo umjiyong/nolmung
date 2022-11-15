@@ -2,33 +2,26 @@ package com.ssafy.nolmung.user.controller;
 
 //import com.ssafy.nolmung.region.domain.Region;
 //import com.ssafy.nolmung.region.service.RegionService;
-import com.querydsl.core.Tuple;
+import com.ssafy.nolmung.global.interceptor.IsLogined;
+import com.ssafy.nolmung.global.interceptor.IsLoginedCheck;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.dto.MessageResponseDto;
 import com.ssafy.nolmung.user.dto.ResultDto;
 import com.ssafy.nolmung.user.dto.request.UserRequestDto;
 import com.ssafy.nolmung.user.dto.request.UserTokenRequestDto;
 import com.ssafy.nolmung.user.dto.response.UserResponseDto;
+import com.ssafy.nolmung.user.dto.response.UserTokenDataResponseDto;
+import com.ssafy.nolmung.user.service.JwtService;
 import com.ssafy.nolmung.user.service.UserService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +33,11 @@ public class UserController {
 
     @Autowired
     private final UserService userservice;
+
+    private final JwtService jwtService;
+
+    private static final String SALT = "asdasdfqe422623456231ffgfdgdfgfgdgdgdgdgfgWRDFSFQEFdwdwdsadas";
+
 //    private final RegionService regionService;
 
 //    @GetMapping("/findAll")
@@ -50,28 +48,40 @@ public class UserController {
 //    }
 
     @PostMapping("/kakaoLogin")
+    @IsLogined(role = IsLoginedCheck.NOTLOGIN)
     @ApiOperation(value="카카오 로그인 이벤트", notes="신규 가입자는 0번째에 new, 기존 가입자는 1번째에 old로 표기, 1번째 인덱스에 string으로 유저ID")
-    public ResultDto CheckIsNewUser(@RequestBody UserTokenRequestDto token) {
+    public Map CheckIsNewUser(@RequestBody UserTokenRequestDto token) {
 
         System.out.println(token.getAccessToken());
 
         /**
          * 0번째는 유저아이디, 1번째는 신규가입인지, 아닌지 판별. 0이면 신규가입, 1이면 기존유저
          */
-        List userState = userservice.getKakaoUser(token);
+        UserTokenDataResponseDto userTokenDataResponseDto = userservice.getKakaoUser(token);
         List<String> list = new ArrayList<>();
 
-        if(userState.get(1) == Integer.valueOf(0)){
+        //아이디 넣기
+        list.add(Integer.toString(userTokenDataResponseDto.getUserId()));
+
+        //신규인지 기존인지 넣기
+        if(userTokenDataResponseDto.getIsNewUser() == Integer.valueOf(0)){
             list.add("new");
         }
         else {
             list.add("old");
         }
 
-        list.add(String.valueOf(userState.get(0)));
+        //카카오 uuid를 암호화 데이터로 지정해서 jwt 토큰으로 사용
+
+        Map map = new HashMap<>();
+
+        String jwtService1 = jwtService.create("KakaoUuid", userTokenDataResponseDto.getUserKakaoUuid(), "Bearer");
+
+        map.put("Bearer", jwtService1);
 
 
-        return new ResultDto(list);
+        map.put("user", list);
+        return map;
     }
 
     @GetMapping("/findByUuid/{KakaoUuid}")
@@ -83,6 +93,7 @@ public class UserController {
 
 
     @GetMapping("/findAll")
+    @IsLogined(role = IsLoginedCheck.NOTLOGIN)
     @ApiOperation(value="(개발용)전체 사용자 조회", notes="전체 사용자 반환")
     public ResultDto readAllUser(){
         List<UserResponseDto> userList = new ArrayList<>();
