@@ -147,7 +147,7 @@ function SignIn({navigation}: SignInScreenProps) {
     <View style={style.container}>
       <Text style={style.text}>놀면 멍하니</Text>
       <Image source={require('../assets/image/Dog1.jpg')} style={style.logo} />
-      <TouchableOpacity onPress={signInWithKakao}>
+      <TouchableOpacity onPress={signInWithKakao} >
         {console.log(isLogin)}
         <Image
           source={require('../assets/kakaoLogin/kakao_login_large_wide.png')}
