@@ -12,9 +12,6 @@ const SplashImage = ({navigation}) => {
       //If not then send for Authentication
       //else send to Home Screen
       AsyncStorage.getItem('userId', (err, res) => {
-        console.log('스플래시에서 확인', res);
-        navigation.replace(res == null ? 'Login' : 'BottomTabs');
-      });
     }, 1000);
   }, []);
 

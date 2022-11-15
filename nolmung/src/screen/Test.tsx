@@ -76,31 +76,37 @@ function SignIn({navigation}: SignInScreenProps) {
   const [user, setUser] = useState({});
 
   const signInWithKakao = async (): Promise<void> => {
-    // console.log("누름?!");
-    // const token: KakaoOAuthToken = await login().then(token => {
-    //   console.log(11, token);
-    //   if (token) {
-    //     AsyncStorage.setItem('accessToken', token.accessToken, () => {
-    //       console.log("토큰 저장 완료");
-    //     })
-    //     loginCheckNewUser(
-    //       {accessToken: token.accessToken, refreshToken: token.refreshToken},
-    //       res => {
-    //         console.log('무엇일까요?', res.data.data);
-    //         AsyncStorage.setItem('userId', res.data.data[1], () => {
-    //           console.log('사용자 아이디 저장 완료');
-    //         });
-    //         // navigation.navigate('BottomTabs');
-    //       },
-    //       // const {id, email, name, image, nickname, profileOpen} =
-    //       //   res.data.user;
-    //       err => {
-    //         console.log('에러다', err);
-    //       },
-    //     );
-    //   }
-    // });
-    // setUser(token);
+    console.log("누름?!");
+    const token: KakaoOAuthToken = await login().then(token => {
+      console.log(11, token);
+      if (token) {
+        AsyncStorage.setItem('accessToken', token.accessToken, () => {
+          console.log("토큰 저장 완료");
+        })
+        try {
+          console.log("로그인 axios 연결 시작", token.accessToken);
+          loginCheckNewUser(
+            {accessToken: token.accessToken, refreshToken: token.refreshToken},
+            res => {
+              console.log('무엇일까요?', res.data.data);
+              AsyncStorage.setItem('userId', res.data.data[1], () => {
+                console.log('사용자 아이디 저장 완료');
+              });
+            },
+          // const {id, email, name, image, nickname, profileOpen} =
+          //   res.data.user;
+            err => {
+              console.log('Test.tsx에러다', err);
+            },
+          );
+        } catch(err){
+          console.log("로그인 실패");
+        }
+        
+      }
+    });
+    setUser(token);
+    // navigation.navigate('BottomTabs');
     navigation.navigate('NewUserInfo');
   };
 
@@ -113,9 +119,25 @@ function SignIn({navigation}: SignInScreenProps) {
   // });
 
   const deleteAsync = () => {
-    console.log('삭제했당');
-    // AsyncStorage.clear();
-  };
+    console.log("삭제했당");
+    AsyncStorage.clear();
+  }
+
+  const getAll = () => {
+    console.log("전체조회 클릭됨");
+    try {
+      findAllUser(
+        res => {
+          console.log("통신성공!", res);
+        },
+        err => {
+          console.log("통신실패!", err);
+        }
+      )
+    } catch (err) {
+      console.log("완전 에러", err);
+    }
+  }
 
   return (
     <View style={style.container}>
@@ -140,6 +162,9 @@ function SignIn({navigation}: SignInScreenProps) {
       <View style={style.buttonContainer}>
         <Pressable style={{marginTop: 10}} onPress={deleteAsync}>
           <Text>async storage 삭제</Text>
+        </Pressable>
+        <Pressable style={{marginTop: 10}} onPress={getAll}>
+          <Text>유저 전체정보 조회</Text>
         </Pressable>
       </View>
     </View>
