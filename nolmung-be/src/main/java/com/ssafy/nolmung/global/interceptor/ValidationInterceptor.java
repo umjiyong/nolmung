@@ -61,6 +61,7 @@ public class ValidationInterceptor implements HandlerInterceptor {
 
     private String extractJwtTokenFromHeader(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
+        log.info("헤더 : {}", authorization);
         if (authorization == null) {
             throw new RuntimeException();
         }
