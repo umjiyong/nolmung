@@ -41,14 +41,19 @@ public class ValidationInterceptor implements HandlerInterceptor {
          */
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         IsLogined isLogined = handlerMethod.getMethodAnnotation(IsLogined.class);
-        if(isLogined == null || token.equals("NOTLOGIN")){
+        log.info("이즈로그인드는? : {}", isLogined);
+//        isLogined == null &&
+        if(isLogined == null || token.equals(isLogined.role().toString())){
+            log.info("1번째");
             return true;
+
         }
 
         /**
          * 유효한 요청일때 인터셉터 통과! 모든 요청에서 유효성을 검사하게 되어 리소스 낭비가 발생하긴 함.
          */
         if(jwtService.isValidUser()) {
+            log.info("2번째");
             return true;
         }
 
@@ -61,11 +66,13 @@ public class ValidationInterceptor implements HandlerInterceptor {
 
     private String extractJwtTokenFromHeader(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
+        String isLogined = request.getHeader("IsLogined");
         log.info("헤더 : {}", authorization);
-        if (authorization == null) {
+        if (authorization == null && isLogined == null) {
             throw new RuntimeException();
         }
         try {
+            if(authorization == null) return isLogined;
             return authorization;
         } catch (Exception e) {
             throw new RuntimeException();

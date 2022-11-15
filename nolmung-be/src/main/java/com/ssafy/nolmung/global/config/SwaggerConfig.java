@@ -53,7 +53,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
         return new ApiInfoBuilder()
                 .title("Project Nolmung Spring Boot RESTful API")
                 .version("1.0.1")
-                .description("Swagger-Ui for Nolmung<br/> <mark>태그적용</mark>")
+                .description("Swagger-Ui for Nolmung<br/> <mark>태그적용</mark> <br/>헤더에 NOTLOGIN 또는 Bearer accessToken 붙여서 하기.")
                 .build();
     }
 
