@@ -2,8 +2,7 @@ import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAsyncStorage from "./useAsyncStorage";
 
-const base_URL = "http://192.168.56.1:8080/nolmung";
-// const base_URL = 'http://192.168.45.243:8080/nolmung';
+const base_URL = "http://192.168.128.66:8080/nolmung";
 // const base_URL = "http://k7a502.p.ssafy.io/nolmung";
 
 //사용자 정보가 필요한 경우

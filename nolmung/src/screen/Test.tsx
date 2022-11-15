@@ -88,9 +88,12 @@ function SignIn({navigation}: SignInScreenProps) {
           loginCheckNewUser(
             {accessToken: token.accessToken, refreshToken: token.refreshToken},
             res => {
-              console.log('무엇일까요?', res.data.data);
-              AsyncStorage.setItem('userId', res.data.data[1], () => {
+              console.log('무엇일까요?', res.data.Bearer, res.data.user);
+              AsyncStorage.setItem('userId', res.data.user[0], () => {
                 console.log('사용자 아이디 저장 완료');
+              });
+              AsyncStorage.setItem('Bearer', res.data.Bearer, () => {
+                console.log('토큰 저장 완료');
               });
             },
           // const {id, email, name, image, nickname, profileOpen} =
