@@ -9,7 +9,7 @@ const base_URL = "http://192.168.128.66:8080/nolmung";
 export const apiInstance = () => {
   console.log('이것도 되네요 index.js', AsyncStorage.getItem('accessToken'));
   const token = useAsyncStorage;
-  console.log('토큰 저장도 잘됨 index.js', token.accessToken);
+  console.log('토큰 저장도 잘됨 index.js', token.Bearer);
   const instance = axios.create({
     baseURL: base_URL,
     headers: {
