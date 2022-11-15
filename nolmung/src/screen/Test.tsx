@@ -95,6 +95,7 @@ function SignIn({navigation}: SignInScreenProps) {
               AsyncStorage.setItem('Bearer', res.data.Bearer, () => {
                 console.log('토큰 저장 완료');
               });
+              res.data.user[1] == "old" ? navigation.navigate('BottomTabs') : navigation.navigate('NewUserInfo');
             },
           // const {id, email, name, image, nickname, profileOpen} =
           //   res.data.user;
@@ -110,7 +111,7 @@ function SignIn({navigation}: SignInScreenProps) {
     });
     setUser(token);
     // navigation.navigate('BottomTabs');
-    navigation.navigate('NewUserInfo');
+    // navigation.navigate('NewUserInfo');
   };
 
   // AsyncStorage.getItem('accessToken', (err, result) => {
