@@ -58,6 +58,25 @@ public class JwtService {
         }
     }
 
+    public String getUserId() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        String header = request.getHeader("Authorization");
+
+        if(header == null || !header.startsWith("Bearer ")) {
+            return "";
+        }
+
+        String jwt = request.getHeader("Authorization").replace("Bearer ", "");
+        Jws<Claims> claimsJws = null;
+        try{
+            claimsJws = Jwts.parser().setSigningKey(SALT.getBytes("UTF-8")).parseClaimsJws(jwt); // 복호화
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return claimsJws.getBody().get("KakaoUuid").toString();
+    }
+
     //현재 사용자가 유효한지 체크
     public boolean isValidUser() throws NumberFormatException{
        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())

@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -161,6 +162,18 @@ public class UserController {
         userservice.userRegist(user);
 
         return new MessageResponseDto("회원정보 입력 완료");
+    }
+
+    @DeleteMapping("/userDelete")
+    @ApiOperation(value = "유저 삭제", notes="본인 데이터만 삭제 가능")
+    public ResultDto deleteUser(){
+        String userUuid = jwtService.getUserId();
+
+        User user = userservice.findByKakaoUuid(userUuid);
+
+
+        return new ResultDto(userservice.deleteUser(user.getUserId()));
+
     }
 
 //    @ResponseBody

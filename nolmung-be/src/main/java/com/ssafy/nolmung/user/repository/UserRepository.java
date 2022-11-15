@@ -15,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByUserCode(int userCode);
 
+    String deleteByUserId(int userId);
+
 //    List<Tuple> findAllUser();
 
 //    HashMap findByUserIdForUser(String userId);
