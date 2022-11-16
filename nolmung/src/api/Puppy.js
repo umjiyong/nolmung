@@ -21,3 +21,8 @@ export const puppy_puppy_info= async (response, success, fail) => {
         .then(success)
         .catch(fail);
     };
+
+
+export const puppy_breed_info = async (success,fail) => {
+    return await api.get(`/puppy/breedList`).then(success).catch(fail)
+    }
