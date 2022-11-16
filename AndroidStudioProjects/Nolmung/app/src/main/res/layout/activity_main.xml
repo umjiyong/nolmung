@@ -16,70 +16,61 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/statusText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="00 : 00"
+            android:layout_marginTop="94dp"
+            android:layout_marginBottom="111dp"
+            android:text="달리고 싶어요"
             android:textAlignment="center"
-            android:textSize="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnStart"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/btnStart"
-            android:layout_width="79dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="140dp"
-            android:layout_marginEnd="125dp"
+            android:id="@+id/btnWalk"
+            android:layout_width="123dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="118dp"
+            android:layout_marginEnd="24dp"
             android:layout_marginBottom="33dp"
+            android:background="@drawable/round_button"
+            android:backgroundTint="@android:color/holo_orange_dark"
             android:onClick="clickHandler"
-            android:text="달리기"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btnReset"
-            android:layout_width="81dp"
-            android:layout_height="49dp"
-            android:layout_marginStart="126dp"
-            android:layout_marginTop="140dp"
-            android:layout_marginEnd="29dp"
-            android:layout_marginBottom="34dp"
-            android:onClick="clickHandler"
-            android:text="중지"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="81dp"
-            android:layout_height="95dp"
-            android:layout_marginStart="73dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginEnd="73dp"
-            android:layout_marginBottom="97dp"
-            android:rotationY="0"
-            android:src="@drawable/bmp"
+            android:text="산책 시작"
+            android:textColor="#F4F4F4"
+            android:theme="@android:style/Theme.Holo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/bmp" />
+            app:layout_constraintVertical_bias="0.23"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <ImageView
+            android:id="@+id/gif_image"
+            android:layout_width="145dp"
+            android:layout_height="94dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
