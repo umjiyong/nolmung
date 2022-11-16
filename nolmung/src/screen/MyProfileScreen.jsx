@@ -18,6 +18,7 @@ import MyFamily from '../components/MyFamily';
 import {user_info} from "../api/user"
 import {user_puppy_info} from "../api/puppy"
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
+import {user_info_change} from '../api/user'
 
 
 function MyProfileScreen({navigation}) {
@@ -108,6 +109,11 @@ function MyProfileScreen({navigation}) {
     }
   };
 
+
+  
+
+
+  
   useEffect(() => {
     user_info_func();
     user_puppy_info_func();
@@ -119,7 +125,24 @@ function MyProfileScreen({navigation}) {
 
 
 
-  
+  const user_info_change_func = async (data) => {
+    try {
+      
+      await user_info_change(
+        { userImg: data },
+        (response) => {
+          console.log(response)
+        },
+        (err) => {
+          console.log("강아지정보 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
 
 
 
@@ -138,6 +161,11 @@ function MyProfileScreen({navigation}) {
           console.log(res);
           if (res.didCancel) return;
           setResponse(res);
+          user_info_change_func(response?.assets[0]?.uri)
+
+
+
+
         })
       
     }
