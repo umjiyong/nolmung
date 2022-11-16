@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {View, Text, Button, StyleSheet, Image, TouchableHighlight, Pressable, ScrollView, TouchableOpacity, TextInput, TouchableWithoutFeedback} from 'react-native';
 import FriendRecommand from '../components/FriendRecommand';
 import FriendRequest from '../components/FriendRequest';
@@ -6,10 +6,11 @@ import Header from '../components/Header';
 import MyFriend from '../components/MyFriend';
 import Modal from "react-native-modal";
 import SearchFriendList from '../components/SearchFriendList';
+import {user_friend_list} from "../api/Friend"
 
-
-function FriendScreen({navigation}) {
+function FriendScreen() {
   const [openFI, setOpenFI] = useState(false)
+  const [friendList,setfriendList] = useState([])
   const onPressArrow = () => {
     setOpenFI(prev => !prev)
   }
@@ -26,6 +27,35 @@ function FriendScreen({navigation}) {
     console.log(search)
   }
   const [text, setText] = useState('')
+
+
+
+  const getfriend_list_func = async () => {
+    try {
+      
+      await user_friend_list(
+        { userId: 1 },
+        (response) => {
+          setfriendList(response.data);
+        },
+        (err) => {
+          console.log("아티클질문 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
+
+  useEffect(() => {
+    getfriend_list_func()
+    
+  }, []);
+
+  console.log(friendList)
+
   return (
     <>
       <Header HeaderName="친구 목록" />
@@ -100,15 +130,19 @@ function FriendScreen({navigation}) {
             </View>
            
             <ScrollView style={Styles.MyFriendBox}>
-              
-                <MyFriend/>
-                <MyFriend/>
-                <MyFriend/>
-                <MyFriend/>
-                <MyFriend/>
-                <MyFriend/>
-                <MyFriend/>
-                <MyFriend/>
+                  {(friendList.length>1) ? (
+                  <>
+                      {friendList.map((item,index)=>{
+                        
+                        return (<MyFriend
+                        key = {index}
+                        userId = {item.subUserId}
+                        />)
+                      })}
+                  </>
+                ): <Text>친구를 추가해주세요</Text>}
+                
+               
               
             </ScrollView>
         </View>
