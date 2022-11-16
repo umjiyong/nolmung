@@ -6,6 +6,8 @@ import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.repository.UserRepository;
 import com.ssafy.nolmung.walk.domain.Walk;
 import com.ssafy.nolmung.walk.dto.request.WalkRecordRequestDto;
+import com.ssafy.nolmung.walk.dto.TimeDto;
+import com.ssafy.nolmung.walk.dto.response.WalkDailyRecordListResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkPuppyListResponseDto;
 import com.ssafy.nolmung.walk.repository.WalkRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +70,29 @@ public class WalkServiceImpl implements WalkService{
     }
 
     @Override
+    public List<WalkDailyRecordListResponseDto> getWalkRecordList(int puppyId, LocalDate walkDate) {
+        List<WalkDailyRecordListResponseDto> walkRecordList = new ArrayList<>();
+        List<Walk> walkList = walkRepository.findAllByWalkDateAndPuppyPuppyId(walkDate, puppyId);
+
+        for(int i = 0; i < walkList.size(); i++){
+            Walk walk = walkList.get(i);
+            long walkSecTime = calWalkSecTime(walk.getWalkStartTime(), walk.getWalkEndTime());
+            TimeDto walkTime = changeSecToTime(walkSecTime);
+
+            WalkDailyRecordListResponseDto walkRecord = WalkDailyRecordListResponseDto.builder()
+                    .walkId(walk.getWalkId())
+                    .walkAttainment(walk.getWalkAttainmentTime())
+                    .walkTime(walkTime) // 계산해서 넣어야 함
+                    .walkDistance(walk.getWalkDistance())
+                    .build();
+
+            walkRecordList.add(walkRecord);
+        }
+
+        return walkRecordList;
+    }
+
+    @Override
     @Transactional
     public void insertWalkRecord(WalkRecordRequestDto walkRecordRequestDto) {
         LocalDate date;
@@ -92,6 +119,42 @@ public class WalkServiceImpl implements WalkService{
     public double getWalkAttainment(int walkDistance) {
 
         return 0;
+    }
+
+    @Override
+    public long calWalkSecTime(LocalDateTime startTime, LocalDateTime endTime) {
+        long walkTime = ChronoUnit.SECONDS.between(endTime, startTime);
+        log.info("!!!!!!!!!산책 시간은" + walkTime);
+        return walkTime;
+    }
+
+    @Override
+    public TimeDto changeSecToTime(long allSec) {
+        int calHour = 0;
+        int calMin = 0;
+        int calSec;
+
+        if(allSec >= 3600){
+            calHour = (int) (allSec / 3600);
+            allSec %= 3600;
+            log.info("시간" + calHour);
+        }
+        if(allSec >= 60){
+            calMin = (int) (allSec / 60);
+            allSec %= 60;
+            log.info("분" + calMin);
+        }
+        calSec = (int) allSec;
+        log.info("남은 초" + allSec);
+        log.info("초" + calSec);
+
+        TimeDto calTime = TimeDto.builder()
+                .hour(calHour)
+                .min(calMin)
+                .sec(calSec)
+                .build();
+
+        return calTime;
     }
 
 

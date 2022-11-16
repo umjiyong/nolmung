@@ -1,16 +1,24 @@
 package com.ssafy.nolmung.walk.service;
 
 import com.ssafy.nolmung.walk.dto.request.WalkRecordRequestDto;
+import com.ssafy.nolmung.walk.dto.TimeDto;
+import com.ssafy.nolmung.walk.dto.response.WalkDailyRecordListResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkPuppyListResponseDto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface WalkService {
     List<WalkPuppyListResponseDto> getWalkPuppyList(int userId, LocalDate walkDate);
 
+    List<WalkDailyRecordListResponseDto> getWalkRecordList(int puppyId, LocalDate walkDate);
 
     void insertWalkRecord(WalkRecordRequestDto walkRecordRequestDto);
 
     double getWalkAttainment(int walkDistance);
+
+    long calWalkSecTime(LocalDateTime startTime, LocalDateTime endTime);
+
+    TimeDto changeSecToTime(long allSec);
 }

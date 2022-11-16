@@ -1,6 +1,8 @@
 package com.ssafy.nolmung.walk.controller;
 
+import com.ssafy.nolmung.walk.dto.request.WalkDailyRecordListRequestDto;
 import com.ssafy.nolmung.walk.dto.request.WalkPuppyListRequestDto;
+import com.ssafy.nolmung.walk.dto.response.WalkDailyRecordListResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkPuppyListResponseDto;
 import com.ssafy.nolmung.walk.service.WalkService;
 import io.swagger.annotations.ApiOperation;
@@ -54,13 +56,16 @@ public class WalkController {
 
     @ApiOperation(value = "일일 산책 목록 조회", notes = "puppyId와 date를 통해 특정 강아지의 일일 산책 목록을 조회하는 API")
     @PostMapping("/dailyRecordList")
-    public ResponseEntity getDailyWalkRecordList(){
+    public ResponseEntity getDailyWalkRecordList(@RequestBody WalkDailyRecordListRequestDto walkDailyRecordListRequestDto){
         HashMap<String, Object> result = new HashMap<>();
         try {
+            List<WalkDailyRecordListResponseDto> walkList = walkService.getWalkRecordList(walkDailyRecordListRequestDto.getPuppyId(), walkDailyRecordListRequestDto.getWalkDate());
+            result.put("walkRecordList", walkList);
             result.put("message", "success");
             return new ResponseEntity(result, HttpStatus.OK);
         }catch (Exception e){
-            result.put("message", "[error] - ");
+            result.put("puppyId", walkDailyRecordListRequestDto.getPuppyId());
+            result.put("message", "[error] - 일일 산책 목록 조회");
             return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
         }
     }

@@ -13,4 +13,5 @@ public interface WalkRepository extends JpaRepository<Walk, Integer> {
 //    Walk findByWalkDateAndPuppyId(LocalDate walkDate, int puppyId);
 
     List<Walk> findAllByWalkDateAndUserUserId(LocalDate walkDate, int userId);
+    List<Walk> findAllByWalkDateAndPuppyPuppyId(LocalDate walkDate, int puppyId);
 }
