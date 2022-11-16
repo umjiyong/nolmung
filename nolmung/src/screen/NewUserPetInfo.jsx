@@ -189,11 +189,9 @@ const NewUserPetInfo = () => {
                   <>
                     {(allBreedList.breedList).map((item)=>{
                       return (
-                        <>
                           <TouchableOpacity onPress={()=>{setSelectBreed(item.breedName); toggleModalBreed();}} style={{alignItems:'center', marginVertical:20,}} key={item.breedId}>
                             <Text style={{color:'#282828', fontSize: 16, fontWeight: '500',}}>{item.breedName}</Text>
                           </TouchableOpacity> 
-                        </>
                       )
                     })}
                   </>
