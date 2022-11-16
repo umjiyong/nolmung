@@ -25,6 +25,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashImage from '../screen/SplashImage';
 import NewUserInfo from '../screen/NewUserInfo';
 import NewUserPetInfo from '../screen/NewUserPetInfo';
+import LandmarkScreen from '../screen/LandmarkScreen';
+import VisitArticleItem from '../screen/VisitArticleItem';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -54,6 +56,8 @@ const StackNavigator = () => {
       />
       <Stack.Screen name="MessageScreen" component={MessageScreen} />
       <Stack.Screen name="RankingScreen" component={RankingScreen} />
+      <Stack.Screen name="LandmarkScreen" component={LandmarkScreen} />
+      <Stack.Screen name="VisitArticleItem" component={VisitArticleItem} />
       <Stack.Screen name="MyProfileModify" component={MyProfileModify} />
       <Stack.Screen name="AddDogInfo" component={AddDogInfo} />
       <Stack.Screen name="MyDogInfo" component={MyDogInfo} />
