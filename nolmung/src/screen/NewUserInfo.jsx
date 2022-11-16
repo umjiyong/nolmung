@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import Postcode from "@actbase/react-daum-postcode";
 import Modal from "react-native-modal"
+import { registUserInfo } from '../api/User';
 const NewUserInfo = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
@@ -32,7 +33,22 @@ const NewUserInfo = () => {
     console.log(event);
   };
 
-  const [address, setAddress] = useState('주소를 입력해주세요');
+  const pushUserData =() => {
+    try{
+      registUserInfo(
+        {"userAddressText" : address, "userIntroduction" : introduce, "userNickname" : nickName},
+        res => {
+          console.log("유저정보 등록 성공", res.data);
+        },
+        err => {
+          console.log("유저정보 등록 실패", err);
+        }
+      )
+    } catch (err) {
+      console.log("잘못된 요청", err);
+    }
+    Navigation.push('NewUserPetInfo');
+  }
 
   return (
     <>
@@ -87,9 +103,7 @@ const NewUserInfo = () => {
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity
             style={Styles.completeBtn}
-            onPress={() => {
-              Navigation.push('NewUserPetInfo');
-            }}>
+            onPress={pushUserData}>
             <Text style={{color: '#fff', fontWeight: '500'}}>다음</Text>
           </TouchableOpacity>
         </View>
