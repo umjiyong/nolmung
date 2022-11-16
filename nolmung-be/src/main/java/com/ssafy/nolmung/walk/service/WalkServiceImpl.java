@@ -6,11 +6,19 @@ import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.repository.UserRepository;
 import com.ssafy.nolmung.walk.domain.Walk;
 import com.ssafy.nolmung.walk.dto.request.WalkRecordRequestDto;
+import com.ssafy.nolmung.walk.dto.response.WalkPuppyListResponseDto;
 import com.ssafy.nolmung.walk.repository.WalkRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+@Slf4j
+@Service
+@Transactional
 public class WalkServiceImpl implements WalkService{
 
     private final PuppyRepository puppyRepository;
@@ -21,6 +29,40 @@ public class WalkServiceImpl implements WalkService{
         this.puppyRepository = puppyRepository;
         this.walkRepository = walkRepository;
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public List<WalkPuppyListResponseDto> getWalkPuppyList(int userId, LocalDate walkDate) {
+        List<Walk> walkRecordList = walkRepository.findAllByWalkDateAndUserUserId(walkDate, userId);
+        List<Puppy> puppies = new ArrayList<>();
+        List<WalkPuppyListResponseDto> puppyList = new ArrayList<>();
+
+        for(int i = 0; i < walkRecordList.size(); i++){
+             int puppyId = walkRecordList.get(i).getPuppy().getPuppyId();
+             Puppy puppy = puppyRepository.findById(puppyId).get();
+
+             if(!puppies.contains(puppy)) {
+                 puppies.add(puppy);
+             }
+        }
+
+        for(int i = 0; i < puppies.size(); i++){
+            Puppy puppy = puppyRepository.findById(puppies.get(i).getPuppyId()).get();
+
+            WalkPuppyListResponseDto newPuppy = WalkPuppyListResponseDto.builder()
+                    .puppyId(puppy.getPuppyId())
+                    .puppyName(puppy.getPuppyName())
+                    .puppyImg(puppy.getPuppyImg())
+                    .build();
+
+            if(!puppyList.contains(newPuppy)){
+                puppyList.add(newPuppy);
+            }
+        }
+
+
+
+        return puppyList;
     }
 
     @Override
