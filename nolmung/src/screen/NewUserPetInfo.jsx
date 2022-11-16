@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   ScrollView,
   TextInput,
@@ -10,13 +10,14 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   Button,
-  Modal,
   Touchable,
+  Pressable
 } from 'react-native';
 import DogListItem from '../components/DogListItem';
 import {useNavigation} from '@react-navigation/native';
 import MiddleHeader from '../components/MiddleHeader';
-
+import Modal from "react-native-modal"
+import {puppy_breed_info} from '../api/Puppy';
 const NewUserPetInfo = () => {
   const navi = useNavigation();
   const [DogName, setDogName] = useState('');
@@ -68,6 +69,36 @@ const NewUserPetInfo = () => {
     setSelectNeut('X');
   };
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [allBreedList, setAllBreedList] = useState()
+
+  const [selectBreed, setSelectBreed] = useState('터치해서 견종을 선택해주세요')
+
+  const [isModalVisibleBreed, setModalVisibleBreed] = useState(false)
+  const toggleModalBreed = () => {
+    setModalVisibleBreed(!isModalVisibleBreed);
+
+  }
+
+  const getBreed_List_Func = async () => {
+    try {
+      await puppy_breed_info(
+        (response) => {
+          setAllBreedList(response.data);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
+  const backdropOpacity = 0.3
+  
+  useEffect(() => {
+    getBreed_List_Func()
+  }, []);
+  // console.log(allBreedList.breedList)
   return (
     <>
       {/*  */}
@@ -135,16 +166,44 @@ const NewUserPetInfo = () => {
               }}>
               견종
             </Text>
-            <TextInput
-              onChangeText={onChangeSeed}
-              onFocus={() => setDogSeed('')}
-              value={DogSeed}
-              style={{
+            <Pressable onPress={toggleModalBreed}>
+            <Text style={{
                 color: '#282828',
                 borderBottomColor: 'gray',
                 borderBottomWidth: 1,
-              }}
-            />
+                paddingHorizontal:5,
+                paddingVertical:3,
+                }}>
+                  {selectBreed}
+            </Text>
+          </Pressable>
+          <Modal
+            isVisible={isModalVisibleBreed}
+            onBackdropPress={toggleModalBreed}
+            backdropOpacity = {backdropOpacity}    
+        >
+            <ScrollView showsVerticalScrollIndicator={false} style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:'white', flex: 0.5, borderRadius: 30,}}>
+              {allBreedList!== undefined ? 
+                (
+                  // {console.log(allBreedList.breedList)}
+                  <>
+                    {(allBreedList.breedList).map((item)=>{
+                      return (
+                        <>
+                          <TouchableOpacity onPress={()=>{setSelectBreed(item.breedName); toggleModalBreed();}} style={{alignItems:'center', marginVertical:20,}} key={item.breedId}>
+                            <Text style={{color:'#282828', fontSize: 16, fontWeight: '500',}}>{item.breedName}</Text>
+                          </TouchableOpacity> 
+                        </>
+                      )
+                    })}
+                  </>
+                )
+              :null}
+          
+            </ScrollView>
+        </Modal>      
+           
+       
           </View>
           <View>
             <Text
