@@ -4,6 +4,7 @@ import com.ssafy.nolmung.puppy.domain.Breed;
 import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoRequestDto;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoUpdateRequestDto;
+import com.ssafy.nolmung.puppy.dto.response.BreedListResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyInfoResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyListResponseDto;
 import com.ssafy.nolmung.puppy.repository.BreedRepository;
@@ -207,6 +208,22 @@ public class PuppyServiceImpl implements PuppyService{
         if(birthMonth * 100 + birthDay > currentMonth * 100 + currentDay) age--;
 
         return age;
+    }
+
+    @Override
+    public List<BreedListResponseDto> getBreedList() {
+        List<Breed> breedList = breedRepository.findAll();
+        List<BreedListResponseDto> breedListResponseDtoList = new ArrayList<>();
+
+        for(int i = 0; i < breedList.size(); i++){
+            BreedListResponseDto breed = BreedListResponseDto.builder()
+                    .breedId(breedList.get(i).getBreedId())
+                    .breedName(breedList.get(i).getBreedName())
+                    .build();
+            breedListResponseDtoList.add(breed);
+        }
+
+        return breedListResponseDtoList;
     }
 
     // 강아지 랜덤 코드를 생성하는 함수

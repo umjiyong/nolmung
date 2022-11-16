@@ -3,6 +3,7 @@ package com.ssafy.nolmung.puppy.service;
 import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoRequestDto;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoUpdateRequestDto;
+import com.ssafy.nolmung.puppy.dto.response.BreedListResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyInfoResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyListResponseDto;
 
@@ -29,4 +30,6 @@ public interface PuppyService {
     void deletePuppyInfo(int puppyId, int userId);
 
     int getPuppyAge(LocalDate birthDate);
+
+    List<BreedListResponseDto> getBreedList();
 }

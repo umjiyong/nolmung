@@ -3,6 +3,7 @@ package com.ssafy.nolmung.puppy.controller;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoRequestDto;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoUpdateRequestDto;
 import com.ssafy.nolmung.puppy.dto.request.PuppyUserRequestDto;
+import com.ssafy.nolmung.puppy.dto.response.BreedListResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyInfoResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyListResponseDto;
 import com.ssafy.nolmung.puppy.service.PuppyService;
@@ -24,6 +25,22 @@ import java.util.Map;
 public class PuppyController {
 
     private final PuppyService puppyService;
+
+    @ApiOperation(value = "강아지 견종 목록 조회", notes = "db의 모든 강아지 견종 목록을 받아오는 API")
+    @GetMapping("/breedList")
+    public ResponseEntity getPuppyBreedList(){
+        HashMap<String, Object> result = new HashMap<>();
+        try {
+            List<BreedListResponseDto> breedList = puppyService.getBreedList();
+            result.put("breedList", breedList);
+            result.put("message", "success");
+
+            return new ResponseEntity(result, HttpStatus.OK);
+        }catch (Exception e){
+            result.put("message", "[error] - 강아지 견종 목록 조회");
+            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @ApiOperation(value = "강아지 정보 조회", notes = "puppyId로 강아지 정보 조회에 필요한 데이터를 받아오는 API")
     @GetMapping("/info/{puppyId}")
