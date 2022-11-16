@@ -106,6 +106,7 @@ function MyProfileScreen({navigation}) {
     } catch (err) {
       console.log(err);
       console.log("심각한 에러;;");
+      //되는 코드입니다.//
     }
   };
 
