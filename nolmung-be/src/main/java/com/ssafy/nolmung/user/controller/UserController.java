@@ -152,27 +152,38 @@ public class UserController {
             return new MessageResponseDto("심각한 로그인 오류");
         }
 
-        user.setUserIntroduction(request.getUserIntroduction());
+
+        if(!request.getUserIntroduction().equals("")) {
+            user.setUserIntroduction(request.getUserIntroduction());
+        }
 //        user.setRegion(regionService.getRegionById(request.getRegionId()));
 
-        user.setUserNickname(request.getUserNickname());
-        user.setUserImg(request.getUserImg());
-        user.setUserAddressText(request.getUserAddressText());
+        if(!request.getUserNickname().equals("")) {
+            user.setUserNickname(request.getUserNickname());
+        }
+        if(!request.getUserImg().equals("")) {
+            user.setUserImg(request.getUserImg());
+        }
+        if(!request.getUserAddressText().equals("")) {
+            user.setUserAddressText(request.getUserAddressText());
+        }
 
         userservice.userRegist(user);
 
         return new MessageResponseDto("회원정보 입력 완료");
     }
 
-    @DeleteMapping("/userDelete")
+    @DeleteMapping("/userDelete/{userId}")
     @ApiOperation(value = "유저 삭제", notes="본인 데이터만 삭제 가능")
-    public ResultDto deleteUser(){
+    public ResultDto deleteUser(@PathVariable ("userId") int userId){
         String userUuid = jwtService.getUserId();
 
         User user = userservice.findByKakaoUuid(userUuid);
 
+//        User user1 = userservice.findById(userId);
 
-        return new ResultDto(userservice.deleteUser(user.getUserId()));
+
+        return new ResultDto(userservice.deleteUser(userId));
 
     }
 
