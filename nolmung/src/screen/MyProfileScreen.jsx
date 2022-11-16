@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 
 import {
   View,
@@ -9,40 +9,204 @@ import {
   Image,
   StyleSheet,
   Alert,
+  PermissionsAndroid,
+  Pressable
 } from 'react-native';
 import Header from '../components/Header';
 import MyDog from '../components/MyDog';
-import MyFamily from '../components/MyFamily';
+import {user_info,user_info_change} from "../api/User"
+import {user_puppy_info} from "../api/Puppy"
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
+
 
 function MyProfileScreen({navigation}) {
-
+  const [userinfo,setuseinfo] = useState([])
+  const [puppyinfo,setpuppyinfo] = useState([])
   const Friend = 1;
   const Post = 1;
   const userName = '하루';
   const userAddress = '전남 여수시 선원동';
   const friendCode = '#E1VH64';
   const [intro, setIntro] = useState('소개글이 없습니다');
-  const introText = {
-    // text: '있습니다.'
+  const [photo,setPhoto] = useState("")
+  
+  
+  // const showPicker = async () =>{
+  //   const grantedcamera = await PermissionsAndroid.request(
+  //     PermissionsAndroid.PERMISSIONS.CAMERA,
+  //     {
+  //       title : "App Camera Permission",
+  //       message : "GOGO",
+  //       buttonNeutral : "Ask me later",
+  //       buttonNegative : "cancel",
+  //       buttonPositive : "OK"
+  //     }
+  //   )
+
+  //   const grantedstorage = await PermissionsAndroid.request(
+  //     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+  //     {
+  //       title : "App Camera Permission",
+  //       message : "GOGO",
+  //       buttonNeutral : "Ask me later",
+  //       buttonNegative : "cancel",
+  //       buttonPositive : "OK"
+  //     }
+  //   )
+  //   console.log(grantedcamera)
+  //   if(grantedcamera ===PermissionsAndroid.RESULTS.GRANTED && grantedstorage===PermissionsAndroid.RESULTS.GRANTED){
+  //     console.log("camera ok")
+  //   }else{
+  //     console.log("camera x")
+  //   }
+
+
+
+  // }
+
+  // const imgChange = () =>{
+  //   showPicker();
+
+  // } 
+  
+
+  const user_info_func = async () => {
+    try {
+      
+      await user_info(
+        { userId: 1 },
+        (response) => {
+          setuseinfo(response.data);
+        },
+        (err) => {
+          console.log("유저정보 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
   };
+
+
+  const user_puppy_info_func = async () => {
+    try {
+      
+      await user_puppy_info(
+        { userId: 1 },
+        (response) => {
+          setpuppyinfo(response.data);
+        },
+        (err) => {
+          console.log("강아지정보 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+      //되는 코드입니다.//
+    }
+  };
+
+
+  
+
+
+  
+  useEffect(() => {
+    user_info_func();
+    user_puppy_info_func();
+  }, []);
+  
+  console.log("유저사진",userinfo.userImg)
+ 
+
+
+
+
+  const user_info_change_func = async (data) => {
+    try {
+      
+      await user_info_change(
+        { userImg: data },
+        (response) => {
+          console.log(response)
+        },
+        (err) => {
+          console.log("강아지정보 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
+
+
+
+  const [response, setResponse] = useState();
+  const onSelectImage = () => {
+    try {
+      
+      launchImageLibrary(
+        {
+          mediaType: "photo",
+          maxWidth: 512,
+          maxHeight: 512,
+          includeBase64: Platform.OS === 'android',
+        },
+        (res) => {
+          console.log(res);
+          if (res.didCancel) return;
+          setResponse(res);
+          user_info_change_func(response?.assets[0]?.uri)
+
+
+
+
+        })
+      
+    }
+      catch (err) {
+        console.log(err);
+        console.log("심각한 에러;;");
+      }
+      
+    
+    }
+
+
 
   return (
     <>
       <Header HeaderName="마이 페이지" />
       <ScrollView style={Styles.container} showsVerticalScrollIndicator={false}>
-        {/* Start Header */}
-        {/* End Header */}
-        {/* Start Profile */}
-        {/* touchablewithoutfeedback 검색 */}
+        
         <View style={Styles.profile}>
-          <Image
-            source={require('../assets/icons/man1Avatar.png')}
+        <Pressable onPress={onSelectImage}>
+            {response ?  <Image
+              source={{uri: response?.assets[0]?.uri}}
+              
+              resizeMode="contain"
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 100,
+              }}
+            /> : <Image
+            source={{uri : userinfo.userImg}}
+            
             resizeMode="contain"
             style={{
               width: 80,
               height: 80,
             }}
-          />
+          />}
+        </Pressable>
+         
+          {/* <Button title="이미지 선택" onPress={showPicker} ></Button>  */}
+          
           <View style={Styles.friendPostBox}>
             <View style={Styles.friendBox}>
               <Text style={Styles.FriendCountText}>{Friend}</Text>
@@ -64,7 +228,7 @@ function MyProfileScreen({navigation}) {
                   fontFamily: 'NotoSansKR-Medium',
                   marginRight: 5,
                 }}>
-                {userName}
+                {userinfo.userNickName}
               </Text>
               <Text
                 style={{
@@ -72,7 +236,7 @@ function MyProfileScreen({navigation}) {
                   fontSize: 18,
                   fontFamily: 'NotoSansKR-Medium',
                 }}>
-                ({userAddress})
+                {userinfo.userAddressText}
               </Text>
             </View>
             <TouchableOpacity onPress={()=>{navigation.push('MyProfileModify')}}>
@@ -103,20 +267,20 @@ function MyProfileScreen({navigation}) {
               style={{
                 color: '#282828',
               }}>
-              {friendCode}
+              {userinfo.userCode}
             </Text>
           </View>
         </View>
-        {introText.text ? (
+        {userinfo ? (
           <View style={Styles.introInput}>
             <View style={Styles.introBox}>
-              <Text style={{color: '#282828'}}>{introText.text}</Text>
+              <Text style={{color: '#282828'}}>{userinfo.userIntroduction}</Text>
             </View>
           </View>
         ) : (
           <View style={Styles.introInput}>
             <View style={Styles.introBox}>
-              <Text style={Styles.introText}>{intro}</Text>
+              <Text style={Styles.introText}>소개글이 없습니다</Text>
             </View>
           </View>
         )}
@@ -128,12 +292,30 @@ function MyProfileScreen({navigation}) {
           </View>
         </View>
         {/* Dog component */}
-        <MyDog />
-        <MyDog />
-        <MyDog />
-        <MyDog />
-        <MyDog />
-        <MyDog />
+
+
+        {(puppyinfo.myPuppyList) ? (
+            <>
+            
+                {(puppyinfo.myPuppyList).map((item,index)=>{
+                  
+                  return (<MyDog
+                  key = {index}
+                  puppyId = {item.puppyInfo.puppyId}
+                  puppyImg = {item.puppyInfo.puppyImg}
+                  puppyName = {item.puppyInfo.puppyName}
+                  puppyAge = {item.puppyInfo.puppyAge}
+                  breedName = {item.puppyInfo.breedName}
+                  
+                  />)
+                })}
+                
+               
+              
+            </>
+          ): <Text>반려견을 추가해주세요</Text>}       
+      
+        
         {/* End Dog Component */}
         <TouchableOpacity style={Styles.MyPost}>
           <View style={Styles.MyPostBtn}>
