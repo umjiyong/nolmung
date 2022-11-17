@@ -14,6 +14,7 @@ const SplashImage = ({navigation}) => {
       AsyncStorage.getItem('userId', (err, res) => {
         console.log(res);
         navigation.replace(res == null ? 'Login' : 'BottomTabs');
+        // navigation.replace('Login');
       });
     }, 1000);
   }, [])

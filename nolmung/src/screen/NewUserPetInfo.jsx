@@ -18,21 +18,37 @@ import {useNavigation} from '@react-navigation/native';
 import MiddleHeader from '../components/MiddleHeader';
 import Modal from "react-native-modal"
 import {puppy_breed_info} from '../api/Puppy';
+import SearchDogList from '../components/SearchDogList';
 const NewUserPetInfo = () => {
   const navi = useNavigation();
+  const backdropOpacity = 0.3
+  
+
   const [DogName, setDogName] = useState('');
+  const [DogSeed, setDogSeed] = useState('');
+  const [year, setYear] = useState('');
+  const [month, setMonth] = useState('');
+  const [date, setDate] = useState('');
+  const [hasDog, setHasDog] = useState()
+  const [text, setText] = useState('')
+  const [search, setSearch] = useState(false)
+  const [dogWeight, setDogWeight] = useState('');
+  const [dogChar, setDogChar] = useState('성격을 입력해주세요');
+  const [selectSex, setSelectSex] = useState();
+  const [selectNeut, setSelectNeut] = useState();
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [allBreedList, setAllBreedList] = useState()
+  const [selectBreed, setSelectBreed] = useState('터치해서 견종을 선택해주세요')
+  const [isModalVisibleBreed, setModalVisibleBreed] = useState(false)
+  const [isModalVisibleTwo, setModalVisibleTwo] = useState(false)
+
   const onChangeText = event => {
     setDogName(event);
   };
 
-  const [DogSeed, setDogSeed] = useState('');
   const onChangeSeed = event => {
     setDogSeed(event);
   };
-
-  const [year, setYear] = useState('');
-  const [month, setMonth] = useState('');
-  const [date, setDate] = useState('');
 
   const onChangeYear = event => {
     setYear(event);
@@ -43,43 +59,64 @@ const NewUserPetInfo = () => {
   const onChangeDate = event => {
     setDate(event);
   };
+  
+  const HasDog = () => {
+    setHasDog(true)
+    setModalVisible(false)
+    toggleModalTwo()
 
-  const [dogWeight, setDogWeight] = useState('3');
+  }
+  const NoHasDog = () =>{
+    setHasDog(false)
+  }
+  const searchDog = () => {
+    setSearch(!search)
+    console.log(search)
+  }
   const onChangeWeight = event => {
     setDogWeight(event);
   };
-
-  const [dogChar, setDogChar] = useState('성격을 입력해주세요');
   const onChangeDogChar = e => {
     setDogChar(e);
   };
-
-  const [selectSex, setSelectSex] = useState();
   const onChangeMan = () => {
     setSelectSex('man');
   };
   const onChangeWoman = () => {
     setSelectSex('woman');
   };
-  const [selectNeut, setSelectNeut] = useState();
   const onChangeO = () => {
     setSelectNeut('O');
   };
   const onChangeX = () => {
     setSelectNeut('X');
   };
-  const [modalVisible, setModalVisible] = useState(false);
+    const toggleModal = () => {
+      setModalVisible(!isModalVisible);
+      console.log(isModalVisible)
+  };
 
-  const [allBreedList, setAllBreedList] = useState()
-
-  const [selectBreed, setSelectBreed] = useState('터치해서 견종을 선택해주세요')
-
-  const [isModalVisibleBreed, setModalVisibleBreed] = useState(false)
   const toggleModalBreed = () => {
     setModalVisibleBreed(!isModalVisibleBreed);
 
   }
+  const toggleModalTwo = () => {
+    setModalVisibleTwo(!isModalVisibleTwo);
 
+  }
+
+  const clearState = () => {
+    setDogName('');
+    setDogSeed('');
+    setYear();
+    setMonth();
+    setDate();
+    setDogWeight();
+    setSelectSex();
+    setSelectNeut();
+    setDogChar('성격을 입력해주세요')
+    setSelectBreed('터치해서 견종을 선택해주세요')
+  }
   const getBreed_List_Func = async () => {
     try {
       await puppy_breed_info(
@@ -93,7 +130,6 @@ const NewUserPetInfo = () => {
     }
   };
 
-  const backdropOpacity = 0.3
   
   useEffect(() => {
     getBreed_List_Func()
@@ -103,20 +139,71 @@ const NewUserPetInfo = () => {
     <>
       {/*  */}
       <MiddleHeader header="강아지 정보 등록" />
-      <ScrollView>
-        <ScrollView horizontal={true} style={Styles.DogList}>
-          <TouchableOpacity
-            onPress={() => {
-              navi.push('AddDogInfo');
-            }}>
-            <View style={Styles.plusDog}>
-              <Text style={{fontSize: 40, fontWeight: '500', color: '#fff'}}>
-                +
-              </Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView horizontal={true} style={Styles.DogList}>
+        <TouchableOpacity
+          // onPress={() => {
+          //   navi.push('AddDogInfo');
+          // }}>
+          onPress={toggleModal}
+          >
+          <View style={Styles.plusDog}>
+            <Text style={{fontSize: 40, fontWeight: '500', color: '#fff'}}>
+              +
+            </Text>
+          </View>
+        </TouchableOpacity>
+
+        <Modal
+            isVisible={isModalVisible}
+            onBackdropPress={toggleModal}
+            backdropOpacity = {backdropOpacity}    
+        >
+            <View style={{backgroundColor:'white', flex: 0.2, borderRadius:30, justifyContent:'space-around', alignItems:'center'}}>
+              <Text style={{color:'#282828', fontSize: 16, textAlign:'center'}}>이미 강아지가 있으신가요?</Text> 
+              <View style={{flexDirection:'row',}}>
+                <Pressable onPress={HasDog} style={{marginRight: 40,}}>
+                  <Text style={{fontSize: 15, color:'#FF772F'}}>예</Text>
+                </Pressable>     
+                <Pressable onPress={()=>{navi.navigate('AddDogInfo'); NoHasDog}}>
+                  <Text style={{fontSize: 15, color:'#959595'}}>아니요</Text>
+                </Pressable>
+              </View>
             </View>
-          </TouchableOpacity>
-          
-        </ScrollView>
+        </Modal>      
+
+        <Modal
+            isVisible={isModalVisibleTwo}
+            onBackdropPress={toggleModalTwo}
+            backdropOpacity = {backdropOpacity}    
+        >
+           <View style={Styles.modal}>
+              <Text style={Styles.ModalText}>강아지 코드 입력</Text>
+              <View style={{flexDirection:'row', alignItems:'center',}}>
+                <TextInput onChangeText={(e)=>setText(e)} value={text} style={Styles.ModalInput}/>
+                <TouchableWithoutFeedback onPress={searchDog}>
+                  <View>
+                    <Image 
+                      source={require('../assets/icons/search.png')}
+                      resizeMode="contain"
+                      style={{
+                        width: 20,
+                        height: 20,
+                        marginTop: 13,
+                        marginLeft: 10,
+                        tintColor: '#FF772F'
+                      }}/>
+                  </View>  
+                </TouchableWithoutFeedback>
+              </View>
+              {search ? <View><SearchDogList/></View> : null }
+          </View>
+        </Modal>        
+
+        <DogListItem />
+        <DogListItem />
+        <DogListItem />
+      </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{padding: 20}}
@@ -393,6 +480,7 @@ const NewUserPetInfo = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
+              onPress={clearState}
               style={{
                 backgroundColor: '#D9D9D9',
                 paddingVertical: 8,
@@ -505,4 +593,35 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#FF772F',
   },
+  modal : {
+    flex:0.5,
+    marginHorizontal: -20,
+    height: '50%', 
+    backgroundColor: '#fff', 
+    marginTop:'auto',
+    borderTopLeftRadius:15,
+    borderTopRightRadius:15,
+    borderBottomLeftRadius:0,
+    borderBottomRightRadius:0,
+    alignItems:'center',
+    paddingTop: 15,
+    marginBottom: -20,
+  },
+  ModalText: {
+    color: '#282828',
+    fontWeight:'600',
+    fontSize: 18,
+  },
+  ModalInput: {
+    borderWidth: 0.5,
+    borderColor: '#525252',
+    width: '80%',
+    height: 40,
+    marginTop: 15,
+    borderRadius: 5,
+    color: '#282828',
+    paddingHorizontal: 20,
+    textAlign:'center'
+
+  }
 });
