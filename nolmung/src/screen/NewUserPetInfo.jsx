@@ -17,22 +17,49 @@ import DogListItem from '../components/DogListItem';
 import {useNavigation} from '@react-navigation/native';
 import MiddleHeader from '../components/MiddleHeader';
 import Modal from "react-native-modal"
-import {puppy_breed_info} from '../api/Puppy';
+import {puppy_breed_info , registPuppyInfo} from '../api/Puppy';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const NewUserPetInfo = () => {
   const navi = useNavigation();
   const [DogName, setDogName] = useState('');
+  const [year, setYear] = useState('');
+  const [month, setMonth] = useState('');
+  const [date, setDate] = useState('');
+  const [DogSeed, setDogSeed] = useState('');
+  const [dogWeight, setDogWeight] = useState('3');
+  const [dogChar, setDogChar] = useState('성격을 입력해주세요');
+  const [selectSex, setSelectSex] = useState();
+  const [selectNeut, setSelectNeut] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [dogImg, setDogImg] = useState("");
+
+  const petInfoRegist = async() => {
+    const birth = year+"-"+month+"-"+date;
+    try{
+      AsyncStorage.getItem("userId", (err, getId) => {
+        registPuppyInfo(
+          {puppyBirth: birth, puppyImg: dogImg, puppyIsNeutered: selectNeut, puppyName: DogName, puppySex: selectSex, puppyWeight: dogWeight, userId: getId},
+          res => {
+            console.log("강아지 정보 등록 성공", res);
+          },
+          err => {
+            console.log("정보 등록 실패", err)
+          }
+        )
+      })
+    } catch(err) {
+      console.log("완전 실패", err);
+    }
+  }
+
   const onChangeText = event => {
     setDogName(event);
   };
 
-  const [DogSeed, setDogSeed] = useState('');
   const onChangeSeed = event => {
     setDogSeed(event);
   };
-
-  const [year, setYear] = useState('');
-  const [month, setMonth] = useState('');
-  const [date, setDate] = useState('');
 
   const onChangeYear = event => {
     setYear(event);
@@ -44,24 +71,20 @@ const NewUserPetInfo = () => {
     setDate(event);
   };
 
-  const [dogWeight, setDogWeight] = useState('3');
   const onChangeWeight = event => {
     setDogWeight(event);
   };
 
-  const [dogChar, setDogChar] = useState('성격을 입력해주세요');
   const onChangeDogChar = e => {
     setDogChar(e);
   };
-
-  const [selectSex, setSelectSex] = useState();
+  
   const onChangeMan = () => {
     setSelectSex('man');
   };
   const onChangeWoman = () => {
     setSelectSex('woman');
   };
-  const [selectNeut, setSelectNeut] = useState();
   const onChangeO = () => {
     setSelectNeut('O');
   };
@@ -384,6 +407,7 @@ const NewUserPetInfo = () => {
           </View>
           <View style={{marginTop: 25}}>
             <TouchableOpacity
+              onPress={petInfoRegist}
               style={{
                 backgroundColor: '#D9D9D9',
                 paddingVertical: 8,

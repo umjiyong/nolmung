@@ -24,13 +24,11 @@ const NewUserInfo = () => {
   const [nickName, setNickName] = useState('닉네임을 입력하세요');
   const onChangeText = event => {
     setNickName(event);
-    console.log(event);
   };
 
   const [introduce, setIntroduce] = useState('');
   const onChangeIntro = event => {
     setIntroduce(event);
-    console.log(event);
   };
 
   const pushUserData =() => {
@@ -38,14 +36,14 @@ const NewUserInfo = () => {
       registUserInfo(
         {"userAddressText" : address, "userIntroduction" : introduce, "userNickname" : nickName},
         res => {
-          console.log("유저정보 등록 성공", res.data);
+          console.log("유저정보 등록 성공");
         },
         err => {
-          console.log("유저정보 등록 실패", err);
+          console.log("유저정보 등록 실패");
         }
       )
     } catch (err) {
-      console.log("잘못된 요청", err);
+      console.log("잘못된 요청");
     }
     Navigation.push('NewUserPetInfo');
   }
