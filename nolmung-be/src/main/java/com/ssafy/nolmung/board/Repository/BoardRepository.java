@@ -14,5 +14,6 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
     List<Board> findAllByUser_UserId(int userId);
     Board findByBoardId(int boardId);
     List<Board> findAllByBoardClass(int boardClass);
+    List<Board> findAllByRegion_RegionId(int regionId);
     void deleteByBoardId(int boardId);
 }

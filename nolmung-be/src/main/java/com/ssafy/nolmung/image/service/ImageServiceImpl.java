@@ -4,8 +4,12 @@ import com.ssafy.nolmung.board.Repository.BoardRepository;
 import com.ssafy.nolmung.board.domain.BoardImage;
 import com.ssafy.nolmung.global.util.Util;
 import com.ssafy.nolmung.image.ImageRepository;
+import com.ssafy.nolmung.landMarkBoard.domain.LandMarkBoard;
+import com.ssafy.nolmung.landMarkBoard.repository.LandMarkBoardRepository;
 import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.puppy.repository.PuppyRepository;
+import com.ssafy.nolmung.walk.domain.Walk;
+import com.ssafy.nolmung.walk.repository.WalkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +31,12 @@ public class ImageServiceImpl implements ImageService {
 
     @Autowired
     PuppyRepository puppyRepository;
+
+    @Autowired
+    LandMarkBoardRepository landMarkBoardRepository;
+
+    @Autowired
+    WalkRepository walkRepository;
 
     @Override
     @Transactional
@@ -66,6 +76,24 @@ public class ImageServiceImpl implements ImageService {
         puppy.changePuppyImage(imageUrl);
         puppyRepository.save(puppy);
         return puppy.getPuppyImg();
+    }
+
+    @Override
+    public String uploadlandmarkBoardImage(int landmarkBoardId, MultipartFile file) {
+        String imageUrl = uploadImage("landmarkBoard", file);
+        LandMarkBoard landMarkBoard = landMarkBoardRepository.findById(landmarkBoardId).get();
+        landMarkBoard.changeBoardImage(imageUrl);
+        landMarkBoardRepository.save(landMarkBoard);
+        return landMarkBoard.getLandMarkBoardImg();
+    }
+
+    @Override
+    public String uploadWalkImage(int walkId, MultipartFile file) {
+        String imageUrl = uploadImage("walk", file);
+        Walk walk = walkRepository.findById(walkId).get();
+        walk.changeWalkImage(imageUrl);
+        walkRepository.save(walk);
+        return walk.getWalkImg();
     }
 
 }

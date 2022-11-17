@@ -4,6 +4,7 @@ import com.ssafy.nolmung.puppy.domain.Breed;
 import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoRequestDto;
 import com.ssafy.nolmung.puppy.dto.request.PuppyInfoUpdateRequestDto;
+import com.ssafy.nolmung.puppy.dto.response.BreedListResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyInfoResponseDto;
 import com.ssafy.nolmung.puppy.dto.response.PuppyListResponseDto;
 import com.ssafy.nolmung.puppy.repository.BreedRepository;
@@ -16,10 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -91,6 +91,7 @@ public class PuppyServiceImpl implements PuppyService{
         List<SharePuppy> sharePuppyList = sharePuppyRepository.findAllByPuppyPuppyId(puppyId);
         List<String> userImgList = new ArrayList<>();
         int breedId = puppy.getBreed().getBreedId();
+        int age = getPuppyAge(puppy.getPuppyBirth());
 
         for (int i = 0; i < sharePuppyList.size(); i++){
             userImgList.add(sharePuppyList.get(i).getUser().getUserImg());
@@ -101,11 +102,18 @@ public class PuppyServiceImpl implements PuppyService{
                 .puppyCode(puppy.getPuppyCode())
                 .puppyName(puppy.getPuppyName())
                 .puppyBirth(puppy.getPuppyBirth())
+                .puppyBirthYear(puppy.getPuppyBirth().getYear())
+                .puppyBirthMonth(puppy.getPuppyBirth().getMonthValue())
+                .puppyBirthDay(puppy.getPuppyBirth().getDayOfMonth())
                 .puppyWeight(puppy.getPuppyWeight())
                 .puppySex(puppy.getPuppySex())
                 .puppyIsNeutered(puppy.isPuppyIsNeutered())
                 .puppyImg(puppy.getPuppyImg())
                 .breedId(breedId)
+                .puppyCharacter(puppy.getPuppyCharacter())
+                .breedName(puppy.getBreed().getBreedName())
+                .needWalkTime(puppy.getBreed().getNeedsWalkTimes())
+                .puppyAge(age)
                 .shareUserImageList(userImgList)
                 .build();
 
@@ -113,20 +121,16 @@ public class PuppyServiceImpl implements PuppyService{
     }
 
     @Override
-    public List<PuppyListResponseDto> getMyPuppyList(int userId) {
-//        List<Puppy> puppyList = puppyRepository.findAllByUserId(userId);
+    public List<HashMap<String, Object>> getMyPuppyList(int userId) {
         List<SharePuppy> sharePuppyList = sharePuppyRepository.findAllByUserUserId(userId);
-        List<PuppyListResponseDto> myPuppyList = new ArrayList<>();
+        List<HashMap<String, Object>> myPuppyList = new ArrayList<>();
 
         for(int i = 0; i < sharePuppyList.size(); i++){
+            HashMap<String, Object> myPuppy = new HashMap<>();
             Puppy puppy = sharePuppyList.get(i).getPuppy();
 
-            PuppyListResponseDto myPuppy = PuppyListResponseDto.builder()
-                                                    .puppyId(puppy.getPuppyId())
-                                                    .puppyName(puppy.getPuppyName())
-                                                    .puppyImg(puppy.getPuppyImg())
-                                                    .build();
-
+            myPuppy.put("puppyId", puppy.getPuppyId());
+            myPuppy.put("puppyInfo", getPuppyInfo(puppy.getPuppyId()));
             myPuppyList.add(myPuppy);
         }
 
@@ -185,6 +189,41 @@ public class PuppyServiceImpl implements PuppyService{
 
         // 그렇지 않고, 연결된 user가 여럿인 경우에는 해당 user와 puppy와의 share 관계만 해제시킴
         sharePuppyRepository.delete(removeShareConnect);
+    }
+
+    // 강아지 생년월일을 통해 만나이를 구하는 메서드
+    @Override
+    public int getPuppyAge(LocalDate birthDate) {
+        int age;
+        Calendar current = Calendar.getInstance();
+
+        int currentYear  = current.get(Calendar.YEAR);
+        int currentMonth = current.get(Calendar.MONTH) + 1;
+        int currentDay   = current.get(Calendar.DAY_OF_MONTH);
+        int birthMonth = birthDate.getMonthValue();
+        int birthDay = birthDate.getDayOfMonth();
+
+        age = currentYear - birthDate.getYear();
+
+        if(birthMonth * 100 + birthDay > currentMonth * 100 + currentDay) age--;
+
+        return age;
+    }
+
+    @Override
+    public List<BreedListResponseDto> getBreedList() {
+        List<Breed> breedList = breedRepository.findAll();
+        List<BreedListResponseDto> breedListResponseDtoList = new ArrayList<>();
+
+        for(int i = 0; i < breedList.size(); i++){
+            BreedListResponseDto breed = BreedListResponseDto.builder()
+                    .breedId(breedList.get(i).getBreedId())
+                    .breedName(breedList.get(i).getBreedName())
+                    .build();
+            breedListResponseDtoList.add(breed);
+        }
+
+        return breedListResponseDtoList;
     }
 
     // 강아지 랜덤 코드를 생성하는 함수

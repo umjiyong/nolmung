@@ -23,7 +23,7 @@ public class Walk {
     private int walkId;
 
     @Column(name = "walk_distance")
-    private int walkDistance;
+    private double walkDistance;
 
     @Column(name = "walk_start_time")
     private LocalDateTime walkStartTime;
@@ -46,6 +46,10 @@ public class Walk {
     @JoinColumn(name = "puppy_id")
     @JsonBackReference
     private Puppy puppy;
+
+    public void changeWalkImage(String walkImgUrl){
+        this.walkImg = walkImgUrl;
+    }
 
     @Builder
     public Walk(int walkId, Puppy puppy, User user, int walkDistance, LocalDateTime walkStartTime, LocalDateTime walkEndTime, String walkImg, int walkCoordinatedId) {

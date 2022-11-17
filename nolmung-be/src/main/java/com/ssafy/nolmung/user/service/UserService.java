@@ -7,14 +7,11 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.querydsl.core.Tuple;
 import com.ssafy.nolmung.user.domain.User;
-import com.ssafy.nolmung.user.dto.ResultDto;
-import com.ssafy.nolmung.user.dto.response.UserResponseDto;
+import com.ssafy.nolmung.user.dto.request.UserTokenRequestDto;
+import com.ssafy.nolmung.user.dto.response.UserTokenDataResponseDto;
 import com.ssafy.nolmung.user.repository.UserRepository;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +26,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-//    @Value("${KAKAO.API}")
+    @Value("${KAKAO.API}")
     private String apiKey;
 
 
@@ -40,8 +37,23 @@ public class UserService {
 //        return users;
 //    }
 
+//    public int getUserIdFromHeader(){
+//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+//                .getRequest();
+//        String jwt = request.getHeader("Authorization");
+//        Jws<Claims> claimsJws = null;
+//    }
+
+    public String deleteUser(int userId){
+        log.info("유저 정보 삭제 : {}", userId );
+        userRepository.deleteByUserId(userId);
+        return "유저 정보 삭제 완료";
+    }
+
     public List<User> findAllUser(){
+        System.out.println("모든 유저 찾기 in repository");
         List<User> userList = userRepository.findAll();
+
         return userList;
     }
 
@@ -67,7 +79,7 @@ public class UserService {
     }
 
     @Transactional
-    public String kakaoRegist(JsonElement element){
+    public String kakaoRegist(JsonElement element, String refreshToken){
 
         String id = element.getAsJsonObject().get("id").getAsString();
         String email = "";
@@ -105,6 +117,7 @@ public class UserService {
                 .userImg(profileImage)
                 .userUpdateDate(LocalDateTime.now())
                 .userCode(generatedString)
+                .userRefreshToken(refreshToken)
                 .build();
 
         userRepository.save(user);
@@ -184,11 +197,11 @@ public class UserService {
      * 카카오 로그인시 UUID, 이름, 프로필사진, email 카카오에서 받아오기, userId는 AutoIncrement
      */
     @Transactional
-    public int createKakaoUser(String token) throws RuntimeException {
+    public UserTokenDataResponseDto getKakaoUser(UserTokenRequestDto token) throws RuntimeException {
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
-        int userId = -1;
+        int isNewUser = 0;
 
         //access_token을 이용하여 사용자 정보 조회
         try {
@@ -197,7 +210,7 @@ public class UserService {
 
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
-            conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
+            conn.setRequestProperty("Authorization", "Bearer " + token.getAccessToken()); //전송할 header 작성, access_token전송
 
             //결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
@@ -219,23 +232,27 @@ public class UserService {
 
             String id = element.getAsJsonObject().get("id").getAsString();
 
-            if(userRepository.findByUserKakaoUuid(id) == null){
-                kakaoRegist(element);
-                System.out.println("유저 등록 성공!!!");
+            User user = userRepository.findByUserKakaoUuid(id);
+
+            if(user == null){
+                kakaoRegist(element, token.getRefreshToken());
+                user = userRepository.findByUserKakaoUuid(id);
+                isNewUser = 0;
+                System.out.println("유저 등록 성공!!!" + id);
+            }
+            else {
+                isNewUser = 1;
+                System.out.println("이미 등록된 유저!" + id);
             }
 
-            userId = userRepository.findByUserKakaoUuid(id).getUserId();
-
-            System.out.println("유저 등록 안했음! " + id);
-
             br.close();
+            return new UserTokenDataResponseDto(user, isNewUser);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return userId;
-
+        return null;
     }
 
 

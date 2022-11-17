@@ -15,4 +15,8 @@ public interface ImageService {
 
     String uploadPuppyImage(int puppyId, MultipartFile file);
 
+    String uploadlandmarkBoardImage(int landmarkBoardId, MultipartFile file);
+
+    String uploadWalkImage(int walkId, MultipartFile file);
+
 }

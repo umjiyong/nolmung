@@ -15,7 +15,17 @@ public class PuppyInfoResponseDto {
     int puppyId;
     String puppyName;
     int breedId;
+
+    String breedName;
+
+    int needWalkTime;
+
+    int puppyAge;
     LocalDate puppyBirth;
+
+    int puppyBirthYear;
+    int puppyBirthMonth;
+    int puppyBirthDay;
     int puppyWeight;
     String puppyCharacter;
     int puppySex;
@@ -26,14 +36,15 @@ public class PuppyInfoResponseDto {
 
     List<String> shareUserImageList = new ArrayList<>();
 
-
-
     @Builder
-    public PuppyInfoResponseDto(int puppyId, String puppyName, int breedId, LocalDate puppyBirth, int puppyWeight, String puppyCharacter, int puppySex, boolean puppyIsNeutered, String puppyImg, String puppyCode, List<String> shareUserImageList){
+    public PuppyInfoResponseDto(int puppyId, String breedName, int puppyAge, int needWalkTime, String puppyName, int breedId, LocalDate puppyBirth, int puppyBirthYear, int puppyBirthMonth, int puppyBirthDay, int puppyWeight, String puppyCharacter, int puppySex, boolean puppyIsNeutered, String puppyImg, String puppyCode, List<String> shareUserImageList){
         this.puppyId = puppyId;
         this.puppyName = puppyName;
         this.breedId = breedId;
         this.puppyBirth = puppyBirth;
+        this.puppyBirthYear = puppyBirthYear;
+        this.puppyBirthMonth = puppyBirthMonth;
+        this.puppyBirthDay = puppyBirthDay;
         this.puppyWeight = puppyWeight;
         this.puppyCharacter = puppyCharacter;
         this.puppySex = puppySex;
@@ -41,6 +52,9 @@ public class PuppyInfoResponseDto {
         this.puppyImg = puppyImg;
         this.puppyCode = puppyCode;
         this.shareUserImageList = shareUserImageList;
+        this.breedName = breedName;
+        this.puppyAge = puppyAge;
+        this.needWalkTime = needWalkTime;
     }
 
 }

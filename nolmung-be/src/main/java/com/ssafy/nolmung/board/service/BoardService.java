@@ -17,8 +17,12 @@ public interface BoardService {
     List<BoardResponse> searchUserBoard(int userId);
     // 특정 게시물 조회
     BoardResponse searchBoard(int boardId);
-    // 카테고리 내 모든 게시물 조회
+    // 카테고리 내 모든 게시물 조회(게시판 카테고리)
     List<BoardResponse> searchAllByBoardCategory(int boardCategory);
+
+    List<BoardResponse> searchFriendBoard(int userId);
+
+    List<BoardResponse> searchTownBoard(int userId);
 
     //게시물 삭제
     int deleteBoard(int boardId);
