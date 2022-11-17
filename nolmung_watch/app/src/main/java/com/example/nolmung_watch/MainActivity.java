@@ -44,8 +44,8 @@ public class MainActivity extends Activity {
 
         PuppyAdapter adapter = new PuppyAdapter();
 
-        adapter.addItem(new PuppyInfo("구름이", "스피츠", "84"));
-        adapter.addItem(new PuppyInfo("지용이", "호모사피엔스", "71"));
+        adapter.addItem(new PuppyInfo("구름이", "84"));
+        adapter.addItem(new PuppyInfo("지용이",  "71"));
 
         recyclerView.setAdapter(adapter);
 
