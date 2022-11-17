@@ -14,7 +14,10 @@ import Postcode from "@actbase/react-daum-postcode";
 import Modal from "react-native-modal"
 import { registUserInfo } from '../api/User';
 const NewUserInfo = () => {
+
   const [isModalVisible, setModalVisible] = useState(false);
+  const [address, setAddress] = useState();
+
   const toggleModal = () => {
         setModalVisible(!isModalVisible);
         console.log(isModalVisible)

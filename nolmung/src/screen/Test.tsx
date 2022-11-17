@@ -132,7 +132,7 @@ function SignIn({navigation}: SignInScreenProps) {
     try {
       findAllUser(
         res => {
-          console.log("통신성공!", res);
+          console.log("통신성공!", res.data);
         },
         err => {
           console.log("통신실패!", err);

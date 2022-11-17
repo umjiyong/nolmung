@@ -91,7 +91,6 @@ const NewUserPetInfo = () => {
   const onChangeX = () => {
     setSelectNeut('X');
   };
-  const [modalVisible, setModalVisible] = useState(false);
 
   const [allBreedList, setAllBreedList] = useState()
 
