@@ -96,6 +96,7 @@ function SignIn({navigation}: SignInScreenProps) {
                 console.log('토큰 저장 완료');
               });
               res.data.user[1] == "old" ? navigation.navigate('BottomTabs') : navigation.navigate('NewUserInfo');
+              // navigation.navigate('NewUserInfo')
             },
           // const {id, email, name, image, nickname, profileOpen} =
           //   res.data.user;
