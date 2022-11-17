@@ -57,7 +57,6 @@ public class JwtService {
             return false;
         }
     }
-
     public String getUserId() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String header = request.getHeader("Authorization");
