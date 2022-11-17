@@ -160,7 +160,7 @@ public class FriendController {
     }
 
     @GetMapping("/search/{userCode}")
-    public User readUserByUserCode (@PathVariable("userCode") int userCode) {
+    public User readUserByUserCode (@PathVariable("userCode") String userCode) {
 
        return friendService.findByUserCode(userCode);
     }

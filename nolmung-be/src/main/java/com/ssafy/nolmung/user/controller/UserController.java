@@ -4,6 +4,7 @@ package com.ssafy.nolmung.user.controller;
 //import com.ssafy.nolmung.region.service.RegionService;
 import com.ssafy.nolmung.global.interceptor.IsLogined;
 import com.ssafy.nolmung.global.interceptor.IsLoginedCheck;
+import com.ssafy.nolmung.rank.service.RankService;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.dto.MessageResponseDto;
 import com.ssafy.nolmung.user.dto.ResultDto;

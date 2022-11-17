@@ -52,7 +52,7 @@ public class FriendService {
 
     }
 
-    public User findByUserCode(int userCode) {
+    public User findByUserCode(String userCode) {
 
         return userRepository.findByUserCode(userCode);
 
