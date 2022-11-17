@@ -44,6 +44,12 @@ public class UserService {
 //        Jws<Claims> claimsJws = null;
 //    }
 
+    public String deleteUser(int userId){
+        log.info("유저 정보 삭제 : {}", userId );
+        userRepository.deleteByUserId(userId);
+        return "유저 정보 삭제 완료";
+    }
+
     public List<User> findAllUser(){
         System.out.println("모든 유저 찾기 in repository");
         List<User> userList = userRepository.findAll();
