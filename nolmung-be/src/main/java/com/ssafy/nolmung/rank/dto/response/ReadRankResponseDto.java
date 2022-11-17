@@ -12,6 +12,8 @@ public class ReadRankResponseDto implements Comparable<ReadRankResponseDto> {
 
 //    private RankCategory rankCategory;
  private int userId;
+
+ private String userNickname;
  private int rankScore;
 
  public ReadRankResponseDto(Rank rank) {

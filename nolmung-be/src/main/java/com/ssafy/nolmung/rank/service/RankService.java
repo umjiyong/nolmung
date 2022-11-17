@@ -6,6 +6,8 @@ import com.ssafy.nolmung.rank.domain.*;
 import com.ssafy.nolmung.rank.repository.DailyRankRepository;
 import com.ssafy.nolmung.rank.repository.MonthlyRankRepository;
 import com.ssafy.nolmung.rank.repository.WeeklyRankRepository;
+import com.ssafy.nolmung.user.domain.User;
+import com.ssafy.nolmung.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,8 @@ public class RankService {
     private final WeeklyRankRepository weeklyRankRepository;
     private final MonthlyRankRepository monthlyRankRepository;
     private final FriendRepository friendRepository;
+
+    private final UserRepository userRepository;
 
     public List<DailyRank> findDailyRankAll() {
 
@@ -99,16 +103,33 @@ public class RankService {
     @Transactional
     public void resetRankScore (RankCategory rankCategory){
 
+        List<User> userList = userRepository.findAll();
+
         switch (rankCategory) {
             case daily:
                 dailyRankRepository.deleteAll();
+
+                for (User u : userList) {
+                    registDailyRank(u.getUserId());
+                }
+
                 break;
             case weekly:
                 weeklyRankRepository.deleteAll();
+
+                for (User u : userList) {
+                    registWeeklyRank(u.getUserId());
+                }
+
                 break;
 
             case monthly: {
                 monthlyRankRepository.deleteAll();
+
+                for (User u : userList) {
+                    registMonthlyRank(u.getUserId());
+                }
+
                 break;
             }
 
