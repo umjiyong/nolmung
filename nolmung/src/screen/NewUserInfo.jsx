@@ -50,7 +50,6 @@ const NewUserInfo = () => {
     }
     Navigation.push('NewUserPetInfo');
   }
-
   return (
     <>
       <View style={{flex: 1}}>
