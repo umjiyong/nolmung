@@ -16,8 +16,12 @@ import {
 import DogListItem from '../components/DogListItem';
 import {useNavigation} from '@react-navigation/native';
 import MiddleHeader from '../components/MiddleHeader';
+<<<<<<< HEAD
 import Modal from "react-native-modal"
 import {puppy_breed_info , registPuppyInfo} from '../api/Puppy';
+=======
+import { registPuppyInfo } from '../api/Puppy';
+>>>>>>> d13e982 (update: 신규 로그인시 강아지 등록)
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NewUserPetInfo = () => {
