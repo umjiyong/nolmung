@@ -5,7 +5,7 @@ const VisitMemo = () => {
     const Navigation = useNavigation()
     return (
         <>
-            <View style={Styles.container}>
+            <Pressable onPress={()=>{Navigation.navigate('VisitArticleItem')}} style={Styles.container}>
                 <Image 
                     source={require('../assets/icons/background.png')}
                     style={{
@@ -14,7 +14,7 @@ const VisitMemo = () => {
                         borderRadius: 20,
                     }}
                 />
-                <Pressable onPress={()=>{Navigation.navigate('VisitArticleItem')}} style={{justifyContent:'center', marginLeft: 10,}}>
+                <View  style={{justifyContent:'center', marginLeft: 10,}}>
                     <Text style={{color:'#282828', fontSize: 16,}}>
                         오늘은 날씨가 좋네요
                     </Text>
@@ -24,8 +24,8 @@ const VisitMemo = () => {
                     <Text style={{color:'#959595', fontSize: 10,marginTop: 15,}}>
                         2022.10.18
                     </Text>
-                </Pressable>
-            </View>
+                </View>
+            </Pressable>
         </>
     )
 }

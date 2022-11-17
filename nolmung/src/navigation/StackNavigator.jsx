@@ -27,6 +27,8 @@ import NewUserInfo from '../screen/NewUserInfo';
 import NewUserPetInfo from '../screen/NewUserPetInfo';
 import LandmarkScreen from '../screen/LandmarkScreen';
 import VisitArticleItem from '../screen/VisitArticleItem';
+import NewGuestBook from '../screen/NewGuestBook';
+import EndWalkScreen from '../screen/EndWalkScreen';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
@@ -88,6 +90,8 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen name="NewArticle" component={NewArticle} />
+      <Stack.Screen name="NewGuestBook" component={NewGuestBook} />
+      <Stack.Screen name="EndWalkScreen" component={EndWalkScreen} />
     </Stack.Navigator>
   );
 };
