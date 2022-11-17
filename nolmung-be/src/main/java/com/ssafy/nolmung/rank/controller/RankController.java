@@ -3,6 +3,7 @@ package com.ssafy.nolmung.rank.controller;
 import com.ssafy.nolmung.rank.domain.*;
 import com.ssafy.nolmung.rank.dto.response.ReadRankResponseDto;
 import com.ssafy.nolmung.rank.service.RankService;
+import com.ssafy.nolmung.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,8 @@ public class RankController {
 
     private final RankService rankService;
 
+    private final UserService userService;
+
     @GetMapping("/{category}/findAll")
     public ArrayList<ReadRankResponseDto> findRankAll (@PathVariable("category")RankCategory rankCategory){
 
@@ -26,19 +29,19 @@ public class RankController {
         switch (rankCategory) {
             case daily: {
                 for (DailyRank r : rankService.findDailyRankAll()) {
-                    rankList.add(new ReadRankResponseDto(r));
+                    rankList.add(makeReadRankResponseDto(r));
                 }
                 break;
             }
             case weekly: {
                 for (WeeklyRank r : rankService.findWeeklyRankAll()) {
-                    rankList.add(new ReadRankResponseDto(r));
+                    rankList.add(makeReadRankResponseDto(r));
                 }
                 break;
             }
             case monthly: {
                 for (MonthlyRank r : rankService.findMonthlyRankAll()) {
-                    rankList.add(new ReadRankResponseDto(r));
+                    rankList.add(makeReadRankResponseDto(r));
                 }
                 break;
             }
@@ -49,6 +52,13 @@ public class RankController {
         Collections.sort(rankList);
 
         return rankList;
+    }
+
+    public ReadRankResponseDto makeReadRankResponseDto (Rank rank) {
+        ReadRankResponseDto readRankResponseDto = new ReadRankResponseDto(rank);
+        readRankResponseDto.setUserNickname(userService.findById(rank.getUserId()).getUserNickname());
+
+        return readRankResponseDto;
     }
 
     @PostMapping("/regist/{category}/{userId}")
@@ -73,9 +83,9 @@ public class RankController {
 
 
         switch (rankCategory) {
-            case daily: return new ReadRankResponseDto(rankService.findDailyRankById(userId));
-            case weekly: return new ReadRankResponseDto(rankService.findWeeklyRankById(userId));
-            case monthly: return new ReadRankResponseDto(rankService.findMonthlyRankById(userId));
+            case daily: return makeReadRankResponseDto(rankService.findDailyRankById(userId));
+            case weekly: return makeReadRankResponseDto(rankService.findWeeklyRankById(userId));
+            case monthly: return makeReadRankResponseDto(rankService.findMonthlyRankById(userId));
 
             default: throw new RuntimeException("카테고리가 맞지 않습니다.");
         }
@@ -100,19 +110,19 @@ public class RankController {
         switch (rankCategory) {
             case daily: {
                 for (DailyRank r : rankService.findFriendDailyRank(userId)) {
-                    rankList.add(new ReadRankResponseDto(r));
+                    rankList.add(makeReadRankResponseDto(r));
                 }
                 break;
             }
             case weekly: {
                 for (WeeklyRank r : rankService.findFriendWeeklyRank(userId)) {
-                    rankList.add(new ReadRankResponseDto(r));
+                    rankList.add(makeReadRankResponseDto(r));
                 }
                 break;
             }
             case monthly: {
                 for (MonthlyRank r : rankService.findFriendMonthlyRank(userId)) {
-                    rankList.add(new ReadRankResponseDto(r));
+                    rankList.add(makeReadRankResponseDto(r));
                 }
                 break;
             }
