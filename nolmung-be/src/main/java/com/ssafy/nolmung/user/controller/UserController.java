@@ -174,10 +174,11 @@ public class UserController {
     @DeleteMapping("/userDelete/{userId}")
     @ApiOperation(value = "유저 삭제", notes="본인 데이터만 삭제 가능")
     public ResultDto deleteUser(@PathVariable ("userId") int userId){
+
 //        String userUuid = jwtService.getUserId();
 //
 //        User user = userservice.findByKakaoUuid(userUuid);
-
+        
         return new ResultDto(userservice.deleteUser(userId));
 
     }
