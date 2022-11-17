@@ -65,7 +65,9 @@ function LandmarkScreen({navigation}) {
           <Text style={{color: '#282828', fontSize: 18, fontWeight: '600'}}>
             방명록
           </Text>
-          <Pressable style={style.writebtn}>
+          <Pressable onPress={()=>{
+            navigation.push('NewGuestBook')
+          }} style={style.writebtn}>
             <Text style={{color: '#fff', fontWeight: '500'}}>글쓰기</Text>
           </Pressable>
         </View>
