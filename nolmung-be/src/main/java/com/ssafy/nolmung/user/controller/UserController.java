@@ -145,6 +145,7 @@ public class UserController {
     @ApiOperation(value = "회원정보 입력/수정 시", notes="")
     public MessageResponseDto login(@PathVariable ("userId") int userId, @RequestBody UserRequestDto request){
 
+        log.info("유저정보 수정 : {}", request);
         User user = userservice.findById(userId);
         System.out.println("유저 아이디"+userId);
 
@@ -153,18 +154,18 @@ public class UserController {
         }
 
 
-        if(!request.getUserIntroduction().equals("")) {
+        if(request.getUserIntroduction() != null && !request.getUserIntroduction().equals("")) {
             user.setUserIntroduction(request.getUserIntroduction());
         }
 //        user.setRegion(regionService.getRegionById(request.getRegionId()));
 
-        if(!request.getUserNickname().equals("")) {
-            user.setUserNickname(request.getUserNickname());
+        if(request.getUserNickName() != null && !request.getUserNickName().equals("")) {
+            user.setUserNickname(request.getUserNickName());
         }
-        if(!request.getUserImg().equals("")) {
+        if(request.getUserImg() != null && !request.getUserImg().equals("")) {
             user.setUserImg(request.getUserImg());
         }
-        if(!request.getUserAddressText().equals("")) {
+        if(request.getUserAddressText() != null && !request.getUserAddressText().equals("")) {
             user.setUserAddressText(request.getUserAddressText());
         }
 
