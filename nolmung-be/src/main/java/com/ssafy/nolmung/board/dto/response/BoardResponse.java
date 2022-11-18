@@ -29,14 +29,14 @@ public class BoardResponse {
     @ApiParam(name = "게시물 내용")
     private String boardContent;
     @ApiParam(name = "게시물 업데이트 일시")
-    private LocalDateTime boardUpdateDate;
+    private String boardUpdateDate;
     @ApiParam(name = "게시물 이미지 링크 모음")
     private List<String> boardImg;
     @ApiParam(name = "게시물의 좋아요 수")
     private int likeCnt;
 
     @Builder
-    public BoardResponse(int boardId, int userId, String userName, String userImg, int boardClass, String region, String boardContent, LocalDateTime boardUpdateDate, List<String> boardImg, int likeCnt) {
+    public BoardResponse(int boardId, int userId, String userName, String userImg, int boardClass, String region, String boardContent, String boardUpdateDate, List<String> boardImg, int likeCnt) {
         this.boardId = boardId;
         this.userId = userId;
         this.userName = userName;
