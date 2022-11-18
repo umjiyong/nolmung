@@ -1,6 +1,7 @@
 package com.ssafy.nolmung.friend.service;
 
 import com.ssafy.nolmung.friend.domain.Friend;
+import com.ssafy.nolmung.friend.dto.response.RecommendFriendResponseDto;
 import com.ssafy.nolmung.friend.repository.FriendRepository;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.repository.UserRepository;
@@ -8,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -52,9 +55,30 @@ public class FriendService {
 
     }
 
-    public User findByUserCode(int userCode) {
+    public User findByUserCode(String userCode) {
 
         return userRepository.findByUserCode(userCode);
 
+    }
+
+    public List<RecommendFriendResponseDto> recommendFriend(int userId) {
+        List<RecommendFriendResponseDto> resultRecommendList = new ArrayList<>();
+        List<Integer> recommendList = new ArrayList<>();
+        Random r = new Random();
+
+        while (recommendList.size()<3) {
+          int temp = r.nextInt(userRepository.findAll().size()-1);
+
+          int tempId = userRepository.findAll().get(temp).getUserId();
+
+          if (tempId == userId || recommendList.contains(tempId)) continue;
+
+          recommendList.add(tempId);
+        }
+
+        for (int i : recommendList) {
+            resultRecommendList.add(new RecommendFriendResponseDto(i));
+        }
+        return resultRecommendList;
     }
 }

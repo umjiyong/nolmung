@@ -9,13 +9,13 @@ import lombok.Data;
 @AllArgsConstructor
 public class ReadFriendProposalResponseDto {
 
- private int firendProposalId;
+ private int friendProposalId;
  private int toUserId;
  private int fromUserId;
 
  public ReadFriendProposalResponseDto(FriendProposal friendProposal) {
 
-     this.firendProposalId = friendProposal.getFriendProposalId();
+     this.friendProposalId = friendProposal.getFriendProposalId();
      this.toUserId = friendProposal.getToUserId();
      this.fromUserId = friendProposal.getFromUserId();
 

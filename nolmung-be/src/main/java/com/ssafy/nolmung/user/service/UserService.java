@@ -8,6 +8,12 @@ import java.util.*;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.ssafy.nolmung.rank.domain.DailyRank;
+import com.ssafy.nolmung.rank.domain.MonthlyRank;
+import com.ssafy.nolmung.rank.domain.WeeklyRank;
+import com.ssafy.nolmung.rank.repository.DailyRankRepository;
+import com.ssafy.nolmung.rank.repository.MonthlyRankRepository;
+import com.ssafy.nolmung.rank.repository.WeeklyRankRepository;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.dto.request.UserTokenRequestDto;
 import com.ssafy.nolmung.user.dto.response.UserTokenDataResponseDto;
@@ -25,6 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final DailyRankRepository dailyRankRepository;
+    private final WeeklyRankRepository weeklyRankRepository;
+    private final MonthlyRankRepository monthlyRankRepository;
 
     @Value("${KAKAO.API}")
     private String apiKey;
@@ -121,6 +130,16 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
+        /**
+         랭크 등록 부분
+         */
+        DailyRank dailyRank = new DailyRank(user.getUserId());
+        dailyRankRepository.save(dailyRank);
+        WeeklyRank weeklyRank = new WeeklyRank(user.getUserId());
+        weeklyRankRepository.save(weeklyRank);
+        MonthlyRank monthlyRank = new MonthlyRank(user.getUserId());
+        monthlyRankRepository.save(monthlyRank);
+
 
         return "UserService : 신규 (카카오) 유저 등록완료";
     }
