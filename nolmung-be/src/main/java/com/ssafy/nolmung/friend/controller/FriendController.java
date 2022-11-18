@@ -9,6 +9,7 @@ import com.ssafy.nolmung.friend.dto.request.SendFriendProposalRequestDto;
 import com.ssafy.nolmung.friend.dto.response.ReadBlockedUserResponseDto;
 import com.ssafy.nolmung.friend.dto.response.ReadFriendProposalResponseDto;
 import com.ssafy.nolmung.friend.dto.response.ReadFriendResponseDto;
+import com.ssafy.nolmung.friend.dto.response.RecommendFriendResponseDto;
 import com.ssafy.nolmung.friend.service.BlockService;
 import com.ssafy.nolmung.friend.service.FriendProposalService;
 import com.ssafy.nolmung.friend.service.FriendService;
@@ -117,6 +118,12 @@ public class FriendController {
         friendService.delete(friendService.findFriendByDuoId(tempSubUserId,tempUserId));
 
         return "친구 삭제 완료";
+    }
+
+    @GetMapping("/recommend/{userId}")
+    public List <RecommendFriendResponseDto> recommendFriend (@PathVariable ("userId") int userId) {
+
+        return friendService.recommendFriend(userId);
     }
 
     @PostMapping("/block")
