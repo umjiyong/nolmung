@@ -5,8 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const base_URL = 'https://k7a502.p.ssafy.io/nolmung';
 
 //사용자 정보가 필요한 경우
-export const apiInstance = (token) => {
-  console.log("index.js에서 토큰값", token);
+export const apiInstance = token => {
+  console.log('index.js에서 토큰값', token);
   const instance = axios.create({
     baseURL: base_URL,
     headers: {
