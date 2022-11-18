@@ -32,7 +32,6 @@ public class FriendController {
     private final UserService userService;
     private final FriendService friendService;
     private final BlockService blockService;
-
     private final FriendProposalService friendProposalService;
 
     @GetMapping("/{userId}")
@@ -64,12 +63,6 @@ public class FriendController {
 
     @PostMapping("/send")
     public String sendFriendProposal (@RequestBody SendFriendProposalRequestDto request) {
-
-        //이미 친구인지 체크
-
-        //to from 역치
-
-        //차단되었음
 
         FriendProposal tempFriendProposal = FriendProposal.builder()
                                .toUserId(request.getToUserId())
@@ -157,7 +150,6 @@ public class FriendController {
 
         List<Block> blockList = blockService.findBlockListByUserId(userId);
         List<ReadBlockedUserResponseDto> resultBlockList = new ArrayList<>();
-
 
         for (Block b : blockList) {
             resultBlockList.add(new ReadBlockedUserResponseDto(b));

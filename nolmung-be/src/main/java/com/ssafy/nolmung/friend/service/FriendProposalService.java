@@ -20,6 +20,12 @@ public class FriendProposalService {
     @Transactional
     public void regist (FriendProposal friendProposal){
 
+        //이미 친구인지 체크,
+
+        //to from 역치된 proposal 있던지,
+
+        //차단되었음,
+
         friendProposalRepository.regist(friendProposal);
 
     }
