@@ -16,7 +16,8 @@ import Header from '../components/Header';
 import MyDog from '../components/MyDog';
 import {user_info,user_info_change} from "../api/User"
 import {user_puppy_info} from "../api/Puppy"
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
+// import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker/src';
 
 
 function MyProfileScreen({navigation}) {
