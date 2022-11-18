@@ -9,6 +9,7 @@ import com.ssafy.nolmung.walk.dto.request.WalkRecordRequestDto;
 import com.ssafy.nolmung.walk.dto.TimeDto;
 import com.ssafy.nolmung.walk.dto.response.WalkDailyRecordListResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkPuppyListResponseDto;
+import com.ssafy.nolmung.walk.dto.response.WalkRecordDetailResponseDto;
 import com.ssafy.nolmung.walk.repository.WalkRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -124,7 +125,6 @@ public class WalkServiceImpl implements WalkService{
     @Override
     public long calWalkSecTime(LocalDateTime startTime, LocalDateTime endTime) {
         long walkTime = ChronoUnit.SECONDS.between(endTime, startTime);
-        log.info("!!!!!!!!!산책 시간은" + walkTime);
         return walkTime;
     }
 
@@ -137,16 +137,12 @@ public class WalkServiceImpl implements WalkService{
         if(allSec >= 3600){
             calHour = (int) (allSec / 3600);
             allSec %= 3600;
-            log.info("시간" + calHour);
         }
         if(allSec >= 60){
             calMin = (int) (allSec / 60);
             allSec %= 60;
-            log.info("분" + calMin);
         }
         calSec = (int) allSec;
-        log.info("남은 초" + allSec);
-        log.info("초" + calSec);
 
         TimeDto calTime = TimeDto.builder()
                 .hour(calHour)
@@ -155,6 +151,23 @@ public class WalkServiceImpl implements WalkService{
                 .build();
 
         return calTime;
+    }
+
+    @Override
+    public WalkRecordDetailResponseDto getWalkRecord(int walkId) {
+        Walk walk = walkRepository.findById(walkId).get();
+        long allTime = calWalkSecTime(walk.getWalkStartTime(), walk.getWalkEndTime());
+        TimeDto walkTime = changeSecToTime(allTime);
+
+        WalkRecordDetailResponseDto record  = WalkRecordDetailResponseDto.builder()
+                .distance(walk.getWalkDistance())
+                .walkTime(walkTime)
+                .walkAttainment(walk.getWalkAttainmentTime())
+                .walkImg(walk.getWalkTrackingImg())
+                .userUploadImg(walk.getWalkUserImg())
+                .build();
+
+        return record;
     }
 
 

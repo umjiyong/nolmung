@@ -4,6 +4,7 @@ import com.ssafy.nolmung.walk.dto.request.WalkDailyRecordListRequestDto;
 import com.ssafy.nolmung.walk.dto.request.WalkPuppyListRequestDto;
 import com.ssafy.nolmung.walk.dto.response.WalkDailyRecordListResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkPuppyListResponseDto;
+import com.ssafy.nolmung.walk.dto.response.WalkRecordDetailResponseDto;
 import com.ssafy.nolmung.walk.service.WalkService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -70,19 +71,22 @@ public class WalkController {
         }
     }
 
-//    @ApiOperation(value = "", notes = "")
-//    @DeleteMapping
-//    public ResponseEntity ex4(){
-//        HashMap<String, Object> result = new HashMap<>();
-//        try {
-//            result.put("message", "success");
-//            return new ResponseEntity(result, HttpStatus.OK);
-//        }catch (Exception e){
-//            result.put("message", "[error] - ");
-//            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
-//        }
-//    }
-//
+    @ApiOperation(value = "산책 상세 조회", notes = "산책 목록에서 특정 산책 일지를 조회하는 API")
+    @GetMapping("/{walkId}")
+    public ResponseEntity getWalkRecordDetail(@PathVariable int walkId){
+        HashMap<String, Object> result = new HashMap<>();
+        try {
+            WalkRecordDetailResponseDto walkRecord = walkService.getWalkRecord(walkId);
+            result.put("walkRecord", walkRecord);
+            result.put("message", "success");
+            return new ResponseEntity(result, HttpStatus.OK);
+        }catch (Exception e){
+            result.put("walkId", walkId);
+            result.put("message", "[error] - 산책 상세 조회");
+            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 //    @ApiOperation(value = "", notes = "")
 //    @DeleteMapping
 //    public ResponseEntity ex5(){
