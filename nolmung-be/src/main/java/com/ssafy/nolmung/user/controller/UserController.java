@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,7 +52,6 @@ public class UserController {
     @IsLogined(role = IsLoginedCheck.NOTLOGIN)
     @ApiOperation(value="카카오 로그인 이벤트", notes="신규 가입자는 0번째에 new, 기존 가입자는 1번째에 old로 표기, 1번째 인덱스에 string으로 유저ID")
     public Map CheckIsNewUser(@RequestBody UserTokenRequestDto token) {
-
         System.out.println(token.getAccessToken());
 
         /**

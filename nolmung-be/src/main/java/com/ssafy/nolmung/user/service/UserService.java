@@ -248,6 +248,7 @@ public class UserService {
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
+
             String id = element.getAsJsonObject().get("id").getAsString();
 
             User user = userRepository.findByUserKakaoUuid(id);
