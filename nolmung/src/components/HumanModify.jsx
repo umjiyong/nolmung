@@ -1,28 +1,99 @@
-import React, { useState } from "react";
-import { ScrollView,TextInput, StyleSheet, Text, View, TouchableOpacity, Button, Pressable } from "react-native";
+import React, { useState,useEffect } from "react";
+import { ScrollView,TextInput, StyleSheet, Text, View, TouchableOpacity, Button, Pressable, DeviceEventEmitter } from "react-native";
 import Postcode from "@actbase/react-daum-postcode";
 import Modal from "react-native-modal"
+import {user_info,user_info_change} from "../api/User"
+import { useNavigation } from "@react-navigation/native";
+
+
 const HumanModify = () => {
+    const navi = useNavigation()
+    const [userinfo,setuseinfo] = useState([])
     const [isModalVisible, setModalVisible] = useState(false);
     const toggleModal = () => {
           setModalVisible(!isModalVisible);
           console.log(isModalVisible)
       };
     const backdropOpacity = 0.3
-    const [nickName, setNickName] = useState('닉네임을 입력하세요')
+    let flag = 1
     const onChangeText = (event) => {
         setNickName(event)
-        console.log(event)
+        console.log("이벤트",event)
     }
 
-    const [introduce, setIntroduce] = useState('')
+    const [introduce, setIntroduce] = useState('소개를 해주세요')
+    const [address, setAddress] = useState('주소를 입력해주세요')
+    const [nickName, setNickName] = useState("닉네임을 입력해주세요")
+    console.log("주소",address)
+
     const onChangeIntro = (event) => {
         setIntroduce(event)
         console.log(event)
     }
 
-    const [address, setAddress] = useState('주소를 입력해주세요')
+    
 
+    const user_info_func = async () => {
+        try {
+          
+          await user_info(
+            { userId: 1 },
+            (response) => {
+              setuseinfo(response.data);
+              setNickName(response.data.userNickName)
+              setAddress(response.data.userAddressText)
+              setIntroduce(response.data.userIntroduction)
+
+            },
+            (err) => {
+              console.log("유저정보 에러", err);
+            }
+          );
+        } catch (err) {
+          console.log(err);
+          console.log("심각한 에러;;");
+        }
+      };
+
+    const user_info_change_func = async () => {
+        try {
+          
+          await user_info_change(
+            { userId : 1,
+                userNickName: nickName,
+                userAddressText : address,
+                userIntroduction : introduce
+             },
+            (response) => {
+            //   console.log('gdgd',response)
+            },
+            (err) => {
+              console.log("강아지정보 에러", err);
+            }
+          );
+        } catch (err) {
+          console.log(err);
+          console.log("심각한 에러;;");
+        }
+      };
+
+      useEffect(() => {
+        user_info_func();
+        return () => {
+            DeviceEventEmitter.emit('abc')
+        }
+      }, []);
+
+      console.log('닉네임',)
+
+
+      const onSubmitting= () => {
+        console.log("보낼 닉네임",nickName)
+        user_info_change_func();
+        console.log("수정완료");
+    }
+    console.log('flag',flag)
+    
     return (
     <>
         <ScrollView>
@@ -30,7 +101,7 @@ const HumanModify = () => {
                 <View style={Styles.HumanNickNameBox}>
                     <Text style={Styles.HumanNickname}>닉네임</Text>
                     <TextInput
-                        onFocus={()=> {setNickName('')}}
+                        // onFocus={()=> {setNickName('')}}
                         value={nickName}
                         onChangeText={onChangeText}
                         style={Styles.horizentalLine}
@@ -57,7 +128,7 @@ const HumanModify = () => {
                 </View>
             </View>
             <View style={{alignItems:'center'}}>
-                <TouchableOpacity  style={Styles.completeBtn}>
+                <TouchableOpacity  onPress={()=>{onSubmitting();  navi.navigate('프로필')}} style={Styles.completeBtn}>
                     <Text style={{color: '#fff', fontWeight:'500'}}>수정 완료</Text>
                 </TouchableOpacity>
             </View>

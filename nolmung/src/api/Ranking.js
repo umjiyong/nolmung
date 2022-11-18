@@ -41,6 +41,7 @@ export const getAllRanking_monthly = async (response, success, fail) => {
 };
 
 export const registRanking_daily = async (data, success, fail) => {
+<<<<<<< HEAD
   await api
     .post(`/rank/regist/daily/${data.userId}`, data)
     .then(success)
@@ -66,3 +67,43 @@ export const putUserRank = async (response, success, fail) => {
     .then(success)
     .catch(fail);
 };
+=======
+    await api
+      .post(`/rank/regist/daily/${data.userId}`, data)
+      .then(success)
+      .catch(fail);
+  };
+  export const registRanking_weekly = async (data, success, fail) => {
+    await api
+      .post(`/rank/regist/weekly/${data.userId}`, data)
+      .then(success)
+      .catch(fail);
+  };
+  
+  export const registRanking_monthly = async (data, success, fail) => {
+    await api
+      .post(`/rank/regist/monthly/${data.userId}`, data)
+      .then(success)
+      .catch(fail);
+  };
+  
+  export const putUserRank = async (response, success, fail) => {
+    await api
+      .put(`rank/plus/${response.userId}/${response.rankScore}`)
+      .then(success)
+      .catch(fail);
+  };
+
+
+  export const getMyRanking = async(response, success, fail) => {
+    console.log(response);
+    return await api
+        .get(`/rank/${response.type}/${response.userId}`)
+        .then(success)
+        .catch(fail)
+};
+
+
+  
+  
+>>>>>>> bb52ee3 (start 11.16)

@@ -57,6 +57,7 @@ function FriendScreen() {
     }
   };
 
+
   useEffect(() => {
     getfriend_list_func();
   }, []);
@@ -120,39 +121,32 @@ function FriendScreen() {
         </View>
 
         <View style={Styles.MyFriend}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <Text style={{color: '#282828', fontSize: 18, fontWeight: '500'}}>
-              내 친구 보기
-            </Text>
-            <TouchableOpacity onPress={toggleModal}>
-              <Text
-                style={{
-                  color: '#282828',
-                  fontSize: 28,
-                  fontWeight: '600',
-                  marginRight: 10,
-                }}>
-                +
-              </Text>
-            </TouchableOpacity>
-          </View>
 
-          <ScrollView style={Styles.MyFriendBox}>
-            {friendList.length > 1 ? (
-              <>
-                {friendList.map((item, index) => {
-                  return <MyFriend key={index} userId={item.subUserId} />;
-                })}
-              </>
-            ) : (
-              <Text>친구를 추가해주세요</Text>
-            )}
-          </ScrollView>
+            <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+              <Text style={{color: '#282828', fontSize: 18, fontWeight:'500'}}>내 친구 보기</Text>
+              <TouchableOpacity onPress={toggleModal}>
+                <Text style={{color: '#282828', fontSize: 28, fontWeight: '600', marginRight: 10,}}>+</Text>
+              </TouchableOpacity>
+            </View>
+           
+            <ScrollView style={Styles.MyFriendBox}>
+                  {(friendList.length>1) ? (
+                  <>
+                      {console.log(friendList)}
+                      {friendList.map((item,index)=>{
+                        
+                        return (<MyFriend
+                        key = {index}
+                        userId = {item.subUserId}
+                        />)
+                      })}
+                  </>
+                ): <Text>친구를 추가해주세요</Text>}
+                
+               
+              
+            </ScrollView>
+
         </View>
       </ScrollView>
       {/* 친구 코드 입력 모달 시작*/}
