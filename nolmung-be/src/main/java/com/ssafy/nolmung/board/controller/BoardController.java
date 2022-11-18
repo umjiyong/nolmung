@@ -40,6 +40,14 @@ public class BoardController {
         }
     }
 
+    // 사용자의 게시물 수 조회
+    @ApiOperation(value = "특정 사용자의 게시물 수 조회", notes = "특정 사용자의 게시물 수를 받아오는 API")
+    @GetMapping("/count/{userId}")
+    public ResponseEntity getBoardCountByUserId(@PathVariable int userId) {
+        long result = boardService.countUserBoard(userId);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
     // 사용자의 전체 게시물 조회
     @ApiOperation(value = "특정 사용자의 게시물 조회", notes = "특정 사용자의 게시물 데이터를 받아오는 API")
     @GetMapping("/user/{userId}")

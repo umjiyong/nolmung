@@ -68,6 +68,12 @@ public class BoardServiceImpl implements BoardService {
         return result;
     }
 
+    @Override
+    public long countUserBoard(int userId) {
+        long result = boardRepository.countByUser_UserId(userId);
+        return result;
+    }
+
     // 특정 사용자의 게시물 조회
     @Override
     public List<BoardResponse> searchUserBoard(int userId) {
