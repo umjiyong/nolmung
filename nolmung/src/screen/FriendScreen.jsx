@@ -31,7 +31,8 @@ function FriendScreen() {
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-    console.log(isModalVisible);
+
+    
   };
   const backdropOpacity = 0.5;
 
@@ -39,7 +40,7 @@ function FriendScreen() {
   const searchFriend = () => {
 
     setSearch(!search)
-    console.log(search)
+    
   }
   const [text, setText] = useState('')
   const [friendrequest,setfriendrequest] = useState("")
@@ -90,6 +91,7 @@ function FriendScreen() {
       await user_friend_random(
         { userId: 1 },
         (response) => {
+          console.log("refresh",response.data)
           setfriendrandom(response.data);
         },
         (err) => {
@@ -101,6 +103,15 @@ function FriendScreen() {
       console.log("심각한 에러;;");
     }
   };
+  
+  const refresh_func = ()=>{
+    console.log("리프레시")
+    user_friend_random_func()
+    
+    
+  }
+
+
   
 
   useEffect(() => {
@@ -168,8 +179,11 @@ function FriendScreen() {
         <View style={Styles.friendRecommand}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text style={Styles.RecommandText}>친구 추천</Text>
-            <TouchableOpacity>
+
+            <TouchableOpacity onPress = {refresh_func}>
               <Image
+                
+
                 source={require('../assets/icons/revision-regular-24.png')}
                 resizeMode="contain"
                 style={{
@@ -211,7 +225,7 @@ function FriendScreen() {
             <ScrollView style={Styles.MyFriendBox}>
                   {(friendList.length>0) ? (
                   <>
-                      {console.log(friendList)}
+                      
                       {friendList.map((item,index)=>{
                         
                         return (<MyFriend
