@@ -76,15 +76,15 @@ function SignIn({navigation}: SignInScreenProps) {
   const [user, setUser] = useState({});
 
   const signInWithKakao = async (): Promise<void> => {
-    console.log("누름?!");
+    console.log('누름?!');
     const token: KakaoOAuthToken = await login().then(token => {
       console.log(11, token);
       if (token) {
         AsyncStorage.setItem('accessToken', token.accessToken, () => {
-          console.log("토큰 저장 완료");
-        })
+          console.log('토큰 저장 완료');
+        });
         try {
-          console.log("로그인 axios 연결 시작", token.accessToken);
+          console.log('로그인 axios 연결 시작', token.accessToken);
           loginCheckNewUser(
             {accessToken: token.accessToken, refreshToken: token.refreshToken},
             res => {
@@ -95,19 +95,19 @@ function SignIn({navigation}: SignInScreenProps) {
               AsyncStorage.setItem('Bearer', res.data.Bearer, () => {
                 console.log('토큰 저장 완료');
               });
-              res.data.user[1] == "old" ? navigation.navigate('BottomTabs') : navigation.navigate('NewUserInfo');
+              // res.data.user[1] == "old" ? navigation.navigate('BottomTabs') : navigation.navigate('NewUserInfo');
               // navigation.navigate('NewUserInfo')
+              navigation.navigate('BottomTabs');
             },
-          // const {id, email, name, image, nickname, profileOpen} =
-          //   res.data.user;
+            // const {id, email, name, image, nickname, profileOpen} =
+            //   res.data.user;
             err => {
               console.log('Test.tsx에러다', err);
             },
           );
-        } catch(err){
-          console.log("로그인 실패");
+        } catch (err) {
+          console.log('로그인 실패');
         }
-        
       }
     });
     setUser(token);
@@ -124,31 +124,31 @@ function SignIn({navigation}: SignInScreenProps) {
   // });
 
   const deleteAsync = () => {
-    console.log("삭제했당");
+    console.log('삭제했당');
     AsyncStorage.clear();
-  }
+  };
 
   const getAll = () => {
-    console.log("전체조회 클릭됨");
+    console.log('전체조회 클릭됨');
     try {
       findAllUser(
         res => {
-          console.log("통신성공!", res);
+          console.log('통신성공!', res);
         },
         err => {
-          console.log("통신실패!", err);
-        }
-      )
+          console.log('통신실패!', err);
+        },
+      );
     } catch (err) {
-      console.log("완전 에러", err);
+      console.log('완전 에러', err);
     }
-  }
+  };
 
   return (
     <View style={style.container}>
       <Text style={style.text}>놀면 멍하니</Text>
       <Image source={require('../assets/image/Dog1.jpg')} style={style.logo} />
-      <TouchableOpacity onPress={signInWithKakao} >
+      <TouchableOpacity onPress={signInWithKakao}>
         {console.log(isLogin)}
         <Image
           source={require('../assets/kakaoLogin/kakao_login_large_wide.png')}
