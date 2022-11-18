@@ -1,9 +1,9 @@
-package com.ssafy.nolmung.landMarkBoard.service;
+package com.ssafy.nolmung.landMark.service;
 
-import com.ssafy.nolmung.landMarkBoard.domain.LandMark;
-import com.ssafy.nolmung.landMarkBoard.domain.LandMarkLike;
-import com.ssafy.nolmung.landMarkBoard.repository.LandMarkLikeRepository;
-import com.ssafy.nolmung.landMarkBoard.repository.LandMarkRepository;
+import com.ssafy.nolmung.landMark.domain.LandMark;
+import com.ssafy.nolmung.landMark.domain.LandMarkLike;
+import com.ssafy.nolmung.landMark.repository.LandMarkLikeRepository;
+import com.ssafy.nolmung.landMark.repository.LandMarkRepository;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;

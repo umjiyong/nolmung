@@ -1,20 +1,18 @@
-package com.ssafy.nolmung.landMarkBoard.service;
+package com.ssafy.nolmung.landMark.service;
 
 import com.ssafy.nolmung.board.Repository.BoardRepository;
-import com.ssafy.nolmung.landMarkBoard.domain.LandMark;
-import com.ssafy.nolmung.landMarkBoard.domain.LandMarkBoard;
-import com.ssafy.nolmung.landMarkBoard.dto.request.LandmarkBoardRequestDto;
-import com.ssafy.nolmung.landMarkBoard.dto.response.*;
-import com.ssafy.nolmung.landMarkBoard.repository.LandMarkBoardRepository;
-import com.ssafy.nolmung.landMarkBoard.repository.LandMarkLikeRepository;
-import com.ssafy.nolmung.landMarkBoard.repository.LandMarkRepository;
+import com.ssafy.nolmung.landMark.domain.LandMark;
+import com.ssafy.nolmung.landMark.domain.LandMarkBoard;
+import com.ssafy.nolmung.landMark.dto.response.*;
+import com.ssafy.nolmung.landMark.repository.LandMarkBoardRepository;
+import com.ssafy.nolmung.landMark.repository.LandMarkLikeRepository;
+import com.ssafy.nolmung.landMark.repository.LandMarkRepository;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

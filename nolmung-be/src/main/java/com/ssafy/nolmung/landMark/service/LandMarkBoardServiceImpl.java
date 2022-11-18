@@ -1,11 +1,11 @@
-package com.ssafy.nolmung.landMarkBoard.service;
+package com.ssafy.nolmung.landMark.service;
 
-import com.ssafy.nolmung.landMarkBoard.domain.LandMark;
-import com.ssafy.nolmung.landMarkBoard.domain.LandMarkBoard;
-import com.ssafy.nolmung.landMarkBoard.dto.request.LandmarkBoardRequestDto;
-import com.ssafy.nolmung.landMarkBoard.dto.response.LandMarkBoardInfoDto;
-import com.ssafy.nolmung.landMarkBoard.repository.LandMarkBoardRepository;
-import com.ssafy.nolmung.landMarkBoard.repository.LandMarkRepository;
+import com.ssafy.nolmung.landMark.domain.LandMark;
+import com.ssafy.nolmung.landMark.domain.LandMarkBoard;
+import com.ssafy.nolmung.landMark.dto.request.LandmarkBoardRequestDto;
+import com.ssafy.nolmung.landMark.dto.response.LandMarkBoardInfoDto;
+import com.ssafy.nolmung.landMark.repository.LandMarkBoardRepository;
+import com.ssafy.nolmung.landMark.repository.LandMarkRepository;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;

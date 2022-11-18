@@ -1,4 +1,4 @@
-package com.ssafy.nolmung.landMarkBoard.domain;
+package com.ssafy.nolmung.landMark.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Getter

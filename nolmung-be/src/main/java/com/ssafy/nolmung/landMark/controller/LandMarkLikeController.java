@@ -1,10 +1,7 @@
-package com.ssafy.nolmung.landMarkBoard.controller;
+package com.ssafy.nolmung.landMark.controller;
 
-import com.ssafy.nolmung.landMarkBoard.dto.request.LandMarkUserRequestDto;
-import com.ssafy.nolmung.landMarkBoard.dto.request.LandmarkBoardRequestDto;
-import com.ssafy.nolmung.landMarkBoard.dto.response.*;
-import com.ssafy.nolmung.landMarkBoard.service.LandMarkLikeService;
-import com.ssafy.nolmung.landMarkBoard.service.LandMarkService;
+import com.ssafy.nolmung.landMark.dto.request.LandMarkUserRequestDto;
+import com.ssafy.nolmung.landMark.service.LandMarkLikeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @Slf4j
 @RestController

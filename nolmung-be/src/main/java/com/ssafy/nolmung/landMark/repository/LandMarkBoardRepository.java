@@ -1,7 +1,6 @@
-package com.ssafy.nolmung.landMarkBoard.repository;
+package com.ssafy.nolmung.landMark.repository;
 
-import com.ssafy.nolmung.boardComment.domain.BoardComment;
-import com.ssafy.nolmung.landMarkBoard.domain.LandMarkBoard;
+import com.ssafy.nolmung.landMark.domain.LandMarkBoard;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

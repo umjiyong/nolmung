@@ -1,9 +1,8 @@
-package com.ssafy.nolmung.landMarkBoard.controller;
+package com.ssafy.nolmung.landMark.controller;
 
-import com.ssafy.nolmung.landMarkBoard.dto.request.LandMarkUserRequestDto;
-import com.ssafy.nolmung.landMarkBoard.dto.request.LandmarkBoardRequestDto;
-import com.ssafy.nolmung.landMarkBoard.dto.response.*;
-import com.ssafy.nolmung.landMarkBoard.service.LandMarkService;
+import com.ssafy.nolmung.landMark.dto.request.LandMarkUserRequestDto;
+import com.ssafy.nolmung.landMark.dto.response.*;
+import com.ssafy.nolmung.landMark.service.LandMarkService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,7 +72,7 @@ public class LandMarkController {
     }
 
     @ApiOperation(value = "랜드마크 마커 목록 조회", notes = "랜드마크 전체의 정보를 조회하는 API")
-    @PostMapping("/list")
+    @GetMapping("/list")
     public ResponseEntity getLandmarkList(){
         HashMap<String, Object> result = new HashMap<>();
         List<LandMarkListResponseDto> landmarkList = new ArrayList<>();

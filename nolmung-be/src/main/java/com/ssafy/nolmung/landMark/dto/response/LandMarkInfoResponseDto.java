@@ -1,11 +1,9 @@
-package com.ssafy.nolmung.landMarkBoard.dto.response;
+package com.ssafy.nolmung.landMark.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

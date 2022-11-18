@@ -1,4 +1,4 @@
-package com.ssafy.nolmung.landMarkBoard.domain;
+package com.ssafy.nolmung.landMark.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.nolmung.user.domain.User;
@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity

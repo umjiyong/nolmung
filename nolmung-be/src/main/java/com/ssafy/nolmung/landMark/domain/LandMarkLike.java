@@ -1,4 +1,4 @@
-package com.ssafy.nolmung.landMarkBoard.domain;
+package com.ssafy.nolmung.landMark.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.nolmung.user.domain.User;

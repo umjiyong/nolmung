@@ -1,4 +1,4 @@
-package com.ssafy.nolmung.landMarkBoard.dto.response;
+package com.ssafy.nolmung.landMark.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Builder;

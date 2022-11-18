@@ -1,8 +1,6 @@
-package com.ssafy.nolmung.landMarkBoard.dto.response;
+package com.ssafy.nolmung.landMark.dto.response;
 
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @AllArgsConstructor

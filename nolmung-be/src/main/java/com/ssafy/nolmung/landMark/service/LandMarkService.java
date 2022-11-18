@@ -1,8 +1,6 @@
-package com.ssafy.nolmung.landMarkBoard.service;
+package com.ssafy.nolmung.landMark.service;
 
-import com.ssafy.nolmung.landMarkBoard.dto.request.LandMarkUserRequestDto;
-import com.ssafy.nolmung.landMarkBoard.dto.request.LandmarkBoardRequestDto;
-import com.ssafy.nolmung.landMarkBoard.dto.response.*;
+import com.ssafy.nolmung.landMark.dto.response.*;
 
 import java.util.List;
 

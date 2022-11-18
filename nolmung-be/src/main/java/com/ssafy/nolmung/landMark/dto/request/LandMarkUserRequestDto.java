@@ -1,4 +1,4 @@
-package com.ssafy.nolmung.landMarkBoard.dto.request;
+package com.ssafy.nolmung.landMark.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
