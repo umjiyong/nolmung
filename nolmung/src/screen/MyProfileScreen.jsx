@@ -11,10 +11,9 @@ import {
   Alert,
   PermissionsAndroid,
   Pressable,
-<<<<<<< HEAD
-=======
+
   DeviceEventEmitter
->>>>>>> bb52ee3 (start 11.16)
+
 } from 'react-native';
 import Header from '../components/Header';
 import MyDog from '../components/MyDog';
@@ -24,32 +23,25 @@ import {user_puppy_info} from '../api/Puppy';
 // import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker/src';
 
-<<<<<<< HEAD
-function MyProfileScreen({navigation}) {
-  const [userinfo, setuseinfo] = useState([]);
-  const [puppyinfo, setpuppyinfo] = useState([]);
-=======
+
 
 function MyProfileScreen({navigation} ) {
 
   const [userinfo,setuseinfo] = useState([])
   const [puppyinfo,setpuppyinfo] = useState([])
->>>>>>> bb52ee3 (start 11.16)
+
   const Friend = 1;
   const Post = 1;
   const userName = '하루';
   const userAddress = '전남 여수시 선원동';
   const friendCode = '#E1VH64';
   const [intro, setIntro] = useState('소개글이 없습니다');
-<<<<<<< HEAD
-  const [photo, setPhoto] = useState('');
 
-=======
   const [photo,setPhoto] = useState("")
   
   // onSetFlag()
   
->>>>>>> bb52ee3 (start 11.16)
+
   // const showPicker = async () =>{
   //   const grantedcamera = await PermissionsAndroid.request(
   //     PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -163,23 +155,14 @@ function MyProfileScreen({navigation} ) {
           console.log(res);
           if (res.didCancel) return;
           setResponse(res);
-<<<<<<< HEAD
+
           user_info_change_func(response?.assets[0]?.uri);
         },
       );
     } catch (err) {
       console.log(err);
       console.log('심각한 에러;;');
-=======
-          user_info_change_func(response?.assets[0]?.uri)
-          
-          
 
-
-
-        })
-      
->>>>>>> bb52ee3 (start 11.16)
     }
   };
 
@@ -188,31 +171,7 @@ function MyProfileScreen({navigation} ) {
       <Header HeaderName="마이 페이지" />
       <ScrollView style={Styles.container} showsVerticalScrollIndicator={false}>
         <View style={Styles.profile}>
-<<<<<<< HEAD
-          <Pressable onPress={onSelectImage}>
-            {response ? (
-              <Image
-                source={{uri: response?.assets[0]?.uri}}
-                resizeMode="contain"
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 100,
-                }}
-              />
-            ) : (
-              <Image
-                source={{uri: userinfo.userImg}}
-                resizeMode="contain"
-                style={{
-                  width: 80,
-                  height: 80,
-                }}
-              />
-            )}
-          </Pressable>
 
-=======
         <Pressable onPress={onSelectImage}>
             {response ?  <Image
               source={{uri: response?.assets[0]?.uri}}
@@ -236,7 +195,7 @@ function MyProfileScreen({navigation} ) {
           
         </Pressable>
          
->>>>>>> bb52ee3 (start 11.16)
+
           {/* <Button title="이미지 선택" onPress={showPicker} ></Button>  */}
 
           <View style={Styles.friendPostBox}>
