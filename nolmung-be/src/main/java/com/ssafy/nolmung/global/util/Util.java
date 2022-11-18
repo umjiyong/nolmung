@@ -1,25 +1,32 @@
 package com.ssafy.nolmung.global.util;
 
-import com.ssafy.nolmung.board.domain.BoardImage;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStream;
 import java.util.UUID;
 
-
+@RequiredArgsConstructor
 @Component
 public class Util {
 
     @Component
     public class ImageUtil {
 
-        @Value("${S3.URL}")
-        private String uploadPath;
+        @Autowired
+        private AmazonS3Client amazonS3Client;
+        @Value(("${S3.BUCKETNAME}"))
+        private String bucketName;
+
 
         public String uploadImage(String folderName, MultipartFile file) {
             if(file.isEmpty() || !file.getContentType().startsWith("image")){
@@ -29,15 +36,20 @@ public class Util {
             String fileName = UUID.randomUUID().toString();
             String originFileName = file.getOriginalFilename();
             fileName += originFileName.substring(originFileName.lastIndexOf("."));
+            fileName = folderName+"/"+fileName;
 
-            File f = new File(fileName);
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(file.getContentType());
+            objectMetadata.setContentLength(file.getSize());
+
             try {
-                file.transferTo(f);
+                amazonS3Client.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), objectMetadata)
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                return null; // 에러 처리 필요
             }
 
-            String result = uploadPath+"/"+folderName+"/"+fileName;
+            String result = amazonS3Client.getUrl(bucketName, fileName).toString();
             return result;
         }
 
