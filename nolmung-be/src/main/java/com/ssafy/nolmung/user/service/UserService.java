@@ -62,7 +62,6 @@ public class UserService {
     public List<User> findAllUser(){
         System.out.println("모든 유저 찾기 in repository");
         List<User> userList = userRepository.findAll();
-
         return userList;
     }
 
@@ -249,6 +248,7 @@ public class UserService {
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
+
             String id = element.getAsJsonObject().get("id").getAsString();
 
             User user = userRepository.findByUserKakaoUuid(id);
@@ -263,14 +263,12 @@ public class UserService {
                 isNewUser = 1;
                 System.out.println("이미 등록된 유저!" + id);
             }
-
             br.close();
             return new UserTokenDataResponseDto(user, isNewUser);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 

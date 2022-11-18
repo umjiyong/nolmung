@@ -22,8 +22,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,7 +51,6 @@ public class UserController {
     @IsLogined(role = IsLoginedCheck.NOTLOGIN)
     @ApiOperation(value="카카오 로그인 이벤트", notes="신규 가입자는 0번째에 new, 기존 가입자는 1번째에 old로 표기, 1번째 인덱스에 string으로 유저ID")
     public Map CheckIsNewUser(@RequestBody UserTokenRequestDto token) {
-
         System.out.println(token.getAccessToken());
 
         /**
@@ -119,7 +116,6 @@ public class UserController {
         return new ResultDto(test*10);
     }
 
-
 //    @ResponseBody
 //    @GetMapping("/kakao/{accessCode}")
 //    @ApiOperation(value="카카오 로그인 요청 시", notes="kakaoAccessCode를 파라미터로 받아, 사용자의 accessToken, refreshToken을 반환")
@@ -160,7 +156,8 @@ public class UserController {
         }
 //        user.setRegion(regionService.getRegionById(request.getRegionId()));
 
-        if(request.getUserNickName() != null && !request.getUserNickName().equals("")) {
+        log.info("유저닉네임은? : {}", request.getUserNickName());
+        if(request.getUserNickName() != null && !request.getUserNickName().equals("") || request.getUserNickName().equals("닉네임을 입력하세요")) {
             user.setUserNickname(request.getUserNickName());
         }
         if(request.getUserImg() != null && !request.getUserImg().equals("")) {
@@ -178,13 +175,11 @@ public class UserController {
     @DeleteMapping("/userDelete/{userId}")
     @ApiOperation(value = "유저 삭제", notes="본인 데이터만 삭제 가능")
     public ResultDto deleteUser(@PathVariable ("userId") int userId){
-        String userUuid = jwtService.getUserId();
 
-        User user = userservice.findByKakaoUuid(userUuid);
-
-//        User user1 = userservice.findById(userId);
-
-
+//        String userUuid = jwtService.getUserId();
+//
+//        User user = userservice.findByKakaoUuid(userUuid);
+        
         return new ResultDto(userservice.deleteUser(userId));
 
     }
