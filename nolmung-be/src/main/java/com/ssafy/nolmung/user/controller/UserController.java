@@ -157,7 +157,7 @@ public class UserController {
             user.setUserIntroduction(request.getUserIntroduction());
         }
 //        user.setRegion(regionService.getRegionById(request.getRegionId()));
-
+        
         if(request.getUserNickName() != null && !request.getUserNickName().equals("")) {
             user.setUserNickname(request.getUserNickName());
         }
@@ -182,6 +182,7 @@ public class UserController {
         
 //        User user1 = userservice.findById(userId);
 
+//        User user1 = userservice.findById(userId);
 
         return new ResultDto(userservice.deleteUser(userId));
 
