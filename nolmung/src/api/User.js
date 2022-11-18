@@ -31,7 +31,7 @@ export const findAllUser = async (success, fail) => {
   await loginApi.get(`/user/findAll`).then(success).catch(fail);
 };
 
-<<<<<<< HEAD
+
 export const registUserInfo = async (data, success, fail) => {
   await AsyncStorage.getItem('userId', (err, res) => {
     api.put(`/user/regist/${res}`, data).then(success).catch(fail);
@@ -43,14 +43,7 @@ export const user_info = async (response, success, fail) => {
   return await api.get(`/user/${response.userId}`).then(success).catch(fail);
 };
 
-export const user_info_change = async (response, success, fail) => {
-  console.log('유저 정보 수정 콘솔', response);
-  return await api
-    .put(`/user/regist/${response.userId}`, response)
-    .then(success)
-    .catch(fail);
-};
-=======
+
 export const user_info_change = async(response, success, fail) => {
     
     // console.log('유저 정보 수정 콘솔', response);
@@ -61,4 +54,4 @@ export const user_info_change = async(response, success, fail) => {
         .then(success)
         .catch(fail)
 }
->>>>>>> bb52ee3 (start 11.16)
+
