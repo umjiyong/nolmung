@@ -14,10 +14,10 @@ const SplashImage = ({navigation}) => {
       AsyncStorage.getItem('userId', (err, res) => {
         console.log(res);
         navigation.replace(res == null ? 'Login' : 'BottomTabs');
-        // navigation.replace('Login');
+        // navigation.navigate('Login');
       });
     }, 1000);
-  }, [])
+  }, []);
 
   return (
     <>
@@ -29,7 +29,7 @@ const SplashImage = ({navigation}) => {
         <Text style={{fontSize: 36, color: '#fff'}}>놀면 멍!하게</Text>
       </View>
     </>
-  )
+  );
 };
 
 export default SplashImage;
@@ -41,4 +41,4 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-})
+});
