@@ -7,7 +7,7 @@ import MyFamily from '../components/MyFamily';
 import {puppy_puppy_info} from "../api/Puppy"
 
 const MyDogInfo = ({navigation: {navigate}, route}) => {
-    console.log('ㅎㅇㅎㅇ',route.params.puppyId)
+    // console.log('ㅎㅇㅎㅇ',route.params.puppyId)
     const [puppyinfo, setpuppyinfo] = useState([])
     // console.log("퍼피인포는 언디파인드?", puppyinfo)
 
@@ -97,6 +97,7 @@ const MyDogInfo = ({navigation: {navigate}, route}) => {
     }
 
     const dogFriendCode = "#ECS10P"
+    
     return (
     <>  
     {puppyinfo.puppyInfo !== undefined ? (
@@ -106,7 +107,7 @@ const MyDogInfo = ({navigation: {navigate}, route}) => {
         <ScrollView style={Styles.DogContainer} showsVerticalScrollIndicator={false}> 
             <View style={Styles.DogImage}>
                 <Image  
-                    source={require('../assets/image/Dog1.jpg')}
+                    source={{uri : puppyinfo.puppyInfo.puppyImg}}
                     resizeMode="contain"
                     style={{
                         width: 102,

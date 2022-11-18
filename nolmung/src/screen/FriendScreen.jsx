@@ -19,10 +19,14 @@ import MyFriend from '../components/MyFriend';
 import Modal from 'react-native-modal';
 import SearchFriendList from '../components/SearchFriendList';
 
-import {user_friend_list,user_friend_proposal,user_friend_random} from "../api/Friend"
+import {user_friend_list,user_friend_proposal,user_friend_random,user_friend_search,user_friend_post} from "../api/Friend"
+import { useNavigation } from "@react-navigation/native";
 
+    
+    
 
 function FriendScreen() {
+  const navigation = useNavigation()
   const [openFI, setOpenFI] = useState(false);
   const [friendList, setfriendList] = useState([]);
   const onPressArrow = () => {
@@ -37,16 +41,66 @@ function FriendScreen() {
   const backdropOpacity = 0.5;
 
   const [search, setSearch] = useState(false);
+  
+  const [text, setText] = useState('')
+  const [friendrequest,setfriendrequest] = useState("")
+  const [friendrandom,setfriendrandom] = useState([])
+  const [friendId,setfriendId] = useState("")
+
+  
+  
+  
+  const user_friend_post_func = async () => {
+    try {
+      await user_friend_post(
+        {fromUserId: 1, toUserId : 2},
+        response => {
+          
+          console.log("보내기 성공")
+          
+        },
+        err => {
+          console.log('아티클질문 에러', err);
+          setfriendId(null);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
+
+  const user_friend_search_func = async (ftext) => {
+    try {
+      await user_friend_search(
+        {userCode: ftext},
+        response => {
+          
+          setfriendId(response.data);
+          
+        },
+        err => {
+          console.log('아티클질문 에러', err);
+          setfriendId(null);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
+
   const searchFriend = () => {
 
     setSearch(!search)
     
+    
+    user_friend_search_func(text)
+    
   }
-  const [text, setText] = useState('')
-  const [friendrequest,setfriendrequest] = useState("")
-  const [friendrandom,setfriendrandom] = useState([])
 
-  
+
+
 
 
   const getfriend_list_func = async () => {
@@ -121,7 +175,7 @@ function FriendScreen() {
     
   }, []);
 
-  console.log("로그확인",friendrequest)
+  // console.log("로그확인",friendrequest)
 
 
   return (
@@ -199,10 +253,10 @@ function FriendScreen() {
             {(friendrandom.length>0) ? (
                     <>
                         
-                        {friendrandom.map((item,index)=>{
+                        {friendrandom.map((item)=>{
                           
                           return (<FriendRecommand
-                          key = {index}
+                          key = {item.userId}
                           userId = {item.userId}
                           />)
                         })}
@@ -271,11 +325,11 @@ function FriendScreen() {
               </View>
             </TouchableWithoutFeedback>
           </View>
-          {search ? (
-            <View>
-              <SearchFriendList />
-            </View>
-          ) : null}
+          {friendId ? (
+            <Pressable onPress={() => {navigation.push('FreindProfile',{userId : friendId.userId})}}>
+              <SearchFriendList userId ={friendId} />
+            </Pressable>
+          ) : <Text>친구코드를 확인해주세요</Text>} 
         </View>
       </Modal>
       {/* 친구 코드 입력 모달 끝 */}
