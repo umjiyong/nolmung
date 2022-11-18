@@ -156,6 +156,7 @@ public class UserController {
         }
 //        user.setRegion(regionService.getRegionById(request.getRegionId()));
 
+        log.info("유저닉네임은? : {}", request.getUserNickName());
         if(request.getUserNickName() != null && !request.getUserNickName().equals("") || request.getUserNickName().equals("닉네임을 입력하세요")) {
             user.setUserNickname(request.getUserNickName());
         }

@@ -76,7 +76,6 @@ public class JwtService {
         return claimsJws.getBody().get("KakaoUuid").toString();
     }
 
-
     //현재 사용자가 유효한지 체크
     public boolean isValidUser() throws NumberFormatException{
        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
