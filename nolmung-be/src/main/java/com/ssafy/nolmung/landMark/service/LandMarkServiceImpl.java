@@ -42,8 +42,8 @@ public class LandMarkServiceImpl implements LandMarkService{
             LandMark landMark = landMarkList.get(i);
             LandMarkListResponseDto marker = LandMarkListResponseDto.builder()
                     .landmarkId(landMark.getLandMarkId())
-                    .landMarkLat(landMark.getLandMarkLat())
-                    .landMarkLon(landMark.getLandMarkLon())
+                    .latitude(landMark.getLandMarkLat())
+                    .longitude(landMark.getLandMarkLon())
                     .build();
             landmarkMarkerList.add(marker);
         }
