@@ -3,6 +3,7 @@ package com.ssafy.nolmung.InAppAlarm.controller;
 import com.ssafy.nolmung.InAppAlarm.dto.request.InAppAlarmRequest;
 import com.ssafy.nolmung.InAppAlarm.dto.response.InAppAlarmResponse;
 import com.ssafy.nolmung.InAppAlarm.service.InAppAlarmService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,16 @@ public class InAppAlarmController {
         List<InAppAlarmResponse> result = inAppAlarmService.searchUserInAppAlarm(userId);
 
         if (result == null) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @PutMapping
+    @ApiOperation(value = "알람 읽음 확인 처리", notes = "inAppAlarmId를 이용해 알람을 읽음 처리하는 API")
+    public ResponseEntity updateReadAlarm(@RequestBody List<Integer> inAppAlarmIdList) {
+        int result = inAppAlarmService.updateInAppAlaramRead(inAppAlarmIdList);
+        if (result<=0) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity(result, HttpStatus.OK);

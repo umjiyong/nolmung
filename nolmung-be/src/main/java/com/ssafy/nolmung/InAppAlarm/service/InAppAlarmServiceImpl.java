@@ -51,4 +51,14 @@ public class InAppAlarmServiceImpl implements InAppAlarmService{
         }
         return result;
     }
+
+    @Override
+    public int updateInAppAlaramRead(List<Integer> inAppAlarmIdList) {
+        for (int inAppAlarmId : inAppAlarmIdList) {
+            InAppAlarm inAppAlarm = inAppAlarmRepository.findById(inAppAlarmId).orElseThrow();
+            inAppAlarm.updateRead();
+            inAppAlarmRepository.save(inAppAlarm);
+        }
+        return inAppAlarmIdList.size();
+    }
 }

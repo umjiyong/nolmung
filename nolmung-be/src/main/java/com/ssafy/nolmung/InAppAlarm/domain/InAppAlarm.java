@@ -51,6 +51,10 @@ public class InAppAlarm {
 
     }
 
+    public void updateRead() {
+        this.inAppAlarmIsCheck = true;
+    }
+
     public InAppAlarmResponse toInAppAlarmResponse() {
         return InAppAlarmResponse.builder()
                 .inAppAlarmUpdateDate(this.getInAppAlarmUpdateDate())
