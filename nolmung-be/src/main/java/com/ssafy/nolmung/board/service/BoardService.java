@@ -13,6 +13,8 @@ public interface BoardService {
 
     // 전체 게시물 조회
     List<BoardResponse> searchAllBoard();
+    // 특정 user의 게시물 수 조회
+    long countUserBoard(int userId);
     // 특정 user의 게시물 조회
     List<BoardResponse> searchUserBoard(int userId);
     // 특정 게시물 조회
