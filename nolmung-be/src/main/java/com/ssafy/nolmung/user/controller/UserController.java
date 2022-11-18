@@ -119,29 +119,6 @@ public class UserController {
         return new ResultDto(test*10);
     }
 
-
-    @ResponseBody
-    @GetMapping("/kakao/{accessCode}")
-    @ApiOperation(value="카카오 로그인 요청 시", notes="kakaoAccessCode를 파라미터로 받아, 사용자의 accessToken, refreshToken을 반환")
-    public HashMap<String, String> KakaoLogin(@PathVariable ("accessCode") String code) {
-        List<String> list = userservice.getKakaoAccessToken(code);
-        String access_token = list.get(0);
-        String refresh_token = list.get(1);
-        int userId = userservice.createKakaoUser(access_token);
-
-        System.out.println("컨트롤러에서 확인"+access_token+" , "+refresh_token);
-
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("accessToken", access_token);
-        hashMap.put("refreshToken", refresh_token);
-
-        if(userId == -1) hashMap.put("userId", "Error");
-        else hashMap.put("userId", Integer.toString(userId));
-
-        return hashMap;
-    }
-
-
 //    @ResponseBody
 //    @GetMapping("/kakao/{accessCode}")
 //    @ApiOperation(value="카카오 로그인 요청 시", notes="kakaoAccessCode를 파라미터로 받아, 사용자의 accessToken, refreshToken을 반환")

@@ -262,7 +262,6 @@ public class UserService {
                 isNewUser = 1;
                 System.out.println("이미 등록된 유저!" + id);
             }
-
             br.close();
             return new UserTokenDataResponseDto(user, isNewUser);
 

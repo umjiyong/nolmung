@@ -169,7 +169,6 @@ public class User {
         this.userEmail = userEmail;
 
         this.userRefreshToken = userRefreshToken;
-
         this.sharePuppies = sharePuppies;
         this.walks = walks;
         this.inAppAlarms = inAppAlarms;
