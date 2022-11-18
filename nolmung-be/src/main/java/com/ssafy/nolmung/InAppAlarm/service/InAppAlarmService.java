@@ -9,4 +9,6 @@ public interface InAppAlarmService {
 
     int createInAppAlarm(InAppAlarmRequest inAppAlarmRequest);
     List<InAppAlarmResponse> searchUserInAppAlarm(int userId);
+
+    int updateInAppAlaramRead(List<Integer> inAppAlarmIdList);
 }
