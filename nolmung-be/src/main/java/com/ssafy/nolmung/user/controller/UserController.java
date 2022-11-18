@@ -155,8 +155,8 @@ public class UserController {
             user.setUserIntroduction(request.getUserIntroduction());
         }
 //        user.setRegion(regionService.getRegionById(request.getRegionId()));
-        
-        if(request.getUserNickName() != null && !request.getUserNickName().equals("")) {
+
+        if(request.getUserNickName() != null && !request.getUserNickName().equals("") || request.getUserNickName().equals("닉네임을 입력하세요")) {
             user.setUserNickname(request.getUserNickName());
         }
         if(request.getUserImg() != null && !request.getUserImg().equals("")) {
