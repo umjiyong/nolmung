@@ -157,7 +157,7 @@ function AllRanking() {
         {/* daily일때 */}
         {select === "daily" ? (
           <>
-            <ScrollView>       
+            <ScrollView showsVerticalScrollIndicator={false}>       
                 <View style={Styles.MainRankingContainer}>
                 <Image
                     source={require("../assets/icons/DogImg.png")}
@@ -202,7 +202,7 @@ function AllRanking() {
                 >
                     종합 랭킹
                 </Text>
-                <View>
+                <View style={{marginBottom: 150}}>
                     {dailyData.length > 0 ? (
                     <>
                         <MedalRanking
@@ -228,6 +228,7 @@ function AllRanking() {
                         mung={mydailyRank.userNickname}
                         rank={mydailyRank.rankScore}
                         />
+                        
                     </>
                     ) : null}
                 </View>

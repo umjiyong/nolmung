@@ -94,10 +94,15 @@ function SignIn({navigation}: SignInScreenProps) {
               AsyncStorage.setItem('Bearer', res.data.Bearer, () => {
                 console.log('토큰 저장 완료');
               });
+<<<<<<< HEAD
               res.data.user[1] == 'old'
                 ? navigation.navigate('BottomTabs')
                 : navigation.navigate('NewUserInfo');
               // navigation.navigate('NewUserInfo')
+=======
+              // res.data.user[1] == "old" ? navigation.navigate('BottomTabs') : navigation.navigate('NewUserInfo');
+              navigation.navigate('BottomTabs')
+>>>>>>> 2ba1273 (11.18)
             },
             // const {id, email, name, image, nickname, profileOpen} =
             //   res.data.user;

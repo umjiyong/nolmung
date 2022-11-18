@@ -13,8 +13,13 @@ const SplashImage = ({navigation}) => {
       //else send to Home Screen
       AsyncStorage.getItem('userId', (err, res) => {
         console.log(res);
+<<<<<<< HEAD
         navigation.replace(res == null ? 'Login' : 'BottomTabs');
         // navigation.navigate('Login');
+=======
+        // navigation.replace(res == null ? 'Login' : 'BottomTabs');
+        navigation.replace('BottomTabs')
+>>>>>>> 2ba1273 (11.18)
       });
     }, 1000);
   }, []);

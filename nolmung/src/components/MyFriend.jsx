@@ -9,7 +9,7 @@ const MyFriend = (Props) => {
     const [userinfo,setuseinfo] = useState([])
     const [puppyinfo,setpuppyinfo] = useState([])
     const HumanName = userinfo.userNickName
-    const [DogInfo,setDogInfo] =useState("강아지가 없습니다") 
+    const [DogInfo,setDogInfo] = useState("강아지가 없습니다") 
     
    
 
@@ -39,7 +39,6 @@ const MyFriend = (Props) => {
             (response) => {
               console.log("아이디임",Id)
               setpuppyinfo(response.data);
-              setDogInfo(puppyinfo.myPuppyList[0].puppyInfo.puppyName.concat(' ',puppyinfo.myPuppyList[0].puppyInfo.puppyAge).concat('',"살").concat(' ',puppyinfo.myPuppyList[0].puppyInfo.breedName )) 
             },
             (err) => {
               console.log("강아지정보 에러", err);
@@ -53,18 +52,22 @@ const MyFriend = (Props) => {
 
       useEffect(() => {
         user_info_func(Props.userId);
-        user_puppy_info_func(Props.userId);
+        user_puppy_info_func(Props.userId)
 
-        // if(puppyinfo.myPuppyList){
-        //   setDogInfo(puppyinfo.myPuppyList[0].puppyInfo.puppyName.concat(' ',puppyinfo.myPuppyList[0].puppyInfo.puppyAge).concat('',"살").concat(' ',puppyinfo.myPuppyList[0].puppyInfo.breedName )) 
-        //  }else{
-        //   setDogInfo("강아지가 없습니다")
-        //  }
-        
       }, []);
 
+      useEffect(()=>{
+        if(puppyinfo.myPuppyList){
+          setDogInfo(puppyinfo.myPuppyList[0].puppyInfo.puppyName.concat(' ',puppyinfo.myPuppyList[0].puppyInfo.puppyAge).concat('',"살").concat(' ',puppyinfo.myPuppyList[0].puppyInfo.breedName )) 
+         }else{
+          setDogInfo("강아지가 없습니다")
+         }
+      },[puppyinfo])
+      
+      console.log("강아지콘솔",DogInfo)
+
       // console.log(puppyinfo.myPuppyList[0].puppyInfo.puppyName)
-      console.log("강아지 정보",puppyinfo.myPuppyList)
+      // console.log("강아지 정보",puppyinfo.myPuppyList)
     return (
         <>
             {puppyinfo.myPuppyList !== undefined ? 
