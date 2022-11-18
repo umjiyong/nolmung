@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LandMarkListResponseDto {
     int landmarkId;
-    double landMarkLat;
-    double landMarkLon;
+    double latitude;
+    double longitude;
 
     @Builder
-    public LandMarkListResponseDto(int landmarkId, double landMarkLat, double landMarkLon){
+    public LandMarkListResponseDto(int landmarkId, double latitude, double longitude){
         this.landmarkId = landmarkId;
-        this.landMarkLat = landMarkLat;
-        this.landMarkLon = landMarkLon;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }
