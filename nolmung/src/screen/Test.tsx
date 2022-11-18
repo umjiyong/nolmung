@@ -87,7 +87,7 @@ function SignIn({navigation}: SignInScreenProps) {
           loginCheckNewUser(
             {accessToken: token.accessToken, refreshToken: token.refreshToken},
             res => {
-              console.log('무엇일까요?', res.data.Bearer, res.data.user);
+              console.log('무엇일까요?', res.data);
               AsyncStorage.setItem('userId', res.data.user[0], () => {
                 console.log('사용자 아이디 저장 완료');
               });
@@ -149,7 +149,6 @@ function SignIn({navigation}: SignInScreenProps) {
       <Text style={style.text}>놀면 멍하니</Text>
       <Image source={require('../assets/image/Dog1.jpg')} style={style.logo} />
       <TouchableOpacity onPress={signInWithKakao}>
-        {console.log(isLogin)}
         <Image
           source={require('../assets/kakaoLogin/kakao_login_large_wide.png')}
           resizeMode="contain"

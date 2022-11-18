@@ -13,8 +13,8 @@ export const apiInstance = () => {
     baseURL: base_URL,
     headers: {
       'Content-type': 'application/json',
-      Authorization: `NOTLOGIN`,
-      // Authorization: `Bearer ${token.accessToken}`,
+      Authorization: `Bearer ${token.accessToken}`,
+      isLogined: `LOGIN`,
     },
   });
   return instance;
@@ -26,7 +26,7 @@ export const apiLoginInstance = () => {
     baseURL: base_URL,
     headers: {
       'Content-type': 'application/json',
-      Authorization: `NOTLOGIN`,
+      IsLogined: `NOTLOGIN`,
     },
   });
   return instance;
