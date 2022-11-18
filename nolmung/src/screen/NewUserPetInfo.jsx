@@ -91,9 +91,9 @@ const NewUserPetInfo = () => {
   const onChangeX = () => {
     setSelectNeut('X');
   };
-    const toggleModal = () => {
-      setModalVisible(!isModalVisible);
-      console.log(isModalVisible)
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+    console.log(isModalVisible)
   };
 
   const toggleModalBreed = () => {
