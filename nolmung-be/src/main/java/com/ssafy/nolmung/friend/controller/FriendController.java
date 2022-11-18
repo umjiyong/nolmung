@@ -6,10 +6,7 @@ import com.ssafy.nolmung.friend.domain.FriendProposal;
 import com.ssafy.nolmung.friend.dto.request.BlockFriendRequestDto;
 import com.ssafy.nolmung.friend.dto.request.DeleteFriendRequestDto;
 import com.ssafy.nolmung.friend.dto.request.SendFriendProposalRequestDto;
-import com.ssafy.nolmung.friend.dto.response.ReadBlockedUserResponseDto;
-import com.ssafy.nolmung.friend.dto.response.ReadFriendProposalResponseDto;
-import com.ssafy.nolmung.friend.dto.response.ReadFriendResponseDto;
-import com.ssafy.nolmung.friend.dto.response.RecommendFriendResponseDto;
+import com.ssafy.nolmung.friend.dto.response.*;
 import com.ssafy.nolmung.friend.service.BlockService;
 import com.ssafy.nolmung.friend.service.FriendProposalService;
 import com.ssafy.nolmung.friend.service.FriendService;
@@ -159,9 +156,9 @@ public class FriendController {
     }
 
     @GetMapping("/search/{userCode}")
-    public int readUserByUserCode (@PathVariable("userCode") String userCode) {
+    public ReadUserByUserCodeResponseDto readUserByUserCode (@PathVariable("userCode") String userCode) {
 
-       return friendService.findByUserCode(userCode).getUserId();
+       return new ReadUserByUserCodeResponseDto(friendService.findByUserCode(userCode).getUserId());
     }
 
 }
