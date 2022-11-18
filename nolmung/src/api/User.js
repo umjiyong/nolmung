@@ -1,6 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {login} from '@react-native-seoul/kakao-login';
-import {apiInstance, apiLoginInstance} from './Index';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { login } from "@react-native-seoul/kakao-login";
+import { apiInstance, apiLoginInstance } from "./Index";
 
 const loginApi = apiLoginInstance();
 const api = apiInstance();
