@@ -94,14 +94,6 @@ public class UserController {
     }
 
 
-    @GetMapping("/findByUuid/{KakaoUuid}")
-    public UserResponseDto SearchByKakaoUuid(@PathVariable ("KakaoUuid") String uuid){
-        User user = userservice.findByKakaoUuid(uuid);
-
-        return new UserResponseDto(user);
-    }
-
-
     @GetMapping("/findAll")
     @IsLogined(role = IsLoginedCheck.NOTLOGIN)
     @ApiOperation(value="(개발용)전체 사용자 조회", notes="전체 사용자 반환")
@@ -125,6 +117,28 @@ public class UserController {
     public ResultDto test(@PathVariable ("test") int test){
         System.out.println("통신 성공!");
         return new ResultDto(test*10);
+    }
+
+
+    @ResponseBody
+    @GetMapping("/kakao/{accessCode}")
+    @ApiOperation(value="카카오 로그인 요청 시", notes="kakaoAccessCode를 파라미터로 받아, 사용자의 accessToken, refreshToken을 반환")
+    public HashMap<String, String> KakaoLogin(@PathVariable ("accessCode") String code) {
+        List<String> list = userservice.getKakaoAccessToken(code);
+        String access_token = list.get(0);
+        String refresh_token = list.get(1);
+        int userId = userservice.createKakaoUser(access_token);
+
+        System.out.println("컨트롤러에서 확인"+access_token+" , "+refresh_token);
+
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("accessToken", access_token);
+        hashMap.put("refreshToken", refresh_token);
+
+        if(userId == -1) hashMap.put("userId", "Error");
+        else hashMap.put("userId", Integer.toString(userId));
+
+        return hashMap;
     }
 
 

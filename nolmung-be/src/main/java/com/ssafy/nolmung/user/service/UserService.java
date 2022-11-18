@@ -62,7 +62,6 @@ public class UserService {
     public List<User> findAllUser(){
         System.out.println("모든 유저 찾기 in repository");
         List<User> userList = userRepository.findAll();
-
         return userList;
     }
 
