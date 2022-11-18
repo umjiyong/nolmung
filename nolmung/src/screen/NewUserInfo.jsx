@@ -12,10 +12,14 @@ import {
 } from 'react-native';
 import Postcode from '@actbase/react-daum-postcode';
 import Modal from 'react-native-modal';
-import {registUserInfo} from '../api/User';
+import { registUserInfo } from '../api/User';
+
 const NewUserInfo = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [address, setAddress] = useState();
+  const [introduce, setIntroduce] = useState('');
+  const [nickName, setNickName] = useState('닉네임을 입력하세요');
+  const [sendAddress, setSendAddress] = useState();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -23,12 +27,11 @@ const NewUserInfo = () => {
   };
   const backdropOpacity = 0.3;
   const Navigation = useNavigation();
-  const [nickName, setNickName] = useState('닉네임을 입력하세요');
+  
   const onChangeText = event => {
     setNickName(event);
   };
-
-  const [introduce, setIntroduce] = useState('');
+  
   const onChangeIntro = event => {
     setIntroduce(event);
   };
@@ -37,7 +40,7 @@ const NewUserInfo = () => {
     try {
       registUserInfo(
         {
-          userAddressText: address,
+          userAddressText: sendAddress,
           userIntroduction: introduce,
           userNickName: nickName,
         },
@@ -116,10 +119,17 @@ const NewUserInfo = () => {
           backdropOpacity={backdropOpacity}>
           <Postcode
             style={{flex: 1}}
-            jsOptions={{animation: true, hideMapBtn: true}}
+            jsOptions={{
+              animation: true,
+              hideMapBtn: true,
+              autoMapping: false,
+              showMoreHName: true,
+            }}
             onSelected={data => {
-              console.log(JSON.stringify(data.roadAddress));
+              console.log(JSON.stringify(data));
               setAddress(data.roadAddress.replace(/\"/gi, ''));
+              if (data.hname !== "") setSendAddress(data.hname)
+              else setSendAddress(data.bname)
               toggleModal();
             }}
           />

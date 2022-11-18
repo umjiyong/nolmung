@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import Header from '../components/Header';
 import MyDog from '../components/MyDog';
-import {user_info,user_info_change} from "../api/User"
+import {user_info,registUserInfo} from "../api/User"
 import {user_puppy_info} from "../api/Puppy"
 // import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker/src';
@@ -128,7 +128,7 @@ function MyProfileScreen({navigation}) {
   const user_info_change_func = async (data) => {
     try {
       
-      await user_info_change(
+      await registUserInfo(
         { userImg: data },
         (response) => {
           console.log(response)

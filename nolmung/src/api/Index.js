@@ -5,8 +5,7 @@ const base_URL = 'http://192.168.45.243:8080/nolmung';
 // const base_URL = "https://k7a502.p.ssafy.io/nolmung";
 
 //사용자 정보가 필요한 경우
-export const apiInstance = token => {
-  console.log('index.js에서 토큰값', token);
+export const apiInstance = () => {
   const instance = axios.create({
     baseURL: base_URL,
     headers: {

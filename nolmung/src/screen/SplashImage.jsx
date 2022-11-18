@@ -13,8 +13,8 @@ const SplashImage = ({navigation}) => {
       //else send to Home Screen
       AsyncStorage.getItem('userId', (err, res) => {
         console.log(res);
-        // navigation.replace(res == null ? 'Login' : 'BottomTabs');
-        navigation.navigate('Login');
+        navigation.replace(res == null ? 'Login' : 'BottomTabs');
+        // navigation.navigate('Login');
       });
     }, 1000);
   }, []);

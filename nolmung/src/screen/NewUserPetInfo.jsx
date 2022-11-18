@@ -17,15 +17,13 @@ import DogListItem from '../components/DogListItem';
 import {useNavigation} from '@react-navigation/native';
 import MiddleHeader from '../components/MiddleHeader';
 import Modal from 'react-native-modal';
-import {puppy_breed_info} from '../api/Puppy';
+import {getBreedInfo, registPuppyInfo} from '../api/Puppy';
 import SearchDogList from '../components/SearchDogList';
-import {registPuppyInfo} from '../api/Puppy';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NewUserPetInfo = () => {
   const navi = useNavigation();
   const backdropOpacity = 0.3;
-
   const [DogName, setDogName] = useState('');
   const [DogSeed, setDogSeed] = useState('');
   const [year, setYear] = useState('');
@@ -42,22 +40,26 @@ const NewUserPetInfo = () => {
   const [allBreedList, setAllBreedList] = useState();
   const [selectBreed, setSelectBreed] =
     useState('터치해서 견종을 선택해주세요');
+  const [breedId, setBreedId] = useState();
   const [isModalVisibleBreed, setModalVisibleBreed] = useState(false);
   const [isModalVisibleTwo, setModalVisibleTwo] = useState(false);
 
   const petInfoRegist = async () => {
     const birth = year + '-' + month + '-' + date;
+    console.log('강아지 정보 등록하기', birth);
     try {
-      AsyncStorage.getItem('userId', (err, getId) => {
+      await AsyncStorage.getItem('userId', (err, getId) => {
         registPuppyInfo(
           {
             puppyBirth: birth,
-            puppyImg: dogImg,
+            // puppyImg: dogImg,
             puppyIsNeutered: selectNeut,
+            puppyCharacter: dogChar,
             puppyName: DogName,
             puppySex: selectSex,
             puppyWeight: dogWeight,
             userId: getId,
+            breedId: breedId,
           },
           res => {
             console.log('강아지 정보 등록 성공', res);
@@ -109,16 +111,16 @@ const NewUserPetInfo = () => {
     setDogChar(e);
   };
   const onChangeMan = () => {
-    setSelectSex('man');
+    setSelectSex(0);
   };
   const onChangeWoman = () => {
-    setSelectSex('woman');
+    setSelectSex(1);
   };
   const onChangeO = () => {
-    setSelectNeut('O');
+    setSelectNeut(true);
   };
   const onChangeX = () => {
-    setSelectNeut('X');
+    setSelectNeut(false);
   };
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -146,7 +148,7 @@ const NewUserPetInfo = () => {
   };
   const getBreed_List_Func = async () => {
     try {
-      await puppy_breed_info(response => {
+      await getBreedInfo(response => {
         setAllBreedList(response.data);
       });
     } catch (err) {
@@ -331,6 +333,7 @@ const NewUserPetInfo = () => {
                         <TouchableOpacity
                           onPress={() => {
                             setSelectBreed(item.breedName);
+                            setBreedId(item.breedId);
                             toggleModalBreed();
                           }}
                           style={{alignItems: 'center', marginVertical: 20}}
@@ -461,12 +464,10 @@ const NewUserPetInfo = () => {
               {/*  */}
               <TouchableWithoutFeedback onPress={onChangeMan}>
                 <View
-                  style={
-                    selectSex == 'man' ? Styles.SelectsexBtn : Styles.sexBtn
-                  }>
+                  style={selectSex == 0 ? Styles.SelectsexBtn : Styles.sexBtn}>
                   <Text
                     style={
-                      selectSex == 'man' ? Styles.SelectBtnText : Styles.BtnText
+                      selectSex == 0 ? Styles.SelectBtnText : Styles.BtnText
                     }>
                     남성
                   </Text>
@@ -474,14 +475,10 @@ const NewUserPetInfo = () => {
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback onPress={onChangeWoman}>
                 <View
-                  style={
-                    selectSex == 'woman' ? Styles.SelectsexBtn : Styles.sexBtn
-                  }>
+                  style={selectSex == 1 ? Styles.SelectsexBtn : Styles.sexBtn}>
                   <Text
                     style={
-                      selectSex == 'woman'
-                        ? Styles.SelectBtnText
-                        : Styles.BtnText
+                      selectSex == 1 ? Styles.SelectBtnText : Styles.BtnText
                     }>
                     여성
                   </Text>
@@ -505,11 +502,11 @@ const NewUserPetInfo = () => {
               <TouchableWithoutFeedback onPress={onChangeO}>
                 <View
                   style={
-                    selectNeut == 'O' ? Styles.SelectNeutBtn : Styles.NeutBtn
+                    selectNeut == true ? Styles.SelectNeutBtn : Styles.NeutBtn
                   }>
                   <Text
                     style={
-                      selectNeut == 'O' ? Styles.SelectBtnText : Styles.BtnText
+                      selectNeut == true ? Styles.SelectBtnText : Styles.BtnText
                     }>
                     O
                   </Text>
@@ -518,11 +515,13 @@ const NewUserPetInfo = () => {
               <TouchableWithoutFeedback onPress={onChangeX}>
                 <View
                   style={
-                    selectNeut == 'X' ? Styles.SelectNeutBtn : Styles.NeutBtn
+                    selectNeut == false ? Styles.SelectNeutBtn : Styles.NeutBtn
                   }>
                   <Text
                     style={
-                      selectNeut == 'X' ? Styles.SelectBtnText : Styles.BtnText
+                      selectNeut == false
+                        ? Styles.SelectBtnText
+                        : Styles.BtnText
                     }>
                     X
                   </Text>

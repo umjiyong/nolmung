@@ -3,11 +3,24 @@ import {apiInstance, apiLoginInstance} from './Index';
 
 const nonLoginApi = apiLoginInstance();
 const api = apiInstance();
+api.interceptors.request.use(async config => {
+  if (!config.headers) {
+    return config;
+  }
+  let token = null;
+
+  token = await AsyncStorage.getItem('accessToken');
+
+  if (token !== null) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
 
 export const registPuppyInfo = async (data, success, fail) => {
-  AsyncStorage.getItem('userId', (err, res) => {
-    nonLoginApi.post(`/puppy/register`, data).then(success).then(fail);
-  });
+  console.log('강아지정보 등록', data);
+  await api.post(`/puppy/register`, data).then(success).then(fail);
 };
 
 export const user_puppy_info = async (response, success, fail) => {
@@ -23,6 +36,6 @@ export const puppy_puppy_info = async (response, success, fail) => {
     .catch(fail);
 };
 
-export const puppy_breed_info = async (success, fail) => {
+export const getBreedInfo = async (success, fail) => {
   return await api.get(`/puppy/breedList`).then(success).catch(fail);
 };
