@@ -1,10 +1,49 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { ScrollView,TextInput, StyleSheet, Text, View, Image, TouchableWithoutFeedback, TouchableOpacity, Button } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import MiddleHeader from "../components/MiddleHeader";
 import MyFamily from '../components/MyFamily';
-const MyDogInfo = () => {
+import {puppy_puppy_info} from "../api/Puppy"
+
+const MyDogInfo = ({navigation: {navigate}, route}) => {
+    console.log('ㅎㅇㅎㅇ',route.params.puppyId)
+    const [puppyinfo, setpuppyinfo] = useState([])
+    // console.log("퍼피인포는 언디파인드?", puppyinfo)
+
+    const user_puppy_info_func = async () => {
+        try {
+          
+          await puppy_puppy_info(
+            { puppyId: route.params.puppyId },
+            (response) => {
+                // console.log(response.data)
+                setpuppyinfo(response.data);
+            },
+            (err) => {
+              console.log("강아지정보 에러", err);
+            }
+          );
+        } catch (err) {
+          console.log(err);
+          console.log("심각한 에러;;");
+        }
+      };
+    
+    useEffect(() => {
+        user_puppy_info_func();
+        console.log("퍼피 상세페이지")
+    },[]);
+   
+    console.log(puppyinfo.puppyInfo)
+    
+
+
+
+
+
+
+
     const navi = useNavigation()
     const [DogName, setDogName] = useState("지용")
     const onChangeText = (event) => {
@@ -40,13 +79,13 @@ const MyDogInfo = () => {
         setDogChar(e)
     }
 
-    const [selectSex, setSelectSex] = useState('man')
+    const [selectSex, setSelectSex] = useState(0)
     const onChangeMan = () => {
-        setSelectSex('man');
+        setSelectSex(0);
        
     }
     const onChangeWoman = () => {
-        setSelectSex('woman');
+        setSelectSex(1);
      
     }
     const [selectNeut, setSelectNeut ] = useState('X')
@@ -59,8 +98,11 @@ const MyDogInfo = () => {
 
     const dogFriendCode = "#ECS10P"
     return (
-    <>
-        <MiddleHeader header={DogName}/>
+    <>  
+    {puppyinfo.puppyInfo !== undefined ? (
+        <>
+        <MiddleHeader header={puppyinfo.puppyInfo.puppyName} />
+        
         <ScrollView style={Styles.DogContainer} showsVerticalScrollIndicator={false}> 
             <View style={Styles.DogImage}>
                 <Image  
@@ -76,24 +118,24 @@ const MyDogInfo = () => {
             </View>
             <View style={{marginBottom: 20}}>
                 <Text style={{color: '#282828', fontWeight: '600', fontSize: 16, marginBottom: 10,}}>강아지 이름</Text>
-                <Text style={{color: '#282828',borderBottomColor:'gray', borderBottomWidth:1, paddingBottom:5}}>{DogName}</Text>
+                <Text style={{color: '#282828',borderBottomColor:'gray', borderBottomWidth:1, paddingBottom:5}}>{puppyinfo.puppyInfo.puppyName}</Text>
             </View>
             <View style={{marginBottom: 20}}>
                 <Text style={{color: '#282828', fontWeight: '600', fontSize: 16, marginBottom: 10,}}>견종</Text>
-                <Text style={{color: '#282828',borderBottomColor:'gray', borderBottomWidth:1, paddingBottom:5}}>{DogSeed}</Text>
+                <Text style={{color: '#282828',borderBottomColor:'gray', borderBottomWidth:1, paddingBottom:5}}>{puppyinfo.puppyInfo.breedName}</Text>
             </View>
             <View>
                 <Text style={{color: '#282828', fontWeight: '600', fontSize: 16, marginBottom: 10,}}>생년월일</Text>    
                 <View style={{flexDirection:'row', justifyContent:'space-around',alignItems:'center'}}>
-                    <Text style={Styles.BirthConatiner}>{year}</Text>
-                    <Text style={{marginHorizontal:0, ...Styles.BirthConatiner}}>{month}</Text>
-                    <Text style={Styles.BirthConatiner}>{date}</Text>
+                    <Text style={Styles.BirthConatiner}>{puppyinfo.puppyInfo.puppyBirthYear}</Text>
+                    <Text style={{marginHorizontal:0, ...Styles.BirthConatiner}}>{puppyinfo.puppyInfo.puppyBirthMonth}</Text>
+                    <Text style={Styles.BirthConatiner}>{puppyinfo.puppyInfo.puppyBirthDay}</Text>
                 </View>
             </View>
             <View style={{marginTop: 20}}>
                 <Text style={{color: '#282828', fontWeight: '600', fontSize: 16, marginBottom: 10,}}>몸무게</Text>
                 <View>
-                    <Text style={{color: '#282828',}}>{dogWeight} Kg</Text>
+                    <Text style={{color: '#282828',}}>{puppyinfo.puppyInfo.puppyWeight} Kg</Text>
                 </View>
                 <View style={{borderBottomColor:'gray', borderBottomWidth:1, marginTop: 5, }}></View>
             </View>
@@ -103,7 +145,7 @@ const MyDogInfo = () => {
                     <Text style={{color: '#959595'}}>(최대 40자)</Text>
                 </View>
                 <View style={{ height: 70, borderColor: '#959595', borderWidth: 1, borderRadius: 15, justifyContent:'center' }}>
-                    <Text style={{textAlign: 'center',color: '#282828'}}>{dogChar}</Text>           
+                    <Text style={{textAlign: 'center',color: '#282828'}}>{puppyinfo.puppyInfo.puppyCharacter}</Text>           
                 </View>
             </View>
             <View style={{marginTop: 20}}>
@@ -111,13 +153,13 @@ const MyDogInfo = () => {
                 <View style={Styles.BtnContainer}>
                     {/*  */}
                     <View>
-                        <View style={selectSex =='man' ? Styles.SelectsexBtn : Styles.sexBtn}>
-                            <Text style={selectSex == 'man' ? Styles.SelectBtnText: Styles.BtnText}>남성</Text>
+                        <View style={puppyinfo.puppyInfo.puppySex =='0' ? Styles.SelectsexBtn : Styles.sexBtn}>
+                            <Text style={puppyinfo.puppyInfo.puppySex == '0' ? Styles.SelectBtnText: Styles.BtnText}>남성</Text>
                         </View>
                     </View>
                     <View>
-                        <View style={selectSex == 'woman' ? Styles.SelectsexBtn: Styles.sexBtn}>
-                            <Text style={selectSex == 'woman'? Styles.SelectBtnText : Styles.BtnText}>여성</Text>
+                        <View style={puppyinfo.puppyInfo.puppySex == '1' ? Styles.SelectsexBtn: Styles.sexBtn}>
+                            <Text style={puppyinfo.puppyInfo.puppySex == '1'? Styles.SelectBtnText : Styles.BtnText}>여성</Text>
                         </View>
                     </View>
                 </View>
@@ -127,27 +169,53 @@ const MyDogInfo = () => {
                 <View style={{flexDirection:'row', justifyContent:'space-around'}}>
                     {/*  */}
                     <View>
-                        <View style={selectNeut =='O' ? Styles.SelectNeutBtn : Styles.NeutBtn}>
-                            <Text style={selectNeut == 'O' ? Styles.SelectBtnText: Styles.BtnText}>O</Text>
+                        <View style={puppyinfo.puppyInfo.puppyIsNeutered == true ? Styles.SelectNeutBtn : Styles.NeutBtn}>
+                            <Text style={puppyinfo.puppyInfo.puppyIsNeutered == true ? Styles.SelectBtnText: Styles.BtnText}>O</Text>
                         </View>
                     </View>
                     <View>
-                        <View style={selectNeut == 'X' ? Styles.SelectNeutBtn: Styles.NeutBtn}>
-                            <Text style={selectNeut == 'X'? Styles.SelectBtnText : Styles.BtnText}>X</Text>
+                        <View style={puppyinfo.puppyInfo.puppyIsNeutered == false ? Styles.SelectNeutBtn: Styles.NeutBtn}>
+                            <Text style={puppyinfo.puppyInfo.puppyIsNeutered == false ? Styles.SelectBtnText : Styles.BtnText}>X</Text>
                         </View>
                     </View>
                 </View>
             </View>
             {/*나의 가족  Start*/}
+
+
+
+            
+
+
+
+
+
+
+
             <View style={Styles.MyFamily}>
                 <Text style={Styles.MyFamilyText}>강아지를 공유하는 가족</Text>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    <MyFamily img={require('../assets/icons/32.png')}/>
-                    <MyFamily img={require('../assets/icons/33.png')}/>
-                    <MyFamily img={require('../assets/icons/34.png')}/>
-                    <MyFamily img={require('../assets/icons/34.png')}/>
-                    <MyFamily img={require('../assets/icons/34.png')}/>
-                    <MyFamily img={require('../assets/icons/34.png')}/>
+                    
+                    {(puppyinfo.puppyInfo.shareUserImageList) ? (
+                <>
+                            {(puppyinfo.puppyInfo.shareUserImageList).map((item,index)=>{
+                            
+                                return (<MyFamily
+                                key = {index}
+                                item = {item}
+                                
+                                />)
+                                })}
+                                
+                        </>
+                     ): <Text>찐따 입니다</Text>}
+
+
+
+
+
+
+
 
                 </ScrollView>
             </View> 
@@ -156,6 +224,9 @@ const MyDogInfo = () => {
         <TouchableOpacity style={Styles.completeBtn} onPress={()=>{navi.goBack()}}>
             <Text style={{color: '#fff', fontWeight:'500'}}>확인</Text>
         </TouchableOpacity>
+        </>
+    ): null}
+      
     </>
     ) 
 }

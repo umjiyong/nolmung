@@ -23,14 +23,22 @@ import SearchFriendList from '../screen/SearchFriendList';
 import {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashImage from '../screen/SplashImage';
+import NewUserInfo from '../screen/NewUserInfo';
+import NewUserPetInfo from '../screen/NewUserPetInfo';
+import LandmarkScreen from '../screen/LandmarkScreen';
+import VisitArticleItem from '../screen/VisitArticleItem';
+import NewGuestBook from '../screen/NewGuestBook';
+import EndWalkScreen from '../screen/EndWalkScreen';
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
-      <Stack.Screen name="SplashImg" component= {SplashImage} />
+      <Stack.Screen name="SplashImg" component={SplashImage} />
       <Stack.Screen name="Login" component={SignIn} />
+      <Stack.Screen name="NewUserInfo" component={NewUserInfo} />
+      <Stack.Screen name="NewUserPetInfo" component={NewUserPetInfo} />
       <Stack.Screen name="BottomTabs" component={BottomTabs} />
       <Stack.Screen
         name="NotiScreen"
@@ -50,6 +58,8 @@ const StackNavigator = () => {
       />
       <Stack.Screen name="MessageScreen" component={MessageScreen} />
       <Stack.Screen name="RankingScreen" component={RankingScreen} />
+      <Stack.Screen name="LandmarkScreen" component={LandmarkScreen} />
+      <Stack.Screen name="VisitArticleItem" component={VisitArticleItem} />
       <Stack.Screen name="MyProfileModify" component={MyProfileModify} />
       <Stack.Screen name="AddDogInfo" component={AddDogInfo} />
       <Stack.Screen name="MyDogInfo" component={MyDogInfo} />
@@ -80,6 +90,8 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen name="NewArticle" component={NewArticle} />
+      <Stack.Screen name="NewGuestBook" component={NewGuestBook} />
+      <Stack.Screen name="EndWalkScreen" component={EndWalkScreen} />
     </Stack.Navigator>
   );
 };

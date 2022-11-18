@@ -35,7 +35,7 @@ type RootStackParamList = {
   SignUp: undefined;
 };
 
-//NativeStackScreenProps : 
+//NativeStackScreenProps :
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 
 const {width, height} = Dimensions.get('window');
@@ -83,48 +83,73 @@ function SignIn({navigation}: SignInScreenProps) {
         AsyncStorage.setItem('accessToken', token.accessToken, () => {
           console.log("토큰 저장 완료");
         })
-        loginCheckNewUser(
-          {accessToken: token.accessToken, refreshToken: token.refreshToken},
-          res => {
-            console.log('무엇일까요?', res.data.data);
-            AsyncStorage.setItem('userId', res.data.data[1], () => {
-              console.log('사용자 아이디 저장 완료');
-            });
-            // navigation.navigate('BottomTabs');
-          },
+        try {
+          console.log("로그인 axios 연결 시작", token.accessToken);
+          loginCheckNewUser(
+            {accessToken: token.accessToken, refreshToken: token.refreshToken},
+            res => {
+              console.log('무엇일까요?', res.data.Bearer, res.data.user);
+              AsyncStorage.setItem('userId', res.data.user[0], () => {
+                console.log('사용자 아이디 저장 완료');
+              });
+              AsyncStorage.setItem('Bearer', res.data.Bearer, () => {
+                console.log('토큰 저장 완료');
+              });
+              res.data.user[1] == "old" ? navigation.navigate('BottomTabs') : navigation.navigate('NewUserInfo');
+              // navigation.navigate('NewUserInfo')
+            },
           // const {id, email, name, image, nickname, profileOpen} =
           //   res.data.user;
-          err => {
-            console.log('에러다', err);
-          },
-        );
+            err => {
+              console.log('Test.tsx에러다', err);
+            },
+          );
+        } catch(err){
+          console.log("로그인 실패");
+        }
+        
       }
     });
     setUser(token);
-    navigation.navigate('BottomTabs')
+    // navigation.navigate('BottomTabs');
+    // navigation.navigate('NewUserInfo');
   };
 
-  AsyncStorage.getItem('accessToken', (err, result) => {
-    console.log('저장소 확인 Test.tsx', result);
-    if (result != null) setIsLogin(true);
-    else setIsLogin(false);
+  // AsyncStorage.getItem('accessToken', (err, result) => {
+  //   console.log('저장소 확인 Test.tsx', result);
+  //   if (result != null) setIsLogin(true);
+  //   else setIsLogin(false);
 
-    setKakaoToken(JSON.stringify(result));
-  });
+  //   setKakaoToken(JSON.stringify(result));
+  // });
 
   const deleteAsync = () => {
     console.log("삭제했당");
     AsyncStorage.clear();
+  }
 
+  const getAll = () => {
+    console.log("전체조회 클릭됨");
+    try {
+      findAllUser(
+        res => {
+          console.log("통신성공!", res);
+        },
+        err => {
+          console.log("통신실패!", err);
+        }
+      )
+    } catch (err) {
+      console.log("완전 에러", err);
+    }
   }
 
   return (
     <View style={style.container}>
       <Text style={style.text}>놀면 멍하니</Text>
       <Image source={require('../assets/image/Dog1.jpg')} style={style.logo} />
-      <TouchableOpacity
-        onPress={signInWithKakao}>
-          {console.log(isLogin)}
+      <TouchableOpacity onPress={signInWithKakao} >
+        {console.log(isLogin)}
         <Image
           source={require('../assets/kakaoLogin/kakao_login_large_wide.png')}
           resizeMode="contain"
@@ -133,7 +158,7 @@ function SignIn({navigation}: SignInScreenProps) {
           }}
         />
       </TouchableOpacity>
-      
+
       {/* <View style={style.buttonContainer}>
         <Pressable style={{marginTop: 10}} onPress={signInWithKakao}>
           <Image source={require('../assets/kakaoLogin/kakao_login_large_wide.png')} />
@@ -142,6 +167,9 @@ function SignIn({navigation}: SignInScreenProps) {
       <View style={style.buttonContainer}>
         <Pressable style={{marginTop: 10}} onPress={deleteAsync}>
           <Text>async storage 삭제</Text>
+        </Pressable>
+        <Pressable style={{marginTop: 10}} onPress={getAll}>
+          <Text>유저 전체정보 조회</Text>
         </Pressable>
       </View>
     </View>

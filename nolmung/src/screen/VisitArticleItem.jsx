@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import { Text, View, Image, StyleSheet,ScrollView,Dimensions, TouchableWithoutFeedback,TouchableOpacity  } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Modal from "react-native-modal"
-
-const ArticleItem = (Props) => {
+import MiddleHeader from '../components/MiddleHeader'
+const VisitArticleItem = (Props) => {
     const Navigation = useNavigation()
     const userNickName = Props.userName
     const region = Props.region
@@ -20,12 +20,13 @@ const ArticleItem = (Props) => {
    
     return (
         <>
+                <MiddleHeader header="방명록"/>
                 <View style={Styles.ArticleContainer}>
                     {/* Header Start */}
                     <View style={Styles.ArticleHeader}>
                         <View style={{flexDirection:'row',}}>
                             <Image 
-                                source={{uri : Props.userImg }}//프로필사진
+                                source={require('../assets/icons/32.png')}//프로필사진
                                 resizeMode="contain"
                                 
                                 style={{
@@ -75,7 +76,7 @@ const ArticleItem = (Props) => {
                     
                     <ScrollView contentContainerStyle={Styles.ImageContainer} pagingEnabled={true} horizontal={true}>
                       
-                        {img.map((item,index)=>{
+                        {/* {img.map((item,index)=>{
                      
                             
                             return(<Image
@@ -88,16 +89,16 @@ const ArticleItem = (Props) => {
                                     
                                 }}
                             />)
-                        })}
+                        })} */}
                         
-                        {/* <Image 
+                        <Image 
                             source={require('../assets/icons/Rectangle5962.png')}
                             resizeMode="cover"
                             style={{
                                 width: windowWidth,
                                 // height: 600,
                             }}
-                        /> */}
+                        />
                     </ScrollView>
                     {/* Image End */}
                     <View style={Styles.likeAndComment}>
@@ -119,34 +120,32 @@ const ArticleItem = (Props) => {
                             }}
                         />
                     </View>
-                    <TouchableWithoutFeedback TouchableWithoutFeedback onPress={()=>{Navigation.navigate('ArticleItemDetail')}}>
+                    <View>
                         <View style={Styles.Contents}>
-                            <Text style={{color:'#282828', marginBottom:5,}}>좋아요 {like}개</Text>
+        
                             <Text style={{color:'#282828', fontSize: 16, lineHeight:21, textAlign:'left', marginBottom: 15,}}>
-                                {Props.boardContent}
+                                {/* {Props.boardContent} */}asdfasdfasdf
                             </Text>
-                            <Text style={{color:'#959595',}}>
-                                댓글 {comment}개 모두 보기
-                            </Text>
+        
                             <Text style={{color:'#959595', marginTop: 5,}}>
                                 2시간 전
                             </Text>
                         </View>
-                    </TouchableWithoutFeedback>
+                    </View>
                 </View>
         </>
     )
 }
 
-export default ArticleItem
+export default VisitArticleItem
 
 const Styles = StyleSheet.create({
     ArticleContainer:{
-        marginVertical: 5,
         backgroundColor:'#fff',
         // paddingHorizontal: 30,
         paddingTop: 7,
         paddingBottom: 10,
+        borderRadius:5,
     },
     ArticleHeader: {
         flexDirection:'row',
