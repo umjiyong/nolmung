@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -178,7 +179,7 @@ public class UserController {
         String userUuid = jwtService.getUserId();
 
         User user = userservice.findByKakaoUuid(userUuid);
-
+        
 //        User user1 = userservice.findById(userId);
 
 
