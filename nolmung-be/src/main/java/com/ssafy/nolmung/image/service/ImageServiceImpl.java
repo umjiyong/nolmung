@@ -93,7 +93,7 @@ public class ImageServiceImpl implements ImageService {
         Walk walk = walkRepository.findById(walkId).get();
         walk.changeWalkImage(imageUrl);
         walkRepository.save(walk);
-        return walk.getWalkImg();
+        return walk.getWalkUserImg();
     }
 
 }
