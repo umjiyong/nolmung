@@ -4,6 +4,20 @@ import {apiInstance, apiLoginInstance} from './Index';
 
 const loginApi = apiLoginInstance();
 const api = apiInstance();
+api.interceptors.request.use(async config => {
+  if (!config.headers) {
+    return config;
+  }
+  let token = null;
+
+  token = await AsyncStorage.getItem('accessToken');
+
+  if (token !== null) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
 
 export const loginCheckNewUser = async (data, success, fail) => {
   // console.log("여기선 돌아가네요", JSON.stringify(data));
@@ -27,6 +41,7 @@ export const user_info = async (response, success, fail) => {
   console.log(response);
   return await api.get(`/user/${response.userId}`).then(success).catch(fail);
 };
+
 export const user_info_change = async (response, success, fail) => {
   console.log('유저 정보 수정 콘솔', response);
   return await api

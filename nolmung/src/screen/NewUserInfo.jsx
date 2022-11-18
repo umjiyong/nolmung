@@ -39,7 +39,7 @@ const NewUserInfo = () => {
         {
           userAddressText: address,
           userIntroduction: introduce,
-          userNickname: nickName,
+          userNickName: nickName,
         },
         res => {
           console.log('유저정보 등록 성공');
