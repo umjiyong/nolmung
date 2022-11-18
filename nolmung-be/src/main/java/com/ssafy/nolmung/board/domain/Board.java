@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,13 +79,14 @@ public class Board {
     }
 
     public BoardResponse toBoardResponse(){
+        String boardUpdateDate = this.getBoardUpdateDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
         return BoardResponse.builder()
                 .boardId(this.getBoardId())
                 .userId(this.getUser().getUserId())
                 .userName(this.getUser().getUserNickname())
                 .userImg(this.getUser().getUserImg())
                 .boardContent(this.getBoardContent())
-                .boardUpdateDate(this.getBoardUpdateDate())
+                .boardUpdateDate(boardUpdateDate)
                 .boardClass(this.getBoardClass())
                 .region(this.getRegion().getRegionAddress())
                 .boardImg(this.getImageUrls())
