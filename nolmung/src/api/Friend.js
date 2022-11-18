@@ -21,3 +21,21 @@ export const user_friend_list = async (response, success, fail) => {
   console.log('친구 api 호출');
   return await api.get(`/friend/${response.userId}`).then(success).catch(fail);
 };
+
+
+export const user_friend_proposal= async (response, success, fail) => {
+    console.log("친구 추천 알람? api 호출");
+    return await api
+        .get(`/friend/proposal/${response.userId}`)
+        .then(success)
+        .catch(fail);
+    };
+    
+
+export const user_friend_random= async (response, success, fail) => {
+    console.log("친구 랜덤? api 호출");
+    return await api
+        .get(`/friend/recommend/${response.userId}`)
+        .then(success)
+        .catch(fail);
+    };

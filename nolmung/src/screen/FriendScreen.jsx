@@ -18,7 +18,9 @@ import Header from '../components/Header';
 import MyFriend from '../components/MyFriend';
 import Modal from 'react-native-modal';
 import SearchFriendList from '../components/SearchFriendList';
-import {user_friend_list} from '../api/Friend';
+
+import {user_friend_list,user_friend_proposal,user_friend_random} from "../api/Friend"
+
 
 function FriendScreen() {
   const [openFI, setOpenFI] = useState(false);
@@ -29,16 +31,23 @@ function FriendScreen() {
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-    console.log(isModalVisible);
+
+    
   };
   const backdropOpacity = 0.5;
 
   const [search, setSearch] = useState(false);
   const searchFriend = () => {
-    setSearch(!search);
-    console.log(search);
-  };
-  const [text, setText] = useState('');
+
+    setSearch(!search)
+    
+  }
+  const [text, setText] = useState('')
+  const [friendrequest,setfriendrequest] = useState("")
+  const [friendrandom,setfriendrandom] = useState([])
+
+  
+
 
   const getfriend_list_func = async () => {
     try {
@@ -57,11 +66,63 @@ function FriendScreen() {
     }
   };
 
+
+  const user_friend_proposal_func = async () => {
+    try {
+      
+      await user_friend_proposal(
+        { userId: 1 },
+        (response) => {
+          setfriendrequest(response.data);
+        },
+        (err) => {
+          console.log("아티클질문 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+  
+  const user_friend_random_func = async () => {
+    try {
+      
+      await user_friend_random(
+        { userId: 1 },
+        (response) => {
+          console.log("refresh",response.data)
+          setfriendrandom(response.data);
+        },
+        (err) => {
+          console.log("아티클질문 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+  
+  const refresh_func = ()=>{
+    console.log("리프레시")
+    user_friend_random_func()
+    
+    
+  }
+
+
+  
+
   useEffect(() => {
-    getfriend_list_func();
+    getfriend_list_func()
+    user_friend_proposal_func()
+    user_friend_random_func()
+    
   }, []);
 
-  console.log(friendList);
+  console.log("로그확인",friendrequest)
+
 
   return (
     <>
@@ -87,21 +148,42 @@ function FriendScreen() {
             )}
           </TouchableOpacity>
         </View>
-        {openFI ? (
-          <>
-            <ScrollView style={Styles.FriendRequestBox}>
-              <FriendRequest />
-              {/* <FriendRequest />
-                <FriendRequest />
-                <FriendRequest /> */}
-            </ScrollView>
-          </>
-        ) : null}
+
+        {openFI ? 
+          (
+            <>
+              <ScrollView style={Styles.FriendRequestBox}>
+              {(friendrequest.length>0) ? (
+                  <>
+                      
+                      {friendrequest.map((item,index)=>{
+                        
+                        return (<FriendRequest
+                        key = {index}
+                        userId = {item.subUserId}
+                        />)
+                      })}
+                  </>
+                ): <Text style={{color:"#282828", }}>친구 요청이 없습니다</Text>}
+                
+                
+              </ScrollView>
+            </>
+          )
+          :
+          (
+            null
+          )
+        }
+
         <View style={Styles.friendRecommand}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text style={Styles.RecommandText}>친구 추천</Text>
-            <TouchableOpacity>
+
+            <TouchableOpacity onPress = {refresh_func}>
               <Image
+                
+
                 source={require('../assets/icons/revision-regular-24.png')}
                 resizeMode="contain"
                 style={{
@@ -113,46 +195,51 @@ function FriendScreen() {
             </TouchableOpacity>
           </View>
           <View style={Styles.RecommandBox}>
-            <FriendRecommand />
-            <FriendRecommand />
-            <FriendRecommand />
+
+            {(friendrandom.length>0) ? (
+                    <>
+                        
+                        {friendrandom.map((item,index)=>{
+                          
+                          return (<FriendRecommand
+                          key = {index}
+                          userId = {item.userId}
+                          />)
+                        })}
+                    </>
+                  ): <Text style={{color:"#282828", }}>친구 추천이 없습니다</Text>}
+            
+            
           </View>
         </View>
 
         <View style={Styles.MyFriend}>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <Text style={{color: '#282828', fontSize: 18, fontWeight: '500'}}>
-              내 친구 보기
-            </Text>
-            <TouchableOpacity onPress={toggleModal}>
-              <Text
-                style={{
-                  color: '#282828',
-                  fontSize: 28,
-                  fontWeight: '600',
-                  marginRight: 10,
-                }}>
-                +
-              </Text>
-            </TouchableOpacity>
-          </View>
 
-          <ScrollView style={Styles.MyFriendBox}>
-            {friendList.length > 1 ? (
-              <>
-                {friendList.map((item, index) => {
-                  return <MyFriend key={index} userId={item.subUserId} />;
-                })}
-              </>
-            ) : (
-              <Text>친구를 추가해주세요</Text>
-            )}
-          </ScrollView>
+            <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+              <Text style={{color: '#282828', fontSize: 18, fontWeight:'500'}}>내 친구 보기</Text>
+              <TouchableOpacity onPress={toggleModal}>
+                <Text style={{color: '#282828', fontSize: 28, fontWeight: '600', marginRight: 10,}}>+</Text>
+              </TouchableOpacity>
+            </View>
+           
+            <ScrollView style={Styles.MyFriendBox}>
+                  {(friendList.length>0) ? (
+                  <>
+                      
+                      {friendList.map((item,index)=>{
+                        
+                        return (<MyFriend
+                        key = {index}
+                        userId = {item.subUserId}
+                        />)
+                      })}
+                  </>
+                ): <Text>친구를 추가해주세요</Text>}
+                
+               
+              
+            </ScrollView>
+
         </View>
       </ScrollView>
       {/* 친구 코드 입력 모달 시작*/}
@@ -213,8 +300,11 @@ const Styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: 'white',
     borderRadius: 20,
-    paddingHorizontal: 20,
-    paddingTop: 15,
+    paddingHorizontal:20,
+    paddingVertical:15,
+
+
+
   },
   friendRecommand: {
     marginTop: 20,

@@ -11,6 +11,9 @@ import {
   Alert,
   PermissionsAndroid,
   Pressable,
+
+  DeviceEventEmitter
+
 } from 'react-native';
 import Header from '../components/Header';
 import MyDog from '../components/MyDog';
@@ -20,16 +23,24 @@ import {user_puppy_info} from '../api/Puppy';
 // import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker/src';
 
-function MyProfileScreen({navigation}) {
-  const [userinfo, setuseinfo] = useState([]);
-  const [puppyinfo, setpuppyinfo] = useState([]);
+
+
+function MyProfileScreen({navigation} ) {
+
+  const [userinfo,setuseinfo] = useState([])
+  const [puppyinfo,setpuppyinfo] = useState([])
+
   const Friend = 1;
   const Post = 1;
   const userName = '하루';
   const userAddress = '전남 여수시 선원동';
   const friendCode = '#E1VH64';
   const [intro, setIntro] = useState('소개글이 없습니다');
-  const [photo, setPhoto] = useState('');
+
+  const [photo,setPhoto] = useState("")
+  
+  // onSetFlag()
+  
 
   // const showPicker = async () =>{
   //   const grantedcamera = await PermissionsAndroid.request(
@@ -105,6 +116,10 @@ function MyProfileScreen({navigation}) {
   useEffect(() => {
     user_info_func();
     user_puppy_info_func();
+    DeviceEventEmitter.addListener('abc', ()=> {
+      user_info_func();
+      user_puppy_info_func();
+    })
   }, []);
 
   console.log('유저사진', userinfo.userImg);
@@ -140,12 +155,14 @@ function MyProfileScreen({navigation}) {
           console.log(res);
           if (res.didCancel) return;
           setResponse(res);
+
           user_info_change_func(response?.assets[0]?.uri);
         },
       );
     } catch (err) {
       console.log(err);
       console.log('심각한 에러;;');
+
     }
   };
 
@@ -154,28 +171,30 @@ function MyProfileScreen({navigation}) {
       <Header HeaderName="마이 페이지" />
       <ScrollView style={Styles.container} showsVerticalScrollIndicator={false}>
         <View style={Styles.profile}>
-          <Pressable onPress={onSelectImage}>
-            {response ? (
-              <Image
-                source={{uri: response?.assets[0]?.uri}}
-                resizeMode="contain"
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 100,
-                }}
-              />
-            ) : (
-              <Image
-                source={{uri: userinfo.userImg}}
-                resizeMode="contain"
-                style={{
-                  width: 80,
-                  height: 80,
-                }}
-              />
-            )}
-          </Pressable>
+
+        <Pressable onPress={onSelectImage}>
+            {response ?  <Image
+              source={{uri: response?.assets[0]?.uri}}
+              
+              resizeMode="contain"
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 100,
+              }}
+            /> : <Image
+            source={{uri : userinfo.userImg}}
+            
+            resizeMode="contain"
+            style={{
+              width: 80,
+              height: 80,
+            }}
+          />}
+          
+          
+        </Pressable>
+         
 
           {/* <Button title="이미지 선택" onPress={showPicker} ></Button>  */}
 
