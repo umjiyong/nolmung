@@ -4,6 +4,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, Vie
 import { useNavigation } from "@react-navigation/native";
 import {user_info} from "../api/User"
 import {user_puppy_info} from "../api/Puppy"
+import {user_friend_post} from "../api/Friend"
 const FriendRecommand = (Props) => {
     
     const navigation = useNavigation()
@@ -11,6 +12,29 @@ const FriendRecommand = (Props) => {
     const [puppyinfo,setpuppyinfo] = useState([])
     const HumanName = userinfo.userNickName
     const [DogInfo,setDogInfo] = useState("강아지가 없습니다") 
+
+
+
+
+    const user_friend_post_func = async () => {
+      try {
+        await user_friend_post(
+          {fromUserId: 1, toUserId : Props.userId},
+          response => {
+            
+            console.log("보내기 성공")
+            
+          },
+          err => {
+            console.log('아티클질문 에러', err);
+            setfriendId(null);
+          },
+        );
+      } catch (err) {
+        console.log(err);
+        console.log('심각한 에러;;');
+      }
+    };
 
     const user_info_func = async (Id) => {
         try {
@@ -84,7 +108,7 @@ const FriendRecommand = (Props) => {
                     </View>
                 </View>
             </TouchableWithoutFeedback>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={user_friend_post_func}>
                     <View style={{marginTop:-20,...Styles.RequestBtn}}>
                         <Text style={{color:"#FF772F",}}>친구 신청</Text>
                     </View>
