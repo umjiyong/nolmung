@@ -83,7 +83,7 @@ function CommunityScreen() {
     getArticle_qna_func();
     getArticle_region_func();
   }, []);
-
+  console.log(articleAll);
   return (
     <>
       <View style={Styles.container}>
@@ -201,6 +201,7 @@ function CommunityScreen() {
                 return (
                   <ArticleItem
                     key={index}
+                    createDate={item.boardUpdateDate}
                     boardId={item.boardId}
                     userId={item.userId}
                     userName={item.userName}

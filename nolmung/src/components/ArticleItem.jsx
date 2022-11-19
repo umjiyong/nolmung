@@ -143,7 +143,9 @@ const ArticleItem = Props => {
               {Props.boardContent}
             </Text>
             <Text style={{color: '#959595'}}>댓글 {comment}개 모두 보기</Text>
-            <Text style={{color: '#959595', marginTop: 5}}>2시간 전</Text>
+            <Text style={{color: '#959595', marginTop: 5}}>
+              {Props.createDate}
+            </Text>
           </View>
         </TouchableWithoutFeedback>
       </View>

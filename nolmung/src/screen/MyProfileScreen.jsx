@@ -154,8 +154,7 @@ function MyProfileScreen({navigation}) {
   useEffect(() => {
     user_info_func();
     user_puppy_info_func();
-    get_friend_func();
-    get_board_func();
+
     DeviceEventEmitter.addListener('abc', () => {
       user_info_func();
       user_puppy_info_func();
@@ -346,7 +345,7 @@ function MyProfileScreen({navigation}) {
             })}
           </>
         ) : (
-          <Text>반려견을 추가해주세요</Text>
+          <Text style={{textAlign: 'center'}}>반려견을 추가해주세요</Text>
         )}
 
         {/* End Dog Component */}
