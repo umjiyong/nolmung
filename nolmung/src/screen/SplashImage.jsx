@@ -14,11 +14,11 @@ const SplashImage = ({navigation}) => {
       AsyncStorage.getItem('userId', (err, res) => {
         console.log(res);
 
-        // navigation.replace(res == null ? 'Login' : 'BottomTabs');
-        // // navigation.navigate('Login');
+        navigation.replace(res == null ? 'Login' : 'BottomTabs');
+        // navigation.navigate('Login');
 
-        // navigation.replace(res == null ? 'Login' : 'BottomTabs');
-        navigation.replace('BottomTabs')
+        // // navigation.replace(res == null ? 'Login' : 'BottomTabs');
+        // navigation.replace('BottomTabs')
 
       });
     }, 1000);
