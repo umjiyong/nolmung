@@ -298,6 +298,7 @@ function FriendScreen() {
             <Pressable
               onPress={() => {
                 navigation.push('FriendProfile', {userId: friendId.userId});
+                toggleModal();
               }}>
               <SearchFriendList userId={friendId} />
             </Pressable>

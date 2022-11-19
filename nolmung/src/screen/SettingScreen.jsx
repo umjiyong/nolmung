@@ -72,7 +72,10 @@ const SettingScreen = () => {
           </Text>
           <View style={Styles.btn}>
             <Pressable
-              onPress={deleteAsync}
+              onPress={() => {
+                deleteAsync();
+                toggleModal();
+              }}
               style={{
                 backgroundColor: '#FF772F',
                 paddingVertical: 4,
@@ -84,6 +87,7 @@ const SettingScreen = () => {
               </Text>
             </Pressable>
             <Pressable
+              onPress={toggleModal}
               style={{
                 borderColor: '#FF772F',
                 borderWidth: 1,
