@@ -1,9 +1,12 @@
 package com.ssafy.nolmung.board.controller;
 
 import com.ssafy.nolmung.board.domain.Board;
+import com.ssafy.nolmung.board.dto.request.BoardLikeRequest;
 import com.ssafy.nolmung.board.dto.request.BoardRequest;
 import com.ssafy.nolmung.board.dto.response.BoardResponse;
+import com.ssafy.nolmung.board.service.BoardLikeService;
 import com.ssafy.nolmung.board.service.BoardService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,9 @@ public class BoardController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private BoardLikeService boardLikeService;
 
     @GetMapping
     @ApiOperation(value = "전체 게시물 조회", notes = "전체 게시물의 데이터를 받아오는 API")
@@ -109,6 +115,26 @@ public class BoardController {
         } else {
             return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @ApiOperation(value = "게시물 좋아요 등록", notes = "게시물에 좋아요를 추가하는 API")
+    @PostMapping("/like")
+    public ResponseEntity likeBoard(@RequestBody @Valid BoardLikeRequest boardLikeRequest) {
+        int result = boardLikeService.addLike(boardLikeRequest);
+        if(result<=0){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "게시물 좋아요 취소", notes = "게시물에 좋아요를 취소하는 API")
+    @PostMapping("/dislike")
+    public ResponseEntity dislikeBoard(@RequestBody @Valid BoardLikeRequest boardLikeRequest) {
+        int result = boardLikeService.cancelLike(boardLikeRequest);
+        if (result<=0){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
 }
