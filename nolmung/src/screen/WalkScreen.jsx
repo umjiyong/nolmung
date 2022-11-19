@@ -301,9 +301,14 @@ function WalkScreen({navigation}) {
                 <Text style={{color: '#fff'}}>산책 시작</Text>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity onPress={StartCount} style={Styles.buttonTest}>
-                <Text style={{color: '#fff'}}>산책 종료</Text>
-              </TouchableOpacity>
+              <View style={{flexDirection:'row', position:'absolute', bottom:100, }}>
+                <TouchableOpacity onPress={StartCount}  style={Styles.buttonTestStop}>
+                  <Text style={{color: '#fff'}}>산책 일시정지</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{StartCount(); navigation.push('EndWalkScreen')  }} style={Styles.buttonTestStop}>
+                  <Text style={{color: '#fff'}}>산책 종료</Text>
+                </TouchableOpacity>
+              </View>
             )}
           </>
         ) : (
@@ -388,6 +393,20 @@ const Styles = StyleSheet.create({
     position: 'absolute',
     bottom: 100,
     width: '90%',
+    shadowColor: '#D9D9D9',
+    elevation: 4,
+  },
+  buttonTestStop:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#ff772f',
+    marginTop: 'auto',
+    marginHorizontal: 20,
+    // position: 'absolute',
+    // bottom: 140,
+    width: 167,
     shadowColor: '#D9D9D9',
     elevation: 4,
   },
