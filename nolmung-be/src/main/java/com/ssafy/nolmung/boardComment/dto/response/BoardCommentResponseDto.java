@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardCommentResponseDto {
+    int boardCommentId;
     String userNickname;
     String userImg;
     String userAddress;
@@ -19,7 +20,8 @@ public class BoardCommentResponseDto {
     boolean isMyComment;
 
     @Builder
-    public BoardCommentResponseDto(String userNickname, String userImg, String userAddress, LocalDate createDate, String content, boolean isMyComment){
+    public BoardCommentResponseDto(int boardCommentId, String userNickname, String userImg, String userAddress, LocalDate createDate, String content, boolean isMyComment){
+        this.boardCommentId = boardCommentId;
         this.userNickname = userNickname;
         this.userImg = userImg;
         this.userAddress = userAddress;

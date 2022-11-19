@@ -1,6 +1,7 @@
 package com.ssafy.nolmung.board.service;
 
 import com.ssafy.nolmung.board.dto.request.BoardLikeRequest;
+import com.ssafy.nolmung.board.dto.response.BoardLikeResponse;
 
 public interface BoardLikeService {
 
