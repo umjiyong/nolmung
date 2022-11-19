@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {
   View,
@@ -13,63 +13,60 @@ import {
 } from 'react-native';
 import Header from '../components/Header';
 import MyDog from '../components/MyDog';
-import Modal from "react-native-modal";
+import Modal from 'react-native-modal';
 import LandMark from '../components/LandMark';
-import { useNavigation } from "@react-navigation/native";
-import {user_info} from "../api/User"
-import {user_puppy_info} from "../api/Puppy"
-import {user_friend_post} from "../api/Friend"
+import {useNavigation} from '@react-navigation/native';
+import {user_info} from '../api/User';
+import {user_puppy_info} from '../api/Puppy';
+import {user_friend_post} from '../api/Friend';
 
-function MyProfileScreen({navigation: {navigate}, route}) {
-  console.log('ㅎㅇㅎㅇ',route.params)
-  const navigation = useNavigation()
+function FriendProfile({navigation: {navigate}, route}) {
+  console.log('ㅎㅇㅎㅇ', route.params);
+  const navigation = useNavigation();
   const Friend = 1;
   const Post = 1;
-  const [userdata,setuserdata] = useState([])
+  const [userdata, setuserdata] = useState([]);
   const FriendName = userdata.userNickName;
   const FriendAddress = userdata.userAddressText;
-  const friendCode = userdata.userCode
-  
-  const intro = userdata.userIntroduction
+  const friendCode = userdata.userCode;
+
+  const intro = userdata.userIntroduction;
   const introText = {
     // text: '있습니다.'
   };
-  const backdropOpacity = 0.5
+  const backdropOpacity = 0.5;
   const [isModalVisible, setModalVisible] = useState(false);
-  const [text, setText] = useState('')
-  const [puppyinfo,setpuppyinfo] = useState([])
+  const [text, setText] = useState('');
+  const [puppyinfo, setpuppyinfo] = useState([]);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-    console.log(isModalVisible)
+    console.log(isModalVisible);
   };
 
-
-  const user_info_func = async (id) => {
+  const user_info_func = async id => {
     try {
-      
       await user_info(
-        { userId: id },
-        (response) => {
+        {userId: id},
+        response => {
           setuserdata(response.data);
         },
-        (err) => {
-          console.log("아티클질문 에러", err);
-        }
+        err => {
+          console.log('아티클질문 에러', err);
+        },
       );
     } catch (err) {
       console.log(err);
-      console.log("심각한 에러;;");
+      console.log('심각한 에러;;');
     }
   };
 
-
-  const user_puppy_info_func = async (Id) => {
+  const user_puppy_info_func = async Id => {
     try {
       await user_puppy_info(
         {userId: Id},
         response => {
           setpuppyinfo(response.data);
-          console.log("친구 강아지",puppyinfo)
+          console.log('친구 강아지', puppyinfo);
         },
         err => {
           console.log('강아지정보 에러', err);
@@ -83,29 +80,20 @@ function MyProfileScreen({navigation: {navigate}, route}) {
   };
 
   useEffect(() => {
-    
-    
-    user_info_func(2)
-    user_puppy_info_func(2)
-    
+    user_info_func(2);
+    user_puppy_info_func(2);
 
-   
-    
-    console.log("유저값",userdata)
+    console.log('유저값', userdata);
   }, []);
 
-
-
-  console.log(userdata)
+  console.log(userdata);
 
   const user_friend_post_func = async () => {
     try {
       await user_friend_post(
-        {fromUserId: 1, toUserId : 2}, // 이부분은 프롭스 받은것도 아니라서 네비게이션으로 id받아야댐
+        {fromUserId: 1, toUserId: 2}, // 이부분은 프롭스 받은것도 아니라서 네비게이션으로 id받아야댐
         response => {
-          
-          console.log("보내기 성공")
-          
+          console.log('보내기 성공');
         },
         err => {
           console.log('아티클질문 에러', err);
@@ -136,8 +124,16 @@ function MyProfileScreen({navigation: {navigate}, route}) {
             }}
           />
           <TouchableOpacity onPress={user_friend_post_func}>
-            <View style={{ paddingVertical:5, paddingHorizontal:15, backgroundColor:'#fff',borderRadius: 15, shadowColor:'#959595', elevation:3}}>
-                <Text style={{fontSize: 16, color: '#FF772F'}}>친구 신청</Text>
+            <View
+              style={{
+                paddingVertical: 5,
+                paddingHorizontal: 15,
+                backgroundColor: '#fff',
+                borderRadius: 15,
+                shadowColor: '#959595',
+                elevation: 3,
+              }}>
+              <Text style={{fontSize: 16, color: '#FF772F'}}>친구 신청</Text>
             </View>
           </TouchableOpacity>
           {/* <TouchableOpacity onPress={toggleModal}>
@@ -151,44 +147,45 @@ function MyProfileScreen({navigation: {navigate}, route}) {
             </View>
           </TouchableOpacity> */}
           {/* 친구신청모달 시작 */}
-          
-          
-          
-          
-          <Modal 
+
+          <Modal
             isVisible={isModalVisible}
             onBackdropPress={toggleModal}
-            backdropOpacity = {backdropOpacity}
-            
-          >
+            backdropOpacity={backdropOpacity}>
             <View style={Styles.modalStyle}>
-                
-                <Text style={Styles.modalText}>친구 신청</Text>
-                <TextInput multiline={true} style={Styles.modalInput} value={text} onChangeText={(e)=>{setText(e)}}/>
-        
-                <View style={{flexDirection:'row',justifyContent:'space-between', marginTop:'auto', marginBottom: 30}}>
-                    <TouchableOpacity style={{marginHorizontal:80,}} onPress={toggleModal}>
-                        <View>
-                            <Text style={{color: '#282828', fontSize: 20,}}>
-                                취소
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+              <Text style={Styles.modalText}>친구 신청</Text>
+              <TextInput
+                multiline={true}
+                style={Styles.modalInput}
+                value={text}
+                onChangeText={e => {
+                  setText(e);
+                }}
+              />
 
-                    <TouchableOpacity style={{marginHorizontal:80,}}>
-                        <View>
-                            <Text style={{color: '#282828', fontSize: 20,}}>
-                                전송
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 'auto',
+                  marginBottom: 30,
+                }}>
+                <TouchableOpacity
+                  style={{marginHorizontal: 80}}
+                  onPress={toggleModal}>
+                  <View>
+                    <Text style={{color: '#282828', fontSize: 20}}>취소</Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{marginHorizontal: 80}}>
+                  <View>
+                    <Text style={{color: '#282828', fontSize: 20}}>전송</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           </Modal>
-
-
-
-
         </View>
         <View style={Styles.profileInfo}>
           <View style={Styles.infoBox}>
@@ -211,7 +208,6 @@ function MyProfileScreen({navigation: {navigate}, route}) {
                 ({FriendAddress})
               </Text>
             </View>
-            
           </View>
           <View
             style={{
@@ -306,7 +302,7 @@ function MyProfileScreen({navigation: {navigate}, route}) {
   );
 }
 
-export default MyProfileScreen;
+export default FriendProfile;
 
 const Styles = StyleSheet.create({
   container: {
@@ -410,19 +406,16 @@ const Styles = StyleSheet.create({
   },
   MyPost: {
     marginHorizontal: 20,
-    
   },
   MyPostText: {
     fontSize: 18,
     color: '#282828',
     fontFamily: 'NotoSansKR-Bold',
-    
   },
   MyPostBtn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    
   },
   Setting: {
     marginHorizontal: 20,
@@ -439,22 +432,22 @@ const Styles = StyleSheet.create({
     fontFamily: 'NotoSansKR-Bold',
   },
   modalStyle: {
-    flex:0.5,
+    flex: 0.5,
     marginHorizontal: -20,
-    height: '50%', 
-    backgroundColor: '#fff', 
-    marginTop:'auto',
-    borderTopLeftRadius:15,
-    borderTopRightRadius:15,
-    borderBottomLeftRadius:0,
-    borderBottomRightRadius:0,
-    alignItems:'center',
+    height: '50%',
+    backgroundColor: '#fff',
+    marginTop: 'auto',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    alignItems: 'center',
     paddingTop: 15,
     marginBottom: -20,
   },
   modalText: {
     color: '#282828',
-    fontWeight:'600',
+    fontWeight: '600',
     fontSize: 18,
   },
   modalInput: {
@@ -466,14 +459,14 @@ const Styles = StyleSheet.create({
     borderRadius: 15,
     color: '#282828',
     paddingHorizontal: 20,
-    textAlign:'center'
+    textAlign: 'center',
   },
-  Landmark:{
-    marginHorizontal:20,
+  Landmark: {
+    marginHorizontal: 20,
   },
-  LandmarkHeader:{
+  LandmarkHeader: {
     fontSize: 18,
     color: '#282828',
     fontFamily: 'NotoSansKR-Bold',
-  }
+  },
 });

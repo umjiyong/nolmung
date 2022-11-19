@@ -1,11 +1,27 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Pressable,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 const Header = Props => {
   const navigation = useNavigation();
   return (
     <View style={Styles.header}>
-      <Text style={Styles.headerName}>{Props.HeaderName}</Text>
+      <View style={{flexDirection: 'row'}}>
+        <Pressable onPress={() => navigation.goBack()}>
+          <Image
+            source={require('../assets/icons/GoBack.png')}
+            resizeMode="contain"
+            style={{marginTop: 10}}
+          />
+        </Pressable>
+        <Text style={Styles.headerName}>{Props.HeaderName}</Text>
+      </View>
       <View style={Styles.headerIcon}>
         <TouchableOpacity
           onPress={() => {
@@ -61,12 +77,13 @@ const Styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 20,
+    marginTop: 10,
     shadowColor: '#000',
   },
   headerName: {
     color: '#282828',
-    fontFamily: 'NotoSansKR-Bold',
     fontSize: 18,
+    marginLeft: 10,
   },
   headerIcon: {
     flexDirection: 'row',
