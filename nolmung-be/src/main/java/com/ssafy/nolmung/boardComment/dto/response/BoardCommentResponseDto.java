@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,12 +14,12 @@ public class BoardCommentResponseDto {
     String userNickname;
     String userImg;
     String userAddress;
-    LocalDateTime createDate;
+    LocalDate createDate;
     String content;
     boolean isMyComment;
 
     @Builder
-    public BoardCommentResponseDto(String userNickname, String userImg, String userAddress, LocalDateTime createDate, String content, boolean isMyComment){
+    public BoardCommentResponseDto(String userNickname, String userImg, String userAddress, LocalDate createDate, String content, boolean isMyComment){
         this.userNickname = userNickname;
         this.userImg = userImg;
         this.userAddress = userAddress;
