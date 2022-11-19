@@ -104,21 +104,21 @@ public class RankController {
 //        rankService.resetRankScore(rankCategory);
 //    }
 
-    @Scheduled (cron = "0 30 0 * * *")
+//    @Scheduled (cron = "0 30 0 * * *")
     @DeleteMapping("/reset/daily")
-    public void resetDailyRankScore (@PathVariable("category") RankCategory rankCategory) {
+    public void resetDailyRankScore () {
 
         rankService.resetRankScore(RankCategory.daily);
     }
 
-    @Scheduled (cron = "0 0 0 * MON ?")
+//    @Scheduled (cron = "0 0 0 * MON ?")
     @DeleteMapping("/reset/weekly")
-    public void resetWeeklyRankScore (@PathVariable("category") RankCategory rankCategory) {
+    public void resetWeeklyRankScore () {
 
         rankService.resetRankScore(RankCategory.weekly);
     }
 
-    @Scheduled (cron = "0 0 0 1 * *")
+//    @Scheduled (cron = "0 0 0 1 * *")
     @DeleteMapping("/reset/monthly")
     public void resetMonthlyRankScore () {
 
