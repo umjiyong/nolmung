@@ -72,7 +72,7 @@ const MyFriend = (Props) => {
         <>
             {puppyinfo.myPuppyList !== undefined ? 
             (<>
-              <TouchableWithoutFeedback onPress={()=>{navigation.push('FriendProfile')}}>
+              <TouchableWithoutFeedback onPress={()=>{navigation.push('FriendProfile',{userId : Props.userId})}}>
                 <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
                     <View style={Styles.requestContainer}>
                         <Image 

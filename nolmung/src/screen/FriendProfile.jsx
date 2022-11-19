@@ -20,9 +20,11 @@ import {user_info} from '../api/User';
 import {user_puppy_info} from '../api/Puppy';
 import {user_friend_post} from '../api/Friend';
 
+
 function FriendProfile({navigation: {navigate}, route}) {
   console.log('ㅎㅇㅎㅇ', route.params);
   const navigation = useNavigation();
+
   const Friend = 1;
   const Post = 1;
   const [userdata, setuserdata] = useState([]);
@@ -80,8 +82,13 @@ function FriendProfile({navigation: {navigate}, route}) {
   };
 
   useEffect(() => {
-    user_info_func(2);
-    user_puppy_info_func(2);
+
+    
+    
+    user_info_func(route.params.userId)
+    user_puppy_info_func(route.params.userId)
+    
+
 
     console.log('유저값', userdata);
   }, []);
@@ -91,7 +98,9 @@ function FriendProfile({navigation: {navigate}, route}) {
   const user_friend_post_func = async () => {
     try {
       await user_friend_post(
-        {fromUserId: 1, toUserId: 2}, // 이부분은 프롭스 받은것도 아니라서 네비게이션으로 id받아야댐
+
+        {fromUserId: 1, toUserId : route.params.userId}, // 이부분은 프롭스 받은것도 아니라서 네비게이션으로 id받아야댐
+
         response => {
           console.log('보내기 성공');
         },
