@@ -19,7 +19,7 @@ const FriendRecommand = (Props) => {
     const user_friend_post_func = async () => {
       try {
         await user_friend_post(
-          {fromUserId: 1, toUserId : Props.userId},
+          {fromUserId: 2, toUserId : 1},
           response => {
             
             console.log("보내기 성공")
