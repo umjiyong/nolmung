@@ -53,6 +53,7 @@ public class UserService {
 //        Jws<Claims> claimsJws = null;
 //    }
 
+    @Transactional
     public String deleteUser(int userId){
         log.info("유저 정보 삭제 : {}", userId );
         userRepository.deleteByUserId(userId);
