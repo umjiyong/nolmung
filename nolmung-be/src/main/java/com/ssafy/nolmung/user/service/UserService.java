@@ -53,6 +53,7 @@ public class UserService {
 //        Jws<Claims> claimsJws = null;
 //    }
 
+    @Transactional
     public String deleteUser(int userId){
         log.info("유저 정보 삭제 : {}", userId );
         userRepository.deleteByUserId(userId);
@@ -75,10 +76,11 @@ public class UserService {
 
     public User findById (int id){
 
-        Optional<User> optionalUser = userRepository.findById(id);
+        User user= userRepository.findById(id).get();
+        String imgUrl = user.getUserImg();
+        if(imgUrl.equals("")) user.setUserImg("https://cdn-icons-png.flaticon.com/512/1959/1959921.png");
 
-        if(optionalUser.isPresent()) return optionalUser.get();
-        else return null;
+        return user;
     }
 
     public User findByKakaoUuid (String uuid){
