@@ -11,13 +11,17 @@ import {
 import MedalRanking from "./MedalRanking";
 import MyRanking from "./MyRanking";
 import axios from "axios";
-import { getAllRanking_daily,getAllRanking_weekly,getAllRanking_monthly,getMyRanking } from "../api/Ranking";
+import {user_info} from "../api/User"
+import { getAllRanking_daily,getAllRanking_weekly,getAllRanking_monthly,getMyRanking,reset_ranking } from "../api/Ranking";
+// import schedule from 'node-schedule'
 
 function AllRanking() {
   const [dailyData, setDailyData] = useState([]);
   const [weeklyData, setWeeklyData] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
   const [mydailyRank,setmydailyRank] =useState([]);
+  const [myweeklyRank,setmyweeklyRank ]  =useState([]);
+  const [mymonthlyRank,setmymonthlyRank] = useState([]);
 
   const getDailyRanking = async () => {
     try {
@@ -90,14 +94,138 @@ function AllRanking() {
     }
   };
 
+
+  const getMyRanking_weekly_func = async () => {
+    try {
+      
+      await getMyRanking(
+        { type: "weekly", userId:1 },
+        (response) => {
+          setmyweeklyRank(response.data);
+        },
+        (err) => {
+          console.log("유저랭킹정보 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
+  const getMyRanking_monthly_func = async () => {
+    try {
+      
+      await getMyRanking(
+        { type: "monthly", userId:1 },
+        (response) => {
+          setmymonthlyRank(response.data);
+        },
+        (err) => {
+          console.log("유저랭킹정보 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+  
+
+
+  const reset_daily_func = async () => {
+    try {
+      
+      await reset_ranking(
+        { catagory: "daily" },
+        (response) => {
+          console.log(response)
+        },
+        (err) => {
+          console.log("유저랭킹정보 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
+  const reset_weekly_func = async () => {
+    try {
+      
+      await reset_ranking(
+        { catagory: "weekly" },
+        (response) => {
+          console.log(response)
+        },
+        (err) => {
+          console.log("유저랭킹정보 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
+  const reset_monthly_func = async () => {
+    try {
+      
+      await reset_ranking(
+        { catagory: "monthly" },
+        (response) => {
+          setmymonthlyRank(response.data);
+        },
+        (err) => {
+          console.log("유저랭킹정보 에러", err);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      console.log("심각한 에러;;");
+    }
+  };
+
+
+  const [userinfo,setuseinfo] = useState([])
+    const user_info_func = async () => {
+        try {
+          
+          await user_info(
+            { userId: 1 },
+            (response) => {
+              setuseinfo(response.data);
+            },
+            (err) => {
+              console.log("유저정보 에러", err);
+            }
+          );
+        } catch (err) {
+          console.log(err);
+          console.log("심각한 에러;;");
+        }
+      };
+  // var schedule = require("node-schedule")
+  // schedule.scheduleJob('0 0 9 * * 1', function () {
+  //   console.log("타이머 동작중")
+
+  // })
+
+  
+
+
   useEffect(() => {
     getDailyRanking();
     getWeekRanking();
     getMonthRanking();
     getMyRanking_daily_func();
+    getMyRanking_weekly_func();
+    getMyRanking_monthly_func();
+    user_info_func();
   }, []);
 
-  console.log("데이터확인",mydailyRank);
+  console.log("데이터확인",userinfo);
   //   console.log(weeklyData);
   //   console.log(monthlyData);
 
@@ -120,6 +248,7 @@ function AllRanking() {
   const rank = 148;
   const highRank = 30;
 
+  console.log("내 랭킹",mydailyRank)
   
   return (
     <>
@@ -160,7 +289,7 @@ function AllRanking() {
             <ScrollView showsVerticalScrollIndicator={false}>       
                 <View style={Styles.MainRankingContainer}>
                 <Image
-                    source={require("../assets/icons/DogImg.png")}
+                    source={{uri : userinfo.userImg}}
                     resizeMode="cover"
                     style={{
                     width: 100,
@@ -176,7 +305,8 @@ function AllRanking() {
                     marginBottom: 5,
                     }}
                 >
-                    {mung} 멍
+                    {userinfo.userNickName} 
+                    {mydailyRank.rankScore} 멍
                 </Text>
                 <Text
                     style={{
@@ -206,27 +336,27 @@ function AllRanking() {
                     {dailyData.length > 0 ? (
                     <>
                         <MedalRanking
-                        firstName={dailyData[0].userId}
+                        firstName={dailyData[0].userNickname}
                         mung={dailyData[0].rankScore}
                         img={require("../assets/icons/medal.png")}
                         color="gold"
                         />
                         <MedalRanking
-                        firstName={dailyData[1].userId}
+                        firstName={dailyData[1].userNickname}
                         mung={dailyData[1].rankScore}
                         img={require("../assets/icons/medal.png")}
                         color="silver"
                         />
                         <MedalRanking
-                        firstName={dailyData[2].userId}
+                        firstName={dailyData[2].userNickname}
                         mung={dailyData[2].rankScore}
                         img={require("../assets/icons/medal.png")}
                         color="brown"
                         />
                         <MyRanking
-                        firstName="내 랭킹"
-                        mung={mydailyRank.userNickname}
-                        rank={mydailyRank.rankScore}
+                        
+                        firstName={mydailyRank.userNickname}
+                        mung={mydailyRank.rankScore}
                         />
                         
                     </>
@@ -242,25 +372,26 @@ function AllRanking() {
         {select === "weekly" ? (
           <>
             <View style={Styles.MainRankingContainer}>
-              <Image
-                source={require("../assets/icons/DogImg.png")}
-                resizeMode="cover"
-                style={{
-                  width: 100,
-                  height: 100,
-                }}
-              />
-              <Text
-                style={{
-                  color: "#282828",
-                  marginTop: 10,
-                  fontSize: 24,
-                  fontWeight: "bold",
-                  marginBottom: 5,
-                }}
-              >
-                {mung} 멍
-              </Text>
+            <Image
+                    source={{uri : userinfo.userImg}}
+                    resizeMode="cover"
+                    style={{
+                    width: 100,
+                    height: 100,
+                    }}
+                />
+                <Text
+                    style={{
+                    color: "#282828",
+                    marginTop: 10,
+                    fontSize: 24,
+                    fontWeight: "bold",
+                    marginBottom: 5,
+                    }}
+                >
+                    {userinfo.userNickName} 
+                    {mydailyRank.rankScore} 멍
+                </Text>
               <Text
                 style={{
                   color: "#282828",
@@ -290,27 +421,26 @@ function AllRanking() {
                 {weeklyData.length > 0 ? (
                   <> 
                     <MedalRanking
-                      firstName={weeklyData[0].userId}
+                      firstName={weeklyData[0].userNickname}
                       mung={dailyData[0].rankScore}
                       img={require("../assets/icons/medal.png")}
                       color="gold"
                     />
                     <MedalRanking
-                      firstName={dailyData[1].userId}
+                      firstName={dailyData[1].userNickname}
                       mung={dailyData[1].rankScore}
                       img={require("../assets/icons/medal.png")}
                       color="silver"
                     />
                     <MedalRanking
-                      firstName={dailyData[2].userId}
+                      firstName={dailyData[2].userNickname}
                       mung={dailyData[2].rankScore}
                       img={require("../assets/icons/medal.png")}
                       color="brown"
                     />
                     <MyRanking
-                      firstName="내 랭킹"
-                      mung={dailyData[4].rankScore}
-                      rank="148"
+                      firstName={myweeklyRank.userNickname}
+                      mung={myweeklyRank.rankScore}
                     />
                   </>
                 ) : null}
@@ -324,25 +454,26 @@ function AllRanking() {
         {select === "monthly" ? (
           <>
             <View style={Styles.MainRankingContainer}>
-              <Image
-                source={require("../assets/icons/DogImg.png")}
-                resizeMode="cover"
-                style={{
-                  width: 100,
-                  height: 100,
-                }}
-              />
-              <Text
-                style={{
-                  color: "#282828",
-                  marginTop: 10,
-                  fontSize: 24,
-                  fontWeight: "bold",
-                  marginBottom: 5,
-                }}
-              >
-                {mung} 멍
-              </Text>
+            <Image
+                    source={{uri : userinfo.userImg}}
+                    resizeMode="cover"
+                    style={{
+                    width: 100,
+                    height: 100,
+                    }}
+                />
+                <Text
+                    style={{
+                    color: "#282828",
+                    marginTop: 10,
+                    fontSize: 24,
+                    fontWeight: "bold",
+                    marginBottom: 5,
+                    }}
+                >
+                    {userinfo.userNickName} 
+                    {mydailyRank.rankScore} 멍
+                </Text>
               <Text
                 style={{
                   color: "#282828",
@@ -390,9 +521,8 @@ function AllRanking() {
                       color="brown"
                     />
                     <MyRanking
-                      firstName="내 랭킹"
-                      mung={dailyData[4].rankScore}
-                      rank="148"
+                      firstName={mymonthlyRank.userNickname}
+                      mung={mymonthlyRank.rankScore}
                     />
                   </>
                 ) : null}

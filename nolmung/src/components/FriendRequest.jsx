@@ -13,7 +13,7 @@ const FriendRequest = (Props) => {
     const [puppyinfo,setpuppyinfo] = useState([])
     const HumanName = userinfo.userNickName
     const [DogInfo,setDogInfo] = useState("강아지가 없습니다") 
-
+   
     const user_info_func = async (Id) => {
         try {
           
