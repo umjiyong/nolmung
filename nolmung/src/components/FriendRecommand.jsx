@@ -19,24 +19,6 @@ const FriendRecommand = Props => {
   const HumanName = userinfo.userNickName;
   const [DogInfo, setDogInfo] = useState('강아지가 없습니다');
 
-  const user_friend_post_func = async () => {
-    try {
-      await user_friend_post(
-        {fromUserId: 1, toUserId: Props.userId},
-        response => {
-          console.log('보내기 성공');
-        },
-        err => {
-          console.log('아티클질문 에러', err);
-          setfriendId(null);
-        },
-      );
-    } catch (err) {
-      console.log(err);
-      console.log('심각한 에러;;');
-    }
-  };
-
   const user_info_func = async Id => {
     try {
       await getUserInfo(
