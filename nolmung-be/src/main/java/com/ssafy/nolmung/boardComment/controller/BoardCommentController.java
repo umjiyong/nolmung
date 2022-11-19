@@ -94,13 +94,11 @@ public class BoardCommentController {
 
 
     @ApiOperation(value = "댓글 삭제", notes = "boardCommentId와 userId로 조회한 댓글 삭제")
-    @DeleteMapping
-    public ResponseEntity deleteComment(@RequestBody UserCommentRequestDto userCommentRequestDto){
+    @DeleteMapping("/{boardCommentId}")
+    public ResponseEntity deleteComment(@PathVariable int boardCommentId, @RequestParam int userId){
         HashMap<String,Object> result = new HashMap<>();
 
         try {
-            int userId = userCommentRequestDto.getUserId();
-            int boardCommentId = userCommentRequestDto.getBoardCommentId();
 
             boardCommentService.deleteComment(userId, boardCommentId);
 
@@ -110,7 +108,7 @@ public class BoardCommentController {
             return new ResponseEntity(result, HttpStatus.OK);
         }catch (Exception e){
 
-            result.put("boardCommentId", userCommentRequestDto.getBoardCommentId());
+            result.put("boardCommentId", boardCommentId);
             result.put("message", "[error] - 댓글 삭제");
 
             return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
