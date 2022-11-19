@@ -8,11 +8,18 @@ import {
   Dimensions,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  DeviceEventEmitter,
 } from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import CommentList from '../components/CommentList';
 import Modal from 'react-native-modal';
 import {getArticles_From_BoardId} from '../api/Article';
+import {
+  getAllCommentFromArticle,
+  PostComment,
+  deleteComment,
+} from '../api/Comment';
+import {Pressable} from 'react-native';
 
 const ArticleItem = Props => {
   console.log('Props', Props.route.params.boardId);
@@ -23,12 +30,15 @@ const ArticleItem = Props => {
   const comment = 5;
   const [inputComment, setInputComment] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
+  const [test, setTest] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
     console.log(isModalVisible);
   };
   const backdropOpacity = 0.3;
   const [boardIdData, setBoardIdData] = useState([]);
+  const [commentAll, setCommentAll] = useState([]);
+  const [emitter, setEmitter] = useState([]);
   const getBoardIdData = async () => {
     try {
       await getArticles_From_BoardId(
@@ -43,11 +53,50 @@ const ArticleItem = Props => {
     }
   };
 
+  const getAllComment = async () => {
+    try {
+      await getAllCommentFromArticle(
+        {boardId: Props.route.params.boardId},
+        response => {
+          // console.log('댓글들', response.data);
+          setCommentAll(response.data);
+        },
+      );
+    } catch (err) {
+      console.log('에러났유', err);
+    }
+  };
+
+  const PostCommentFunc = async () => {
+    try {
+      await PostComment(
+        {boardId: Props.route.params.boardId, content: inputComment, userId: 1},
+
+        response => {
+          console.log('댓글 등록 성공', response);
+          setInputComment('');
+          setTest(prev => !prev);
+        },
+      );
+    } catch (err) {
+      console.log('실패했슈', err);
+    }
+  };
+
   useEffect(() => {
     getBoardIdData();
   }, []);
+  useEffect(() => {
+    getAllComment();
+  }, [test]);
 
-  console.log('boardIdData', boardIdData);
+  useEffect(() => {
+    DeviceEventEmitter.addListener('commentDelete', event => {
+      setEmitter(event.key);
+      getAllComment();
+    });
+  }, [emitter]);
+
   return (
     <>
       {boardIdData.length > 0 ? (
@@ -109,7 +158,7 @@ const ArticleItem = Props => {
                 contentContainerStyle={Styles.ImageContainer}
                 pagingEnabled={true}
                 horizontal={true}>
-                {console.log('board이미지', boardIdData.boardImg)}
+                {/* {console.log('board이미지', boardIdData.boardImg)} */}
                 {boardIdData.boardImg !== undefined ? (
                   <>
                     {boardIdData.boardImg.map((Img, index) => {
@@ -131,15 +180,6 @@ const ArticleItem = Props => {
               {/* Image End */}
               <View style={Styles.likeAndComment}>
                 <Image
-                  source={require('../assets/icons/heart-regular-24.png')}
-                  style={{
-                    width: 24,
-                    height: 24,
-                    tintColor: '#ff772f',
-                    marginRight: 10,
-                  }}
-                />
-                <Image
                   source={require('../assets/icons/message.png')}
                   style={{
                     width: 24,
@@ -148,9 +188,6 @@ const ArticleItem = Props => {
                 />
               </View>
               <View style={Styles.Contents}>
-                <Text style={{color: '#282828', marginBottom: 5}}>
-                  좋아요 {boardIdData.likeCnt}개
-                </Text>
                 <Text
                   style={{
                     color: '#282828',
@@ -161,13 +198,38 @@ const ArticleItem = Props => {
                   }}>
                   {boardIdData.boardContent}
                 </Text>
-                <Text style={{color: '#959595'}}>댓글 5개 모두 보기</Text>
+                <Text style={{color: '#959595'}}>
+                  댓글 {commentAll.commentCount}개 모두 보기
+                </Text>
                 <Text style={{color: '#959595', marginTop: 5}}>
                   {boardIdData.boardUpdateDate}
                 </Text>
               </View>
             </View>
             <View style={{...Styles.CommentBox}}>
+              {commentAll.commentList !== undefined ? (
+                <>
+                  {commentAll.commentList.map(comment => {
+                    return (
+                      <CommentList
+                        key={comment.boardCommentId}
+                        userNickName={comment.userNickname}
+                        region={comment.userAddress}
+                        addTime={comment.createDate}
+                        img={comment.userImg}
+                        content={comment.content}
+                        boardCommentId={comment.boardCommentId}
+                      />
+                    );
+                  })}
+                </>
+              ) : (
+                <View>
+                  <Text style={{textAlign: 'center'}}>댓글이 없습니다.</Text>
+                </View>
+              )}
+
+              {/* <CommentList />
               <CommentList />
               <CommentList />
               <CommentList />
@@ -177,8 +239,7 @@ const ArticleItem = Props => {
               <CommentList />
               <CommentList />
               <CommentList />
-              <CommentList />
-              <CommentList />
+              <CommentList /> */}
             </View>
           </ScrollView>
           <View style={{justifyContent: 'center'}}>
@@ -189,11 +250,16 @@ const ArticleItem = Props => {
               value={inputComment}
               placeholderTextColor="#959595"
             />
-            <Image
-              source={require('../assets/icons/send.png')}
-              resizeMode="contain"
+            <Pressable
               style={{position: 'absolute', right: 20}}
-            />
+              onPress={() => {
+                PostCommentFunc();
+              }}>
+              <Image
+                source={require('../assets/icons/send.png')}
+                resizeMode="contain"
+              />
+            </Pressable>
           </View>
         </>
       )}
