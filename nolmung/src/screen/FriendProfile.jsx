@@ -16,10 +16,9 @@ import MyDog from '../components/MyDog';
 import Modal from 'react-native-modal';
 import LandMark from '../components/LandMark';
 import {useNavigation} from '@react-navigation/native';
-import {user_info} from '../api/User';
-import {user_puppy_info} from '../api/Puppy';
+import {getUserInfo} from '../api/User';
+import {getUserPuppyInfo} from '../api/Puppy';
 import {user_friend_post} from '../api/Friend';
-
 
 function FriendProfile({navigation: {navigate}, route}) {
   console.log('ㅎㅇㅎㅇ', route.params);
@@ -47,7 +46,7 @@ function FriendProfile({navigation: {navigate}, route}) {
 
   const user_info_func = async id => {
     try {
-      await user_info(
+      await getUserInfo(
         {userId: id},
         response => {
           setuserdata(response.data);
@@ -64,8 +63,8 @@ function FriendProfile({navigation: {navigate}, route}) {
 
   const user_puppy_info_func = async Id => {
     try {
-      await user_puppy_info(
-        {userId: Id},
+      await getUserPuppyInfo(
+        {Id: Id},
         response => {
           setpuppyinfo(response.data);
           console.log('친구 강아지', puppyinfo);
@@ -82,13 +81,8 @@ function FriendProfile({navigation: {navigate}, route}) {
   };
 
   useEffect(() => {
-
-    
-    
-    user_info_func(route.params.userId)
-    user_puppy_info_func(route.params.userId)
-    
-
+    user_info_func(route.params.userId);
+    user_puppy_info_func(route.params.userId);
 
     console.log('유저값', userdata);
   }, []);
@@ -98,8 +92,7 @@ function FriendProfile({navigation: {navigate}, route}) {
   const user_friend_post_func = async () => {
     try {
       await user_friend_post(
-
-        {fromUserId: 1, toUserId : route.params.userId}, // 이부분은 프롭스 받은것도 아니라서 네비게이션으로 id받아야댐
+        {fromUserId: 1, toUserId: route.params.userId}, // 이부분은 프롭스 받은것도 아니라서 네비게이션으로 id받아야댐
 
         response => {
           console.log('보내기 성공');

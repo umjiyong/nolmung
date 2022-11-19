@@ -20,7 +20,7 @@ import Modal from 'react-native-modal';
 import SearchFriendList from '../components/SearchFriendList';
 
 import {
-  user_friend_list,
+  getFriendList,
   user_friend_proposal,
   user_friend_random,
   user_friend_search,
@@ -42,7 +42,6 @@ function FriendScreen() {
   const backdropOpacity = 0.5;
 
   const [search, setSearch] = useState(false);
-
 
   const [text, setText] = useState('');
   const [friendrequest, setfriendrequest] = useState('');
@@ -67,7 +66,6 @@ function FriendScreen() {
   //   }
   // };
   // 필요없을듯
-
 
   const user_friend_search_func = async ftext => {
     try {
@@ -95,8 +93,8 @@ function FriendScreen() {
 
   const getfriend_list_func = async () => {
     try {
-      await user_friend_list(
-        {userId: 1},
+      await getFriendList(
+        {Id: 1},
         response => {
           setfriendList(response.data);
         },
@@ -218,31 +216,17 @@ function FriendScreen() {
             </TouchableOpacity>
           </View>
           <View style={Styles.RecommandBox}>
-
-
-            {(friendrandom.length>0) ? (
-                    <>
-                        
-              
-            
-                        {friendrandom.map((item)=>{
-                          
-                          return (
-                          
-                            <FriendRecommand
-                            key = {item.userId}
-                            userId = {item.userId}
-                            
-                            />
-                          
-                          
-                          )
-                        })}
-                    </>
-                  ): <Text style={{color:"#282828", }}>친구 추천이 없습니다</Text>}
-            
-            
-
+            {friendrandom.length > 0 ? (
+              <>
+                {friendrandom.map(item => {
+                  return (
+                    <FriendRecommand key={item.userId} userId={item.userId} />
+                  );
+                })}
+              </>
+            ) : (
+              <Text style={{color: '#282828'}}>친구 추천이 없습니다</Text>
+            )}
           </View>
         </View>
 
@@ -312,14 +296,12 @@ function FriendScreen() {
             </TouchableWithoutFeedback>
           </View>
           {friendId ? (
-
             <Pressable
               onPress={() => {
                 navigation.push('FriendProfile', {userId: friendId.userId});
                 toggleModal();
               }}>
               <SearchFriendList userId={friendId} />
-
             </Pressable>
           ) : (
             <Text>친구코드를 확인해주세요</Text>
