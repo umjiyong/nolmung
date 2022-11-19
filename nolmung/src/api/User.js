@@ -1,9 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {login} from '@react-native-seoul/kakao-login';
-import {apiInstance, apiLoginInstance} from './Index';
+import {apiInstance, apiLoginInstance, imageInstance} from './Index';
 
+const imageApi = imageInstance();
 const loginApi = apiLoginInstance();
 const api = apiInstance();
+
 api.interceptors.request.use(async config => {
   if (!config.headers) {
     return config;
@@ -39,4 +41,11 @@ export const registUserInfo = async (data, success, fail) => {
 
 export const getUserInfo = async (response, success, fail) => {
   return await api.get(`/user/${response.id}`).then(success).catch(fail);
+};
+
+export const registUserImage = async (response, success, fail) => {
+  await AsyncStorage.getItem('userId', (err, res) => {
+    console.log('이미지 업로드쪽', response);
+    imageApi.post(`/image/user/${res}`, response).then(success).catch(fail);
+  });
 };

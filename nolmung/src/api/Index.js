@@ -27,3 +27,17 @@ export const apiLoginInstance = () => {
   });
   return instance;
 };
+
+export const imageInstance = () => {
+  const instance = axios.create({
+    baseURL: base_URL,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      IsLogined: `NOTLOGIN`,
+    },
+    transformRequest: (data, headers) => {
+      return data;
+    },
+  });
+  return instance;
+};

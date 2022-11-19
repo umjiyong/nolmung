@@ -16,13 +16,14 @@ import {
 import Header from '../components/Header';
 import MyDog from '../components/MyDog';
 
-import {getUserInfo, registUserInfo} from '../api/User';
+import {getUserInfo, registUserImage, registUserInfo} from '../api/User';
 import {getUserPuppyInfo} from '../api/Puppy';
 // import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker/src';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getFriendList} from '../api/Friend';
 import {getUserBoardCnt} from '../api/Board';
+import axios from 'axios';
 
 function MyProfileScreen({navigation}) {
   const [userData, setUserData] = useState([]);
@@ -80,7 +81,6 @@ function MyProfileScreen({navigation}) {
   const user_info_func = async () => {
     try {
       await AsyncStorage.getItem('userId', (err, id) => {
-        console.log('유저인포 가져올때 아이디', id);
         getUserInfo(
           {id},
           response => {
@@ -139,15 +139,15 @@ function MyProfileScreen({navigation}) {
         getUserBoardCnt(
           {id},
           response => {
-            setBoardCnt(response.data.length);
+            setBoardCnt(response.data);
           },
           error => {
-            console.log('내 친구정보 가져오기 통신에러', error);
+            console.log('내 보드정보 가져오기 통신에러', error);
           },
         );
       });
     } catch (error) {
-      console.log('유저 친구수 가져오기 에러', error);
+      console.log('유저 보드수 가져오기 에러', error);
     }
   };
 
@@ -162,27 +162,24 @@ function MyProfileScreen({navigation}) {
     });
   }, []);
 
-  console.log('유저사진', userData.userImg);
-
-  const user_info_change_func = async data => {
+  const user_image_upload_func = async data => {
     try {
-      await registUserInfo(
-        {userImg: data},
+      await registUserImage(
+        data,
         response => {
           console.log(response);
         },
         err => {
-          console.log('강아지정보 에러', err);
+          console.log('유저 사진 업로드 에러', err);
         },
       );
     } catch (err) {
-      console.log(err);
-      console.log('심각한 에러;;');
+      console.log('유저 사진 업로드심각한 에러;;', err);
     }
   };
 
   const [response, setResponse] = useState();
-  const onSelectImage = () => {
+  const onSelectImage = async () => {
     try {
       launchImageLibrary(
         {
@@ -192,11 +189,18 @@ function MyProfileScreen({navigation}) {
           includeBase64: Platform.OS === 'android',
         },
         res => {
-          console.log(res);
+          console.log('이미지 고르고 이벤트', res);
           if (res.didCancel) return;
           setResponse(res);
 
-          user_info_change_func(response?.assets[0]?.uri);
+          var body = new FormData();
+          body.append('files', {
+            uri: res.assets[0].uri,
+            type: 'image/jpeg',
+            name: `${res.assets[0].fileName}`,
+          });
+
+          user_image_upload_func(body);
         },
       );
     } catch (err) {

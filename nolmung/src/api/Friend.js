@@ -18,7 +18,6 @@ api.interceptors.request.use(async config => {
 });
 
 export const getFriendList = async (response, success, fail) => {
-  console.log('친구 api 호출 :', response.id);
   await api.get(`/friend/${response.id}`).then(success).catch(fail);
 };
 
