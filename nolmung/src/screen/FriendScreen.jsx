@@ -49,23 +49,24 @@ function FriendScreen() {
   const [friendrandom, setfriendrandom] = useState([]);
   const [friendId, setfriendId] = useState('');
 
-  const user_friend_post_func = async () => {
-    try {
-      await user_friend_post(
-        {fromUserId: 1, toUserId: 2},
-        response => {
-          console.log('보내기 성공');
-        },
-        err => {
-          console.log('아티클질문 에러', err);
-          setfriendId(null);
-        },
-      );
-    } catch (err) {
-      console.log(err);
-      console.log('심각한 에러;;');
-    }
-  };
+  // const user_friend_post_func = async () => {
+  //   try {
+  //     await user_friend_post(
+  //       {fromUserId: 2, toUserId: 1},
+  //       response => {
+  //         console.log('보내기 성공');
+  //       },
+  //       err => {
+  //         console.log('아티클질문 에러', err);
+  //         setfriendId(null);
+  //       },
+  //     );
+  //   } catch (err) {
+  //     console.log(err);
+  //     console.log('심각한 에러;;');
+  //   }
+  // };
+  // 필요없을듯
 
 
   const user_friend_search_func = async ftext => {
@@ -155,7 +156,7 @@ function FriendScreen() {
     user_friend_random_func();
   }, []);
 
-  // console.log("로그확인",friendrequest)
+  console.log("로그확인",friendrequest)
 
   return (
     <>
@@ -189,7 +190,7 @@ function FriendScreen() {
                 <>
                   {friendrequest.map((item, index) => {
                     return (
-                      <FriendRequest key={index} userId={item.subUserId} />
+                      <FriendRequest key={index} userId={item.fromUserId} />
                     );
                   })}
                 </>

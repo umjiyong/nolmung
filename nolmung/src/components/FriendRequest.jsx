@@ -6,7 +6,7 @@ import {user_info} from "../api/User"
 import {user_puppy_info} from "../api/Puppy"
 const FriendRequest = (Props) => {
     
-    
+    console.log("프롭스", Props.userId)
     const navigation = useNavigation()
 
     const [userinfo,setuseinfo] = useState([])
@@ -66,7 +66,7 @@ const FriendRequest = (Props) => {
          }
       },[puppyinfo])
       
-      console.log("퍼퍼콘솔",puppyinfo)
+      console.log("보낸사람 정보",userinfo)
 
 
 
