@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import Geolocation, {
   getCurrentPosition,
@@ -22,7 +23,8 @@ import {getDistance} from 'geolib';
 import useInterval from 'react-useinterval';
 // import BackgroundTimer from 'react-native-background-timer';
 // import {AppRegistry} from 'react-native';
-import {getLandmarkMarkerList} from '../api/WalkRecord.js';
+import {getNearLandmarkMarkerList, getMyPuppyList} from '../api/Walk.js';
+import WalkPuppyList from '../components/WalkPuppyList.jsx';
 
 async function requestPermission() {
   try {
@@ -32,7 +34,7 @@ async function requestPermission() {
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
 
-      console.log(Platform.OS);
+      // console.log(Platform.OS);
     }
   } catch (e) {
     console.log(e);
@@ -83,6 +85,8 @@ function WalkScreen({navigation}) {
   const appState = useRef(AppState.currentState);
   const [landmark, setLandmark] = useState([]);
   const accessableLength = 200; // 사용자 원의 반경, 접근할 수 있는 랜드마크까지의 거리
+  const [myPuppyList, setMyPuppyList] = useState([]);
+  const [checkPuppy, setCheckPuppy] = useState([2, 5, 6]);
 
   const getLandmarkMarkerListFunc = async () => {
     try {
@@ -97,6 +101,44 @@ function WalkScreen({navigation}) {
     } catch (error) {
       // console.log(err);
       console.log('랜드마크 목록 조회 에러');
+    }
+  };
+
+  const getNearLandmarkMarkerListFunc = async (userLat, userLon) => {
+    try {
+      await getNearLandmarkMarkerList(
+        {
+          userLat: 37.5012767241426,
+          userLon: 127.039600248343,
+        },
+        response => {
+          console.log('!!!!', response.data);
+          setLandmark(response.data.landmarkList);
+        },
+        err => {
+          console.log('랜드마크 목록 에러', err);
+        },
+      );
+    } catch (error) {
+      // console.log(err);
+      console.log('랜드마크 목록 조회 에러');
+    }
+  };
+
+  const getPuppyListFunc = async userId => {
+    try {
+      await getMyPuppyList(
+        {
+          userId: 1,
+        },
+        response => {
+          // console.log(response.data.myPuppyList);
+          setMyPuppyList(response.data.myPuppyList);
+        },
+      );
+    } catch (error) {
+      console.log(err);
+      console.log('강아지 목록 조회 에러');
     }
   };
 
@@ -157,7 +199,10 @@ function WalkScreen({navigation}) {
       if (result === 'granted') {
         requestPermission2();
         console.log('실행');
-        // getLandmarkMarkerListFunc();
+        getNearLandmarkMarkerListFunc(
+          curlocation[curlocation.length - 1],
+          curlocation[curlocation.length - 2],
+        );
         Geolocation.getCurrentPosition(
           position => {
             const latitude = position.coords.latitude;
@@ -199,6 +244,10 @@ function WalkScreen({navigation}) {
           setweathers(data.weather[0].main);
         });
     });
+  }, []);
+
+  useEffect(() => {
+    getPuppyListFunc(1);
   }, []);
 
   function StartCount() {
@@ -301,14 +350,14 @@ function WalkScreen({navigation}) {
                 <Text style={{color: '#fff'}}>산책 시작</Text>
               </TouchableOpacity>
             ) : (
-              <View style={{flexDirection:'row', position:'absolute', bottom:100, }}>
-                <TouchableOpacity onPress={StartCount}  style={Styles.buttonTestStop}>
-                  <Text style={{color: '#fff'}}>산책 일시정지</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{StartCount(); navigation.push('EndWalkScreen')  }} style={Styles.buttonTestStop}>
-                  <Text style={{color: '#fff'}}>산책 종료</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  StartCount();
+                  navigation.push('EndWalkScreen');
+                }}
+                style={Styles.buttonTestStop}>
+                <Text style={{color: '#fff'}}>산책 종료</Text>
+              </TouchableOpacity>
             )}
           </>
         ) : (
@@ -367,6 +416,28 @@ function WalkScreen({navigation}) {
           </View>
         </View>
       ) : null}
+      <View style={{position: 'absolute', right: 20, top: 80}}>
+        {myPuppyList.map((item, index) => {
+          return (
+            <Pressable
+              onPress={() => {
+                console.log('퍼피아이디', item.puppyId);
+                // setCheckPuppy([...checkPuppy, item.puppyId]);
+              }}
+              key={item.puppyId}>
+              <Image
+                source={{uri: item.puppyInfo.puppyImg}}
+                resizeMode="contain"
+                style={
+                  checkPuppy.includes(item.puppyId)
+                    ? Styles.selectPuppy
+                    : Styles.noSelectPuppy
+                }
+              />
+            </Pressable>
+          );
+        })}
+      </View>
     </>
   );
 }
@@ -396,7 +467,7 @@ const Styles = StyleSheet.create({
     shadowColor: '#D9D9D9',
     elevation: 4,
   },
-  buttonTestStop:{
+  buttonTestStop: {
     justifyContent: 'center',
     alignItems: 'center',
     height: 40,
@@ -404,9 +475,9 @@ const Styles = StyleSheet.create({
     backgroundColor: '#ff772f',
     marginTop: 'auto',
     marginHorizontal: 20,
-    // position: 'absolute',
-    // bottom: 140,
-    width: 167,
+    position: 'absolute',
+    bottom: 100,
+    width: '90%',
     shadowColor: '#D9D9D9',
     elevation: 4,
   },
@@ -423,7 +494,7 @@ const Styles = StyleSheet.create({
   },
   walkInfo: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     position: 'absolute',
     backgroundColor: 'white',
     bottom: 150,
@@ -434,5 +505,19 @@ const Styles = StyleSheet.create({
     borderRadius: 20,
     shadowColor: '#D9D9D9',
     elevation: 4,
+  },
+  selectPuppy: {
+    width: 60,
+    height: 60,
+    borderColor: '#FF772F',
+    borderWidth: 2,
+    borderRadius: 100,
+    marginVertical: 5,
+  },
+  noSelectPuppy: {
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    marginVertical: 5,
   },
 });

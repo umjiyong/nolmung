@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,66 +7,64 @@ import {
   Pressable,
   TouchableOpacity,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import {BarChart} from 'react-native-chart-kit';
+import {getMyPuppyList, getWalkStatistics} from '../api/Walk.js';
+import WalkPuppyList from './WalkPuppyList';
 
 const WalkStatistic = () => {
   const [select, setSelect] = useState('date');
-  const selectDate = () => {
-    setSelect('date');
-    console.log(select);
+  const [puppyList, setPuppyList] = useState([]);
+  const [statistic, setStatistic] = useState([]);
+  const [selectId, setSelectId] = useState();
+
+  const getMyPuppyListFunc = async userId => {
+    try {
+      await getMyPuppyList(
+        {
+          userId: 1,
+        },
+        response => {
+          setPuppyList(response.data.myPuppyList);
+        },
+        err => {
+          console.log('강아지 목록 에러', err);
+        },
+      );
+    } catch (error) {
+      console.log(error);
+      console.log('강아지 목록 조회 에러');
+    }
   };
 
-  const selectWeek = () => {
-    setSelect('week');
-    console.log(select);
-  };
-
-  const selectMonth = () => {
-    setSelect('month');
-    console.log(select);
+  const getWalkStatisticsFunc = async puppyId => {
+    try {
+      await getWalkStatistics(
+        {
+          puppyId: puppyId,
+        },
+        response => {
+          // console.log(response.data.result);
+          setStatistic(response.data.result);
+        },
+      );
+    } catch (error) {
+      console.log(error);
+      console.log('산책 통계 에러');
+    }
   };
 
   // chart dummy data
   const data = {
-    labels: ['월', '화', '수', '목', '금', '토', '일'],
+    labels: statistic.dateList,
     datasets: [
       {
-        data: [20, 45, 28, 80, 99, 43, 55],
+        data: statistic.attainment,
       },
     ],
   };
 
-  const weekData = {
-    labels: ['1주', '2주', '3주', '4주', '5주'],
-    datasets: [
-      {
-        data: [20, 45, 28, 80, 99],
-      },
-    ],
-  };
-
-  const monthData = {
-    labels: [
-      '1월',
-      '2월',
-      '3월',
-      '4월',
-      '5월',
-      '6월',
-      '7월',
-      '8월',
-      '9월',
-      '10월',
-      '11월',
-      '12월',
-    ],
-    datasets: [
-      {
-        data: [20, 45, 28, 80, 99, 43, 20, 45, 28, 80, 99, 43],
-      },
-    ],
-  };
   // 화면 너비
   const screenWidth = Dimensions.get('window').width;
 
@@ -82,133 +80,65 @@ const WalkStatistic = () => {
     useShadowColorFromDataset: false, // optional
   };
 
-  const monthChartConfig = {
-    backgroundGradientFrom: '#F5F5F5',
-    backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: '#F5F5F5',
-    backgroundGradientToOpacity: 0.5,
-    color: (opacity = 1) => `rgba(255, 88, 0, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false, // optional
-  };
+  useEffect(() => {
+    getMyPuppyListFunc();
+  }, []);
+
+  useEffect(() => {
+    getWalkStatisticsFunc(selectId);
+  }, [selectId]);
 
   return (
     <>
       <View style={Styles.WalkStatisticContainer}>
-        <View style={Styles.DogContainer}>
-          <View style={{alignItems: 'center', marginRight: 20}}>
-            <Image
-              source={require('../assets/icons/DogImg.png')}
-              resizeMode="contain"
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: 50,
-              }}
-            />
-            <Text style={{color: '#282828'}}>땅콩이</Text>
-          </View>
-          <View style={{alignItems: 'center'}}>
-            <Image
-              source={require('../assets/icons/DogImg.png')}
-              resizeMode="contain"
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: 50,
-              }}
-            />
-            <Text style={{color: '#282828'}}>땅콩이</Text>
-          </View>
-        </View>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          horizontal={true}
+          style={Styles.DogContainer}>
+          {puppyList?.length > 0 ? (
+            <>
+              {puppyList.map((item, index) => {
+                return (
+                  <Pressable
+                    onPress={() => setSelectId(item.puppyId)}
+                    key={index}>
+                    <WalkPuppyList Props={item.puppyInfo} />
+                  </Pressable>
+                );
+              })}
+            </>
+          ) : (
+            <Text style={{color: '#282828'}}>강아지 목록이 없습니다.</Text>
+          )}
+        </ScrollView>
 
-        <View style={Styles.selectBox}>
-          <View style={Styles.selectBtn}>
-            <Pressable onPress={selectDate}>
-              <Text
-                style={
-                  select === 'date' ? Styles.SelectText : Styles.NoSelectText
-                }>
-                일간
-              </Text>
-            </Pressable>
-            <Pressable onPress={selectWeek}>
-              <Text
-                style={
-                  select === 'week' ? Styles.SelectText : Styles.NoSelectText
-                }>
-                주간
-              </Text>
-            </Pressable>
-            <Pressable onPress={selectMonth}>
-              <Text
-                style={
-                  select === 'month' ? Styles.SelectText : Styles.NoSelectText
-                }>
-                월간
-              </Text>
-            </Pressable>
-          </View>
-        </View>
         {select === 'date' ? (
           <>
             <View style={Styles.statistic}>
               <View>
-                <BarChart
-                  style={Styles.charts}
-                  data={data}
-                  width={screenWidth}
-                  height={220}
-                  withInnerLines={false}
-                  withVerticalLabels={true}
-                  withHorizontalLabels={false}
-                  chartConfig={chartConfig}
-                  showValuesOnTopOfBars={true}
-                />
-              </View>
-            </View>
-          </>
-        ) : null}
-        {select === 'week' ? (
-          <>
-            <View style={Styles.statistic}>
-              <View>
-                <BarChart
-                  style={Styles.charts}
-                  data={weekData}
-                  width={screenWidth}
-                  height={220}
-                  withInnerLines={false}
-                  withVerticalLabels={true}
-                  withHorizontalLabels={false}
-                  chartConfig={chartConfig}
-                  showValuesOnTopOfBars={true}
-                />
-              </View>
-            </View>
-          </>
-        ) : null}
-        {select === 'month' ? (
-          <>
-            <View style={Styles.statistic}>
-              <View>
-                <BarChart
-                  style={Styles.charts}
-                  data={monthData}
-                  width={screenWidth}
-                  height={220}
-                  withInnerLines={false}
-                  withVerticalLabels={true}
-                  withHorizontalLabels={false}
-                  chartConfig={monthChartConfig}
-                  showValuesOnTopOfBars={true}
-                />
+                {statistic?.attainment?.length > 0 ? (
+                  <BarChart
+                    style={Styles.charts}
+                    data={data}
+                    width={screenWidth}
+                    height={220}
+                    withInnerLines={false}
+                    withVerticalLabels={true}
+                    withHorizontalLabels={false}
+                    chartConfig={chartConfig}
+                    showValuesOnTopOfBars={true}
+                  />
+                ) : null}
               </View>
             </View>
           </>
         ) : null}
       </View>
+      {statistic.length > 0 ? (
+        <View>
+          <Text>1</Text>
+        </View>
+      ) : null}
     </>
   );
 };
@@ -217,15 +147,9 @@ export default WalkStatistic;
 
 const Styles = StyleSheet.create({
   WalkStatisticContainer: {
-    flex: 1,
     marginHorizontal: 20,
   },
-  DogContainer: {
-    flex: 0.15,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  DogContainer: {},
   selectBox: {
     marginHorizontal: 40,
     marginTop: 30,

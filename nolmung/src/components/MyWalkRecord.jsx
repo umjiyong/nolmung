@@ -6,15 +6,18 @@ import {
   View,
   Image,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import MyWalkRecordInfo from './MyWalkRecordInfo';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import {compareAsc, format} from 'date-fns';
-import {getPuppyList} from '../api/WalkRecord.js';
+import {getPuppyList, getRecordList} from '../api/Walk.js';
+import WalkPuppyList from './WalkPuppyList';
 
 const MyWalkRecord = () => {
   const [puppyList, setPuppyList] = useState([]);
   const [walkRecordList, setWalkRecordList] = useState([]);
+  const [selectId, setSelectId] = useState();
 
   const getPuppyListFunc = async day => {
     try {
@@ -24,7 +27,6 @@ const MyWalkRecord = () => {
           walkDate: day,
         },
         response => {
-          // console.log(response.data);
           setPuppyList(response.data.puppyList);
         },
         err => {
@@ -41,12 +43,12 @@ const MyWalkRecord = () => {
     try {
       await getRecordList(
         {
-          puppyId: 1,
+          puppyId: puppyId,
           walkDate: day,
         },
         response => {
-          console.log(response);
-          setWalkRecordList(response);
+          console.log(response.data.walkRecordList);
+          setWalkRecordList(response.data.walkRecordList);
         },
         err => {
           console.log('산책 목록 에러', err);
@@ -78,6 +80,14 @@ const MyWalkRecord = () => {
     },
   };
 
+  useEffect(() => {
+    getRecordListFunc(selectId, selectedDate);
+  }, [selectId]);
+
+  useEffect(() => {
+    getRecordListFunc(selectId, selectedDate);
+  }, [selectedDate]);
+
   return (
     <>
       <ScrollView>
@@ -104,24 +114,18 @@ const MyWalkRecord = () => {
             <>
               {puppyList.map((item, index) => {
                 return (
-                  <View
-                    style={{alignItems: 'center', marginRight: 15}}
+                  <Pressable
+                    onPress={() => setSelectId(item.puppyId)}
                     key={index}>
-                    <Image
-                      source={{uri: item.puppyImg}}
-                      resizeMode="contain"
-                      style={{
-                        width: 100,
-                        height: 100,
-                      }}
-                    />
-                    <Text style={{color: '#282828'}}>{item.puppyName}</Text>
-                  </View>
+                    <WalkPuppyList Props={item} />
+                  </Pressable>
                 );
               })}
             </>
           ) : (
-            <Text style={{color: '#282828'}}>강아지가 없습니다.</Text>
+            <Text style={{color: '#282828'}}>
+              해당 일자에 산책 기록이 없습니다.
+            </Text>
           )}
         </View>
         {/* end */}
@@ -129,13 +133,13 @@ const MyWalkRecord = () => {
           style={{marginBottom: 80}}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{padding: 20}}>
-          <MyWalkRecordInfo />
-          <MyWalkRecordInfo />
-          <MyWalkRecordInfo />
-          <MyWalkRecordInfo />
-          <MyWalkRecordInfo />
-          <MyWalkRecordInfo />
-          <MyWalkRecordInfo />
+          {walkRecordList?.length > 0 ? (
+            <>
+              {walkRecordList.map((item, index) => {
+                return <MyWalkRecordInfo key={index} Props={item} />;
+              })}
+            </>
+          ) : null}
         </ScrollView>
       </ScrollView>
     </>
