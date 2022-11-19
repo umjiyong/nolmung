@@ -22,25 +22,23 @@ const FriendRecommand = Props => {
   const HumanName = userinfo.userNickName;
   const [DogInfo, setDogInfo] = useState('강아지가 없습니다');
 
-    const user_friend_post_func = async () => {
-      try {
-        await user_friend_post(
-          {fromUserId: 2, toUserId : 1},
-          response => {
-            
-            console.log("보내기 성공")
-            
-          },
-          err => {
-            console.log('아티클질문 에러', err);
-            setfriendId(null);
-          },
-        );
-      } catch (err) {
-        console.log(err);
-        console.log('심각한 에러;;');
-      }
-    };
+  const user_friend_post_func = async () => {
+    try {
+      await user_friend_post(
+        {fromUserId: 2, toUserId: 1},
+        response => {
+          console.log('보내기 성공');
+        },
+        err => {
+          console.log('아티클질문 에러', err);
+          setfriendId(null);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
 
   const user_info_func = async Id => {
     try {
@@ -131,6 +129,12 @@ const FriendRecommand = Props => {
         <TouchableOpacity
           onPress={() => {
             user_friend_post_func();
+            registAlarm({
+              inAppAlarmContent:
+                Props.myName + '님께서 친구 요청을 보냈습니다.',
+              inAppAlarmLink: '', // 알람 링크 추가 필요
+              userId: Props.userId,
+            });
           }}>
           <View style={{marginTop: -20, ...Styles.RequestBtn}}>
             <Text style={{color: '#FF772F'}}>친구 신청</Text>

@@ -26,6 +26,7 @@ import {
   user_friend_search,
   user_friend_post,
 } from '../api/Friend';
+import {user_info} from '../api/User';
 import {useNavigation} from '@react-navigation/native';
 
 function FriendScreen() {
@@ -43,11 +44,11 @@ function FriendScreen() {
 
   const [search, setSearch] = useState(false);
 
-
   const [text, setText] = useState('');
   const [friendrequest, setfriendrequest] = useState('');
   const [friendrandom, setfriendrandom] = useState([]);
   const [friendId, setfriendId] = useState('');
+  const [userInfo, setUserInfo] = useState([]);
 
   // const user_friend_post_func = async () => {
   //   try {
@@ -67,7 +68,6 @@ function FriendScreen() {
   //   }
   // };
   // 필요없을듯
-
 
   const user_friend_search_func = async ftext => {
     try {
@@ -145,6 +145,24 @@ function FriendScreen() {
     }
   };
 
+  const user_info_func = async () => {
+    try {
+      await user_info(
+        {userId: 1},
+        response => {
+          setUserInfo(response.data);
+          console.log('userInfo: ' + JSON.stringify(userInfo));
+        },
+        err => {
+          console.log('유저정보 에러', err);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
+
   const refresh_func = () => {
     console.log('리프레시');
     user_friend_random_func();
@@ -154,9 +172,10 @@ function FriendScreen() {
     getfriend_list_func();
     user_friend_proposal_func();
     user_friend_random_func();
+    user_info_func();
   }, []);
 
-  console.log("로그확인",friendrequest)
+  console.log('로그확인', friendrequest);
 
   return (
     <>
@@ -218,31 +237,21 @@ function FriendScreen() {
             </TouchableOpacity>
           </View>
           <View style={Styles.RecommandBox}>
-
-
-            {(friendrandom.length>0) ? (
-                    <>
-                        
-              
-            
-                        {friendrandom.map((item)=>{
-                          
-                          return (
-                          
-                            <FriendRecommand
-                            key = {item.userId}
-                            userId = {item.userId}
-                            
-                            />
-                          
-                          
-                          )
-                        })}
-                    </>
-                  ): <Text style={{color:"#282828", }}>친구 추천이 없습니다</Text>}
-            
-            
-
+            {friendrandom.length > 0 ? (
+              <>
+                {friendrandom.map(item => {
+                  return (
+                    <FriendRecommand
+                      key={item.userId}
+                      userId={item.userId}
+                      myName={userInfo.userName}
+                    />
+                  );
+                })}
+              </>
+            ) : (
+              <Text style={{color: '#282828'}}>친구 추천이 없습니다</Text>
+            )}
           </View>
         </View>
 
@@ -312,14 +321,12 @@ function FriendScreen() {
             </TouchableWithoutFeedback>
           </View>
           {friendId ? (
-
             <Pressable
               onPress={() => {
                 navigation.push('FriendProfile', {userId: friendId.userId});
                 toggleModal();
               }}>
               <SearchFriendList userId={friendId} />
-
             </Pressable>
           ) : (
             <Text>친구코드를 확인해주세요</Text>
