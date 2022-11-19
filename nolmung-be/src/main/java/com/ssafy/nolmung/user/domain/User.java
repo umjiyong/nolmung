@@ -117,7 +117,9 @@ public class User {
     private List<BoardLike> boardLikes = new ArrayList<>();
 
 
-
+    public void changeUserImage(String userImgUrl){
+        this.userImg = userImgUrl;
+    }
 
     @Builder
     public User (int userId,
