@@ -2,6 +2,7 @@ package com.ssafy.nolmung.walk.controller;
 
 import com.ssafy.nolmung.walk.dto.request.WalkDailyRecordListRequestDto;
 import com.ssafy.nolmung.walk.dto.request.WalkPuppyListRequestDto;
+import com.ssafy.nolmung.walk.dto.request.WalkRecordRequestDto;
 import com.ssafy.nolmung.walk.dto.response.WalkDailyRecordListResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkPuppyListResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkRecordDetailResponseDto;
@@ -26,18 +27,19 @@ public class WalkController {
     @Autowired
     WalkService walkService;
 
-//    @ApiOperation(value = "산책 정보 기록하기", notes = "산책 종료시, front의 data를 통해 산책 정보를 기록하는 API")
-//    @PostMapping
-//    public ResponseEntity createWalkRecord(@RequestBody WalkRecordRequestDto walkRecordRequestDto){
-//        HashMap<String, Object> result = new HashMap<>();
-//        try {
-//            result.put("message", "success");
-//            return new ResponseEntity(result, HttpStatus.OK);
-//        }catch (Exception e){
-//            result.put("message", "[error] - ");
-//            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @ApiOperation(value = "산책 정보 기록하기", notes = "산책 종료시, front의 data를 통해 산책 정보를 기록하는 API")
+    @PostMapping
+    public ResponseEntity createWalkRecord(@RequestBody WalkRecordRequestDto walkRecordRequestDto){
+        HashMap<String, Object> result = new HashMap<>();
+        try {
+            walkService.insertWalkRecord(walkRecordRequestDto);
+            result.put("message", "success");
+            return new ResponseEntity(result, HttpStatus.OK);
+        }catch (Exception e){
+            result.put("message", "[error] - 산책 정보 기록하기");
+            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @ApiOperation(value = "산책 일자별 강아지 목록 조회", notes = "산책 일자 data 정보를 통해, 해당 일에 산책한 강아지의 목록을 조회하는 API")
     @PostMapping("/puppyList")

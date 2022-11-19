@@ -9,10 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LandmarkBoardRequestDto {
-    int userId;
-    int landmarkId;
-    String content;
-    String imageUrl;
-    LocalDateTime landmarkBoardCreateDate;
+public class UserLocationRequestDto {
+    double userLat;
+    double userLon;
 }

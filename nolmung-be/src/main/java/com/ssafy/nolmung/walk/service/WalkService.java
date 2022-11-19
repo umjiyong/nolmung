@@ -2,6 +2,7 @@ package com.ssafy.nolmung.walk.service;
 
 import com.ssafy.nolmung.walk.dto.request.WalkRecordRequestDto;
 import com.ssafy.nolmung.walk.dto.TimeDto;
+import com.ssafy.nolmung.walk.dto.response.DailyStatisticsResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkDailyRecordListResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkPuppyListResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkRecordDetailResponseDto;
@@ -17,11 +18,13 @@ public interface WalkService {
 
     void insertWalkRecord(WalkRecordRequestDto walkRecordRequestDto);
 
-    double getWalkAttainment(int walkDistance);
 
     long calWalkSecTime(LocalDateTime startTime, LocalDateTime endTime);
 
     TimeDto changeSecToTime(long allSec);
 
     WalkRecordDetailResponseDto getWalkRecord(int walkId);
+
+    DailyStatisticsResponseDto getStatistics(int puppyId);
+
 }

@@ -7,6 +7,7 @@ import com.ssafy.nolmung.user.repository.UserRepository;
 import com.ssafy.nolmung.walk.domain.Walk;
 import com.ssafy.nolmung.walk.dto.request.WalkRecordRequestDto;
 import com.ssafy.nolmung.walk.dto.TimeDto;
+import com.ssafy.nolmung.walk.dto.response.DailyStatisticsResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkDailyRecordListResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkPuppyListResponseDto;
 import com.ssafy.nolmung.walk.dto.response.WalkRecordDetailResponseDto;
@@ -29,6 +30,8 @@ public class WalkServiceImpl implements WalkService{
     private final PuppyRepository puppyRepository;
     private final WalkRepository walkRepository;
     private final UserRepository userRepository;
+
+    private final int WEEK_LENGTH = 6;
 
     public WalkServiceImpl(PuppyRepository puppyRepository, WalkRepository walkRepository, UserRepository userRepository) {
         this.puppyRepository = puppyRepository;
@@ -96,12 +99,19 @@ public class WalkServiceImpl implements WalkService{
     @Override
     @Transactional
     public void insertWalkRecord(WalkRecordRequestDto walkRecordRequestDto) {
-        LocalDate date;
 
         for(int i = 0; i < walkRecordRequestDto.getPuppyIdList().size(); i++){
             Puppy puppy = puppyRepository.findById(walkRecordRequestDto.getPuppyIdList().get(i)).get();
             User user = userRepository.findById(walkRecordRequestDto.getUserId()).get();
-            date = walkRecordRequestDto.getWalkStartTime().toLocalDate();
+            LocalDate date = walkRecordRequestDto.getWalkStartTime().toLocalDate();
+            double newAttainment = getNewWalkAttainment(puppy.getBreed().getNeedsWalkTimes(), walkRecordRequestDto);
+
+            int count = walkRepository.countByWalkDateAndPuppyPuppyId(walkRecordRequestDto.getWalkStartTime().toLocalDate(), puppy.getPuppyId());
+
+            if( count > 0){
+                double maxAttainment = walkRepository.findDistanceByDayAndPuppy(puppy.getPuppyId(), walkRecordRequestDto.getWalkStartTime().toLocalDate());
+                newAttainment = getCurWalkAttainment(maxAttainment, puppy.getBreed().getNeedsWalkTimes(), walkRecordRequestDto);
+            }
 
             Walk newRecord = Walk.builder()
                     .walkStartTime(walkRecordRequestDto.getWalkStartTime())
@@ -109,22 +119,32 @@ public class WalkServiceImpl implements WalkService{
                     .walkEndTime(walkRecordRequestDto.getWalkEndTime())
                     .walkDistance(walkRecordRequestDto.getWalkDistance())
                     .walkUserImg(walkRecordRequestDto.getWalkUserImg())
+                    .walkAttainmentTime(newAttainment)
                     .user(user)
                     .puppy(puppy)
                     .build();
 
+            walkRepository.save(newRecord);
         }
     }
 
-    @Override
-    public double getWalkAttainment(int walkDistance) {
+    public double getNewWalkAttainment(int needWalkTime, WalkRecordRequestDto walkRecordRequestDto) {
+        long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
 
-        return 0;
+        return (secTime) / (double) (needWalkTime * 60) * 100;
+    }
+
+
+    public double getCurWalkAttainment(double attainment, int needWalkTime, WalkRecordRequestDto walkRecordRequestDto) {
+        double currentAllTime = ((double) (needWalkTime * 60) / 100) * attainment;
+        long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
+
+        return (currentAllTime + secTime) / (double) (needWalkTime * 60) * 100;
     }
 
     @Override
     public long calWalkSecTime(LocalDateTime startTime, LocalDateTime endTime) {
-        long walkTime = ChronoUnit.SECONDS.between(endTime, startTime);
+        long walkTime = ChronoUnit.SECONDS.between(startTime, endTime);
         return walkTime;
     }
 
@@ -168,6 +188,41 @@ public class WalkServiceImpl implements WalkService{
                 .build();
 
         return record;
+    }
+
+    @Override
+    public DailyStatisticsResponseDto getStatistics(int puppyId) {
+        List<String> dateList = new ArrayList<>();
+        List<Double> attainmentList = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+
+        for(int i = WEEK_LENGTH; i >= 0; i--){
+            LocalDate date = today.minusDays(i);
+            log.info("!!!!!!!!!" +  puppyId + "    / "  + date);
+            int count = walkRepository.countByWalkDateAndPuppyPuppyId(date, puppyId);
+            double attainment = 0;
+            if(count > 0){
+                attainment = walkRepository.findDistanceByDayAndPuppy(puppyId, date);
+            }
+            String dayFormat = changeDateToStringFormat(date);
+            attainmentList.add(attainment);
+            dateList.add(dayFormat);
+        }
+
+        DailyStatisticsResponseDto statistic = DailyStatisticsResponseDto
+                .builder()
+                .attainment(attainmentList)
+                .dateList(dateList)
+                .build();
+
+        return statistic;
+    }
+
+    public String changeDateToStringFormat(LocalDate date){
+        String month = String.valueOf(date.getMonth());
+        String day = String.valueOf(date.getDayOfMonth());
+
+        return month + "/" + day;
     }
 
 

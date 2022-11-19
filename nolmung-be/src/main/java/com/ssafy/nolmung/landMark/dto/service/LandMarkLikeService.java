@@ -1,4 +1,4 @@
-package com.ssafy.nolmung.landMark.service;
+package com.ssafy.nolmung.landMark.dto.service;
 
 public interface LandMarkLikeService {
     void likeLandmark(int userId, int landmarkId);
