@@ -1,8 +1,9 @@
 package com.ssafy.nolmung.landMark.controller;
 
 import com.ssafy.nolmung.landMark.dto.request.LandMarkUserRequestDto;
+import com.ssafy.nolmung.landMark.dto.request.UserLocationRequestDto;
 import com.ssafy.nolmung.landMark.dto.response.*;
-import com.ssafy.nolmung.landMark.service.LandMarkService;
+import com.ssafy.nolmung.landMark.dto.service.LandMarkService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,13 +72,29 @@ public class LandMarkController {
         }
     }
 
-    @ApiOperation(value = "랜드마크 마커 목록 조회", notes = "랜드마크 전체의 정보를 조회하는 API")
+    @ApiOperation(value = "랜드마크 마커 전체 목록 조회", notes = "랜드마크 전체의 정보를 조회하는 API")
     @GetMapping("/list")
     public ResponseEntity getLandmarkList(){
         HashMap<String, Object> result = new HashMap<>();
         List<LandMarkListResponseDto> landmarkList = new ArrayList<>();
         try {
             landmarkList = landMarkService.getLandmarkList();
+            result.put("message", "success");
+            result.put("landmarkList", landmarkList);
+            return new ResponseEntity(result, HttpStatus.OK);
+        }catch (Exception e){
+            result.put("message", "[error] - 랜드마크 마커 목록 조회");
+            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @ApiOperation(value = "내 근처 랜드마크 마커 목록 조회", notes = "근처 랜드마크의 정보를 조회하는 API")
+    @PostMapping("/nearList")
+    public ResponseEntity getNearLandmarkList(@RequestBody UserLocationRequestDto userLocationRequestDto){
+        HashMap<String, Object> result = new HashMap<>();
+        List<LandMarkListResponseDto> landmarkList = new ArrayList<>();
+        try {
+            landmarkList = landMarkService.getNearLandmarkList(userLocationRequestDto.getUserLat(), userLocationRequestDto.getUserLon());
             result.put("message", "success");
             result.put("landmarkList", landmarkList);
             return new ResponseEntity(result, HttpStatus.OK);

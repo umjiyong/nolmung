@@ -73,6 +73,5 @@ public class Walk {
         this.walkTrackingImg = walkTrackingImg;
         this.walkUserImg = walkUserImg;
         this.walkAttainmentTime = walkAttainmentTime;
-//        this.walkCoordinatedId = walkCoordinatedId;
     }
 }
