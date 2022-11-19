@@ -12,7 +12,6 @@ const NotiScreen = () => {
   function printAlarmList() {
     let result = [];
     for (let i = 0; i < alarmList.length; i++) {
-      console.log('alarmList[' + i + ']: ' + JSON.stringify(alarmList[i]));
       result.push(<NotiItem alarm={alarmList[i]} />);
     }
     return result;
@@ -21,7 +20,6 @@ const NotiScreen = () => {
   useEffect(() => {
     getAlarmList({userId: 1}).then(data => {
       setAlarmList(data);
-      console.log('alarmList: ' + alarmList);
     });
   }, []);
 
