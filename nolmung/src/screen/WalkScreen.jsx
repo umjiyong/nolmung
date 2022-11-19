@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
   Button,
+  View,
   Pressable,
   StyleSheet,
   Text,
@@ -15,13 +16,13 @@ import MapView, {
   Marker,
   Circle,
 } from 'react-native-maps';
-import styled from 'styled-components';
 import {Platform, PermissionsAndroid, AppState} from 'react-native';
 // import useInterval from 'use-interval';
 import {getDistance} from 'geolib';
 import useInterval from 'react-useinterval';
 // import BackgroundTimer from 'react-native-background-timer';
-import {AppRegistry} from 'react-native';
+// import {AppRegistry} from 'react-native';
+import {getLandmarkMarkerList} from '../api/WalkRecord.js';
 
 async function requestPermission() {
   try {
@@ -80,19 +81,26 @@ function WalkScreen({navigation}) {
   const [min, setmin] = useState(0);
   const [speed, setspeed] = useState(0);
   const appState = useRef(AppState.currentState);
-  const [landmark, setLocations] = useState([
-    {landmarkId: 1, latitude: 37.50202794087094, longitude: 127.041301445791},
-    {landmarkId: 2, latitude: 37.50148996696899, longitude: 127.03293235165089},
-    {landmarkId: 3, latitude: 37.49761475728036, longitude: 127.03596135511745},
-    {landmarkId: 4, latitude: 37.4982761803595, longitude: 127.01112323944},
-    {landmarkId: 5, latitude: 37.4949943443586, longitude: 127.012134384912},
-    {landmarkId: 6, latitude: 37.4936599915248, longitude: 127.012626632694},
-    {landmarkId: 7, latitude: 37.4928178646055, longitude: 127.013838469407},
-  ]);
+  const [landmark, setLandmark] = useState([]);
   const accessableLength = 200; // 사용자 원의 반경, 접근할 수 있는 랜드마크까지의 거리
 
+  const getLandmarkMarkerListFunc = async () => {
+    try {
+      await getLandmarkMarkerList(
+        response => {
+          setLandmark(response.data.landmarkList);
+        },
+        err => {
+          console.log('랜드마크 목록 에러', err);
+        },
+      );
+    } catch (error) {
+      // console.log(err);
+      console.log('랜드마크 목록 조회 에러');
+    }
+  };
+
   useInterval(() => {
-    // console.log('inter내부로그', AppState.currentState);
     Geolocation.getCurrentPosition(
       position => {
         const latitude = position.coords.latitude;
@@ -105,14 +113,9 @@ function WalkScreen({navigation}) {
           ...circleLocation,
           {latitude: latitude, longitude: longitude},
         ]);
-        // setCurlocation({latitude, longitude});
 
         if (curlocation.length > 2 && flag === 1) {
           console.log(flag);
-          // console.log(curlocation);
-          // console.log(circleLocation);
-          // console.log('!!!!!!!' + curlocation.length);
-          // console.log(curlocation[curlocation.length - 1].latitude);
           let long = getDistance(
             curlocation[curlocation.length - 1],
             curlocation[curlocation.length - 2],
@@ -147,49 +150,14 @@ function WalkScreen({navigation}) {
         setmin(min + 1);
       }
     }
-    // getLandmarkAccessibility(() => {});
   }, 1000);
-
-  const handleAppStateChange = nextAppState => {
-    console.log('⚽️appState nextAppState', appState.current, nextAppState);
-    if (
-      appState.current.match(/inactive|background/) &&
-      nextAppState === 'active'
-    ) {
-      console.log('⚽️⚽️App has come to the foreground!');
-    }
-    if (
-      appState.current.match(/inactive|active/) &&
-      nextAppState === 'background'
-    ) {
-      console.log('⚽️⚽️App has come to the background!');
-    }
-    appState.current = nextAppState;
-  };
-
-  // console.log('example의 타입은?' + typeof example);`
-
-  // AppState.addEventListener('change', handleAppStateChange);
-  // useEffect(() => {
-  //   AppState.addEventListener('change', handleAppStateChange);
-  //   return () => {
-  //     AppState.removeEventListener('change', handleAppStateChange);
-  //   };
-  // }, []);
-
-  // if (AppState.currentState === 'active') {
-  //   console.log('active', AppState.currentState);
-  //   example;
-  // } else {
-  //   console.log('BBBBB', AppState.currentState);
-  //   example;
-  // }
 
   useEffect(() => {
     requestPermission().then(result => {
       if (result === 'granted') {
         requestPermission2();
         console.log('실행');
+        // getLandmarkMarkerListFunc();
         Geolocation.getCurrentPosition(
           position => {
             const latitude = position.coords.latitude;
@@ -282,7 +250,7 @@ function WalkScreen({navigation}) {
         {startlocation.latitude && ondo ? (
           <>
             {speed > 4 ? <Text>이동속도가 너무 빠릅니다</Text> : null}
-            <Map
+            <MapView
               provider={PROVIDER_GOOGLE}
               style={{flex: 1}}
               showsUserLocation={true}
@@ -298,7 +266,7 @@ function WalkScreen({navigation}) {
                 strokeColor="#000"
                 coordinates={curlocation}
               />
-              {landmark.map((landmark, index) => (
+              {landmark?.map((landmark, index) => (
                 <Marker
                   key={`landmark-${index}`}
                   coordinate={{
@@ -327,7 +295,7 @@ function WalkScreen({navigation}) {
                 strokeColor="#FF772F"
                 fillColor="rgba(255,255,0,0.2)"
               />
-            </Map>
+            </MapView>
             {flag === 0 ? (
               <TouchableOpacity onPress={StartCount} style={Styles.buttonTest}>
                 <Text style={{color: '#fff'}}>산책 시작</Text>
@@ -398,13 +366,13 @@ function WalkScreen({navigation}) {
   );
 }
 
-const View = styled.View`
-  flex: 1;
-`;
+// const View = styled.View`
+//   flex: 1;
+// `;
 
-const Map = styled(MapView)`
-  flex: 1;
-`;
+// const Map = styled(MapView)`
+//   flex: 1;
+// `;
 
 export default WalkScreen;
 
