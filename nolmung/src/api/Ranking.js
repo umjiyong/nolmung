@@ -77,6 +77,15 @@ export const registRanking_daily = async (data, success, fail) => {
 };
 
 
+
+export const reset_ranking = async(response, success, fail) => {
+  console.log("리셋되었습니다");
+  return await api
+      .get(`/rank/reset/${response.category}`)
+      .then(success)
+      .catch(fail)
+};
+
   
   
 
