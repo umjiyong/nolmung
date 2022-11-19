@@ -7,6 +7,7 @@ import com.ssafy.nolmung.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -97,10 +98,33 @@ public class RankController {
         rankService.plusRankScore(userId,rankScore);
     }
 
+//    @DeleteMapping("/reset/{category}")
+//    public void resetDailyRankScore (@PathVariable("category") RankCategory rankCategory) {
+//
+//        rankService.resetRankScore(rankCategory);
+//    }
+
+    @Scheduled (cron = "0 10 0 * * *")
     @DeleteMapping("/reset/{category}")
-    public void resetRankScore (@PathVariable("category") RankCategory rankCategory) {
-        rankService.resetRankScore(rankCategory);
+    public void resetDailyRankScore (@PathVariable("category") RankCategory rankCategory) {
+
+        rankService.resetRankScore(RankCategory.daily);
     }
+
+    @Scheduled (cron = "0 0 0 * MON ?")
+    @DeleteMapping("/reset/{category}")
+    public void resetWeeklyRankScore (@PathVariable("category") RankCategory rankCategory) {
+
+        rankService.resetRankScore(RankCategory.weekly);
+    }
+
+    @Scheduled (cron = "0 0 0 1 * *")
+    @DeleteMapping("/reset/{category}")
+    public void resetMonthlyRankScore () {
+
+        rankService.resetRankScore(RankCategory.monthly);
+    }
+
 
     @GetMapping("/{category}/friend/{userId}")
     public PriorityQueue<ReadRankResponseDto> findFriendRank (@PathVariable("category")RankCategory rankCategory, @PathVariable("userId") int userId){
