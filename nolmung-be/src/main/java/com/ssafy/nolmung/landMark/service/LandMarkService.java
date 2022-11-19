@@ -11,6 +11,7 @@ public interface LandMarkService {
 
     List<LandMarkBoardListDto> getLandmarkBoardList(int landmarkId);
 
-
     boolean isLiked(int landmarkId, int userId);
+
+    List<LandMarkListResponseDto> getNearLandmarkList(double curLat, double curLon);
 }

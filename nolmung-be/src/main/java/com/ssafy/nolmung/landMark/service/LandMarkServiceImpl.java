@@ -111,4 +111,22 @@ public class LandMarkServiceImpl implements LandMarkService{
         }
     }
 
+    @Override
+    public List<LandMarkListResponseDto> getNearLandmarkList(double curLat, double curLon) {
+        List<LandMark> landMarkList = landMarkRepository.findLandmarkMarkerByProximity(curLat, curLon);
+        List<LandMarkListResponseDto> nearMarkerList = new ArrayList<>();
+
+        for(int i = 0; i < landMarkList.size(); i++){
+            LandMark landmark = landMarkList.get(i);
+            LandMarkListResponseDto nearLandmark = LandMarkListResponseDto.builder()
+                    .landmarkId(landmark.getLandMarkId())
+                    .latitude(landmark.getLandMarkLat())
+                    .longitude(landmark.getLandMarkLon())
+                    .build();
+            nearMarkerList.add(nearLandmark);
+        }
+
+        return nearMarkerList;
+    }
+
 }
