@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -8,9 +8,11 @@ import {
   ScrollView,
   Dimensions,
   TouchableWithoutFeedback,
+  DeviceEventEmitter,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import {deleteComment} from '../api/Comment';
+
+import {deleteComment, getAllCommentFromArticle} from '../api/Comment';
 const CommentList = Props => {
   const userNickName = 'aJumoney__';
   const region = '서울특별시 강남구 역삼동';
@@ -18,6 +20,7 @@ const CommentList = Props => {
   const like = 200;
   const comment = 5;
   const [isModalVisible, setModalVisible] = useState(false);
+  const [commentAll, setCommentAll] = useState([]);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
     console.log(isModalVisible);
@@ -81,7 +84,9 @@ const CommentList = Props => {
               onPress={() => {
                 console.log('이 댓글의 번호는?', Props.boardCommentId);
                 deleteCommentFunc();
-                toggleModal();
+                DeviceEventEmitter.emit('commentDelete', {
+                  key: Props.boardCommentId,
+                });
               }}>
               <View style={Styles.ModalMenu}>
                 <Text style={Styles.ModalMenuText}>삭제</Text>

@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  DeviceEventEmitter,
 } from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import CommentList from '../components/CommentList';
@@ -37,6 +38,7 @@ const ArticleItem = Props => {
   const backdropOpacity = 0.3;
   const [boardIdData, setBoardIdData] = useState([]);
   const [commentAll, setCommentAll] = useState([]);
+  const [emitter, setEmitter] = useState([]);
   const getBoardIdData = async () => {
     try {
       await getArticles_From_BoardId(
@@ -72,6 +74,8 @@ const ArticleItem = Props => {
 
         response => {
           console.log('댓글 등록 성공', response);
+          setInputComment('');
+          setTest(prev => !prev);
         },
       );
     } catch (err) {
@@ -84,10 +88,15 @@ const ArticleItem = Props => {
   }, []);
   useEffect(() => {
     getAllComment();
-    setTest(true);
   }, [test]);
 
-  console.log('댓글리스트', commentAll);
+  useEffect(() => {
+    DeviceEventEmitter.addListener('commentDelete', event => {
+      setEmitter(event.key);
+      getAllComment();
+    });
+  }, [emitter]);
+
   return (
     <>
       {boardIdData.length > 0 ? (
@@ -171,15 +180,6 @@ const ArticleItem = Props => {
               {/* Image End */}
               <View style={Styles.likeAndComment}>
                 <Image
-                  source={require('../assets/icons/heart-regular-24.png')}
-                  style={{
-                    width: 24,
-                    height: 24,
-                    tintColor: '#ff772f',
-                    marginRight: 10,
-                  }}
-                />
-                <Image
                   source={require('../assets/icons/message.png')}
                   style={{
                     width: 24,
@@ -188,9 +188,6 @@ const ArticleItem = Props => {
                 />
               </View>
               <View style={Styles.Contents}>
-                <Text style={{color: '#282828', marginBottom: 5}}>
-                  좋아요 {boardIdData.likeCnt}개
-                </Text>
                 <Text
                   style={{
                     color: '#282828',
@@ -212,10 +209,10 @@ const ArticleItem = Props => {
             <View style={{...Styles.CommentBox}}>
               {commentAll.commentList !== undefined ? (
                 <>
-                  {commentAll.commentList.map((comment, index) => {
+                  {commentAll.commentList.map(comment => {
                     return (
                       <CommentList
-                        key={index}
+                        key={comment.boardCommentId}
                         userNickName={comment.userNickname}
                         region={comment.userAddress}
                         addTime={comment.createDate}
@@ -257,8 +254,6 @@ const ArticleItem = Props => {
               style={{position: 'absolute', right: 20}}
               onPress={() => {
                 PostCommentFunc();
-                setInputComment('');
-                setTest(prev => !prev);
               }}>
               <Image
                 source={require('../assets/icons/send.png')}

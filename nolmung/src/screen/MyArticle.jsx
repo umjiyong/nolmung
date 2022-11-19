@@ -18,7 +18,7 @@ const MyArticle = () => {
   useEffect(() => {
     getMyArticles();
   }, []);
-
+  console.log('myArticles', myArticles);
   return (
     <>
       <MiddleHeader header="내가 쓴 게시글" />
@@ -38,6 +38,7 @@ const MyArticle = () => {
                   boardImg={item.boardImg}
                   likeCnt={item.likeCnt}
                   userImg={item.userImg}
+                  commentCount={item.commentCnt}
                 />
               );
             })}

@@ -40,10 +40,7 @@ export const PostComment = async (response, success, fail) => {
 export const deleteComment = async (response, success, fail) => {
   console.log('댓글 삭제', response);
   await api
-    .delete(`/comment`, {
-      boardCommentId: response.boardCommentId,
-      userId: response.userId,
-    })
+    .delete(`/comment/${response.boardCommentId}?userId=${response.userId}`, {})
     .then(success)
     .catch(fail);
 };

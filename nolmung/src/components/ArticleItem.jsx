@@ -27,6 +27,7 @@ const ArticleItem = Props => {
   };
   const backdropOpacity = 0.3;
   //   console.log(Props.boardId);
+  console.log(Props);
   return (
     <>
       <View style={Styles.ArticleContainer}>
@@ -107,15 +108,6 @@ const ArticleItem = Props => {
         {/* Image End */}
         <View style={Styles.likeAndComment}>
           <Image
-            source={require('../assets/icons/heart-regular-24.png')}
-            style={{
-              width: 24,
-              height: 24,
-              tintColor: '#ff772f',
-              marginRight: 10,
-            }}
-          />
-          <Image
             source={require('../assets/icons/message.png')}
             style={{
               width: 24,
@@ -129,9 +121,6 @@ const ArticleItem = Props => {
             Navigation.navigate('ArticleItemDetail', {boardId: Props.boardId});
           }}>
           <View style={Styles.Contents}>
-            <Text style={{color: '#282828', marginBottom: 5}}>
-              좋아요 {like}개
-            </Text>
             <Text
               style={{
                 color: '#282828',
@@ -142,7 +131,9 @@ const ArticleItem = Props => {
               }}>
               {Props.boardContent}
             </Text>
-            <Text style={{color: '#959595'}}>댓글 {comment}개 모두 보기</Text>
+            <Text style={{color: '#959595'}}>
+              댓글 {Props.commentCount}개 모두 보기
+            </Text>
             <Text style={{color: '#959595', marginTop: 5}}>
               {Props.createDate}
             </Text>
