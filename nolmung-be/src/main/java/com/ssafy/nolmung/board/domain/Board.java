@@ -90,6 +90,7 @@ public class Board {
                 .boardClass(this.getBoardClass())
                 .region(this.getRegion().getRegionAddress())
                 .boardImg(this.getImageUrls())
+                .commentCnt(this.getBoardCommentList().size())
                 .likeCnt(this.getBoardLikeList().size())
                 .build();
     }
