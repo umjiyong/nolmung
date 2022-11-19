@@ -73,7 +73,7 @@ const FriendRequest = (Props) => {
     return (
         <>
             <View style={Styles.requestContainer}>
-                <TouchableWithoutFeedback onPress={() => {navigation.push('FriendProfile')}}>
+                <TouchableWithoutFeedback onPress={() => {navigation.push('FriendProfile',{userId : Props.userId})}}>
                     <View style={Styles.requestContainer}>
                         <Image 
                             source={{uri : userinfo.userImg}}

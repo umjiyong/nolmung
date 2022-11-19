@@ -90,9 +90,11 @@ const FriendRecommand = (Props) => {
       
     console.log(puppyinfo)
     return (
+
+      
         <>
             <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
-             <TouchableWithoutFeedback onPress={()=>{navigation.push('FriendProfile')}}>
+             <TouchableWithoutFeedback onPress={()=>{navigation.push('FriendProfile',{userId : Props.userId})}}>
                 <View style={Styles.requestContainer}>
                     <Image 
                         source={require('../assets/icons/Ellipse.png')}

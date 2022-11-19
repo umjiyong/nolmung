@@ -43,6 +43,7 @@ function FriendScreen() {
 
   const [search, setSearch] = useState(false);
 
+
   const [text, setText] = useState('');
   const [friendrequest, setfriendrequest] = useState('');
   const [friendrandom, setfriendrandom] = useState([]);
@@ -65,6 +66,7 @@ function FriendScreen() {
       console.log('심각한 에러;;');
     }
   };
+
 
   const user_friend_search_func = async ftext => {
     try {
@@ -215,17 +217,31 @@ function FriendScreen() {
             </TouchableOpacity>
           </View>
           <View style={Styles.RecommandBox}>
-            {friendrandom.length > 0 ? (
-              <>
-                {friendrandom.map(item => {
-                  return (
-                    <FriendRecommand key={item.userId} userId={item.userId} />
-                  );
-                })}
-              </>
-            ) : (
-              <Text style={{color: '#282828'}}>친구 추천이 없습니다</Text>
-            )}
+
+
+            {(friendrandom.length>0) ? (
+                    <>
+                        
+              
+            
+                        {friendrandom.map((item)=>{
+                          
+                          return (
+                          
+                            <FriendRecommand
+                            key = {item.userId}
+                            userId = {item.userId}
+                            
+                            />
+                          
+                          
+                          )
+                        })}
+                    </>
+                  ): <Text style={{color:"#282828", }}>친구 추천이 없습니다</Text>}
+            
+            
+
           </View>
         </View>
 
@@ -295,12 +311,14 @@ function FriendScreen() {
             </TouchableWithoutFeedback>
           </View>
           {friendId ? (
+
             <Pressable
               onPress={() => {
                 navigation.push('FriendProfile', {userId: friendId.userId});
                 toggleModal();
               }}>
               <SearchFriendList userId={friendId} />
+
             </Pressable>
           ) : (
             <Text>친구코드를 확인해주세요</Text>
