@@ -12,6 +12,7 @@ import {
 import {TextInput} from 'react-native-gesture-handler';
 import CommentList from '../components/CommentList';
 import Modal from 'react-native-modal';
+import {registAlarm} from '../api/Alarm';
 import {getArticles_From_BoardId} from '../api/Article';
 
 const ArticleItem = Props => {
@@ -189,11 +190,24 @@ const ArticleItem = Props => {
               value={inputComment}
               placeholderTextColor="#959595"
             />
-            <Image
-              source={require('../assets/icons/send.png')}
-              resizeMode="contain"
-              style={{position: 'absolute', right: 20}}
-            />
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                right: 20,
+              }}
+              onPress={() => {
+                registAlarm({
+                  inAppAlarmContent:
+                    '내 게시물에 ' + userNickName + '님의 댓글이 달렸습니다.',
+                  inAppAlarmLink: '', // 알람 링크 추가 필요
+                  userId: boardIdData.userId,
+                });
+              }}>
+              <Image
+                source={require('../assets/icons/send.png')}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
           </View>
         </>
       )}
