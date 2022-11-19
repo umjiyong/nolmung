@@ -9,8 +9,9 @@ const MyFriend = (Props) => {
     const [userinfo,setuseinfo] = useState([])
     const [puppyinfo,setpuppyinfo] = useState([])
     const HumanName = userinfo.userNickName
-    const DogInfo = '미유 7세 믹스 5kg'
-
+    const [DogInfo,setDogInfo] = useState("강아지가 없습니다") 
+    
+   
 
     const user_info_func = async (Id) => {
         try {
@@ -30,12 +31,13 @@ const MyFriend = (Props) => {
         }
       };
 
-      const user_puppy_info_func = async (id) => {
+      const user_puppy_info_func = async (Id) => {
         try {
           
           await user_puppy_info(
-            { userId: 1 },
+            { userId: 1 }, //Id 로 바꿔줘야함
             (response) => {
+              console.log("아이디임",Id)
               setpuppyinfo(response.data);
             },
             (err) => {
@@ -50,14 +52,27 @@ const MyFriend = (Props) => {
 
       useEffect(() => {
         user_info_func(Props.userId);
-        user_puppy_info_func(Props.userId);
-        
+        user_puppy_info_func(Props.userId)
+
       }, []);
 
-      console.log(puppyinfo)
+      useEffect(()=>{
+        if(puppyinfo.myPuppyList){
+          setDogInfo(puppyinfo.myPuppyList[0].puppyInfo.puppyName.concat(' ',puppyinfo.myPuppyList[0].puppyInfo.puppyAge).concat('',"살").concat(' ',puppyinfo.myPuppyList[0].puppyInfo.breedName )) 
+         }else{
+          setDogInfo("강아지가 없습니다")
+         }
+      },[puppyinfo])
+      
+      console.log("강아지콘솔",DogInfo)
+
+      // console.log(puppyinfo.myPuppyList[0].puppyInfo.puppyName)
+      // console.log("강아지 정보",puppyinfo.myPuppyList)
     return (
         <>
-            <TouchableWithoutFeedback onPress={()=>{navigation.push('FriendProfile')}}>
+            {puppyinfo.myPuppyList !== undefined ? 
+            (<>
+              <TouchableWithoutFeedback onPress={()=>{navigation.push('FriendProfile',{userId : Props.userId})}}>
                 <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center',}}>
                     <View style={Styles.requestContainer}>
                         <Image 
@@ -76,6 +91,9 @@ const MyFriend = (Props) => {
                     
                 </View>
             </TouchableWithoutFeedback>
+            </>)
+            :null}
+            
         </>
     )
 }
