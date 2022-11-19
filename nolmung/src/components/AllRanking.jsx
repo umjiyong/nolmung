@@ -11,7 +11,7 @@ import {
 import MedalRanking from "./MedalRanking";
 import MyRanking from "./MyRanking";
 import axios from "axios";
-import {user_info} from "../api/User"
+import {getUserInfo} from "../api/User"
 import { getAllRanking_daily,getAllRanking_weekly,getAllRanking_monthly,getMyRanking,reset_ranking } from "../api/Ranking";
 // import schedule from 'node-schedule'
 
@@ -192,7 +192,7 @@ function AllRanking() {
     const user_info_func = async () => {
         try {
           
-          await user_info(
+          await getUserInfo(
             { userId: 1 },
             (response) => {
               setuseinfo(response.data);

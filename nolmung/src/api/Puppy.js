@@ -23,9 +23,8 @@ export const registPuppyInfo = async (data, success, fail) => {
   await api.post(`/puppy/register`, data).then(success).then(fail);
 };
 
-export const user_puppy_info = async (response, success, fail) => {
-  console.log(response);
-  return await api.get(`/puppy/${response.userId}`).then(success).catch(fail);
+export const getUserPuppyInfo = async (response, success, fail) => {
+  return await api.get(`/puppy/${response.id}`).then(success).catch(fail);
 };
 
 export const puppy_puppy_info = async (response, success, fail) => {
