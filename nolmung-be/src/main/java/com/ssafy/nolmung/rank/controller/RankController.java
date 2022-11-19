@@ -104,7 +104,7 @@ public class RankController {
 //        rankService.resetRankScore(rankCategory);
 //    }
 
-    @Scheduled (cron = "0 30 0 * * *")
+    @Scheduled (cron = "0 40 0 * * *")
     @DeleteMapping("/reset/daily")
     public void resetDailyRankScore () {
 
