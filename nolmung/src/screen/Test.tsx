@@ -35,7 +35,6 @@ type RootStackParamList = {
   SignUp: undefined;
 };
 
-//NativeStackScreenProps :
 type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 
 const {width, height} = Dimensions.get('window');
@@ -88,16 +87,22 @@ function SignIn({navigation}: SignInScreenProps) {
           loginCheckNewUser(
             {accessToken: token.accessToken, refreshToken: token.refreshToken},
             res => {
-              console.log('무엇일까요?', res.data.Bearer, res.data.user);
+              console.log('무엇일까요?', res.data);
               AsyncStorage.setItem('userId', res.data.user[0], () => {
                 console.log('사용자 아이디 저장 완료');
               });
               AsyncStorage.setItem('Bearer', res.data.Bearer, () => {
                 console.log('토큰 저장 완료');
               });
+
               res.data.user[1] == 'old'
                 ? navigation.navigate('BottomTabs')
                 : navigation.navigate('NewUserInfo');
+              // navigation.navigate('NewUserInfo')
+
+              // // res.data.user[1] == "old" ? navigation.navigate('BottomTabs') : navigation.navigate('NewUserInfo');
+              // navigation.navigate('BottomTabs')
+
             },
             // const {id, email, name, image, nickname, profileOpen} =
             //   res.data.user;
@@ -133,7 +138,7 @@ function SignIn({navigation}: SignInScreenProps) {
     try {
       findAllUser(
         res => {
-          console.log('통신성공!', res);
+          console.log('통신성공!', res.data);
         },
         err => {
           console.log('통신실패!', err);
@@ -149,22 +154,8 @@ function SignIn({navigation}: SignInScreenProps) {
       <Text style={style.text}>놀면 멍하니</Text>
       <Image source={require('../assets/image/Dog1.jpg')} style={style.logo} />
       <TouchableOpacity onPress={signInWithKakao}>
-        {console.log(isLogin)}
         <Image
           source={require('../assets/kakaoLogin/kakao_login_large_wide.png')}
-          resizeMode="contain"
-          style={{
-            height: 50,
-          }}
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('BottomTabs');
-        }}>
-        <Image
-          source={require('../assets/kakaoLogin/kakao_login_large_narrow.png')}
           resizeMode="contain"
           style={{
             height: 50,
