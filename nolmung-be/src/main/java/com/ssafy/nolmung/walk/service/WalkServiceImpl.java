@@ -109,14 +109,17 @@ public class WalkServiceImpl implements WalkService{
             log.info("!!!!강아지" + puppy.getPuppyId());
             log.info("!!!!날짜" + date);
 
-            double newAttainment = getNewWalkAttainment(puppy.getBreed().getNeedsWalkTimes(), walkRecordRequestDto);
+            long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
+            double newAttainment = (double) (secTime / (puppy.getBreed().getNeedsWalkTimes() * 60) * 100) * 1.0;
 
             log.info("!!!!newAttainment" + newAttainment);
             int count = walkRepository.countByWalkDateAndPuppyPuppyId(walkRecordRequestDto.getWalkStartTime().toLocalDate(), puppy.getPuppyId());
 
             if( count > 0){
                 double maxAttainment = walkRepository.findDistanceByDayAndPuppy(puppy.getPuppyId(), walkRecordRequestDto.getWalkStartTime().toLocalDate());
-                newAttainment = getCurWalkAttainment(maxAttainment, puppy.getBreed().getNeedsWalkTimes(), walkRecordRequestDto);
+                double currentAllTime = ((double) (puppy.getBreed().getNeedsWalkTimes() * 60) / 100) * maxAttainment;
+
+                newAttainment = ((currentAllTime + secTime) / (double) (puppy.getBreed().getNeedsWalkTimes() * 60) * 100) * 1.0;
             }
 
             log.info("!!!!newAttainment" + newAttainment);
@@ -140,26 +143,26 @@ public class WalkServiceImpl implements WalkService{
         }
     }
 
-    public double getNewWalkAttainment(int needWalkTime, WalkRecordRequestDto walkRecordRequestDto) {
-        long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
-        double calAttainment = (double) (secTime / (needWalkTime * 60) * 100) * 1.0;
-
-        log.info("!!! cal" + calAttainment);
-//        log.info("!!! cal" + ( instanceof calAttainment ));
-
-
-        return calAttainment;
-    }
-
-    public double getCurWalkAttainment(double attainment, int needWalkTime, WalkRecordRequestDto walkRecordRequestDto) {
-        double currentAllTime = ((double) (needWalkTime * 60) / 100) * attainment;
-        long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
-        double calAttainment = ((currentAllTime + secTime) / (double) (needWalkTime * 60) * 100) * 1.0;
-
-        log.info("!!! cal" + calAttainment);
-
-        return calAttainment;
-    }
+//    public double getNewWalkAttainment(int needWalkTime, WalkRecordRequestDto walkRecordRequestDto) {
+//        long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
+//        double calAttainment = (double) (secTime / (needWalkTime * 60) * 100) * 1.0;
+//
+//        log.info("!!! cal" + calAttainment);
+////        log.info("!!! cal" + ( instanceof calAttainment ));
+//
+//
+//        return calAttainment;
+//    }
+//
+//    public double getCurWalkAttainment(double attainment, int needWalkTime, WalkRecordRequestDto walkRecordRequestDto) {
+//        double currentAllTime = ((double) (needWalkTime * 60) / 100) * attainment;
+//        long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
+//        double calAttainment = ((currentAllTime + secTime) / (double) (needWalkTime * 60) * 100) * 1.0;
+//
+//        log.info("!!! cal" + calAttainment);
+//
+//        return calAttainment;
+//    }
 
     @Override
     public long calWalkSecTime(LocalDateTime startTime, LocalDateTime endTime) {
