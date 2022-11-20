@@ -216,7 +216,7 @@
         <td height="140px" align="center"> <a href="https://github.com/rlaxorud180">
             <img src="/uploads/b48846d500fb735839081aa6b5b675cf/image.png" width="140px" /> <br><br> 😁 강태경 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="">
-            <img src="/uploads/7f0b86bac5d37079ad53ac330e4ecc43/image.png" width="140px" /> <br><br> 🙄 엄지용 <br>(Back-End) </a> <br></td>
+            <img src="/uploads/59626f4e076bcb4ac35603aae55811c1/캡처.JPG" width="140px" /> <br><br> 🙄 엄지용 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="">
             <img src="/uploads/84c9ef5f78d646a1d45e08b5de69ae4a/image.png" width="140px" /> <br><br> 😶 박세원 <br>(Back-End) </a> <br></td>
     </tr>
