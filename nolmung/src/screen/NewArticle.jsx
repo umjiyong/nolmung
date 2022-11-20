@@ -21,12 +21,13 @@ const NewArticle = () => {
   const [value, setValue] = useState();
   const [selectClass, setSelectClass] = useState(0);
   const [userData, setUserData] = useState([]);
+  const [imgBody,setimgBody] = useState("")
 
   const user_info_func = async () => {
     try {
       await AsyncStorage.getItem('userId', (err, id) => {
         getUserInfo(
-          {id},
+          {id:2}, // id로 바꿔야함 
           response => {
             console.log(response.data);
             setUserData(response.data);
@@ -41,12 +42,41 @@ const NewArticle = () => {
     }
   };
   console.log('userData', userData.regionId);
-  const Article_image_upload_func = async data => {
+
+  
+
+  const PostArticleFunc = async () => {
+    
+    try {
+      await AsyncStorage.getItem('userId', (err, id) => {
+        postBoard({
+          userId: 102,
+          boardClass: selectClass,
+          boardContent: value,
+          boardImg: ["http://dummyimage.com/193x100.png/5fa2dd/ffffff"],
+          
+        },
+          res => {
+            console.log('성공?', res.data);
+            console.log(imgBody,res)
+            Article_image_upload_func(imgBody,res.data)
+          },
+          
+        )
+      });
+      
+    } catch (err) {
+      console.log('에러에러', err);
+    }
+  };
+
+
+  const Article_image_upload_func = async (data,boardId) => {
     try {
       await registArticleImage(
-        data,
+        {boardId:boardId , data:data},
         response => {
-          console.log(response);
+          console.log(response.data);
         },
         err => {
           console.log('유저 사진 업로드 에러', err);
@@ -57,60 +87,44 @@ const NewArticle = () => {
     }
   };
 
-  const PostArticleFunc = async () => {
-    try {
-      await AsyncStorage.getItem('userId', (err, id) => {
-        postBoard({
-          userId: id,
-          boardClass: selectClass,
-          boardContent: value,
-          boardImg: [
-            'https://www.google.com/url?sa=i&url=https%3A%2F%2Fhelpx.adobe.com%2Fkr%2Fphotoshop%2Fusing%2Fquick-actions%2Fremove-background.html&psig=AOvVaw0sA2hgDZnpbHN5JlO7ybkY&ust=1669050704833000&source=images&cd=vfe&ved=0CA8QjRxqFwoTCJjsqMSgvfsCFQAAAAAdAAAAABAE',
-          ],
-          regionId: userData.regionId,
-        }),
-          res => {
-            console.log('성공?', res);
-          };
-      });
-    } catch (err) {
-      console.log('에러에러', err);
-    }
-  };
+
+
+
   const [response, setResponse] = useState();
 
   useEffect(() => {
     user_info_func();
   }, []);
-  //   const onSelectImage = async () => {
-  //     try {
-  //       launchImageLibrary(
-  //         {
-  //           mediaType: 'photo',
-  //           maxWidth: 512,
-  //           maxHeight: 512,
-  //           includeBase64: Platform.OS === 'android',
-  //         },
-  //         res => {
-  //           console.log('이미지 고르고 이벤트', res);
-  //           if (res.didCancel) return;
-  //           setResponse(res);
 
-  //           var body = new FormData();
-  //           body.append('files', {
-  //             uri: res.assets[0].uri,
-  //             type: 'image/jpeg',
-  //             name: `${res.assets[0].fileName}`,
-  //           });
+    const onSelectImage = async () => {
+      try {
+        launchImageLibrary(
+          {
+            mediaType: 'photo',
+            maxWidth: 512,
+            maxHeight: 512,
+            includeBase64: Platform.OS === 'android',
+          },
+          res => {
+            console.log('이미지 고르고 이벤트', res);
+            if (res.didCancel) return;
+            setResponse(res);
 
-  //           //   Article_image_upload_func(body);
-  //         },
-  //       );
-  //     } catch (err) {
-  //       console.log(err);
-  //       console.log('심각한 에러;;');
-  //     }
-  //   };
+            var body = new FormData();
+            body.append('files', {
+              uri: res.assets[0].uri,
+              type: 'image/jpeg',
+              name: `${res.assets[0].fileName}`,
+            });
+
+            setimgBody(body);
+          },
+        );
+      } catch (err) {
+        console.log(err);
+        console.log('심각한 에러;;');
+      }
+    };
 
   return (
     <>
@@ -120,9 +134,32 @@ const NewArticle = () => {
         style={{position: 'absolute', top: 18, right: 20}}>
         <Image source={require('../assets/icons/Check.png')} />
       </TouchableOpacity>
+
       <View style={Styles.NewArticleContainer}>
         <View style={{flexDirection: 'row'}}>
-          <View style={Styles.ArticleImageSample}></View>
+          <Pressable onPress={onSelectImage}>
+            {response ? (
+            <Image
+                source={{uri: response?.assets[0]?.uri}}
+                resizeMode="contain"
+                style={{
+                width: 80,
+                height: 80,
+                borderRadius: 100,
+                }}
+            />
+            ) : (
+            <Image
+                source={require("../assets/icons/camera.png")}
+                resizeMode="contain"
+                style={{
+                width: 100,
+                height: 100,
+                
+                }}
+            />
+            )}
+            </Pressable>
           <TextInput
             onChangeText={e => setValue(e)}
             style={{marginLeft: 10, color: '#282828'}}

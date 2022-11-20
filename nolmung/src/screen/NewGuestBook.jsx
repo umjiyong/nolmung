@@ -15,6 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import {registLandmarkImage} from '../api/Landmark';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker/src';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const NewGuestBook = ({navigation: {navigate}, route}) => {
   // console.log('파람확인', route.params.landmarkId);
   const [value, setValue] = useState('');
@@ -24,6 +25,7 @@ const NewGuestBook = ({navigation: {navigate}, route}) => {
   const landmarkBoardCreateDate = new Date();
   const landmarkId = route.params.landmarkId;
   const [imgBody, setimgBody] = useState('');
+
 
   const postLandmarkFunc = async () => {
     try {
@@ -77,13 +79,17 @@ const NewGuestBook = ({navigation: {navigate}, route}) => {
           if (res.didCancel) return;
           setResponse(res);
 
+
           var body = new FormData();
           body.append('files', {
             uri: res.assets[0].uri,
             type: 'image/jpeg',
             name: `${res.assets[0].fileName}`,
           });
-          setimgBody(body);
+
+          setimgBody(body)
+          
+
         },
       );
     } catch (err) {
@@ -91,6 +97,7 @@ const NewGuestBook = ({navigation: {navigate}, route}) => {
       console.log('심각한 에러;;');
     }
   };
+
 
   return (
     <>
@@ -147,6 +154,7 @@ const NewGuestBook = ({navigation: {navigate}, route}) => {
 };
 
 export default NewGuestBook;
+
 
 const Styles = StyleSheet.create({
   NewArticleContainer: {

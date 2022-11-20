@@ -1,6 +1,8 @@
-import {apiInstance} from './Index';
+import {apiInstance,imageInstance} from './Index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+const imageApi = imageInstance();
 const api = apiInstance();
 api.interceptors.request.use(async config => {
   if (!config.headers) {
@@ -58,22 +60,19 @@ export const getArticles_From_BoardId = async (response, success, fail) => {
 };
 
 export const registArticleImage = async (response, success, fail) => {
-  await AsyncStorage.getItem('userId', (err, res) => {
+  // await AsyncStorage.getItem('userId', (err, res) => {
     console.log('이미지 업로드쪽', response);
-    imageApi.post(`/image/board/${res}`, response).then(success).catch(fail);
-  });
+    imageApi.post(`/image/board/${response.boardId}`, response.data).then(success).catch(fail);
+  // });
 };
 
 export const postBoard = async (response, success, fail) => {
   console.log('됬다 임마', response);
-  await api
+  return await api
     .post(`/board`, {
-      boardClass: response.boardClass,
-      boardContent: response.boardContent,
-      boardImg: response.boardImg,
-      userId: response.userId,
-      regionId: response.regionId,
-    })
-    .then(success)
-    .catch(fail);
+      "boardClass": response.boardClass,
+      "boardContent": response.boardContent,
+      "boardImg": response.boardImg,
+      "userId": response.userId,
+    }).then(success).catch(fail);
 };
