@@ -67,7 +67,12 @@ async function requestPermission2() {
 }
 
 function WalkScreen({navigation}) {
-  let [curlocation, setCurlocation] = useState([]);
+  let [curlocation, setCurlocation] = useState([
+    {
+      latitude: 0,
+      longitude: 0,
+    },
+  ]);
   let [circleLocation, setCircleLocation] = useState([
     {
       latitude: 0,
@@ -105,11 +110,12 @@ function WalkScreen({navigation}) {
   };
 
   const getNearLandmarkMarkerListFunc = async (userLat, userLon) => {
+    console.log('현재 위치 ', userLat, userLon);
     try {
       await getNearLandmarkMarkerList(
         {
-          userLat: 37.5012767241426,
-          userLon: 127.039600248343,
+          userLat: userLat,
+          userLon: userLon,
         },
         response => {
           console.log('!!!!', response.data);
@@ -199,10 +205,7 @@ function WalkScreen({navigation}) {
       if (result === 'granted') {
         requestPermission2();
         console.log('실행');
-        getNearLandmarkMarkerListFunc(
-          curlocation[curlocation.length - 1],
-          curlocation[curlocation.length - 2],
-        );
+
         Geolocation.getCurrentPosition(
           position => {
             const latitude = position.coords.latitude;
@@ -258,6 +261,13 @@ function WalkScreen({navigation}) {
     }
     console.log(flag);
   }
+
+  useEffect(() => {
+    getNearLandmarkMarkerListFunc(
+      curlocation[curlocation.length - 1].latitude,
+      curlocation[curlocation.length - 1].longitude,
+    );
+  }, [curlocation]);
 
   // 위,경도 좌표 2개 사이의 거리를 구하는 메서드
   function getDistanceFromLatLonInKm(lat1, lng1, lat2, lng2) {
@@ -424,7 +434,7 @@ function WalkScreen({navigation}) {
                 console.log('퍼피아이디', item.puppyId);
                 // setCheckPuppy([...checkPuppy, item.puppyId]);
               }}
-              key={item.puppyId}>
+              key={index}>
               <Image
                 source={{uri: item.puppyInfo.puppyImg}}
                 resizeMode="contain"
