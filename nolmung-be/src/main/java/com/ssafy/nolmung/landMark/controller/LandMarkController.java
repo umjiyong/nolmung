@@ -3,7 +3,7 @@ package com.ssafy.nolmung.landMark.controller;
 import com.ssafy.nolmung.landMark.dto.request.LandMarkUserRequestDto;
 import com.ssafy.nolmung.landMark.dto.request.UserLocationRequestDto;
 import com.ssafy.nolmung.landMark.dto.response.*;
-import com.ssafy.nolmung.landMark.dto.service.LandMarkService;
+import com.ssafy.nolmung.landMark.service.LandMarkService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

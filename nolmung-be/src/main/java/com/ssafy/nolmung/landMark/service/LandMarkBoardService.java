@@ -1,4 +1,4 @@
-package com.ssafy.nolmung.landMark.dto.service;
+package com.ssafy.nolmung.landMark.service;
 
 import com.ssafy.nolmung.landMark.dto.request.LandmarkBoardRequestDto;
 import com.ssafy.nolmung.landMark.dto.response.LandMarkBoardInfoDto;

@@ -1,4 +1,4 @@
-package com.ssafy.nolmung.landMark.dto.service;
+package com.ssafy.nolmung.landMark.service;
 
 import com.ssafy.nolmung.landMark.domain.LandMark;
 import com.ssafy.nolmung.landMark.domain.LandMarkLike;

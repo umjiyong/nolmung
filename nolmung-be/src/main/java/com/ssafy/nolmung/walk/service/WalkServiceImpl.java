@@ -106,12 +106,12 @@ public class WalkServiceImpl implements WalkService{
             LocalDate date = walkRecordRequestDto.getWalkStartTime().toLocalDate();
             double newAttainment = getNewWalkAttainment(puppy.getBreed().getNeedsWalkTimes(), walkRecordRequestDto);
 
-            int count = walkRepository.countByWalkDateAndPuppyPuppyId(walkRecordRequestDto.getWalkStartTime().toLocalDate(), puppy.getPuppyId());
-
-            if( count > 0){
-                double maxAttainment = walkRepository.findDistanceByDayAndPuppy(puppy.getPuppyId(), walkRecordRequestDto.getWalkStartTime().toLocalDate());
-                newAttainment = getCurWalkAttainment(maxAttainment, puppy.getBreed().getNeedsWalkTimes(), walkRecordRequestDto);
-            }
+//            int count = walkRepository.countByWalkDateAndPuppyPuppyId(walkRecordRequestDto.getWalkStartTime().toLocalDate(), puppy.getPuppyId());
+//
+//            if( count > 0){
+//                double maxAttainment = walkRepository.findDistanceByDayAndPuppy(puppy.getPuppyId(), walkRecordRequestDto.getWalkStartTime().toLocalDate());
+//                newAttainment = getCurWalkAttainment(maxAttainment, puppy.getBreed().getNeedsWalkTimes(), walkRecordRequestDto);
+//            }
 
             Walk newRecord = Walk.builder()
                     .walkStartTime(walkRecordRequestDto.getWalkStartTime())
