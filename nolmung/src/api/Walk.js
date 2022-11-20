@@ -1,5 +1,6 @@
-import {apiInstance, apiLoginInstance} from './Index';
+import {apiInstance, apiLoginInstance, imageInstance} from './Index';
 
+const imageApi = imageInstance();
 const loginApi = apiLoginInstance();
 const api = apiInstance();
 
@@ -13,13 +14,8 @@ export const getRecordList = async (request, success, fail) => {
   await api.post(`/walk/dailyRecordList`, request).then(success).catch(fail);
 };
 
-// export const getLandmarkMarkerList = async (success, fail) => {
-//   console.log('랜드마크 마커 api 호출');
-//   await api.get(`/landmark/list`).then(success).catch(fail);
-// };
-
 export const getNearLandmarkMarkerList = async (request, success, fail) => {
-  console.log('내 근처 랜드마크 마커 api 호출');
+  // console.log('내 근처 랜드마크 마커 api 호출');
   await api.post(`/landmark/nearList`, request).then(success).catch(fail);
 };
 
@@ -40,3 +36,27 @@ export const getWalkStatistics = async (request, success, fail) => {
     .then(success)
     .catch(fail);
 };
+
+export const registWalkImage = async (response, success, fail) => {
+  console.log('이미지 업로드쪽', response);
+  imageApi
+    .post(`/image/walk/${response.walkId.walkList[0]}`, response.data)
+    .then(success)
+    .catch(fail);
+};
+
+export const addNewWalkRecord = async (request, success, fail) => {
+  console.log('산책 등록  api 호출');
+  console.log(request);
+  return await api
+    .post(`/walk`, {
+      "puppyIdList": request.puppyIdList,
+      "userId": request.userId,
+      "walkDistance": request.walkDistance,
+      "walkEndTime": request.walkEndTime,
+      "walkStartTime": request.walkStartTime,
+      "walkUserImg": request.walkUserImg,
+    })
+    .then(success)
+    .catch(fail);
+}; 

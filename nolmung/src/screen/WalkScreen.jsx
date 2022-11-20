@@ -25,6 +25,8 @@ import useInterval from 'react-useinterval';
 // import {AppRegistry} from 'react-native';
 import {getNearLandmarkMarkerList, getMyPuppyList} from '../api/Walk.js';
 import WalkPuppyList from '../components/WalkPuppyList.jsx';
+import moment, {min} from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 async function requestPermission() {
   try {
@@ -91,26 +93,39 @@ function WalkScreen({navigation}) {
   const [landmark, setLandmark] = useState([]);
   const accessableLength = 200; // 사용자 원의 반경, 접근할 수 있는 랜드마크까지의 거리
   const [myPuppyList, setMyPuppyList] = useState([]);
-  const [checkPuppy, setCheckPuppy] = useState([2, 5, 6]);
+  const [checkPuppy, setCheckPuppy] = useState([]);
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
 
-  const getLandmarkMarkerListFunc = async () => {
-    try {
-      await getLandmarkMarkerList(
-        response => {
-          setLandmark(response.data.landmarkList);
-        },
-        err => {
-          console.log('랜드마크 목록 에러', err);
-        },
-      );
-    } catch (error) {
-      // console.log(err);
-      console.log('랜드마크 목록 조회 에러');
-    }
+  const requestData = {
+    startTime: startTime,
+    endTime: new Date().toJSON(),
+    // userId: AsyncStorage.getItem('userId'),
+    userId: 1,
+    walkDistance: distance,
+    puppyList: checkPuppy,
+    min: min,
+    sec: sec,
   };
 
+  // const getLandmarkMarkerListFunc = async () => {
+  //   try {
+  //     await getLandmarkMarkerList(
+  //       response => {
+  //         setLandmark(response.data.landmarkList);
+  //       },
+  //       err => {
+  //         console.log('랜드마크 목록 에러', err);
+  //       },
+  //     );
+  //   } catch (error) {
+  //     // console.log(err);
+  //     console.log('랜드마크 목록 조회 에러');
+  //   }
+  // };
+
   const getNearLandmarkMarkerListFunc = async (userLat, userLon) => {
-    console.log('현재 위치 ', userLat, userLon);
+    // console.log('현재 위치 ', userLat, userLon);
     try {
       await getNearLandmarkMarkerList(
         {
@@ -148,6 +163,9 @@ function WalkScreen({navigation}) {
     }
   };
 
+  // console.log('거리', distance);
+  // console.log('시작시간', startTime);
+
   useInterval(() => {
     Geolocation.getCurrentPosition(
       position => {
@@ -163,18 +181,18 @@ function WalkScreen({navigation}) {
         ]);
 
         if (curlocation.length > 2 && flag === 1) {
-          console.log(flag);
+          // console.log(flag);
           let long = getDistance(
             curlocation[curlocation.length - 1],
             curlocation[curlocation.length - 2],
             0.1,
           );
           setspeed(long);
-          console.log('2초당 거리', long);
+          // console.log('2초당 거리', long);
           if (long < 4) {
             setDistance(distance + long);
 
-            console.log('거리계산 :', distance);
+            // console.log('거리계산 :', distance);
           } else {
             console.log('속도가 선을 넘엇습니다');
           }
@@ -336,8 +354,9 @@ function WalkScreen({navigation}) {
                   onPress={() => {
                     // console.log(landmark.landmarkId, '번 랜드마크');
                     if (getLandmarkAccessibility(landmark)) {
-                      
-                      navigation.push('LandmarkScreen', {landmarkId: landmark.landmarkId})
+                      navigation.push('LandmarkScreen', {
+                        landmarkId: landmark.landmarkId,
+                      });
                     } else {
                       alert('접근할 수 없는 거리에 위치한 랜드마크입니다.');
                     }
@@ -357,14 +376,19 @@ function WalkScreen({navigation}) {
               />
             </MapView>
             {flag === 0 ? (
-              <TouchableOpacity onPress={StartCount} style={Styles.buttonTest}>
+              <TouchableOpacity
+                onPress={() => {
+                  StartCount();
+                  setStartTime(new Date().toJSON());
+                }}
+                style={Styles.buttonTest}>
                 <Text style={{color: '#fff'}}>산책 시작</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 onPress={() => {
                   StartCount();
-                  navigation.push('EndWalkScreen');
+                  navigation.push('EndWalkScreen', {requestData});
                 }}
                 style={Styles.buttonTestStop}>
                 <Text style={{color: '#fff'}}>산책 종료</Text>
@@ -433,7 +457,11 @@ function WalkScreen({navigation}) {
             <Pressable
               onPress={() => {
                 console.log('퍼피아이디', item.puppyId);
-                // setCheckPuppy([...checkPuppy, item.puppyId]);
+                if (!checkPuppy.includes(item.puppyId)) {
+                  setCheckPuppy([...checkPuppy, item.puppyId]);
+                } else {
+                  checkPuppy.splice(checkPuppy.indexOf(item.puppyId), 1);
+                }
               }}
               key={index}>
               <Image
