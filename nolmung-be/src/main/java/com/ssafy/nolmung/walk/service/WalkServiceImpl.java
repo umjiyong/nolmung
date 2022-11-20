@@ -142,7 +142,11 @@ public class WalkServiceImpl implements WalkService{
 
     public double getNewWalkAttainment(int needWalkTime, WalkRecordRequestDto walkRecordRequestDto) {
         long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
-        double calAttainment = (double) (secTime / (needWalkTime * 60) * 100);
+        double calAttainment = (double) (secTime / (needWalkTime * 60) * 100) * 1.0;
+
+        log.info("!!! cal" + calAttainment);
+//        log.info("!!! cal" + ( instanceof calAttainment ));
+
 
         return calAttainment;
     }
@@ -150,7 +154,9 @@ public class WalkServiceImpl implements WalkService{
     public double getCurWalkAttainment(double attainment, int needWalkTime, WalkRecordRequestDto walkRecordRequestDto) {
         double currentAllTime = ((double) (needWalkTime * 60) / 100) * attainment;
         long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
-        double calAttainment = ((currentAllTime + secTime) / (double) (needWalkTime * 60) * 100);
+        double calAttainment = ((currentAllTime + secTime) / (double) (needWalkTime * 60) * 100) * 1.0;
+
+        log.info("!!! cal" + calAttainment);
 
         return calAttainment;
     }
