@@ -15,7 +15,7 @@ import firestore from '@react-native-firebase/firestore';
 const MessageScreen = () => {
   const [chatroomList, setChatroomList] = useState([]);
   const [userId, setUserId] = useState('1');
-  const [opponentName, setOpponentName] = useState('');
+  const [messageRoomList, setMessageRoomList] = useState([]);
   // 하드코딩
 
   const ref = firestore()
@@ -37,31 +37,32 @@ const MessageScreen = () => {
   }, []);
 
   function printChatroomList() {
-    let result = [];
-    for (let i = 0; i < chatroomList.length; i++) {
+    let printResult = [];
+    for (let chatroom of chatroomList) {
       getUserInfo(
-        chatroomList[i].opponentId,
-        res => {
-          console.log('getUserInfo: ' + res.data);
-          chatroomList[i].opponentName = res.userNickname;
+        {id: chatroom.opponentId},
+        res => async {
+          chatroom.opponentName = res.data.userNickName;
+          chatroom.img = 'require("' + res.data.userImg + '")';
+          printResult.push(
+            <MessageRoom
+              img={chatroom.img}
+              userId={chatroom.opponentId}
+              userName={chatroom.opponentName}
+              chatroomId={chatroom.chatroomId}
+              key={chatroom.chatroomId}
+            />,
+          );
+          console.log('message room list size11111: ' + printResult.length);
         },
         err => {
-          console.log('err: ' + err);
-          chatroomList[i].opponentName = '';
+          console.log(err);
+          chatroom.opponentName = '';
         },
       );
-      result.push(
-        <MessageRoom
-          img={require('../assets/icons/33.png')} // MessageRoom에서 불러오기
-          userId={chatroomList[i].opponentId}
-          userName={chatroomList[i].opponentName}
-          // userName은 MySQL에 요청해서 받아오기
-          chatroomId={chatroomList[i].chatroomId}
-          key={chatroomList[i].chatroomId}
-        />,
-      );
     }
-    return result;
+    console.log('message room list size22222: ' + printResult.length);
+    return printResult;
   }
 
   const navigation = useNavigation(chatroomList);
@@ -87,23 +88,6 @@ const MessageScreen = () => {
         showsVerticalScrollIndicator={false}
         style={Styles.messagnerContainer}>
         {printChatroomList()}
-        {/* <MessageRoom
-          img={require('../assets/icons/33.png')}
-          userName="옆집 눈나"
-          messageTime="오후 8:10"
-          userId={userId}
-          chatroomId={chatroomList[0]}
-        />
-        <MessageRoom
-          img={require('../assets/icons/32.png')}
-          userName="옆집 아줌마"
-          messageTime="오후 7:10"
-        />
-        <MessageRoom
-          img={require('../assets/icons/image22.png')}
-          userName="옆집 형"
-          messageTime="오후 6:10"
-        /> */}
       </ScrollView>
       <TouchableOpacity
         style={Styles.FriendListCheckBtn}
