@@ -29,7 +29,7 @@ public class LandMarkBoardServiceImpl implements LandMarkBoardService{
     }
 
     @Override
-    public void createLandmarkBoard(LandmarkBoardRequestDto landmarkBoardRequestDto) {
+    public int createLandmarkBoard(LandmarkBoardRequestDto landmarkBoardRequestDto) {
         LandMark landmark = landMarkRepository.findById(landmarkBoardRequestDto.getLandmarkId()).get();
         User user = userRepository.findById(landmarkBoardRequestDto.getUserId()).get();
         LandMarkBoard landMarkBoard = LandMarkBoard.builder()
@@ -39,7 +39,11 @@ public class LandMarkBoardServiceImpl implements LandMarkBoardService{
                 .user(user)
                 .landMark(landmark)
                 .build();
-        landMarkBoardRepository.save(landMarkBoard);
+        LandMarkBoard newBoard = landMarkBoardRepository.save(landMarkBoard);
+
+        if(newBoard==null) {
+            return -1;
+        } else return newBoard.getLandMarkBoardId();
     }
 
     @Override

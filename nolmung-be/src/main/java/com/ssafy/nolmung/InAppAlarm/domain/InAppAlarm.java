@@ -56,7 +56,7 @@ public class InAppAlarm {
     }
 
     public InAppAlarmResponse toInAppAlarmResponse() {
-        String inappAlarmDate = this.getInAppAlarmUpdateDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
+        String inappAlarmDate = this.getInAppAlarmUpdateDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         return InAppAlarmResponse.builder()
                 .inAppAlarmId(this.getInAppAlarmId())
                 .inAppAlarmUpdateDate(inappAlarmDate)

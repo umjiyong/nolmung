@@ -15,7 +15,7 @@ import java.util.Map;
 
 public interface PuppyService {
 
-    void insertPuppy(PuppyInfoRequestDto puppyInfoRequestDto);
+    int insertPuppy(PuppyInfoRequestDto puppyInfoRequestDto);
 
     PuppyInfoResponseDto getPuppyInfo(int puppyId);
 

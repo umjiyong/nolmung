@@ -26,8 +26,9 @@ public class LandMarkBoardController {
     public ResponseEntity createLandmarkBoard(@RequestBody LandmarkBoardRequestDto landmarkBoardRequestDto){
         HashMap<String, Object> result = new HashMap<>();
         try {
-            landMarkBoardService.createLandmarkBoard(landmarkBoardRequestDto);
+            int id = landMarkBoardService.createLandmarkBoard(landmarkBoardRequestDto);
             result.put("message", "success");
+            result.put("landmarkBoardId", id);
             result.put("userId", landmarkBoardRequestDto.getUserId());
             return new ResponseEntity(result, HttpStatus.OK);
         }catch (Exception e){

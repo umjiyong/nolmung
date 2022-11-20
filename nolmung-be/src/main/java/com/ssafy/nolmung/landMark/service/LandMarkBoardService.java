@@ -5,7 +5,7 @@ import com.ssafy.nolmung.landMark.dto.response.LandMarkBoardInfoDto;
 
 public interface LandMarkBoardService {
 
-    void createLandmarkBoard(LandmarkBoardRequestDto landmarkBoardRequestDto);
+    int createLandmarkBoard(LandmarkBoardRequestDto landmarkBoardRequestDto);
 
     LandMarkBoardInfoDto getLandmarkBoardInfo(int landmarkBoardId);
 }

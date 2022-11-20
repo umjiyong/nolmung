@@ -61,6 +61,8 @@ public class BoardServiceImpl implements BoardService {
         List<Board> boards = boardRepository.findAll();
         List<BoardResponse> result = new ArrayList<>();
 
+        System.out.println("!!!!!!!!!!!!!!!!!"+ result.size());
+
         for (Board board: boards) {
             result.add(board.toBoardResponse());
         }
