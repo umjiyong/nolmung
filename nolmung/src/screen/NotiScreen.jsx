@@ -4,22 +4,35 @@ import {ScrollView} from 'react-native-gesture-handler';
 import NotiItem from '../components/NotiItem';
 import {useNavigation} from '@react-navigation/native';
 import GoBackHeader from '../components/GoBackHeader';
-import {getAlarmList} from '../api/Alarm';
+import {getAlarmList, updateAlarmRead} from '../api/Alarm';
 
 const NotiScreen = () => {
   const [alarmList, setAlarmList] = useState([]);
+  let readAlarmList = [];
 
   function printAlarmList() {
     let result = [];
     for (let i = 0; i < alarmList.length; i++) {
-      result.push(<NotiItem alarm={alarmList[i]} />);
+      result.push(
+        <NotiItem alarm={alarmList[i]} key={alarmList[i].inAppAlarmId} />,
+      );
+      readAlarmList.push(alarmList[i].inAppAlarmId);
     }
     return result;
+  }
+
+  function readUpdate() {
+    for (let i = 0; i < readAlarmList.length; i++) {
+      updateAlarmRead(readAlarmList).then(data => {
+        console.log(data);
+      });
+    }
   }
 
   useEffect(() => {
     getAlarmList({userId: 1}).then(data => {
       setAlarmList(data);
+      readUpdate();
     });
   }, []);
 
