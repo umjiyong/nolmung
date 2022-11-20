@@ -1,4 +1,4 @@
-package com.ssafy.nolmung.rank.redis;
+package com.ssafy.nolmung.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
