@@ -5,19 +5,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InAppAlarmResponse {
 
-    private LocalDateTime inAppAlarmUpdateDate;
+    private int inAppAlarmId;
+    private String inAppAlarmUpdateDate;
     private String inAppAlarmContent;
     private String inAppAlarmLink;
     private boolean inAppAlarmIsCheck;
 
     @Builder
-    public InAppAlarmResponse(LocalDateTime inAppAlarmUpdateDate, String inAppAlarmContent, String inAppAlarmLink, boolean inAppAlarmIsCheck) {
+    public InAppAlarmResponse(int inAppAlarmId, String inAppAlarmUpdateDate, String inAppAlarmContent, String inAppAlarmLink, boolean inAppAlarmIsCheck) {
+        this.inAppAlarmId = inAppAlarmId;
         this.inAppAlarmUpdateDate = inAppAlarmUpdateDate;
         this.inAppAlarmContent = inAppAlarmContent;
         this.inAppAlarmLink = inAppAlarmLink;

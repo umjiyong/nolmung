@@ -2,7 +2,6 @@ package com.ssafy.nolmung.InAppAlarm.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.nolmung.InAppAlarm.dto.response.InAppAlarmResponse;
-import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -56,8 +56,10 @@ public class InAppAlarm {
     }
 
     public InAppAlarmResponse toInAppAlarmResponse() {
+        String inappAlarmDate = this.getInAppAlarmUpdateDate().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
         return InAppAlarmResponse.builder()
-                .inAppAlarmUpdateDate(this.getInAppAlarmUpdateDate())
+                .inAppAlarmId(this.getInAppAlarmId())
+                .inAppAlarmUpdateDate(inappAlarmDate)
                 .inAppAlarmLink(this.getInAppAlarmLink())
                 .inAppAlarmContent(this.getInAppAlarmContent())
                 .inAppAlarmIsCheck(this.isInAppAlarmIsCheck())
