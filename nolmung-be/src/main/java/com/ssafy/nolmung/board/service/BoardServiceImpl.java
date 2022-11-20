@@ -45,7 +45,6 @@ public class BoardServiceImpl implements BoardService {
                 .boardClass(boardRequest.getBoardClass())
                 .user(user)
                 .region(user.getRegion())
-                .boardImageList(new ArrayList<>())
                 .build();
 
         Board newBoard = boardRepository.save(board);
@@ -65,6 +64,12 @@ public class BoardServiceImpl implements BoardService {
             result.add(board.toBoardResponse());
         }
         // 게시물이 존재하지 않으면 빈 리스트 반환
+        return result;
+    }
+
+    @Override
+    public long countUserBoard(int userId) {
+        long result = boardRepository.countByUser_UserId(userId);
         return result;
     }
 

@@ -21,14 +21,11 @@ public class BoardRequest {
         private int boardClass;
         @ApiParam(name = "게시물 내용")
         private String boardContent;
-        @ApiParam(name = "게시물 이미지 링크 모음")
-        private List<String> boardImg;
 
         @Builder
-        public BoardRequest(int userId, int boardClass, String boardContent, List<String> boardImg) {
+        public BoardRequest(int userId, int boardClass, String boardContent) {
             this.userId = userId;
             this.boardClass = boardClass;
             this.boardContent = boardContent;
-            this.boardImg = boardImg;
         }
 }

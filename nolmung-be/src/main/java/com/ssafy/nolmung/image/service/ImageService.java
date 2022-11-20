@@ -19,4 +19,5 @@ public interface ImageService {
 
     String uploadWalkImage(int walkId, MultipartFile file);
 
+    String uploadUserImage(int userId, MultipartFile file);
 }

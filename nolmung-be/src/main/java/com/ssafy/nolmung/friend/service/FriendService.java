@@ -64,6 +64,13 @@ public class FriendService {
     public List<RecommendFriendResponseDto> recommendFriend(int userId) {
         List<RecommendFriendResponseDto> resultRecommendList = new ArrayList<>();
         List<Integer> recommendList = new ArrayList<>();
+        List<Friend> friendList = friendRepository.findFriendListByUserId(userId);
+        List<Integer> friendIdList = new ArrayList<>();
+
+        for (Friend f : friendList) {
+            friendIdList.add(f.getSubUserId());
+        }
+
         Random r = new Random();
 
         while (recommendList.size()<3) {
@@ -71,7 +78,7 @@ public class FriendService {
 
           int tempId = userRepository.findAll().get(temp).getUserId();
 
-          if (tempId == userId || recommendList.contains(tempId)) continue;
+          if (tempId == userId || recommendList.contains(tempId) || friendIdList.contains(tempId)) continue;
 
           recommendList.add(tempId);
         }

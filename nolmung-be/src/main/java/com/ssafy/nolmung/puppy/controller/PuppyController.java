@@ -108,9 +108,10 @@ public class PuppyController {
         HashMap<String, Object> result = new HashMap<>();
 
         try {
-            puppyService.insertPuppy(puppyInfoRequestDto);
+            int puppyId = puppyService.insertPuppy(puppyInfoRequestDto);
 
             result.put("puppyName", puppyInfoRequestDto.getPuppyName());
+            result.put("puppyId", puppyId);
             result.put("message", "success");
 
             return new ResponseEntity(result, HttpStatus.OK);

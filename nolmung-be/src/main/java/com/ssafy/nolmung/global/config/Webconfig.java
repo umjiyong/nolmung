@@ -12,8 +12,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 @Configuration
 @RequiredArgsConstructor
 public class Webconfig implements WebMvcConfigurer {
-
-
     private final ValidationInterceptor validationInterceptor;
 
     @Override

@@ -2,6 +2,7 @@ package com.ssafy.nolmung.image.controller;
 
 import com.ssafy.nolmung.image.service.ImageService;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RequestMapping("/image")
 @RestController
+@Slf4j
 public class ImageController {
 
     @Autowired
@@ -45,6 +47,27 @@ public class ImageController {
         }catch (Exception e){
             result.put("message", "[error] - 강아지 이미지 업로드 오류");
             result.put("puppyId", puppyId);
+            return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @ApiOperation(value = "유저 이미지 업로드", notes = "이미지의 url을 통해 S3에 이미지를 업로드하는 API")
+    @PostMapping(value="/user/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity uploadUserImage(@PathVariable int userId, @RequestPart("files") MultipartFile file) {
+        HashMap<String, Object> result = new HashMap<>();
+        String imageUrl;
+        log.info("통신은 되는 중: {}", userId);
+        log.info("통신은 되는 중: {}", file.getName());
+
+        try {
+            imageUrl = imageService.uploadUserImage(userId, file);
+            result.put("message", "success");
+            result.put("userImgUrl", imageUrl);
+            result.put("userId", userId);
+            return new ResponseEntity(result, HttpStatus.OK);
+        }catch (Exception e){
+            result.put("message", "[error] - 유저 이미지 업로드 오류");
+            result.put("userId", userId);
             return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
         }
     }

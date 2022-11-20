@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface BoardLikeRepository extends JpaRepository<BoardLike, Integer> {
 
     BoardLike save(BoardLike boardLike);
-    void deleteByBoardLikeId(int boardLikeId);
+    BoardLike findByBoard_BoardIdAndUser_UserId(int boardId, int userId);
 
 }

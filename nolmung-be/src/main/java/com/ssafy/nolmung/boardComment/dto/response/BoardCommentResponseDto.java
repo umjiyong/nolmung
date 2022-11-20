@@ -5,20 +5,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardCommentResponseDto {
+    int boardCommentId;
     String userNickname;
     String userImg;
     String userAddress;
-    LocalDateTime createDate;
+    LocalDate createDate;
     String content;
     boolean isMyComment;
 
     @Builder
-    public BoardCommentResponseDto(String userNickname, String userImg, String userAddress, LocalDateTime createDate, String content, boolean isMyComment){
+    public BoardCommentResponseDto(int boardCommentId, String userNickname, String userImg, String userAddress, LocalDate createDate, String content, boolean isMyComment){
+        this.boardCommentId = boardCommentId;
         this.userNickname = userNickname;
         this.userImg = userImg;
         this.userAddress = userAddress;
