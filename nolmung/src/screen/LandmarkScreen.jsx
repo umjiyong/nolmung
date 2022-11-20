@@ -23,6 +23,7 @@ function LandmarkScreen({navigation: {navigate}, route}) {
   const [landmarkInfo,setlandmarkInfo] =useState([])
   const [landmarkVisitor,setlandmarkVisitor] =useState([])
   const [landmarkAritlelist,setlandmarkAritlelist] =useState([])
+  
 
   const user_info_func = async () => {
     try {
@@ -120,6 +121,8 @@ function LandmarkScreen({navigation: {navigate}, route}) {
     getLandmarkVisitorFunc();
     getLandmarkArticleListFunc();
   }, []);
+
+  
 
   // useEffect(() => {
     

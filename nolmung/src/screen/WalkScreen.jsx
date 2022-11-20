@@ -110,7 +110,7 @@ function WalkScreen({navigation}) {
   };
 
   const getNearLandmarkMarkerListFunc = async (userLat, userLon) => {
-    console.log('현재 위치 ', userLat, userLon);
+    // console.log('현재 위치 ', userLat, userLon);
     try {
       await getNearLandmarkMarkerList(
         {
@@ -121,13 +121,11 @@ function WalkScreen({navigation}) {
           // console.log('!!!!', response.data);
           setLandmark(response.data.landmarkList);
         },
-        err => {
-          console.log('랜드마크 목록 에러', err);
-        },
+        
       );
     } catch (error) {
       // console.log(err);
-      console.log('랜드마크 목록 조회 에러');
+      // console.log('랜드마크 목록 조회 에러');
     }
   };
 
