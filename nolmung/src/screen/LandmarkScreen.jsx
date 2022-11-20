@@ -29,6 +29,7 @@ function LandmarkScreen({navigation: {navigate}, route}) {
 
 
 
+
   const [landmarkArticle, setlandmarkArticle] = useState([]);
   const [userInfo, setuserInfo] = useState([]);
   const [landmarkInfo, setlandmarkInfo] = useState([]);
@@ -144,9 +145,11 @@ function LandmarkScreen({navigation: {navigate}, route}) {
     getLandmarkArticleListFunc();
   }, []);
 
+
   useEffect(() => {
     getLandmarkArticleListFunc();
   }, [isFocused]);
+
 
   // useEffect(() => {
 
