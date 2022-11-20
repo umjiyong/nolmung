@@ -47,7 +47,7 @@ function FriendProfile({navigation: {navigate}, route}) {
   const user_info_func = async id => {
     try {
       await getUserInfo(
-        {userId: id},
+        {id},
         response => {
           setuserdata(response.data);
         },
@@ -64,7 +64,7 @@ function FriendProfile({navigation: {navigate}, route}) {
   const user_puppy_info_func = async Id => {
     try {
       await getUserPuppyInfo(
-        {Id: Id},
+        {id: Id},
         response => {
           setpuppyinfo(response.data);
           console.log('친구 강아지', puppyinfo);
@@ -268,7 +268,7 @@ function FriendProfile({navigation: {navigate}, route}) {
             })}
           </>
         ) : (
-          <Text>반려견을 추가해주세요</Text>
+          <Text style={{textAlign: 'center'}}>반려견을 추가해주세요</Text>
         )}
         {/* End Dog Component */}
         {/* <TouchableOpacity style={{...Styles.MyPost}}>

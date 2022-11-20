@@ -9,9 +9,10 @@ import {
   View,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {user_info} from '../api/User';
-import {user_puppy_info} from '../api/Puppy';
+import {getUserInfo} from '../api/User';
+import {getUserPuppyInfo} from '../api/Puppy';
 import {user_friend_post} from '../api/Friend';
+
 import {registAlarm} from '../api/Alarm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -21,6 +22,41 @@ const FriendRecommand = Props => {
   const [puppyinfo, setpuppyinfo] = useState([]);
   const HumanName = userinfo.userNickName;
   const [DogInfo, setDogInfo] = useState('강아지가 없습니다');
+
+  const user_info_func = async Id => {
+    try {
+      await getUserInfo(
+        {id: Id},
+        response => {
+          setuseinfo(response.data);
+        },
+        err => {
+          console.log('유저정보 에러', err);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
+
+  const user_puppy_info_func = async Id => {
+    try {
+      await getUserPuppyInfo(
+        {id: Id}, //Id 로 바꿔줘야함
+        response => {
+          console.log('아이디임', Id);
+          setpuppyinfo(response.data);
+        },
+        err => {
+          console.log('강아지정보 에러', err);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
 
   const user_friend_post_func = async () => {
     try {
@@ -39,42 +75,7 @@ const FriendRecommand = Props => {
       console.log('심각한 에러;;');
     }
   };
-
-  const user_info_func = async Id => {
-    try {
-      await user_info(
-        {userId: Id},
-        response => {
-          setuseinfo(response.data);
-        },
-        err => {
-          console.log('유저정보 에러', err);
-        },
-      );
-    } catch (err) {
-      console.log(err);
-      console.log('심각한 에러;;');
-    }
-  };
-
-  const user_puppy_info_func = async Id => {
-    try {
-      await user_puppy_info(
-        {userId: Id}, //Id 로 바꿔줘야함
-        response => {
-          console.log('아이디임', Id);
-          setpuppyinfo(response.data);
-        },
-        err => {
-          console.log('강아지정보 에러', err);
-        },
-      );
-    } catch (err) {
-      console.log(err);
-      console.log('심각한 에러;;');
-    }
-  };
-
+  console.log('Props', Props.userId);
   useEffect(() => {
     user_info_func(Props.userId);
     user_puppy_info_func(Props.userId);

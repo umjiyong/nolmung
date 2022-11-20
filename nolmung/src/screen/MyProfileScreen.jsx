@@ -30,7 +30,7 @@ function MyProfileScreen({navigation}) {
   const [puppyData, setPuppyData] = useState([]);
   const [friendCnt, setFriendCnt] = useState();
   const [boardCnt, setBoardCnt] = useState();
-
+  console.log(userData);
   const Friend = 1;
   const Post = 1;
   const userName = '하루';
@@ -150,11 +150,12 @@ function MyProfileScreen({navigation}) {
       console.log('유저 보드수 가져오기 에러', error);
     }
   };
-
+  console.log('friendCnt', friendCnt);
   useEffect(() => {
     user_info_func();
     user_puppy_info_func();
-
+    get_friend_func();
+    get_board_func();
     DeviceEventEmitter.addListener('abc', () => {
       user_info_func();
       user_puppy_info_func();
@@ -231,6 +232,7 @@ function MyProfileScreen({navigation}) {
                 style={{
                   width: 80,
                   height: 80,
+                  borderRadius: 100,
                 }}
               />
             )}

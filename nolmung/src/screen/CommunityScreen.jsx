@@ -199,7 +199,7 @@ function CommunityScreen() {
               {articleAll.map((item, index) => {
                 return (
                   <ArticleItem
-                    key={index}
+                    key={item.boardId}
                     createDate={item.boardUpdateDate}
                     boardId={item.boardId}
                     userId={item.userId}
@@ -210,6 +210,7 @@ function CommunityScreen() {
                     boardImg={item.boardImg}
                     likeCnt={item.likeCnt}
                     userImg={item.userImg}
+                    commentCnt={item.commentCnt}
                   />
                 );
               })}

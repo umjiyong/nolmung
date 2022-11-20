@@ -28,6 +28,7 @@ import {
 } from '../api/Friend';
 import {user_info} from '../api/User';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function FriendScreen() {
   const navigation = useNavigation();
@@ -129,16 +130,18 @@ function FriendScreen() {
 
   const user_friend_random_func = async () => {
     try {
-      await user_friend_random(
-        {userId: 1},
-        response => {
-          console.log('refresh', response.data);
-          setfriendrandom(response.data);
-        },
-        err => {
-          console.log('아티클질문 에러', err);
-        },
-      );
+      await AsyncStorage.getItem('userId', (err, id) => {
+        user_friend_random(
+          {userId: id},
+          response => {
+            console.log('refresh', response.data);
+            setfriendrandom(response.data);
+          },
+          err => {
+            console.log('아티클질문 에러', err);
+          },
+        );
+      });
     } catch (err) {
       console.log(err);
       console.log('심각한 에러;;');
@@ -176,6 +179,8 @@ function FriendScreen() {
   }, []);
 
   console.log('로그확인', friendrequest);
+
+  console.log('로그확인', friendrandom);
 
   return (
     <>
@@ -286,7 +291,7 @@ function FriendScreen() {
                 })}
               </>
             ) : (
-              <Text>친구를 추가해주세요</Text>
+              <Text style={{textAlign: 'center'}}>친구를 추가해주세요</Text>
             )}
           </ScrollView>
         </View>
@@ -381,8 +386,8 @@ const Styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: '#fff',
     borderRadius: 15,
-    paddingTop: 22,
-    paddingLeft: 20,
+    paddingVertical: 22,
+    paddingHorizontal: 20,
     marginBottom: 100,
   },
 
