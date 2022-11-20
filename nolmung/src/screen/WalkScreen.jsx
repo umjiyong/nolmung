@@ -334,7 +334,7 @@ function WalkScreen({navigation}) {
                   }}
                   image={require('../assets/icons/map_marker64.png')}
                   onPress={() => {
-                    console.log(landmark.landmarkId, '번 랜드마크');
+                    // console.log(landmark.landmarkId, '번 랜드마크');
                     if (getLandmarkAccessibility(landmark)) {
                       
                       navigation.push('LandmarkScreen', {landmarkId: landmark.landmarkId})

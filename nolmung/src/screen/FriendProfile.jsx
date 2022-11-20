@@ -21,7 +21,7 @@ import {getUserPuppyInfo} from '../api/Puppy';
 import {user_friend_post} from '../api/Friend';
 
 function FriendProfile({navigation: {navigate}, route}) {
-  console.log('ㅎㅇㅎㅇ', route.params);
+  console.log('파람확인', route.params);
   const navigation = useNavigation();
 
   const Friend = 1;
