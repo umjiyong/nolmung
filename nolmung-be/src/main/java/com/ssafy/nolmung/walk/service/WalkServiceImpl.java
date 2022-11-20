@@ -105,11 +105,15 @@ public class WalkServiceImpl implements WalkService{
             User user = userRepository.findById(walkRecordRequestDto.getUserId()).get();
             LocalDate date = walkRecordRequestDto.getWalkStartTime().toLocalDate();
 
-            log.info("!!!!사용자" + user.getUserId());
-            log.info("!!!!강아지" + puppy.getPuppyId());
-            log.info("!!!!날짜" + date);
+            log.info("!!!! user" + user.getUserId());
+            log.info("!!!! puppy" + puppy.getPuppyId());
+            log.info("!!!! date" + date);
+            log.info("!!!! startTime" + walkRecordRequestDto.getWalkStartTime());
+            log.info("!!!! endTime" + walkRecordRequestDto.getWalkEndTime());
 
             long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
+            log.info("!!!! time func?" );
+
             double newAttainment = (double) (secTime / (puppy.getBreed().getNeedsWalkTimes() * 60) * 100) * 1.0;
 
             log.info("!!!!newAttainment" + newAttainment);
@@ -166,6 +170,7 @@ public class WalkServiceImpl implements WalkService{
 
     @Override
     public long calWalkSecTime(LocalDateTime startTime, LocalDateTime endTime) {
+        log.info("!!!! time function in" );
         long walkTime = ChronoUnit.SECONDS.between(startTime, endTime);
         return walkTime;
     }
