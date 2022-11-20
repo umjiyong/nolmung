@@ -8,12 +8,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {getUserInfo} from '../api/User';
 import MessageRoom from '../components/MessageRoom';
 import firestore from '@react-native-firebase/firestore';
 
 const MessageScreen = () => {
   const [chatroomList, setChatroomList] = useState([]);
   const [userId, setUserId] = useState('1');
+  const [opponentName, setOpponentName] = useState('');
   // 하드코딩
 
   const ref = firestore()
@@ -37,11 +39,22 @@ const MessageScreen = () => {
   function printChatroomList() {
     let result = [];
     for (let i = 0; i < chatroomList.length; i++) {
+      getUserInfo(
+        chatroomList[i].opponentId,
+        res => {
+          console.log('getUserInfo: ' + res.data);
+          chatroomList[i].opponentName = res.userNickname;
+        },
+        err => {
+          console.log('err: ' + err);
+          chatroomList[i].opponentName = '';
+        },
+      );
       result.push(
         <MessageRoom
           img={require('../assets/icons/33.png')} // MessageRoom에서 불러오기
           userId={chatroomList[i].opponentId}
-          userName="mySQL에 요청"
+          userName={chatroomList[i].opponentName}
           // userName은 MySQL에 요청해서 받아오기
           chatroomId={chatroomList[i].chatroomId}
           key={chatroomList[i].chatroomId}
