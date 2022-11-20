@@ -48,6 +48,7 @@ export const registUserImage = async (response, success, fail) => {
     console.log('이미지 업로드쪽', response);
     imageApi.post(`/image/user/${res}`, response).then(success).catch(fail);
   });
+};
 
 export const user_info_change = async (response, success, fail) => {
   // console.log('유저 정보 수정 콘솔', response);
