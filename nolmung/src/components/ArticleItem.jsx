@@ -27,7 +27,8 @@ const ArticleItem = Props => {
   };
   const backdropOpacity = 0.3;
   //   console.log(Props.boardId);
-  console.log(Props);
+  console.log('Props', Props);
+
   return (
     <>
       <View style={Styles.ArticleContainer}>
@@ -132,10 +133,10 @@ const ArticleItem = Props => {
               {Props.boardContent}
             </Text>
             <Text style={{color: '#959595'}}>
-              댓글 {Props.commentCnt}개 모두 보기
+              댓글 {Props.commentCount}개 모두 보기
             </Text>
             <Text style={{color: '#959595', marginTop: 5}}>
-              {Props.createDate}
+              {Props.boardUpdateDate}
             </Text>
           </View>
         </TouchableWithoutFeedback>

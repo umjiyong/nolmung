@@ -1,6 +1,12 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet, TouchableWithoutFeedback} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 const dogName = '지용';
 
 // const doginfo_sex = '남(중성화 했어요)'
@@ -9,17 +15,20 @@ const dogName = '지용';
 const doginfo_walkAmount = 3;
 const doginfo_complete = 100;
 
-const MyDog = (Props) => {
-  console.log(Props.puppyId)
+const MyDog = Props => {
+  console.log('Props', Props);
   const doginfo_species = Props.breedName;
   const doginfo_age = Props.puppyAge;
   const navigation = useNavigation();
   return (
-    <TouchableWithoutFeedback onPress={() => {navigation.push('MyDogInfo',{ puppyId: Props.puppyId })}}>
-      <View  style={Styles.container}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        navigation.push('MyDogInfo', {puppyId: Props.puppyId});
+      }}>
+      <View style={Styles.container}>
         <View style={Styles.dogInfo}>
           <Image
-            source={{uri : Props.puppyImg}}
+            source={{uri: Props.puppyImg}}
             resizeMode="contain"
             style={{
               width: 125,

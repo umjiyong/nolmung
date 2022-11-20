@@ -11,6 +11,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {getUserInfo} from '../api/User';
 import {getUserPuppyInfo} from '../api/Puppy';
+import {userAcceptProposal, userDenyProposal} from '../api/Friend';
 const FriendRequest = Props => {
   const navigation = useNavigation();
 
@@ -22,7 +23,7 @@ const FriendRequest = Props => {
   const user_info_func = async Id => {
     try {
       await getUserInfo(
-        {userId: Id},
+        {id: Id},
         response => {
           setuseinfo(response.data);
         },
@@ -54,6 +55,48 @@ const FriendRequest = Props => {
     }
   };
 
+  const userAcceptProposal_func = async Id => {
+    try {
+      await userAcceptProposal(
+        {friendProposalId: Id}, //Id 로 바꿔줘야함
+        response => {
+          console.log('수락 성공', Id);
+        },
+        err => {
+          console.log('수락 에러', err);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
+
+  const userDenyProposal_func = async Id => {
+    try {
+      await userDenyProposal(
+        {friendProposalId: Id}, //Id 로 바꿔줘야함
+        response => {
+          console.log('수락 성공', Id);
+        },
+        err => {
+          console.log('수락 에러', err);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
+
+  const proposalBtn = () => {
+    userAcceptProposal_func(Props.proposalId);
+  };
+
+  const proposalDenyBtn = () => {
+    userDenyProposal_func(Props.proposalId);
+  };
+
   useEffect(() => {
     user_info_func(Props.userId);
     user_puppy_info_func(Props.userId);
@@ -72,9 +115,9 @@ const FriendRequest = Props => {
     }
   }, [puppyinfo]);
 
-  console.log('보낸사람 정보', userinfo);
+  // console.log('보낸사람 정보', userinfo);
 
-  console.log('퍼퍼콘솔', puppyinfo);
+  // console.log('퍼퍼콘솔', puppyinfo);
 
   return (
     <>
@@ -90,6 +133,7 @@ const FriendRequest = Props => {
               style={{
                 width: 70,
                 height: 70,
+                borderRadius: 100,
               }}
             />
             <View style={Styles.requestTextBox}>
@@ -105,12 +149,12 @@ const FriendRequest = Props => {
         </TouchableWithoutFeedback>
       </View>
       <View style={Styles.requestBtnContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={proposalBtn}>
           <View style={Styles.agreeBtn}>
             <Text style={Styles.agreeText}>수락</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={proposalDenyBtn}>
           <View style={Styles.disagreeBtn}>
             <Text style={Styles.disagreeText}>삭제</Text>
           </View>

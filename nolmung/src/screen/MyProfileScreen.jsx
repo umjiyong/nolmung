@@ -331,17 +331,21 @@ function MyProfileScreen({navigation}) {
         </View>
         {/* Dog component */}
 
-        {puppyData.myPuppyList ? (
+        {puppyData.myPuppyList !== undefined ? (
           <>
+            {/* {console.log('puppyData', puppyData)} */}
             {puppyData.myPuppyList.map((item, index) => {
+              {
+                // console.log('item', item);
+              }
               return (
                 <MyDog
                   key={index}
-                  puppyId={item.puppyData.puppyId}
-                  puppyImg={item.puppyData.puppyImg}
-                  puppyName={item.puppyData.puppyName}
-                  puppyAge={item.puppyData.puppyAge}
-                  breedName={item.puppyData.breedName}
+                  puppyId={item.puppyInfo.puppyId}
+                  puppyImg={item.puppyInfo.puppyImg}
+                  puppyName={item.puppyInfo.puppyName}
+                  puppyAge={item.puppyInfo.puppyAge}
+                  breedName={item.puppyInfo.breedName}
                 />
               );
             })}

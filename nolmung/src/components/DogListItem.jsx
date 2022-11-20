@@ -1,7 +1,8 @@
 import React from 'react';
 import {Text, View, StyleSheet, Image} from 'react-native';
 
-const DogListItem = () => {
+const DogListItem = Props => {
+  // console.log(Props);
   const DogName = '두부';
   return (
     <>
@@ -18,7 +19,7 @@ const DogListItem = () => {
             resizeMode="contain"
             style={Styles.DogListItemContainer}
           />
-          <Text style={{color: '#252525', fontSize: 14}}>{DogName}</Text>
+          <Text style={{color: '#252525', fontSize: 14}}>{Props.name}</Text>
         </View>
       </View>
     </>

@@ -210,7 +210,7 @@ function CommunityScreen() {
                     boardImg={item.boardImg}
                     likeCnt={item.likeCnt}
                     userImg={item.userImg}
-                    commentCnt={item.commentCnt}
+                    commentCount={item.commentCnt}
                   />
                 );
               })}
@@ -226,7 +226,8 @@ function CommunityScreen() {
               {articleRegion.map((item, index) => {
                 return (
                   <ArticleItem
-                    key={index}
+                    key={item.boardId}
+                    createDate={item.boardUpdateDate}
                     boardId={item.boardId}
                     userId={item.userId}
                     userName={item.userName}
@@ -236,6 +237,7 @@ function CommunityScreen() {
                     boardImg={item.boardImg}
                     likeCnt={item.likeCnt}
                     userImg={item.userImg}
+                    commentCount={item.commentCnt}
                   />
                 );
               })}
@@ -251,7 +253,8 @@ function CommunityScreen() {
               {articleFriend.map((item, index) => {
                 return (
                   <ArticleItem
-                    key={index}
+                    key={item.boardId}
+                    createDate={item.boardUpdateDate}
                     boardId={item.boardId}
                     userId={item.userId}
                     userName={item.userName}
@@ -261,6 +264,7 @@ function CommunityScreen() {
                     boardImg={item.boardImg}
                     likeCnt={item.likeCnt}
                     userImg={item.userImg}
+                    commentCount={item.commentCnt}
                   />
                 );
               })}
@@ -276,7 +280,8 @@ function CommunityScreen() {
               {articleQna.map((item, index) => {
                 return (
                   <ArticleItem
-                    key={index}
+                    key={item.boardId}
+                    createDate={item.boardUpdateDate}
                     boardId={item.boardId}
                     userId={item.userId}
                     userName={item.userName}
@@ -286,6 +291,7 @@ function CommunityScreen() {
                     boardImg={item.boardImg}
                     likeCnt={item.likeCnt}
                     userImg={item.userImg}
+                    commentCount={item.commentCnt}
                   />
                 );
               })}

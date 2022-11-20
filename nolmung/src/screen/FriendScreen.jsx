@@ -214,7 +214,11 @@ function FriendScreen() {
                 <>
                   {friendrequest.map((item, index) => {
                     return (
-                      <FriendRequest key={index} userId={item.fromUserId} />
+                      <FriendRequest
+                        key={index}
+                        userId={item.fromUserId}
+                        proposalId={item.friendProposalId}
+                      />
                     );
                   })}
                 </>

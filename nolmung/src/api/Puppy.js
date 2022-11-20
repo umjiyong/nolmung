@@ -38,3 +38,8 @@ export const puppy_puppy_info = async (response, success, fail) => {
 export const puppy_breed_info = async (success, fail) => {
   return await api.get(`/puppy/breedList`).then(success).catch(fail);
 };
+
+export const puppy_Modify = async (data, success, fail) => {
+  console.log('강아지 정보 수정', data);
+  return await api.put(`/puppy/modify`, data).then(success).catch(fail);
+};

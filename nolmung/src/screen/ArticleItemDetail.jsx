@@ -41,7 +41,8 @@ const ArticleItem = Props => {
   const backdropOpacity = 0.3;
   const [boardIdData, setBoardIdData] = useState([]);
   const [commentAll, setCommentAll] = useState([]);
-  const [emitter, setEmitter] = useState([]);
+  const [emitter, setEmitter] = useState(0);
+  const [count, setCount] = useState(0);
   const getBoardIdData = async () => {
     try {
       await getArticles_From_BoardId(
@@ -91,21 +92,16 @@ const ArticleItem = Props => {
       console.log('실패했슈', err);
     }
   };
-
+  const handleClick = num => {
+    setCount(current => current + num);
+  };
   useEffect(() => {
     getBoardIdData();
   }, []);
   useEffect(() => {
     getAllComment();
   }, [test]);
-
-  useEffect(() => {
-    DeviceEventEmitter.addListener('commentDelete', event => {
-      setEmitter(event.key);
-      getAllComment();
-    });
-  }, [emitter]);
-
+  console.log(count);
   return (
     <>
       {boardIdData.length > 0 ? (

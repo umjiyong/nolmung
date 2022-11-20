@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import {deleteComment, getAllCommentFromArticle} from '../api/Comment';
 const CommentList = Props => {
   const userNickName = 'aJumoney__';
@@ -85,12 +84,10 @@ const CommentList = Props => {
           backdropOpacity={backdropOpacity}>
           <View style={Styles.threeModal}>
             <TouchableOpacity
-              onPress={() => {
+              onPress={event => {
                 console.log('이 댓글의 번호는?', Props.boardCommentId);
                 deleteCommentFunc();
-                DeviceEventEmitter.emit('commentDelete', {
-                  key: Props.boardCommentId,
-                });
+                toggleModal();
               }}>
               <View style={Styles.ModalMenu}>
                 <Text style={Styles.ModalMenuText}>삭제</Text>
