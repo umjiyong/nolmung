@@ -16,8 +16,7 @@ public interface WalkService {
 
     List<WalkDailyRecordListResponseDto> getWalkRecordList(int puppyId, LocalDate walkDate);
 
-    void insertWalkRecord(WalkRecordRequestDto walkRecordRequestDto);
-
+    List<Integer> insertWalkRecord(WalkRecordRequestDto walkRecordRequestDto);
 
     long calWalkSecTime(LocalDateTime startTime, LocalDateTime endTime);
 
