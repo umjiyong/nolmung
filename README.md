@@ -40,6 +40,8 @@
 <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
 <img src="https://img.shields.io/badge/JSON Web Tokens-000000?style=for-the-badge&logo=JSON Web Tokens&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
+<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=Node.js&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
+<img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=Node.js&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
 
 <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
 <br>
@@ -49,8 +51,11 @@
 
 <br>
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
+<img src="https://img.shields.io/badge/React Native-73C3D5?style=for-the-badge&logo=Node.js&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
 <img src="https://img.shields.io/badge/Node.js-339939?style=for-the-badge&logo=Node.js&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
-<img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
+<img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=Node.js&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
+
+
 
 <br>
 <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/>
@@ -189,11 +194,11 @@
 
 |                            Jira BurnDown Chart                      |
 | :---------------------------------------------------------------------------: |
-|  <img src="/uploads/0c13df10395b2c4b1745acd68aab440e/번다운차트.PNG" />  |
+|  <img src="/uploads/4fb33e3dee6bff09b082c73900650c7b/image.png" />  |
 
 |                            Notion                      |
 | :---------------------------------------------------------------------------: |
-|  <img src="/uploads/edf6cea8ba6f3d7e652e5af3acaebd42/bandicam_2022-08-19_01-14-58-548.jpg" /><img src="/uploads/18114ff56dc79137c47e068fe84c14a5/bandicam_2022-08-19_01-14-23-188.jpg" />  |
+|  <img src="/uploads/71db5b91e619bd73ef1866844f3b483e/image.png" /><img src="/uploads/17b8cf11a97c3ba520f8b7719d401348/image.png" />  |
 
 <br />
 
@@ -202,26 +207,26 @@
 ## 👪 개발 멤버 소개 
 <table>
     <tr>
-        <td height="140px" align="center"> <a href="https://github.com/PowerBBear">
-            <img src="/uploads/b0ab56b839be9246253b4053b33b373c/민성.jpg" width="140px" /> <br><br> 👑 김민성 <br>(Front-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/JunPark364">
-            <img src="/uploads/62c8c647a9a7f0457f513f1e8b9c17fe/영준.jpg" width="140px" /> <br><br> 🙂 박영준 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="">
+            <img src="/uploads/0b23c8d1fa4a643e06d3a8064c001718/image.png" width="140px" /> <br><br> 👑 이동희 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="">
+            <img src="/uploads/ecf1f5b40f7becca01912aa9cfc68d5a/image.png" width="140px" /> <br><br> 🙂 이지영 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/pch8349">
-            <img src="/uploads/bde99e85c40adf4a84d8a4b12a4e864b/찬혁.jpg" width="140px" /> <br><br> 😆 박찬혁 <br>(Front-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/SilverLight96">
-            <img src="/uploads/b4261571e054933c2178a03f13e19f2d/경은.jpg" width="140px" /> <br><br> 😁 강경은 <br>(Back-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/heunhanireum">
-            <img src="/uploads/ae19dde3e26a774bcef77adcc154f725/민지.jpg" width="140px" /> <br><br> 🙄 김민지 <br>(Back-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="https://github.com/kkh9700">
-            <img src="/uploads/8a957c23971bab7ac9f3fec55e64c918/경환.jpg" width="140px" /> <br><br> 😶 김경환 <br>(Back-End) </a> <br></td>
+            <img src="/uploads/7f1abc04dff4d6972c9fb5433ea6df34/image.png" width="140px" /> <br><br> 😆 박찬혁 <br>(Back-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/rlaxorud180">
+            <img src="/uploads/b48846d500fb735839081aa6b5b675cf/image.png" width="140px" /> <br><br> 😁 강태경 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="">
+            <img src="/uploads/ae19dde3e26a774bcef77adcc154f725/민지.jpg" width="140px" /> <br><br> 🙄 엄지용 <br>(Back-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="">
+            <img src="/uploads/84c9ef5f78d646a1d45e08b5de69ae4a/image.png" width="140px" /> <br><br> 😶 박세원 <br>(Back-End) </a> <br></td>
     </tr>
     <tr>
-        <td align="center">UI/UX<br/>React<br/>DB<br/>Infra<br/></td>
-        <td align="center">UI/UX<br/>React<br/>WebRTC</td>
-        <td align="center">UI/UX<br/>React</td>
-        <td align="center">REST API<br/>WebRTC</td>
+        <td align="center">UI/UX<br/>React Native<br/></td>
+        <td align="center">FireBase<br/>REST API<br/></td>
+        <td align="center">REST API<br/></td>
+        <td align="center">REACT NATIVE<br/></td>
         <td align="center">REST API<br/>CI/CD<br/></td>
-        <td align="center">REST API<br/>DB<br/>S3<br/>Infra<br/></td>
+        <td align="center">REST API<br/>CI/CD<br/></td>
     </tr>
 </table>
 
@@ -231,9 +236,9 @@
 
 ## 📆 프로젝트 기간
 ### 22.7.11 ~ 22.8.19
-- 기획 및 설계 : 22.7.11 ~ 19
-- 프로젝트 구현 : 22.7.20 ~ 22.8.18
-- 버그 수정 및 산출물 정리 : 22.8.19
+- 기획 및 설계 : 22.10.10 ~ 17
+- 프로젝트 구현 : 22.10.17 ~ 22.11.18
+- 버그 수정 및 산출물 정리 : 22.11.19 ~ 20
 
 
 <br />
@@ -243,8 +248,8 @@
 ## 📋 프로젝트 관련 문서
 |  구분  |  링크  |
 | :--------------- | :---------------: |
-| 와이어프레임 | [와이어프레임 바로가기](https://www.figma.com/file/UGLmvsrx12LGMRymKGRVPw/TERAS-STUDY?node-id=0%3A1) |
-| ERD | [ERD 바로가기](https://drive.google.com/file/d/1PmUqEjwf3GyiuHPqTALUJH6emQohCJ5I/view?usp=sharing) |
+| 와이어프레임 | [와이어프레임 바로가기](https://www.figma.com/file/Tm7wdOx987pCr21lLB00CQ/%5BA502%5D-%EB%86%80%EB%A9%B4-%EB%A9%8D%ED%95%98%EB%8B%88%3F?node-id=700%3A1065&t=ubiuVmJTqruy9Ff4-1) |
+| ERD | [ERD 바로가기](https://drive.google.com/file/d/1IfH50pegD9kg2KOKztbHn-AKtMyLx7Uv/view?usp=sharing) |
 | 빌드/배포 | [빌드/배포 바로가기](/exec/배포환경.md) |
 | 시연 시나리오 | [시연 시나리오 바로가기](/exec/시연시나리오_대본.docx) |
 | 발표자료 | [발표자료 바로가기](/exec/서울_7반_A706_발표자료.pdf)) |
