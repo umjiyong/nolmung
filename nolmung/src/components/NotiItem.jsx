@@ -16,7 +16,14 @@ const NotiItem = Props => {
   return (
     <View style={Styles.Container}>
       <TouchableOpacity>
-        <Text style={Styles.NotiName}>{Props.alarm.inAppAlarmContent}</Text>
+        <Text
+          style={
+            Props.alarm.inAppAlarmIsCheck
+              ? Styles.ReadNotiName
+              : Styles.NotiName
+          }>
+          {Props.alarm.inAppAlarmContent}
+        </Text>
         <Text style={Styles.NotiTime}>{Props.alarm.inAppAlarmUpdateDate}</Text>
       </TouchableOpacity>
       <View style={Styles.NotiHr}></View>
@@ -35,6 +42,13 @@ const Styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'NotoSansKR-Bold',
     color: '#282828',
+    letterSpacing: -1,
+  },
+  ReadNotiName: {
+    marginTop: -15,
+    fontSize: 17,
+    fontFamily: 'NotoSansKR-Bold',
+    color: '#959595',
     letterSpacing: -1,
   },
   NotiTime: {

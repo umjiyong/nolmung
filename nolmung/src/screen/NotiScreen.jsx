@@ -30,7 +30,7 @@ const NotiScreen = () => {
   }
 
   useEffect(() => {
-    getAlarmList({userId: 1}).then(data => {
+    getAlarmList({userId: 72}).then(data => {
       setAlarmList(data);
       readUpdate();
     });
