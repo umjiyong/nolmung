@@ -11,7 +11,7 @@ import java.util.List;
 public interface WalkRepository extends JpaRepository<Walk, Integer> {
     int countByWalkDateAndPuppyPuppyId(LocalDate walkDate, int puppyId);
 
-    @Query(value = "SELECT max(walk_attainment) from walk where walk_date = :date and puppy_id = :puppyId group by puppy_id;", nativeQuery = true)
+    @Query(value = "SELECT max(walk_attainment) from Walk where walk_date = :date and puppy_id = :puppyId group by puppy_id;", nativeQuery = true)
     Double findDistanceByDayAndPuppy(@Param("puppyId")int puppyId, @Param("date")LocalDate date);
 
     List<Walk> findAllByWalkDateAndUserUserId(LocalDate walkDate, int userId);

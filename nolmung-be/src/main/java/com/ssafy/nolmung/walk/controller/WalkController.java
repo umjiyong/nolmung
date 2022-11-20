@@ -32,8 +32,9 @@ public class WalkController {
     public ResponseEntity createWalkRecord(@RequestBody WalkRecordRequestDto walkRecordRequestDto){
         HashMap<String, Object> result = new HashMap<>();
         try {
-            walkService.insertWalkRecord(walkRecordRequestDto);
+            List<Integer> walkList = walkService.insertWalkRecord(walkRecordRequestDto);
             result.put("message", "success");
+            result.put("walkList", walkList);
             return new ResponseEntity(result, HttpStatus.OK);
         }catch (Exception e){
             result.put("message", "[error] - 산책 정보 기록하기");
