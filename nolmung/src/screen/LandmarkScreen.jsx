@@ -15,9 +15,9 @@ import Visitors from '../components/Visitors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getUserInfo} from "../api/User"
 import {getLandmark,postLandmark,getLandmarkArticle,getLandmarkVisitor,getLandmarkArticleList} from "../api/Landmark"
-
+import {useNavigation} from '@react-navigation/native';
 function LandmarkScreen({navigation: {navigate}, route}) {
-
+  const Navigation = useNavigation();
   const [landmarkArticle,setlandmarkArticle] =useState([])
   const [userInfo,setuserInfo] = useState([])
   const [landmarkInfo,setlandmarkInfo] =useState([])
@@ -77,33 +77,6 @@ function LandmarkScreen({navigation: {navigate}, route}) {
     }
   };
 
-  const [content,setcontent] = useState("")
-  const [imageUrl, setimageUrl] = useState("")
-  const [landmarkBoardCreateDate, setlandmarkBoardCreateDate] = useState("")
-  const [landmarkId, setlandmarkId] = useState("")
-  const [userId, setuserId] = useState("")
-
-  const postLandmarkFunc = async () => {
-    try {
-      await AsyncStorage.getItem('userId', (err, id) => {
-        postLandmark(
-          {content: content,
-          imageUrl: imageUrl ,
-          landmarkBoardCreateDate: landmarkBoardCreateDate,
-          landmarkId: landmarkId,
-          userId: userId},
-          response => {
-            setUserData(response.data);
-          },
-          err => {
-            console.log('유저정보 에러', err);
-          },
-        );
-      });
-    } catch (err) {
-      console.log('유저정보페이지 유저정보 get 에러', err);
-    }
-  };
   
 
 
@@ -214,7 +187,7 @@ function LandmarkScreen({navigation: {navigate}, route}) {
             방명록
           </Text>
           <Pressable onPress={()=>{
-            navigation.push('NewGuestBook')
+            Navigation.push('NewGuestBook',{landmarkId : landmarkInfo.landmarkInfo.landmarkId})
           }} style={style.writebtn}>
             <Text style={{color: '#fff', fontWeight: '500'}}>글쓰기</Text>
           </Pressable>

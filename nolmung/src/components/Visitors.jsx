@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet,View, Text, Image } from "react-native";
 require('../assets/icons/man1Avatar.png')
 const Visitors = (Props) => {
-    console.log("보드 사진",Props.profileImg)
+    // console.log("보드 사진",Props.profileImg)
     return (
         <>
             {Props.profileImg ? <Image 
