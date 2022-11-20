@@ -11,7 +11,7 @@ import {
 import MedalRanking from './MedalRanking';
 import MyRanking from './MyRanking';
 import axios from 'axios';
-import {user_info} from '../api/User';
+import {getUserInfo} from '../api/User';
 import {
   getAllRanking_daily,
   getAllRanking_weekly,
@@ -20,6 +20,7 @@ import {
   reset_ranking,
 } from '../api/Ranking';
 // import schedule from 'node-schedule'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function AllRanking() {
   const [dailyData, setDailyData] = useState([]);
@@ -83,16 +84,11 @@ function AllRanking() {
 
   const getMyRanking_daily_func = async () => {
     try {
-      console.log('asdas');
-      await getMyRanking(
-        {type: 'daily', userId: 1},
-        response => {
+      await AsyncStorage.getItem('userId', (err, id) => {
+        getMyRanking({type: 'daily', userId: id}, response => {
           setmydailyRank(response.data);
-        },
-        err => {
-          console.log('유저랭킹정보 에러', err);
-        },
-      );
+        });
+      });
     } catch (err) {
       console.log(err);
       console.log('심각한 에러;;');
@@ -101,15 +97,11 @@ function AllRanking() {
 
   const getMyRanking_weekly_func = async () => {
     try {
-      await getMyRanking(
-        {type: 'weekly', userId: 1},
-        response => {
+      await AsyncStorage.getItem('userId', (err, id) => {
+        getMyRanking({type: 'weekly', userId: id}, response => {
           setmyweeklyRank(response.data);
-        },
-        err => {
-          console.log('유저랭킹정보 에러', err);
-        },
-      );
+        });
+      });
     } catch (err) {
       console.log(err);
       console.log('심각한 에러;;');
@@ -118,15 +110,17 @@ function AllRanking() {
 
   const getMyRanking_monthly_func = async () => {
     try {
-      await getMyRanking(
-        {type: 'monthly', userId: 1},
-        response => {
-          setmymonthlyRank(response.data);
-        },
-        err => {
-          console.log('유저랭킹정보 에러', err);
-        },
-      );
+      await AsyncStorage.getItem('userId', (err, id) => {
+        getMyRanking(
+          {type: 'monthly', userId: id},
+          response => {
+            setmymonthlyRank(response.data);
+          },
+          err => {
+            console.log('유저랭킹정보 에러', err);
+          },
+        );
+      });
     } catch (err) {
       console.log(err);
       console.log('심각한 에러;;');
@@ -187,15 +181,17 @@ function AllRanking() {
   const [userInfo, setUserInfo] = useState([]);
   const user_info_func = async () => {
     try {
-      await user_info(
-        {userId: 1},
-        response => {
-          setUserInfo(response.data);
-        },
-        err => {
-          console.log('유저정보 에러', err);
-        },
-      );
+      await AsyncStorage.getItem('userId', (err, id) => {
+        getUserInfo(
+          {id},
+          response => {
+            setUserInfo(response.data);
+          },
+          err => {
+            console.log('유저정보 에러', err);
+          },
+        );
+      });
     } catch (err) {
       console.log(err);
       console.log('심각한 에러;;');
@@ -217,7 +213,7 @@ function AllRanking() {
     user_info_func();
   }, []);
 
-  console.log('데이터확인', userinfo);
+  console.log('데이터확인', mydailyRank);
   //   console.log(weeklyData);
   //   console.log(monthlyData);
 
@@ -278,11 +274,12 @@ function AllRanking() {
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={Styles.MainRankingContainer}>
                 <Image
-                  source={{uri: userinfo.userImg}}
+                  source={{uri: userInfo.userImg}}
                   resizeMode="cover"
                   style={{
                     width: 100,
                     height: 100,
+                    borderRadius: 100,
                   }}
                 />
                 <Text
@@ -293,24 +290,8 @@ function AllRanking() {
                     fontWeight: 'bold',
                     marginBottom: 5,
                   }}>
-                  {userinfo.userNickName}
+                  {userInfo.userNickName}
                   {mydailyRank.rankScore} 멍
-                </Text>
-                <Text
-                  style={{
-                    color: '#282828',
-                    marginTop: -10,
-                    fontSize: 20,
-                    fontFamily: 'NotoSansKR-Bold',
-                  }}>
-                  {' '}
-                  {rank}위
-                </Text>
-                <Text style={{color: '#282828', fontSize: 16, marginBottom: 5}}>
-                  가장 높았던 순위
-                </Text>
-                <Text style={{color: '#282828', fontSize: 16, marginBottom: 5}}>
-                  {highRank}위
                 </Text>
               </View>
               <View style={Styles.totalRankingContainer}>
@@ -355,11 +336,12 @@ function AllRanking() {
           <>
             <View style={Styles.MainRankingContainer}>
               <Image
-                source={{uri: userinfo.userImg}}
+                source={{uri: userInfo.userImg}}
                 resizeMode="cover"
                 style={{
                   width: 100,
                   height: 100,
+                  borderRadius: 100,
                 }}
               />
               <Text
@@ -370,24 +352,8 @@ function AllRanking() {
                   fontWeight: 'bold',
                   marginBottom: 5,
                 }}>
-                {userinfo.userNickName}
+                {userInfo.userNickName}
                 {mydailyRank.rankScore} 멍
-              </Text>
-              <Text
-                style={{
-                  color: '#282828',
-                  marginTop: -10,
-                  fontSize: 20,
-                  fontFamily: 'NotoSansKR-Bold',
-                }}>
-                {' '}
-                {rank}위
-              </Text>
-              <Text style={{color: '#282828', fontSize: 16, marginBottom: 5}}>
-                가장 높았던 순위
-              </Text>
-              <Text style={{color: '#282828', fontSize: 16, marginBottom: 5}}>
-                {highRank}위
               </Text>
             </View>
             <View style={Styles.totalRankingContainer}>
@@ -433,11 +399,12 @@ function AllRanking() {
           <>
             <View style={Styles.MainRankingContainer}>
               <Image
-                source={{uri: userinfo.userImg}}
+                source={{uri: userInfo.userImg}}
                 resizeMode="cover"
                 style={{
                   width: 100,
                   height: 100,
+                  borderRadius: 100,
                 }}
               />
               <Text
@@ -448,24 +415,8 @@ function AllRanking() {
                   fontWeight: 'bold',
                   marginBottom: 5,
                 }}>
-                {userinfo.userNickName}
+                {userInfo.userNickName}
                 {mydailyRank.rankScore} 멍
-              </Text>
-              <Text
-                style={{
-                  color: '#282828',
-                  marginTop: -10,
-                  fontSize: 20,
-                  fontFamily: 'NotoSansKR-Bold',
-                }}>
-                {' '}
-                {rank}위
-              </Text>
-              <Text style={{color: '#282828', fontSize: 16, marginBottom: 5}}>
-                가장 높았던 순위
-              </Text>
-              <Text style={{color: '#282828', fontSize: 16, marginBottom: 5}}>
-                {highRank}위
               </Text>
             </View>
             <View style={Styles.totalRankingContainer}>
