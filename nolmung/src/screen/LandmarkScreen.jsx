@@ -25,6 +25,7 @@ import {useNavigation, useIsFocused} from '@react-navigation/native';
 
 function LandmarkScreen({navigation: {navigate}, route}) {
   const Navigation = useNavigation();
+<<<<<<< HEAD
   const isFocused = useIsFocused(); // isFoucesd Define
 
   const [landmarkArticle, setlandmarkArticle] = useState([]);
@@ -33,6 +34,14 @@ function LandmarkScreen({navigation: {navigate}, route}) {
   const [landmarkVisitor, setlandmarkVisitor] = useState([]);
   const [landmarkAritlelist, setlandmarkAritlelist] = useState([]);
   const [test, setTest] = useState(0);
+=======
+  const [landmarkArticle,setlandmarkArticle] =useState([])
+  const [userInfo,setuserInfo] = useState([])
+  const [landmarkInfo,setlandmarkInfo] =useState([])
+  const [landmarkVisitor,setlandmarkVisitor] =useState([])
+  const [landmarkAritlelist,setlandmarkAritlelist] =useState([])
+  
+>>>>>>> afc1b0d (324)
 
   const user_info_func = async () => {
     try {
@@ -112,9 +121,13 @@ function LandmarkScreen({navigation: {navigate}, route}) {
     getLandmarkArticleListFunc();
   }, []);
 
+<<<<<<< HEAD
   useEffect(() => {
     getLandmarkArticleListFunc();
   }, [isFocused]);
+=======
+  
+>>>>>>> afc1b0d (324)
 
   // useEffect(() => {
 
