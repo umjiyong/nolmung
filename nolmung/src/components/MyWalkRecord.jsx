@@ -109,7 +109,11 @@ const MyWalkRecord = () => {
         </View>
         {/* 강아지 마리수 프로필 div start */}
 
-        <View style={Styles.DogContainer}>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{paddingHorizontal: 20}}
+          style={Styles.DogContainer}>
           {puppyList?.length > 0 ? (
             <>
               {puppyList.map((item, index) => {
@@ -127,7 +131,7 @@ const MyWalkRecord = () => {
               해당 일자에 산책 기록이 없습니다.
             </Text>
           )}
-        </View>
+        </ScrollView>
         {/* end */}
         <ScrollView
           style={{marginBottom: 80}}
@@ -156,7 +160,7 @@ const Styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
     flexDirection: 'row',
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   calendar: {
     borderBottomWidth: 1,
