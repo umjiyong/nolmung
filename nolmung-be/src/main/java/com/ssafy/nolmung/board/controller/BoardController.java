@@ -11,7 +11,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -90,11 +89,7 @@ public class BoardController {
     // 게시물 업로드
     @ApiOperation(value = "게시물 등록", notes = "등록할 게시물 데이터를 받아오는 API")
     @PostMapping
-    public ResponseEntity createBoard(@RequestBody @Valid BoardRequest boardRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
+    public ResponseEntity createBoard(@RequestBody @Valid BoardRequest boardRequest) {
         int result = boardService.createBoard(boardRequest);
         if(result>0){
             return new ResponseEntity(result, HttpStatus.OK);
