@@ -103,6 +103,7 @@ public class WalkServiceImpl implements WalkService{
         for(int i = 0; i < walkRecordRequestDto.getPuppyIdList().size(); i++){
             Puppy puppy = puppyRepository.findById(walkRecordRequestDto.getPuppyIdList().get(i)).get();
             User user = userRepository.findById(walkRecordRequestDto.getUserId()).get();
+            int puppyNeeds = puppy.getBreed().getNeedsWalkTimes();
             LocalDate date = walkRecordRequestDto.getWalkStartTime().toLocalDate();
 
             log.info("!!!! user" + user.getUserId());
@@ -114,7 +115,7 @@ public class WalkServiceImpl implements WalkService{
             long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
             log.info("!!!! time func?" );
 
-            double newAttainment = (double) (secTime / (puppy.getBreed().getNeedsWalkTimes() * 60) * 100) * 1.0;
+            double newAttainment = (secTime / (puppyNeeds * 60) * 100) * 1.0;
 
             log.info("!!!!newAttainment" + newAttainment);
             int count = walkRepository.countByWalkDateAndPuppyPuppyId(walkRecordRequestDto.getWalkStartTime().toLocalDate(), puppy.getPuppyId());
@@ -123,7 +124,7 @@ public class WalkServiceImpl implements WalkService{
                 double maxAttainment = walkRepository.findDistanceByDayAndPuppy(puppy.getPuppyId(), walkRecordRequestDto.getWalkStartTime().toLocalDate());
                 double currentAllTime = ((double) (puppy.getBreed().getNeedsWalkTimes() * 60) / 100) * maxAttainment;
 
-                newAttainment = ((currentAllTime + secTime) / (double) (puppy.getBreed().getNeedsWalkTimes() * 60) * 100) * 1.0;
+                newAttainment = ((currentAllTime + secTime) / (puppyNeeds * 60) * 100) * 1.0;
             }
 
             log.info("!!!!newAttainment" + newAttainment);
