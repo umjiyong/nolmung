@@ -264,7 +264,7 @@ const ArticleItem = Props => {
                 registAlarm({
                   inAppAlarmContent:
                     '내 게시물에 ' + userNickName + '님의 댓글이 달렸습니다.',
-                  inAppAlarmLink: '', // 알람 링크 추가 필요
+                  inAppAlarmLink: Props.route.params.boardId, // 알람 링크 추가 필요
                   userId: boardIdData.userId,
                 });
               }}>

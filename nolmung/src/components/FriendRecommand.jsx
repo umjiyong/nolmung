@@ -133,7 +133,7 @@ const FriendRecommand = Props => {
             registAlarm({
               inAppAlarmContent:
                 Props.myName + '님께서 친구 요청을 보냈습니다.',
-              inAppAlarmLink: '', // 알람 링크 추가 필요
+              inAppAlarmLink: 'FriendScreen', // 알람 링크 추가 필요
               userId: Props.userId,
             });
           }}>

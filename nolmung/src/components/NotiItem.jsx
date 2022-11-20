@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const now = new Date();
 const year = now.getFullYear();
@@ -13,9 +14,19 @@ const Time = year + '.' + month + '.' + date + ' ' + hours + ':' + minutes;
 const NotiName = '내가 올린 게시글에 댓글이 달렸어요.';
 
 const NotiItem = Props => {
+  const navigation = useNavigation();
   return (
     <View style={Styles.Container}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          console.log('Alarm: ' + JSON.stringify(Props.alarm));
+          console.log('inAppAlarmLink:' + Props.alarm.inAppAlarmLink);
+          isNaN(Props.alarm.inAppAlarmLink)
+            ? navigation.navigate(Props.alarm.inAppAlarmLink)
+            : navigation.navigate('ArticleItemDetail', {
+                boardId: Props.alarm.inAppAlarmLink,
+              });
+        }}>
         <Text
           style={
             Props.alarm.inAppAlarmIsCheck
