@@ -43,6 +43,12 @@ export const getUserInfo = async (response, success, fail) => {
   return await api.get(`/user/${response.id}`).then(success).catch(fail);
 };
 
+export const registUserImage = async (response, success, fail) => {
+  await AsyncStorage.getItem('userId', (err, res) => {
+    console.log('이미지 업로드쪽', response);
+    imageApi.post(`/image/user/${res}`, response).then(success).catch(fail);
+  });
+
 export const user_info_change = async (response, success, fail) => {
   // console.log('유저 정보 수정 콘솔', response);
   return await api
