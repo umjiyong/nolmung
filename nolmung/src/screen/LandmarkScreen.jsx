@@ -22,9 +22,12 @@ import {
   getLandmarkArticleList,
 } from '../api/Landmark';
 
+
 function LandmarkScreen({navigation: {navigate}, route}) {
   const Navigation = useNavigation();
   const isFocused = useIsFocused(); // isFoucesd Define
+
+
 
   const [landmarkArticle, setlandmarkArticle] = useState([]);
   const [userInfo, setuserInfo] = useState([]);
@@ -66,6 +69,7 @@ function LandmarkScreen({navigation: {navigate}, route}) {
           {
             landmarkId: route.params.landmarkId,
             userId: id, // userid 1 로 되있다면 어싱크로 바꿔야
+
           },
           response => {
             setlandmarkInfo(response.data);
@@ -106,6 +110,7 @@ function LandmarkScreen({navigation: {navigate}, route}) {
       console.log('유저정보페이지 유저정보 get 에러', err);
     }
   };
+
   const getLandmarkArticleListFunc = async () => {
     try {
       await AsyncStorage.getItem('userId', (err, id) => {
@@ -223,9 +228,11 @@ function LandmarkScreen({navigation: {navigate}, route}) {
               </Text>
               <Pressable
                 onPress={() => {
+
                   Navigation.push('NewGuestBook', {
                     landmarkId: landmarkInfo.landmarkInfo.landmarkId,
                   });
+
                 }}
                 style={style.writebtn}>
                 <Text style={{color: '#fff', fontWeight: '500'}}>글쓰기</Text>
