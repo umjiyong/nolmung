@@ -109,12 +109,12 @@
 
 |                              시스템 구성                           |
 | :------------------------------------------------------------------------------: |
-| !![image](/uploads/5f3932fcd483bf2c197b873dd464e674/image.png)(#) |
+| !![A502_시스템구성도](/uploads/7e20bbf4b0bb338bd22e470fe551e2ee/A502_시스템구성도.PNG) |
 
 
 |                              디렉토리 구조                       |
 | :------------------------------------------------------------------------------: |
-| 프론트엔드![image](/uploads/565caa25b92abc38029d17974c064b10/bandicam_2022-08-19_01-43-56-589.jpg) 백엔드![image](/uploads/f31e4ca4f6f35ba8544b0f4616713308/bandicam_2022-08-19_01-49-31-508.jpg) |
+| 프론트엔드![image](/uploads/650a5d7af68ca7d56f282d1a7fe606a4/image.png) 백엔드![image](/uploads/bcefdbf0dc2af84dc20f16f651de2e5e/image.png) |
 
 <br />
 
@@ -210,13 +210,13 @@
         <td height="140px" align="center"> <a href="">
             <img src="/uploads/0b23c8d1fa4a643e06d3a8064c001718/image.png" width="140px" /> <br><br> 👑 이동희 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="">
-            <img src="/uploads/ecf1f5b40f7becca01912aa9cfc68d5a/image.png" width="140px" /> <br><br> 🙂 이지영 <br>(Back-End) </a> <br></td>
+            <img src="/uploads/a2b6ca65124a2b1597ebc73820dfa71b/image.png" width="140px" /> <br><br> 🙂 이지영 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/pch8349">
             <img src="/uploads/7f1abc04dff4d6972c9fb5433ea6df34/image.png" width="140px" /> <br><br> 😆 박찬혁 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/rlaxorud180">
             <img src="/uploads/b48846d500fb735839081aa6b5b675cf/image.png" width="140px" /> <br><br> 😁 강태경 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="">
-            <img src="/uploads/ae19dde3e26a774bcef77adcc154f725/민지.jpg" width="140px" /> <br><br> 🙄 엄지용 <br>(Back-End) </a> <br></td>
+            <img src="/uploads/7f0b86bac5d37079ad53ac330e4ecc43/image.png" width="140px" /> <br><br> 🙄 엄지용 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="">
             <img src="/uploads/84c9ef5f78d646a1d45e08b5de69ae4a/image.png" width="140px" /> <br><br> 😶 박세원 <br>(Back-End) </a> <br></td>
     </tr>
