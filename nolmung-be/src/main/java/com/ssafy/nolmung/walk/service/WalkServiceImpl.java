@@ -133,7 +133,8 @@ public class WalkServiceImpl implements WalkService{
     public double getNewWalkAttainment(int needWalkTime, WalkRecordRequestDto walkRecordRequestDto) {
         long secTime = calWalkSecTime(walkRecordRequestDto.getWalkStartTime(), walkRecordRequestDto.getWalkEndTime());
 
-        return (secTime) / (double) (needWalkTime * 60) * 100;
+//        return (double) (secTime / (needWalkTime * 60) * 100);
+        return 1.0;
     }
 
 
