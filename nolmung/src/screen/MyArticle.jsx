@@ -3,13 +3,17 @@ import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import MiddleHeader from '../components/MiddleHeader';
 import {getArticles_mine} from '../api/Article';
 import ArticleItem from '../components/ArticleItem';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const MyArticle = () => {
   const [myArticles, setMyArticles] = useState([]);
   const getMyArticles = async () => {
     try {
-      await getArticles_mine({userId: 1}, response => {
-        // console.log(response.data);
-        setMyArticles(response.data);
+      await AsyncStorage.getItem('userId', (err, id) => {
+        getArticles_mine({userId: id}, response => {
+          // console.log(response.data);
+          setMyArticles(response.data);
+        });
       });
     } catch (err) {
       console.log('에러났슈', err);
@@ -27,7 +31,7 @@ const MyArticle = () => {
           <>
             {myArticles.map((item, index) => {
               {
-                console.log('아이템', item);
+                // console.log('아이템', item);
               }
               return (
                 <ArticleItem

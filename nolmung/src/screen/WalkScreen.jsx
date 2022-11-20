@@ -110,7 +110,7 @@ function WalkScreen({navigation}) {
   };
 
   const getNearLandmarkMarkerListFunc = async (userLat, userLon) => {
-    console.log('현재 위치 ', userLat, userLon);
+    // console.log('현재 위치 ', userLat, userLon);
     try {
       await getNearLandmarkMarkerList(
         {
@@ -336,8 +336,9 @@ function WalkScreen({navigation}) {
                   onPress={() => {
                     // console.log(landmark.landmarkId, '번 랜드마크');
                     if (getLandmarkAccessibility(landmark)) {
-                      
-                      navigation.push('LandmarkScreen', {landmarkId: landmark.landmarkId})
+                      navigation.push('LandmarkScreen', {
+                        landmarkId: landmark.landmarkId,
+                      });
                     } else {
                       alert('접근할 수 없는 거리에 위치한 랜드마크입니다.');
                     }

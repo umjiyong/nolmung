@@ -56,3 +56,24 @@ export const getArticles_From_BoardId = async (response, success, fail) => {
   console.log('특정 게시물 조회', response);
   return await api.get(`/board/${response.boardId}`).then(success).catch(fail);
 };
+
+export const registArticleImage = async (response, success, fail) => {
+  await AsyncStorage.getItem('userId', (err, res) => {
+    console.log('이미지 업로드쪽', response);
+    imageApi.post(`/image/board/${res}`, response).then(success).catch(fail);
+  });
+};
+
+export const postBoard = async (response, success, fail) => {
+  console.log('됬다 임마', response);
+  await api
+    .post(`/board`, {
+      boardClass: response.boardClass,
+      boardContent: response.boardContent,
+      boardImg: response.boardImg,
+      userId: response.userId,
+      regionId: response.regionId,
+    })
+    .then(success)
+    .catch(fail);
+};

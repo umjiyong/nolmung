@@ -19,7 +19,7 @@ export const getRecordList = async (request, success, fail) => {
 // };
 
 export const getNearLandmarkMarkerList = async (request, success, fail) => {
-  console.log('내 근처 랜드마크 마커 api 호출');
+  // console.log('내 근처 랜드마크 마커 api 호출');
   await api.post(`/landmark/nearList`, request).then(success).catch(fail);
 };
 

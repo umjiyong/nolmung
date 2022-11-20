@@ -84,6 +84,7 @@ function MyProfileScreen({navigation}) {
         getUserInfo(
           {id},
           response => {
+            console.log(response.data);
             setUserData(response.data);
           },
           err => {
