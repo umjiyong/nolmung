@@ -13,26 +13,26 @@ const NotiScreen = () => {
   function printAlarmList() {
     let result = [];
     for (let i = 0; i < alarmList.length; i++) {
+      console.log('AlarmId: ' + alarmList[i].inAppAlarmId);
       result.push(
         <NotiItem alarm={alarmList[i]} key={alarmList[i].inAppAlarmId} />,
       );
       readAlarmList.push(alarmList[i].inAppAlarmId);
     }
+    readUpdate();
     return result;
   }
 
   function readUpdate() {
-    for (let i = 0; i < readAlarmList.length; i++) {
-      updateAlarmRead(readAlarmList).then(data => {
-        console.log(data);
-      });
-    }
+    console.log('알림 조회 업데이트!');
+    updateAlarmRead(readAlarmList).then(data => {
+      console.log(data);
+    });
   }
 
   useEffect(() => {
     getAlarmList({userId: 72}).then(data => {
       setAlarmList(data);
-      readUpdate();
     });
   }, []);
 
