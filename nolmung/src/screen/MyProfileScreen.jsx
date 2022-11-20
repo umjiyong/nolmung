@@ -11,24 +11,25 @@ import {
   Alert,
   PermissionsAndroid,
   Pressable,
-
-  DeviceEventEmitter
-
+  DeviceEventEmitter,
 } from 'react-native';
 import Header from '../components/Header';
 import MyDog from '../components/MyDog';
 
-import {user_info, registUserInfo} from '../api/User';
-import {user_puppy_info} from '../api/Puppy';
+import {getUserInfo, registUserImage, registUserInfo} from '../api/User';
+import {getUserPuppyInfo} from '../api/Puppy';
 // import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker/src';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getFriendList} from '../api/Friend';
+import {getUserBoardCnt} from '../api/Board';
+import axios from 'axios';
 
-
-
-function MyProfileScreen({navigation} ) {
-
-  const [userinfo,setuseinfo] = useState([])
-  const [puppyinfo,setpuppyinfo] = useState([])
+function MyProfileScreen({navigation}) {
+  const [userData, setUserData] = useState([]);
+  const [puppyData, setPuppyData] = useState([]);
+  const [friendCnt, setFriendCnt] = useState();
+  const [boardCnt, setBoardCnt] = useState();
 
   const Friend = 1;
   const Post = 1;
@@ -37,10 +38,9 @@ function MyProfileScreen({navigation} ) {
   const friendCode = '#E1VH64';
   const [intro, setIntro] = useState('소개글이 없습니다');
 
-  const [photo,setPhoto] = useState("")
-  
+  const [photo, setPhoto] = useState('');
+
   // onSetFlag()
-  
 
   // const showPicker = async () =>{
   //   const grantedcamera = await PermissionsAndroid.request(
@@ -80,69 +80,105 @@ function MyProfileScreen({navigation} ) {
 
   const user_info_func = async () => {
     try {
-      await user_info(
-        {userId: 1},
-        response => {
-          setuseinfo(response.data);
-        },
-        err => {
-          console.log('유저정보 에러', err);
-        },
-      );
+      await AsyncStorage.getItem('userId', (err, id) => {
+        getUserInfo(
+          {id},
+          response => {
+            setUserData(response.data);
+          },
+          err => {
+            console.log('유저정보 에러', err);
+          },
+        );
+      });
     } catch (err) {
-      console.log(err);
-      console.log('심각한 에러;;');
+      console.log('유저정보페이지 유저정보 get 에러', err);
     }
   };
 
   const user_puppy_info_func = async () => {
     try {
-      await user_puppy_info(
-        {userId: 1},
-        response => {
-          setpuppyinfo(response.data);
-        },
-        err => {
-          console.log('강아지정보 에러', err);
-        },
-      );
+      await AsyncStorage.getItem('userId', (err, id) => {
+        getUserPuppyInfo(
+          {id},
+          response => {
+            setPuppyData(response.data);
+          },
+          err => {
+            console.log('강아지정보 에러', err);
+          },
+        );
+      });
     } catch (err) {
-      console.log(err);
-      console.log('심각한 에러;;');
+      console.log('내정보 페이지 getUserPuppyData 에러', err);
       //되는 코드입니다.//
+    }
+  };
+
+  const get_friend_func = async () => {
+    try {
+      await AsyncStorage.getItem('userId', (err, id) => {
+        getFriendList(
+          {id},
+          response => {
+            setFriendCnt(response.data.length);
+          },
+          error => {
+            console.log('내 친구정보 가져오기 통신에러', error);
+          },
+        );
+      });
+    } catch (error) {
+      console.log('유저 친구수 가져오기 에러', error);
+    }
+  };
+
+  const get_board_func = async () => {
+    try {
+      await AsyncStorage.getItem('userId', (err, id) => {
+        getUserBoardCnt(
+          {id},
+          response => {
+            setBoardCnt(response.data);
+          },
+          error => {
+            console.log('내 보드정보 가져오기 통신에러', error);
+          },
+        );
+      });
+    } catch (error) {
+      console.log('유저 보드수 가져오기 에러', error);
     }
   };
 
   useEffect(() => {
     user_info_func();
     user_puppy_info_func();
-    DeviceEventEmitter.addListener('abc', ()=> {
+
+    DeviceEventEmitter.addListener('abc', () => {
       user_info_func();
       user_puppy_info_func();
-    })
+    });
   }, []);
 
-  console.log('유저사진', userinfo.userImg);
-
-  const user_info_change_func = async data => {
+  const user_image_upload_func = async data => {
     try {
-      await registUserInfo(
-        {userImg: data},
+      await registUserImage(
+        data,
         response => {
           console.log(response);
         },
         err => {
-          console.log('강아지정보 에러', err);
+          console.log('유저 사진 업로드 에러', err);
         },
       );
     } catch (err) {
-      console.log(err);
-      console.log('심각한 에러;;');
+      console.log('유저 사진 업로드심각한 에러;;', err);
     }
   };
 
   const [response, setResponse] = useState();
-  const onSelectImage = () => {
+  const onSelectImage = async () => {
     try {
       launchImageLibrary(
         {
@@ -152,17 +188,23 @@ function MyProfileScreen({navigation} ) {
           includeBase64: Platform.OS === 'android',
         },
         res => {
-          console.log(res);
+          console.log('이미지 고르고 이벤트', res);
           if (res.didCancel) return;
           setResponse(res);
 
-          user_info_change_func(response?.assets[0]?.uri);
+          var body = new FormData();
+          body.append('files', {
+            uri: res.assets[0].uri,
+            type: 'image/jpeg',
+            name: `${res.assets[0].fileName}`,
+          });
+
+          user_image_upload_func(body);
         },
       );
     } catch (err) {
       console.log(err);
       console.log('심각한 에러;;');
-
     }
   };
 
@@ -171,40 +213,38 @@ function MyProfileScreen({navigation} ) {
       <Header HeaderName="마이 페이지" />
       <ScrollView style={Styles.container} showsVerticalScrollIndicator={false}>
         <View style={Styles.profile}>
-
-        <Pressable onPress={onSelectImage}>
-            {response ?  <Image
-              source={{uri: response?.assets[0]?.uri}}
-              
-              resizeMode="contain"
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: 100,
-              }}
-            /> : <Image
-            source={{uri : userinfo.userImg}}
-            
-            resizeMode="contain"
-            style={{
-              width: 80,
-              height: 80,
-            }}
-          />}
-          
-          
-        </Pressable>
-         
+          <Pressable onPress={onSelectImage}>
+            {response ? (
+              <Image
+                source={{uri: response?.assets[0]?.uri}}
+                resizeMode="contain"
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 100,
+                }}
+              />
+            ) : (
+              <Image
+                source={{uri: userData.userImg}}
+                resizeMode="contain"
+                style={{
+                  width: 80,
+                  height: 80,
+                }}
+              />
+            )}
+          </Pressable>
 
           {/* <Button title="이미지 선택" onPress={showPicker} ></Button>  */}
 
           <View style={Styles.friendPostBox}>
             <View style={Styles.friendBox}>
-              <Text style={Styles.FriendCountText}>{Friend}</Text>
+              <Text style={Styles.FriendCountText}>{friendCnt}</Text>
               <Text style={Styles.FriendText}>친구</Text>
             </View>
             <View style={Styles.PostBox}>
-              <Text style={Styles.PostCountText}>{Post}</Text>
+              <Text style={Styles.PostCountText}>{boardCnt}</Text>
               <Text style={Styles.PostText}>게시글</Text>
             </View>
           </View>
@@ -219,7 +259,7 @@ function MyProfileScreen({navigation} ) {
                   fontFamily: 'NotoSansKR-Medium',
                   marginRight: 5,
                 }}>
-                {userinfo.userNickName}
+                {userData.userNickName}
               </Text>
               <Text
                 style={{
@@ -227,7 +267,7 @@ function MyProfileScreen({navigation} ) {
                   fontSize: 18,
                   fontFamily: 'NotoSansKR-Medium',
                 }}>
-                {userinfo.userAddressText}
+                {userData.userAddressText}
               </Text>
             </View>
             <TouchableOpacity
@@ -261,15 +301,15 @@ function MyProfileScreen({navigation} ) {
               style={{
                 color: '#282828',
               }}>
-              {userinfo.userCode}
+              {userData.userCode}
             </Text>
           </View>
         </View>
-        {userinfo ? (
+        {userData ? (
           <View style={Styles.introInput}>
             <View style={Styles.introBox}>
               <Text style={{color: '#282828'}}>
-                {userinfo.userIntroduction}
+                {userData.userIntroduction}
               </Text>
             </View>
           </View>
@@ -289,23 +329,23 @@ function MyProfileScreen({navigation} ) {
         </View>
         {/* Dog component */}
 
-        {puppyinfo.myPuppyList ? (
+        {puppyData.myPuppyList ? (
           <>
-            {puppyinfo.myPuppyList.map((item, index) => {
+            {puppyData.myPuppyList.map((item, index) => {
               return (
                 <MyDog
                   key={index}
-                  puppyId={item.puppyInfo.puppyId}
-                  puppyImg={item.puppyInfo.puppyImg}
-                  puppyName={item.puppyInfo.puppyName}
-                  puppyAge={item.puppyInfo.puppyAge}
-                  breedName={item.puppyInfo.breedName}
+                  puppyId={item.puppyData.puppyId}
+                  puppyImg={item.puppyData.puppyImg}
+                  puppyName={item.puppyData.puppyName}
+                  puppyAge={item.puppyData.puppyAge}
+                  breedName={item.puppyData.breedName}
                 />
               );
             })}
           </>
         ) : (
-          <Text>반려견을 추가해주세요</Text>
+          <Text style={{textAlign: 'center'}}>반려견을 추가해주세요</Text>
         )}
 
         {/* End Dog Component */}

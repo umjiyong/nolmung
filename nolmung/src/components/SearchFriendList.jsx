@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import {user_info} from "../api/User"
+import {getUserInfo} from "../api/User"
 import {useState, useEffect} from 'react';
 
 const SearchFriendList = (Props) => {
@@ -14,7 +14,7 @@ const SearchFriendList = (Props) => {
     const user_info_func = async (id) => {
         try {
           
-          await user_info(
+          await getUserInfo(
             { userId: id },
             (response) => {
               setuserdata(response.data);
