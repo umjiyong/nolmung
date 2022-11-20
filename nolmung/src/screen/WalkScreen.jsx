@@ -424,7 +424,7 @@ function WalkScreen({navigation}) {
                 console.log('퍼피아이디', item.puppyId);
                 // setCheckPuppy([...checkPuppy, item.puppyId]);
               }}
-              key={item.puppyId}>
+              key={index}>
               <Image
                 source={{uri: item.puppyInfo.puppyImg}}
                 resizeMode="contain"
