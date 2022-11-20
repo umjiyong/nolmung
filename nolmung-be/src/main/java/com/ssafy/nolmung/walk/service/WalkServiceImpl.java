@@ -105,14 +105,23 @@ public class WalkServiceImpl implements WalkService{
             User user = userRepository.findById(walkRecordRequestDto.getUserId()).get();
             LocalDate date = walkRecordRequestDto.getWalkStartTime().toLocalDate();
 
+            log.info("!!!!사용자" + user.getUserId());
+            log.info("!!!!강아지" + puppy.getPuppyId());
+            log.info("!!!!날짜" + date);
+
             double newAttainment = getNewWalkAttainment(puppy.getBreed().getNeedsWalkTimes(), walkRecordRequestDto);
 
+            log.info("!!!!newAttainment" + newAttainment);
             int count = walkRepository.countByWalkDateAndPuppyPuppyId(walkRecordRequestDto.getWalkStartTime().toLocalDate(), puppy.getPuppyId());
 
             if( count > 0){
                 double maxAttainment = walkRepository.findDistanceByDayAndPuppy(puppy.getPuppyId(), walkRecordRequestDto.getWalkStartTime().toLocalDate());
                 newAttainment = getCurWalkAttainment(maxAttainment, puppy.getBreed().getNeedsWalkTimes(), walkRecordRequestDto);
             }
+
+            log.info("!!!!newAttainment" + newAttainment);
+
+            log.info("!!!! 통과했니???" );
 
             Walk newRecord = Walk.builder()
                     .walkStartTime(walkRecordRequestDto.getWalkStartTime())
@@ -126,6 +135,8 @@ public class WalkServiceImpl implements WalkService{
                     .build();
 
             walkRepository.save(newRecord);
+
+            log.info("!!!! 저장했니????" );
         }
     }
 
