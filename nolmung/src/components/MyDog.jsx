@@ -16,7 +16,7 @@ const doginfo_walkAmount = 3;
 const doginfo_complete = 100;
 
 const MyDog = Props => {
-  console.log('Props', Props);
+  // console.log('Props', Props);
   const doginfo_species = Props.breedName;
   const doginfo_age = Props.puppyAge;
   const navigation = useNavigation();
