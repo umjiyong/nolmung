@@ -26,6 +26,7 @@ import {
   user_friend_search,
   user_friend_post,
 } from '../api/Friend';
+import {user_info} from '../api/User';
 import {useNavigation} from '@react-navigation/native';
 
 function FriendScreen() {
@@ -47,6 +48,7 @@ function FriendScreen() {
   const [friendrequest, setfriendrequest] = useState('');
   const [friendrandom, setfriendrandom] = useState([]);
   const [friendId, setfriendId] = useState('');
+  const [userInfo, setUserInfo] = useState([]);
 
   // const user_friend_post_func = async () => {
   //   try {
@@ -143,6 +145,24 @@ function FriendScreen() {
     }
   };
 
+  const user_info_func = async () => {
+    try {
+      await user_info(
+        {userId: 1},
+        response => {
+          setUserInfo(response.data);
+          console.log('userInfo: ' + JSON.stringify(userInfo));
+        },
+        err => {
+          console.log('유저정보 에러', err);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
+
   const refresh_func = () => {
     console.log('리프레시');
     user_friend_random_func();
@@ -152,9 +172,10 @@ function FriendScreen() {
     getfriend_list_func();
     user_friend_proposal_func();
     user_friend_random_func();
+    user_info_func();
   }, []);
 
-  console.log("로그확인",friendrequest)
+  console.log('로그확인', friendrequest);
 
   return (
     <>
@@ -220,7 +241,11 @@ function FriendScreen() {
               <>
                 {friendrandom.map(item => {
                   return (
-                    <FriendRecommand key={item.userId} userId={item.userId} />
+                    <FriendRecommand
+                      key={item.userId}
+                      userId={item.userId}
+                      myName={userInfo.userName}
+                    />
                   );
                 })}
               </>

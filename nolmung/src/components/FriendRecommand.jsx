@@ -9,9 +9,12 @@ import {
   View,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {getUserInfo} from '../api/User';
-import {getUserPuppyInfo} from '../api/Puppy';
+import {user_info} from '../api/User';
+import {user_puppy_info} from '../api/Puppy';
 import {user_friend_post} from '../api/Friend';
+import {registAlarm} from '../api/Alarm';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const FriendRecommand = Props => {
   const navigation = useNavigation();
   const [userinfo, setuseinfo] = useState([]);
@@ -19,40 +22,6 @@ const FriendRecommand = Props => {
   const HumanName = userinfo.userNickName;
   const [DogInfo, setDogInfo] = useState('강아지가 없습니다');
 
-  const user_info_func = async Id => {
-    try {
-      await getUserInfo(
-        {Id: Id},
-        response => {
-          setuseinfo(response.data);
-        },
-        err => {
-          console.log('유저정보 에러', err);
-        },
-      );
-    } catch (err) {
-      console.log(err);
-      console.log('심각한 에러;;');
-    }
-  };
-
-  const user_puppy_info_func = async Id => {
-    try {
-      await getUserPuppyInfo(
-        {Id: Id}, //Id 로 바꿔줘야함
-        response => {
-          console.log('아이디임', Id);
-          setpuppyinfo(response.data);
-        },
-        err => {
-          console.log('강아지정보 에러', err);
-        },
-      );
-    } catch (err) {
-      console.log(err);
-      console.log('심각한 에러;;');
-    }
-  };
   const user_friend_post_func = async () => {
     try {
       await user_friend_post(
@@ -70,6 +39,46 @@ const FriendRecommand = Props => {
       console.log('심각한 에러;;');
     }
   };
+
+  const user_info_func = async Id => {
+    try {
+      await user_info(
+        {userId: Id},
+        response => {
+          setuseinfo(response.data);
+        },
+        err => {
+          console.log('유저정보 에러', err);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
+
+  const user_puppy_info_func = async Id => {
+    try {
+      await user_puppy_info(
+        {userId: Id}, //Id 로 바꿔줘야함
+        response => {
+          console.log('아이디임', Id);
+          setpuppyinfo(response.data);
+        },
+        err => {
+          console.log('강아지정보 에러', err);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
+
+  useEffect(() => {
+    user_info_func(Props.userId);
+    user_puppy_info_func(Props.userId);
+  }, []);
 
   useEffect(() => {
     if (puppyinfo.length > 0) {
@@ -117,7 +126,16 @@ const FriendRecommand = Props => {
             </View>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableOpacity onPress={user_friend_post_func}>
+        <TouchableOpacity
+          onPress={() => {
+            user_friend_post_func();
+            registAlarm({
+              inAppAlarmContent:
+                Props.myName + '님께서 친구 요청을 보냈습니다.',
+              inAppAlarmLink: '', // 알람 링크 추가 필요
+              userId: Props.userId,
+            });
+          }}>
           <View style={{marginTop: -20, ...Styles.RequestBtn}}>
             <Text style={{color: '#FF772F'}}>친구 신청</Text>
           </View>
