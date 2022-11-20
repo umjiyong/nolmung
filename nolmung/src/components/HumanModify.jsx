@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react";
 import { ScrollView,TextInput, StyleSheet, Text, View, TouchableOpacity, Button, Pressable, DeviceEventEmitter } from "react-native";
 import Postcode from "@actbase/react-daum-postcode";
 import Modal from "react-native-modal"
-import {user_info,user_info_change} from "../api/User"
+import {getUserInfo,registUserInfo} from "../api/User"
 import { useNavigation } from "@react-navigation/native";
 
 
@@ -36,7 +36,7 @@ const HumanModify = () => {
     const user_info_func = async () => {
         try {
           
-          await user_info(
+          await getUserInfo(
             { userId: 1 },
             (response) => {
               setuseinfo(response.data);
@@ -58,7 +58,7 @@ const HumanModify = () => {
     const user_info_change_func = async () => {
         try {
           
-          await user_info_change(
+          await registUserInfo(
             { userId : 1,
                 userNickName: nickName,
                 userAddressText : address,

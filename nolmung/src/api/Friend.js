@@ -17,44 +17,38 @@ api.interceptors.request.use(async config => {
   return config;
 });
 
-export const user_friend_list = async (response, success, fail) => {
-  console.log('친구 api 호출');
-  return await api.get(`/friend/${response.userId}`).then(success).catch(fail);
+export const getFriendList = async (response, success, fail) => {
+  await api.get(`/friend/${response.id}`).then(success).catch(fail);
 };
 
+export const user_friend_proposal = async (response, success, fail) => {
+  return await api
+    .get(`/friend/proposal/${response.userId}`)
+    .then(success)
+    .catch(fail);
+};
 
-export const user_friend_proposal= async (response, success, fail) => {
-    
-    return await api
-        .get(`/friend/proposal/${response.userId}`)
-        .then(success)
-        .catch(fail);
-    };
-    
+export const user_friend_random = async (response, success, fail) => {
+  return await api
+    .get(`/friend/recommend/${response.userId}`)
+    .then(success)
+    .catch(fail);
+};
 
-export const user_friend_random= async (response, success, fail) => {
-    
-    return await api
-        .get(`/friend/recommend/${response.userId}`)
-        .then(success)
-        .catch(fail);
-    };
+export const user_friend_search = async (response, success, fail) => {
+  return await api
+    .get(`/friend/search/${response.userCode}`)
+    .then(success)
+    .catch(fail);
+};
 
-
-export const user_friend_search= async (response, success, fail) => {
-    
-    return await api
-        .get(`/friend/search/${response.userCode}`)
-        .then(success)
-        .catch(fail);
-    };
-
-
-export const user_friend_post= async (response, success, fail) => {
-    console.log("친구 post 신청 api 호출");
-    return await api
-        .post(`/friend/send`,{fromUserId : response.fromUserId, toUserId : response.toUserId})
-        .then(success)
-        .catch(fail);
-    };
-    
+export const user_friend_post = async (response, success, fail) => {
+  console.log('친구 post 신청 api 호출');
+  return await api
+    .post(`/friend/send`, {
+      fromUserId: response.fromUserId,
+      toUserId: response.toUserId,
+    })
+    .then(success)
+    .catch(fail);
+};

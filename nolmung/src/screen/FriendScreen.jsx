@@ -20,7 +20,7 @@ import Modal from 'react-native-modal';
 import SearchFriendList from '../components/SearchFriendList';
 
 import {
-  user_friend_list,
+  getFriendList,
   user_friend_proposal,
   user_friend_random,
   user_friend_search,
@@ -95,8 +95,8 @@ function FriendScreen() {
 
   const getfriend_list_func = async () => {
     try {
-      await user_friend_list(
-        {userId: 1},
+      await getFriendList(
+        {Id: 1},
         response => {
           setfriendList(response.data);
         },
