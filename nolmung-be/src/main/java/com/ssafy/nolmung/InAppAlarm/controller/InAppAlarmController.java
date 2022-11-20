@@ -3,7 +3,6 @@ package com.ssafy.nolmung.InAppAlarm.controller;
 import com.ssafy.nolmung.InAppAlarm.dto.request.InAppAlarmRequest;
 import com.ssafy.nolmung.InAppAlarm.dto.response.InAppAlarmResponse;
 import com.ssafy.nolmung.InAppAlarm.service.InAppAlarmService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
