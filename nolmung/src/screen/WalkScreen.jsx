@@ -112,7 +112,7 @@ function WalkScreen({navigation}) {
           userLon: 127.039600248343,
         },
         response => {
-          console.log('!!!!', response.data);
+          // console.log('!!!!', response.data);
           setLandmark(response.data.landmarkList);
         },
         err => {
@@ -326,7 +326,8 @@ function WalkScreen({navigation}) {
                   onPress={() => {
                     console.log(landmark.landmarkId, '번 랜드마크');
                     if (getLandmarkAccessibility(landmark)) {
-                      navigation.push('LandmarkScreen');
+                      
+                      navigation.push('LandmarkScreen', {landmarkId: landmark.landmarkId})
                     } else {
                       alert('접근할 수 없는 거리에 위치한 랜드마크입니다.');
                     }
