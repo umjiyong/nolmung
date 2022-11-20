@@ -104,7 +104,9 @@ public class WalkServiceImpl implements WalkService{
             Puppy puppy = puppyRepository.findById(walkRecordRequestDto.getPuppyIdList().get(i)).get();
             User user = userRepository.findById(walkRecordRequestDto.getUserId()).get();
             LocalDate date = walkRecordRequestDto.getWalkStartTime().toLocalDate();
-            double newAttainment = getNewWalkAttainment(puppy.getBreed().getNeedsWalkTimes(), walkRecordRequestDto);
+            double newAttainment = 1.0;
+
+//            double newAttainment = getNewWalkAttainment(puppy.getBreed().getNeedsWalkTimes(), walkRecordRequestDto);
 
 //            int count = walkRepository.countByWalkDateAndPuppyPuppyId(walkRecordRequestDto.getWalkStartTime().toLocalDate(), puppy.getPuppyId());
 //
