@@ -111,6 +111,7 @@ function WalkScreen({navigation}) {
 
   const getNearLandmarkMarkerListFunc = async (userLat, userLon) => {
     // console.log('현재 위치 ', userLat, userLon);
+
     try {
       await getNearLandmarkMarkerList(
         {
@@ -121,7 +122,6 @@ function WalkScreen({navigation}) {
           // console.log('!!!!', response.data);
           setLandmark(response.data.landmarkList);
         },
-        
       );
     } catch (error) {
       // console.log(err);
