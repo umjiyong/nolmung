@@ -45,7 +45,6 @@ public class BoardServiceImpl implements BoardService {
                 .boardClass(boardRequest.getBoardClass())
                 .user(user)
                 .region(user.getRegion())
-                .boardImageList(new ArrayList<>())
                 .build();
 
         Board newBoard = boardRepository.save(board);
