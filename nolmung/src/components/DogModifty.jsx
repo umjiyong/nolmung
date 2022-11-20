@@ -234,12 +234,13 @@ const DogModify = () => {
               alignItems: 'center',
             }}>
             <Text style={{color: '#282828', fontSize: 16, textAlign: 'center'}}>
-              이미 강아지가 있으신가요?
+              강아지를 추가하시겠습니까?
             </Text>
             <View style={{flexDirection: 'row'}}>
               <Pressable
                 onPress={() => {
-                  HasDog();
+                  navi.navigate('AddDogInfo');
+                  NoHasDog();
                   toggleModal();
                 }}
                 style={{marginRight: 40}}>
@@ -247,7 +248,6 @@ const DogModify = () => {
               </Pressable>
               <Pressable
                 onPress={() => {
-                  navi.navigate('AddDogInfo');
                   NoHasDog();
                   toggleModal();
                 }}>
