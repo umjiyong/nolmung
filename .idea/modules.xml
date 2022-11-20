@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/S07P31A502.iml" filepath="$PROJECT_DIR$/.idea/S07P31A502.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nolmung.iml" filepath="$PROJECT_DIR$/.idea/modules/nolmung.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nolmung.main.iml" filepath="$PROJECT_DIR$/.idea/modules/nolmung.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nolmung.querydsl.iml" filepath="$PROJECT_DIR$/.idea/modules/nolmung.querydsl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/nolmung.test.iml" filepath="$PROJECT_DIR$/.idea/modules/nolmung.test.iml" />
     </modules>
   </component>
 </project>
