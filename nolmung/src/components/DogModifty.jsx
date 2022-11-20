@@ -187,7 +187,6 @@ const DogModify = () => {
             {/* {console.log('하아...내 퍼피리스트', myPuppyList)} */}
             {myPuppyList.myPuppyList.map(item => {
               {
-                console.log('아이템', item);
               }
               return (
                 <Pressable

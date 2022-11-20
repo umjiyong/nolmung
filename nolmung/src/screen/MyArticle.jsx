@@ -31,7 +31,7 @@ const MyArticle = () => {
           <>
             {myArticles.map((item, index) => {
               {
-                // console.log('아이템', item);
+
               }
               return (
                 <ArticleItem

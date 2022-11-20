@@ -21,7 +21,6 @@ import {
   getLandmarkVisitor,
   getLandmarkArticleList,
 } from '../api/Landmark';
-import {useNavigation, useIsFocused} from '@react-navigation/native';
 
 function LandmarkScreen({navigation: {navigate}, route}) {
   const Navigation = useNavigation();
@@ -32,12 +31,11 @@ function LandmarkScreen({navigation: {navigate}, route}) {
   const [landmarkInfo, setlandmarkInfo] = useState([]);
   const [landmarkVisitor, setlandmarkVisitor] = useState([]);
   const [landmarkAritlelist, setlandmarkAritlelist] = useState([]);
-  const [test, setTest] = useState(0);
-
+  const navi = useNavigation();
   const user_info_func = async () => {
     try {
       await AsyncStorage.getItem('userId', (err, id) => {
-        getUserInfo({id: id}, response => {
+        getUserInfo({id: 1}, response => {
           setuserInfo(response.data);
         });
       });
@@ -79,6 +77,35 @@ function LandmarkScreen({navigation: {navigate}, route}) {
     }
   };
 
+  const [content, setcontent] = useState('');
+  const [imageUrl, setimageUrl] = useState('');
+  const [landmarkBoardCreateDate, setlandmarkBoardCreateDate] = useState('');
+  const [landmarkId, setlandmarkId] = useState('');
+  const [userId, setuserId] = useState('');
+
+  const postLandmarkFunc = async () => {
+    try {
+      await AsyncStorage.getItem('userId', (err, id) => {
+        postLandmark(
+          {
+            content: content,
+            imageUrl: imageUrl,
+            landmarkBoardCreateDate: landmarkBoardCreateDate,
+            landmarkId: landmarkId,
+            userId: userId,
+          },
+          response => {
+            setUserData(response.data);
+          },
+          err => {
+            console.log('유저정보 에러', err);
+          },
+        );
+      });
+    } catch (err) {
+      console.log('유저정보페이지 유저정보 get 에러', err);
+    }
+  };
   const getLandmarkArticleListFunc = async () => {
     try {
       await AsyncStorage.getItem('userId', (err, id) => {
@@ -208,9 +235,6 @@ function LandmarkScreen({navigation: {navigate}, route}) {
               {landmarkAritlelist.landmarkBoardList ? (
                 <>
                   {landmarkAritlelist.landmarkBoardList.map((item, index) => {
-                    {
-                      console.log('item', item);
-                    }
                     return (
                       <VisitMemo
                         key={index}
