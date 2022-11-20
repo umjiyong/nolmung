@@ -26,7 +26,6 @@ const CommentList = Props => {
     console.log(isModalVisible);
   };
   const backdropOpacity = 0.3;
-
   console.log('asdf', Props.boardCommentId);
   const deleteCommentFunc = async () => {
     try {

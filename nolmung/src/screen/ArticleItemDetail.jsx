@@ -261,6 +261,7 @@ const ArticleItem = Props => {
                 right: 20,
               }}
               onPress={() => {
+                PostCommentFunc();
                 registAlarm({
                   inAppAlarmContent:
                     '내 게시물에 ' + userNickName + '님의 댓글이 달렸습니다.',
