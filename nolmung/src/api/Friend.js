@@ -52,3 +52,21 @@ export const user_friend_post = async (response, success, fail) => {
     .then(success)
     .catch(fail);
 };
+
+export const userAcceptProposal = async (response, success, fail) => {
+  console.log('친구 받기 api 호출');
+  console.log(response);
+  return await api
+    .post(`/friend/proposal/${response.friendProposalId}`)
+    .then(success)
+    .catch(fail);
+};
+
+export const userDenyProposal = async (response, success, fail) => {
+  console.log('친구 받기 거절 api 호출');
+  console.log(response);
+  return await api
+    .delete(`/friend/proposal/${response.friendProposalId}`)
+    .then(success)
+    .catch(fail);
+};

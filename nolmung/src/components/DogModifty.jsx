@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ScrollView,
   TextInput,
@@ -11,40 +11,43 @@ import {
   TouchableOpacity,
   Button,
   Pressable,
+  DeviceEventEmitter,
 } from 'react-native';
 import DogListItem from './DogListItem';
 import {useNavigation} from '@react-navigation/native';
-import Modal from "react-native-modal"
+import Modal from 'react-native-modal';
 import SearchDogList from './SearchDogList';
-import {puppy_breed_info} from '../api/Puppy';
+import {puppy_breed_info, getUserPuppyInfo, puppy_Modify} from '../api/Puppy';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import {launchCamera, launchImageLibrary} from 'react-native-image-picker/src';
+
 const DogModify = () => {
   const navi = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-        console.log(isModalVisible)
-    };
-
-  const [isModalVisibleTwo, setModalVisibleTwo] = useState(false)
+    setModalVisible(!isModalVisible);
+    console.log(isModalVisible);
+  };
+  const [test, setTest] = useState(false);
+  const [isModalVisibleTwo, setModalVisibleTwo] = useState(false);
   const toggleModalTwo = () => {
     setModalVisibleTwo(!isModalVisibleTwo);
+  };
 
-  }
-    
-  const backdropOpacity = 0.3
-  const [DogName, setDogName] = useState('두부');
+  const backdropOpacity = 0.3;
+  const [DogName, setDogName] = useState('');
   const onChangeText = event => {
     setDogName(event);
   };
 
-  const [DogSeed, setDogSeed] = useState('믹스견');
+  const [DogSeed, setDogSeed] = useState('');
   const onChangeSeed = event => {
     setDogSeed(event);
   };
 
-  const [year, setYear] = useState('1997');
-  const [month, setMonth] = useState('05');
-  const [date, setDate] = useState('30');
+  const [year, setYear] = useState();
+  const [month, setMonth] = useState();
+  const [date, setDate] = useState();
 
   const onChangeYear = event => {
     setYear(event);
@@ -56,7 +59,7 @@ const DogModify = () => {
     setDate(event);
   };
 
-  const [dogWeight, setDogWeight] = useState('3');
+  const [dogWeight, setDogWeight] = useState('');
   const onChangeWeight = event => {
     setDogWeight(event);
   };
@@ -68,63 +71,101 @@ const DogModify = () => {
 
   const [selectSex, setSelectSex] = useState();
   const onChangeMan = () => {
-    setSelectSex('man');
+    setSelectSex(0);
   };
   const onChangeWoman = () => {
-    setSelectSex('woman');
+    setSelectSex(1);
   };
   const [selectNeut, setSelectNeut] = useState();
   const onChangeO = () => {
-    setSelectNeut('O');
+    setSelectNeut(true);
   };
   const onChangeX = () => {
-    setSelectNeut('X');
+    setSelectNeut(false);
   };
-  const [hasDog, setHasDog] = useState()
+  const [hasDog, setHasDog] = useState();
   const HasDog = () => {
-    setHasDog(true)
-    setModalVisible(false)
-    toggleModalTwo()
-
-  }
-  const NoHasDog = () =>{
-    setHasDog(false)
-  }
-  const [text, setText] = useState('')
-  const [search, setSearch] = useState(false)
+    setHasDog(true);
+    setModalVisible(false);
+    toggleModalTwo();
+  };
+  const NoHasDog = () => {
+    setHasDog(false);
+  };
+  const [text, setText] = useState('');
+  const [search, setSearch] = useState(false);
   const searchDog = () => {
-    setSearch(!search)
-    console.log(search)
-  }
+    setSearch(!search);
+    console.log(search);
+  };
 
-  const [allBreedList, setAllBreedList] = useState()
+  const [allBreedList, setAllBreedList] = useState();
 
-  const [selectBreed, setSelectBreed] = useState('터치해서 견종을 선택해주세요')
+  const [selectBreed, setSelectBreed] =
+    useState('터치해서 견종을 선택해주세요');
 
-  const [isModalVisibleBreed, setModalVisibleBreed] = useState(false)
+  const [isModalVisibleBreed, setModalVisibleBreed] = useState(false);
   const toggleModalBreed = () => {
     setModalVisibleBreed(!isModalVisibleBreed);
-
-  }
+  };
 
   const getBreed_List_Func = async () => {
     try {
-      await puppy_breed_info(
-        (response) => {
-          setAllBreedList(response.data);
+      await puppy_breed_info(response => {
+        setAllBreedList(response.data);
+      });
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
+  const [myPuppyList, setMyPuppyList] = useState();
+  const get_MyPuppy_list = async () => {
+    try {
+      await AsyncStorage.getItem('userId', (err, id) => {
+        getUserPuppyInfo({id}, response => {
+          // console.log('강아지 정보', response.data);
+          setMyPuppyList(response.data);
+        });
+      });
+    } catch (err) {
+      console.log('유저 강아지 정보 에러', err);
+    }
+  };
+  const [breedId, setBreedId] = useState();
+  console.log('breedId', breedId);
+  const [puppyId, setPuppyId] = useState();
+  console.log('puppyId', puppyId);
+  const put_MyPuppy_modify = async () => {
+    const birth = year + '-' + month + '-' + date;
+
+    try {
+      await puppy_Modify(
+        {
+          puppyBirth: birth,
+          puppyId: parseInt(puppyId),
+          breedId: parseInt(breedId),
+          puppyCharacter: dogChar,
+          puppyIsNeutered: selectNeut,
+          puppyName: DogName,
+          puppySex: selectSex,
+          puppyWeight: parseInt(dogWeight),
+          puppyImg: 'string',
+        },
+        res => {
+          console.log('강아지 정보 등록 성공', res);
         },
       );
     } catch (err) {
-      console.log(err);
-      console.log("심각한 에러;;");
+      console.log('실패입니다.', err);
     }
   };
 
-  
   useEffect(() => {
-    getBreed_List_Func()
-  }, []);
-  // console.log(allBreedList.breedList)
+    getBreed_List_Func();
+    get_MyPuppy_list();
+  }, [test]);
+  // console.log('myPuppyList', myPuppyList);
   return (
     <>
       {/*  */}
@@ -134,64 +175,123 @@ const DogModify = () => {
           // onPress={() => {
           //   navi.push('AddDogInfo');
           // }}>
-          onPress={toggleModal}
-          >
+          onPress={toggleModal}>
           <View style={Styles.plusDog}>
             <Text style={{fontSize: 40, fontWeight: '500', color: '#fff'}}>
               +
             </Text>
           </View>
         </TouchableOpacity>
-
-        <Modal
-            isVisible={isModalVisible}
-            onBackdropPress={toggleModal}
-            backdropOpacity = {backdropOpacity}    
-        >
-            <View style={{backgroundColor:'white', flex: 0.2, borderRadius:30, justifyContent:'space-around', alignItems:'center'}}>
-              <Text style={{color:'#282828', fontSize: 16, textAlign:'center'}}>이미 강아지가 있으신가요?</Text> 
-              <View style={{flexDirection:'row',}}>
-                <Pressable onPress={HasDog} style={{marginRight: 40,}}>
-                  <Text style={{fontSize: 15, color:'#FF772F'}}>예</Text>
-                </Pressable>     
-                <Pressable onPress={()=>{navi.navigate('AddDogInfo'); NoHasDog}}>
-                  <Text style={{fontSize: 15, color:'#959595'}}>아니요</Text>
+        {myPuppyList ? (
+          <>
+            {/* {console.log('하아...내 퍼피리스트', myPuppyList)} */}
+            {myPuppyList.myPuppyList.map(item => {
+              {
+                console.log('아이템', item);
+              }
+              return (
+                <Pressable
+                  onPress={() => {
+                    setDogName(item.puppyInfo.puppyName);
+                    setSelectBreed(item.puppyInfo.breedName);
+                    setYear(String(item.puppyInfo.puppyBirthYear));
+                    setMonth(String(item.puppyInfo.puppyBirthMonth));
+                    setDate(String(item.puppyInfo.puppyBirthDay));
+                    setDogWeight(String(item.puppyInfo.puppyWeight));
+                    setDogChar(item.puppyInfo.puppyCharacter);
+                    setSelectSex(item.puppyInfo.puppySex);
+                    setSelectNeut(item.puppyInfo.puppyIsNeutered);
+                    setBreedId(String(item.puppyInfo.breedId));
+                    setPuppyId(String(item.puppyId));
+                  }}
+                  key={item.puppyId}>
+                  <DogListItem name={item.puppyInfo.puppyName} />
                 </Pressable>
-              </View>
+              );
+            })}
+          </>
+        ) : (
+          <>
+            <View>
+              <Text>강아지 정보가 없습니다.</Text>
             </View>
-        </Modal>      
+          </>
+        )}
+        {/* 
+        <DogListItem />
+        <DogListItem />
+        <DogListItem /> */}
+        <Modal
+          isVisible={isModalVisible}
+          onBackdropPress={toggleModal}
+          backdropOpacity={backdropOpacity}>
+          <View
+            style={{
+              backgroundColor: 'white',
+              flex: 0.2,
+              borderRadius: 30,
+              justifyContent: 'space-around',
+              alignItems: 'center',
+            }}>
+            <Text style={{color: '#282828', fontSize: 16, textAlign: 'center'}}>
+              이미 강아지가 있으신가요?
+            </Text>
+            <View style={{flexDirection: 'row'}}>
+              <Pressable
+                onPress={() => {
+                  HasDog();
+                  toggleModal();
+                }}
+                style={{marginRight: 40}}>
+                <Text style={{fontSize: 15, color: '#FF772F'}}>예</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  navi.navigate('AddDogInfo');
+                  NoHasDog();
+                  toggleModal();
+                }}>
+                <Text style={{fontSize: 15, color: '#959595'}}>아니요</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
 
         <Modal
-            isVisible={isModalVisibleTwo}
-            onBackdropPress={toggleModalTwo}
-            backdropOpacity = {backdropOpacity}    
-        >
-           <View style={Styles.modal}>
-              <Text style={Styles.ModalText}>강아지 코드 입력</Text>
-              <View style={{flexDirection:'row', alignItems:'center',}}>
-                <TextInput onChangeText={(e)=>setText(e)} value={text} style={Styles.ModalInput}/>
-                <TouchableWithoutFeedback onPress={searchDog}>
-                  <View>
-                    <Image 
-                      source={require('../assets/icons/search.png')}
-                      resizeMode="contain"
-                      style={{
-                        width: 20,
-                        height: 20,
-                        marginTop: 13,
-                        marginLeft: 10,
-                        tintColor: '#FF772F'
-                      }}/>
-                  </View>  
-                </TouchableWithoutFeedback>
+          isVisible={isModalVisibleTwo}
+          onBackdropPress={toggleModalTwo}
+          backdropOpacity={backdropOpacity}>
+          <View style={Styles.modal}>
+            <Text style={Styles.ModalText}>강아지 코드 입력</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <TextInput
+                onChangeText={e => setText(e)}
+                value={text}
+                style={Styles.ModalInput}
+              />
+              <TouchableWithoutFeedback onPress={searchDog}>
+                <View>
+                  <Image
+                    source={require('../assets/icons/search.png')}
+                    resizeMode="contain"
+                    style={{
+                      width: 20,
+                      height: 20,
+                      marginTop: 13,
+                      marginLeft: 10,
+                      tintColor: '#FF772F',
+                    }}
+                  />
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+            {search ? (
+              <View>
+                <SearchDogList />
               </View>
-              {search ? <View><SearchDogList/></View> : null }
+            ) : null}
           </View>
-        </Modal>        
-
-        <DogListItem />
-        <DogListItem />
-        <DogListItem />
+        </Modal>
       </ScrollView>
       <ScrollView style={Styles.DogContainer}>
         <View style={Styles.DogImage}>
@@ -230,7 +330,6 @@ const DogModify = () => {
           />
         </View>
         <View style={{marginBottom: 20}}>
-          
           <Text
             style={{
               color: '#282828',
@@ -241,41 +340,57 @@ const DogModify = () => {
             견종
           </Text>
           <Pressable onPress={toggleModalBreed}>
-            <Text style={{
+            <Text
+              style={{
                 color: '#282828',
                 borderBottomColor: 'gray',
                 borderBottomWidth: 1,
-                paddingHorizontal:5,
-                paddingVertical:3,
-                }}>
-                  {selectBreed}
+                paddingHorizontal: 5,
+                paddingVertical: 3,
+              }}>
+              {selectBreed}
             </Text>
           </Pressable>
           <Modal
             isVisible={isModalVisibleBreed}
             onBackdropPress={toggleModalBreed}
-            backdropOpacity = {backdropOpacity}    
-        >
-            <ScrollView showsVerticalScrollIndicator={false} style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:'white', flex: 0.5, borderRadius: 30,}}>
-              {allBreedList!== undefined ? 
-                (
-                  // {console.log(allBreedList.breedList)}
-                  <>
-                    {(allBreedList.breedList).map((item)=>{
-                      return (
-                          <TouchableOpacity onPress={()=>{setSelectBreed(item.breedName); toggleModalBreed();}} style={{alignItems:'center', marginVertical:20,}} key={item.breedId}>
-                            <Text style={{color:'#282828', fontSize: 16, fontWeight: '500',}}>{item.breedName}</Text>
-                          </TouchableOpacity> 
-                      )
-                    })}
-                  </>
-                )
-              :null}
-          
+            backdropOpacity={backdropOpacity}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={{
+                paddingVertical: 20,
+                paddingHorizontal: 10,
+                backgroundColor: 'white',
+                flex: 0.5,
+                borderRadius: 30,
+              }}>
+              {allBreedList !== undefined ? (
+                // {console.log(allBreedList.breedList)}
+                <>
+                  {allBreedList.breedList.map(item => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setSelectBreed(item.breedName);
+                          toggleModalBreed();
+                        }}
+                        style={{alignItems: 'center', marginVertical: 20}}
+                        key={item.breedId}>
+                        <Text
+                          style={{
+                            color: '#282828',
+                            fontSize: 16,
+                            fontWeight: '500',
+                          }}>
+                          {item.breedName}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </>
+              ) : null}
             </ScrollView>
-        </Modal>      
-           
-       
+          </Modal>
         </View>
         <View>
           <Text
@@ -386,12 +501,10 @@ const DogModify = () => {
             {/*  */}
             <TouchableWithoutFeedback onPress={onChangeMan}>
               <View
-                style={
-                  selectSex == 'man' ? Styles.SelectsexBtn : Styles.sexBtn
-                }>
+                style={selectSex == 0 ? Styles.SelectsexBtn : Styles.sexBtn}>
                 <Text
                   style={
-                    selectSex == 'man' ? Styles.SelectBtnText : Styles.BtnText
+                    selectSex == 0 ? Styles.SelectBtnText : Styles.BtnText
                   }>
                   남성
                 </Text>
@@ -399,12 +512,10 @@ const DogModify = () => {
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={onChangeWoman}>
               <View
-                style={
-                  selectSex == 'woman' ? Styles.SelectsexBtn : Styles.sexBtn
-                }>
+                style={selectSex == 1 ? Styles.SelectsexBtn : Styles.sexBtn}>
                 <Text
                   style={
-                    selectSex == 'woman' ? Styles.SelectBtnText : Styles.BtnText
+                    selectSex == 1 ? Styles.SelectBtnText : Styles.BtnText
                   }>
                   여성
                 </Text>
@@ -427,11 +538,11 @@ const DogModify = () => {
             <TouchableWithoutFeedback onPress={onChangeO}>
               <View
                 style={
-                  selectNeut == 'O' ? Styles.SelectNeutBtn : Styles.NeutBtn
+                  selectNeut == true ? Styles.SelectNeutBtn : Styles.NeutBtn
                 }>
                 <Text
                   style={
-                    selectNeut == 'O' ? Styles.SelectBtnText : Styles.BtnText
+                    selectNeut == true ? Styles.SelectBtnText : Styles.BtnText
                   }>
                   O
                 </Text>
@@ -440,11 +551,11 @@ const DogModify = () => {
             <TouchableWithoutFeedback onPress={onChangeX}>
               <View
                 style={
-                  selectNeut == 'X' ? Styles.SelectNeutBtn : Styles.NeutBtn
+                  selectNeut == false ? Styles.SelectNeutBtn : Styles.NeutBtn
                 }>
                 <Text
                   style={
-                    selectNeut == 'X' ? Styles.SelectBtnText : Styles.BtnText
+                    selectNeut == false ? Styles.SelectBtnText : Styles.BtnText
                   }>
                   X
                 </Text>
@@ -465,7 +576,12 @@ const DogModify = () => {
           <Text style={{textAlign: 'center'}}>강아지 정보 삭제</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={Styles.completeBtn}>
+      <TouchableOpacity
+        style={Styles.completeBtn}
+        onPress={() => {
+          put_MyPuppy_modify();
+          setTest(!test);
+        }}>
         <Text style={{color: '#fff', fontWeight: '500'}}>수정 완료</Text>
       </TouchableOpacity>
     </>
@@ -559,23 +675,23 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#FF772F',
   },
-  modal : {
-    flex:0.5,
+  modal: {
+    flex: 0.5,
     marginHorizontal: -20,
-    height: '50%', 
-    backgroundColor: '#fff', 
-    marginTop:'auto',
-    borderTopLeftRadius:15,
-    borderTopRightRadius:15,
-    borderBottomLeftRadius:0,
-    borderBottomRightRadius:0,
-    alignItems:'center',
+    height: '50%',
+    backgroundColor: '#fff',
+    marginTop: 'auto',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    alignItems: 'center',
     paddingTop: 15,
     marginBottom: -20,
   },
   ModalText: {
     color: '#282828',
-    fontWeight:'600',
+    fontWeight: '600',
     fontSize: 18,
   },
   ModalInput: {
@@ -587,8 +703,6 @@ const Styles = StyleSheet.create({
     borderRadius: 5,
     color: '#282828',
     paddingHorizontal: 20,
-    textAlign:'center'
-
-  }
-
+    textAlign: 'center',
+  },
 });

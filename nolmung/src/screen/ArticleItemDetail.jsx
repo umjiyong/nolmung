@@ -10,6 +10,8 @@ import {
   TouchableWithoutFeedback,
   DeviceEventEmitter,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {TextInput} from 'react-native-gesture-handler';
 import CommentList from '../components/CommentList';
 import Modal from 'react-native-modal';
@@ -39,7 +41,8 @@ const ArticleItem = Props => {
   const backdropOpacity = 0.3;
   const [boardIdData, setBoardIdData] = useState([]);
   const [commentAll, setCommentAll] = useState([]);
-  const [emitter, setEmitter] = useState([]);
+  const [emitter, setEmitter] = useState(0);
+  const [count, setCount] = useState(0);
   const getBoardIdData = async () => {
     try {
       await getArticles_From_BoardId(
@@ -56,7 +59,7 @@ const ArticleItem = Props => {
 
   const getAllComment = async () => {
     try {
-      await getAllCommentFromArticle(
+      getAllCommentFromArticle(
         {boardId: Props.route.params.boardId},
         response => {
           // console.log('댓글들', response.data);
@@ -70,34 +73,35 @@ const ArticleItem = Props => {
 
   const PostCommentFunc = async () => {
     try {
-      await PostComment(
-        {boardId: Props.route.params.boardId, content: inputComment, userId: 1},
+      await AsyncStorage.getItem('userId', (err, id) => {
+        PostComment(
+          {
+            boardId: Props.route.params.boardId,
+            content: inputComment,
+            userId: id,
+          },
 
-        response => {
-          console.log('댓글 등록 성공', response);
-          setInputComment('');
-          setTest(prev => !prev);
-        },
-      );
+          response => {
+            console.log('댓글 등록 성공', response);
+            setInputComment('');
+            setTest(prev => !prev);
+          },
+        );
+      });
     } catch (err) {
       console.log('실패했슈', err);
     }
   };
-
+  const handleClick = num => {
+    setCount(current => current + num);
+  };
   useEffect(() => {
     getBoardIdData();
   }, []);
   useEffect(() => {
     getAllComment();
   }, [test]);
-
-  useEffect(() => {
-    DeviceEventEmitter.addListener('commentDelete', event => {
-      setEmitter(event.key);
-      getAllComment();
-    });
-  }, [emitter]);
-
+  console.log(count);
   return (
     <>
       {boardIdData.length > 0 ? (

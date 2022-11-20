@@ -11,7 +11,7 @@ import {
   DeviceEventEmitter,
 } from 'react-native';
 import Modal from 'react-native-modal';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {deleteComment, getAllCommentFromArticle} from '../api/Comment';
 const CommentList = Props => {
   const userNickName = 'aJumoney__';
@@ -26,15 +26,18 @@ const CommentList = Props => {
     console.log(isModalVisible);
   };
   const backdropOpacity = 0.3;
+
   console.log('asdf', Props.boardCommentId);
   const deleteCommentFunc = async () => {
     try {
-      await deleteComment(
-        {boardCommentId: Props.boardCommentId, userId: 1},
-        response => {
-          console.log('댓글 삭제 성공', response);
-        },
-      );
+      await AsyncStorage.getItem('userId', (err, id) => {
+        deleteComment(
+          {boardCommentId: Props.boardCommentId, userId: id},
+          response => {
+            console.log('댓글 삭제 성공', response);
+          },
+        );
+      });
     } catch (err) {
       console.log('실패했습니다', err);
     }
@@ -81,12 +84,10 @@ const CommentList = Props => {
           backdropOpacity={backdropOpacity}>
           <View style={Styles.threeModal}>
             <TouchableOpacity
-              onPress={() => {
+              onPress={event => {
                 console.log('이 댓글의 번호는?', Props.boardCommentId);
                 deleteCommentFunc();
-                DeviceEventEmitter.emit('commentDelete', {
-                  key: Props.boardCommentId,
-                });
+                toggleModal();
               }}>
               <View style={Styles.ModalMenu}>
                 <Text style={Styles.ModalMenuText}>삭제</Text>

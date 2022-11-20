@@ -26,6 +26,9 @@ const MyArticle = () => {
         {myArticles.length > 0 ? (
           <>
             {myArticles.map((item, index) => {
+              {
+                console.log('아이템', item);
+              }
               return (
                 <ArticleItem
                   key={index}
