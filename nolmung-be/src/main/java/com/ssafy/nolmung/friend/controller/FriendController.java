@@ -6,9 +6,7 @@ import com.ssafy.nolmung.friend.domain.FriendProposal;
 import com.ssafy.nolmung.friend.dto.request.BlockFriendRequestDto;
 import com.ssafy.nolmung.friend.dto.request.DeleteFriendRequestDto;
 import com.ssafy.nolmung.friend.dto.request.SendFriendProposalRequestDto;
-import com.ssafy.nolmung.friend.dto.response.ReadBlockedUserResponseDto;
-import com.ssafy.nolmung.friend.dto.response.ReadFriendProposalResponseDto;
-import com.ssafy.nolmung.friend.dto.response.ReadFriendResponseDto;
+import com.ssafy.nolmung.friend.dto.response.*;
 import com.ssafy.nolmung.friend.service.BlockService;
 import com.ssafy.nolmung.friend.service.FriendProposalService;
 import com.ssafy.nolmung.friend.service.FriendService;
@@ -31,7 +29,6 @@ public class FriendController {
     private final UserService userService;
     private final FriendService friendService;
     private final BlockService blockService;
-
     private final FriendProposalService friendProposalService;
 
     @GetMapping("/{userId}")
@@ -63,12 +60,6 @@ public class FriendController {
 
     @PostMapping("/send")
     public String sendFriendProposal (@RequestBody SendFriendProposalRequestDto request) {
-
-        //이미 친구인지 체크
-
-        //to from 역치
-
-        //차단되었음
 
         FriendProposal tempFriendProposal = FriendProposal.builder()
                                .toUserId(request.getToUserId())
@@ -119,6 +110,12 @@ public class FriendController {
         return "친구 삭제 완료";
     }
 
+    @GetMapping("/recommend/{userId}")
+    public List <RecommendFriendResponseDto> recommendFriend (@PathVariable ("userId") int userId) {
+
+        return friendService.recommendFriend(userId);
+    }
+
     @PostMapping("/block")
     public String blockFriend (@RequestBody BlockFriendRequestDto request) {
 
@@ -151,7 +148,6 @@ public class FriendController {
         List<Block> blockList = blockService.findBlockListByUserId(userId);
         List<ReadBlockedUserResponseDto> resultBlockList = new ArrayList<>();
 
-
         for (Block b : blockList) {
             resultBlockList.add(new ReadBlockedUserResponseDto(b));
         }
@@ -160,9 +156,9 @@ public class FriendController {
     }
 
     @GetMapping("/search/{userCode}")
-    public User readUserByUserCode (@PathVariable("userCode") int userCode) {
+    public ReadUserByUserCodeResponseDto readUserByUserCode (@PathVariable("userCode") String userCode) {
 
-       return friendService.findByUserCode(userCode);
+       return new ReadUserByUserCodeResponseDto(friendService.findByUserCode(userCode).getUserId());
     }
 
 }

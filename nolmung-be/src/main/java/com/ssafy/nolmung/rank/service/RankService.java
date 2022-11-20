@@ -30,29 +30,29 @@ public class RankService {
 
     public List<DailyRank> findDailyRankAll() {
 
-        List<DailyRank> RankList = new ArrayList<>();
+        List<DailyRank> rankList = new ArrayList<>();
 
-        dailyRankRepository.findAll().forEach(e -> RankList.add(e));
+        dailyRankRepository.findAll().forEach(e -> rankList.add(e));
 
-        return RankList;
+        return rankList;
     }
 
     public List<WeeklyRank> findWeeklyRankAll() {
 
-        List<WeeklyRank> RankList = new ArrayList<>();
+        List<WeeklyRank> rankList = new ArrayList<>();
 
-        weeklyRankRepository.findAll().forEach(e -> RankList.add(e));
+        weeklyRankRepository.findAll().forEach(e -> rankList.add(e));
 
-        return RankList;
+        return rankList;
     }
 
     public List<MonthlyRank> findMonthlyRankAll() {
 
-        List<MonthlyRank> RankList = new ArrayList<>();
+        List<MonthlyRank> rankList = new ArrayList<>();
 
-        monthlyRankRepository.findAll().forEach(e -> RankList.add(e));
+        monthlyRankRepository.findAll().forEach(e -> rankList.add(e));
 
-        return RankList;
+        return rankList;
     }
     @Transactional
     public void registDailyRank (int userId) {

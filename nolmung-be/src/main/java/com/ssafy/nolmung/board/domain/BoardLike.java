@@ -1,6 +1,7 @@
 package com.ssafy.nolmung.board.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.ssafy.nolmung.board.dto.response.BoardLikeResponse;
 import com.ssafy.nolmung.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,4 +35,6 @@ public class BoardLike {
         this.board = board;
         this.user = user;
     }
+
+
 }

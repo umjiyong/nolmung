@@ -7,20 +7,16 @@ import com.ssafy.nolmung.InAppAlarm.domain.InAppAlarm;
 import com.ssafy.nolmung.board.domain.Board;
 import com.ssafy.nolmung.board.domain.BoardLike;
 import com.ssafy.nolmung.boardComment.domain.BoardComment;
-import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.sharePuppy.domain.SharePuppy;
 import com.ssafy.nolmung.friend.domain.Block;
 import com.ssafy.nolmung.friend.domain.Friend;
-import com.ssafy.nolmung.global.util.SHA256;
-import com.ssafy.nolmung.landMarkBoard.domain.LandMarkBoard;
-import com.ssafy.nolmung.landMarkBoard.domain.LandMarkLike;
+import com.ssafy.nolmung.landMark.domain.LandMarkBoard;
+import com.ssafy.nolmung.landMark.domain.LandMarkLike;
 import com.ssafy.nolmung.region.domain.Region;
 import com.ssafy.nolmung.walk.domain.Walk;
 import lombok.*;
-import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +117,9 @@ public class User {
     private List<BoardLike> boardLikes = new ArrayList<>();
 
 
-
+    public void changeUserImage(String userImgUrl){
+        this.userImg = userImgUrl;
+    }
 
     @Builder
     public User (int userId,
@@ -169,7 +167,6 @@ public class User {
         this.userEmail = userEmail;
 
         this.userRefreshToken = userRefreshToken;
-
         this.sharePuppies = sharePuppies;
         this.walks = walks;
         this.inAppAlarms = inAppAlarms;

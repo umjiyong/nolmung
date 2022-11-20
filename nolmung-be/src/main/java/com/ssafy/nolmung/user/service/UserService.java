@@ -8,6 +8,12 @@ import java.util.*;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.ssafy.nolmung.rank.domain.DailyRank;
+import com.ssafy.nolmung.rank.domain.MonthlyRank;
+import com.ssafy.nolmung.rank.domain.WeeklyRank;
+import com.ssafy.nolmung.rank.repository.DailyRankRepository;
+import com.ssafy.nolmung.rank.repository.MonthlyRankRepository;
+import com.ssafy.nolmung.rank.repository.WeeklyRankRepository;
 import com.ssafy.nolmung.user.domain.User;
 import com.ssafy.nolmung.user.dto.request.UserTokenRequestDto;
 import com.ssafy.nolmung.user.dto.response.UserTokenDataResponseDto;
@@ -25,6 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final DailyRankRepository dailyRankRepository;
+    private final WeeklyRankRepository weeklyRankRepository;
+    private final MonthlyRankRepository monthlyRankRepository;
 
     @Value("${KAKAO.API}")
     private String apiKey;
@@ -44,6 +53,7 @@ public class UserService {
 //        Jws<Claims> claimsJws = null;
 //    }
 
+    @Transactional
     public String deleteUser(int userId){
         log.info("유저 정보 삭제 : {}", userId );
         userRepository.deleteByUserId(userId);
@@ -53,7 +63,6 @@ public class UserService {
     public List<User> findAllUser(){
         System.out.println("모든 유저 찾기 in repository");
         List<User> userList = userRepository.findAll();
-
         return userList;
     }
 
@@ -67,10 +76,11 @@ public class UserService {
 
     public User findById (int id){
 
-        Optional<User> optionalUser = userRepository.findById(id);
+        User user= userRepository.findById(id).get();
+        String imgUrl = user.getUserImg();
+        if(imgUrl.equals("")) user.setUserImg("https://cdn-icons-png.flaticon.com/512/1959/1959921.png");
 
-        if(optionalUser.isPresent()) return optionalUser.get();
-        else return null;
+        return user;
     }
 
     public User findByKakaoUuid (String uuid){
@@ -121,6 +131,16 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
+        /**
+         랭크 등록 부분
+         */
+        DailyRank dailyRank = new DailyRank(user.getUserId());
+        dailyRankRepository.save(dailyRank);
+        WeeklyRank weeklyRank = new WeeklyRank(user.getUserId());
+        weeklyRankRepository.save(weeklyRank);
+        MonthlyRank monthlyRank = new MonthlyRank(user.getUserId());
+        monthlyRankRepository.save(monthlyRank);
+
 
         return "UserService : 신규 (카카오) 유저 등록완료";
     }
@@ -230,6 +250,7 @@ public class UserService {
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
+
             String id = element.getAsJsonObject().get("id").getAsString();
 
             User user = userRepository.findByUserKakaoUuid(id);
@@ -244,14 +265,12 @@ public class UserService {
                 isNewUser = 1;
                 System.out.println("이미 등록된 유저!" + id);
             }
-
             br.close();
             return new UserTokenDataResponseDto(user, isNewUser);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 

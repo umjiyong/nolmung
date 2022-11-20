@@ -67,10 +67,11 @@ public class BoardCommentServiceImpl implements BoardCommentService{
             boolean isMyComment = isMyComment(comment.getBoardCommentId(), userId);
 
             BoardCommentResponseDto boardCommentResponseDto = BoardCommentResponseDto.builder()
+                    .boardCommentId(comment.getBoardCommentId())
                     .userNickname(comment.getUser().getUserNickname())
                     .userImg(comment.getUser().getUserImg())
                     .userAddress(comment.getUser().getUserAddressText())
-                    .createDate(comment.getBoardCommentCreateDate())
+                    .createDate(comment.getBoardCommentCreateDate().toLocalDate())
                     .content(comment.getBoardCommentContent())
                     .isMyComment(isMyComment)
                     .build();

@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByUserKakaoUuid(String uuid);
 
-    User findByUserCode(int userCode);
+    User findByUserCode(String userCode);
 
     String deleteByUserId(int userId);
 

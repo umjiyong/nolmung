@@ -4,22 +4,27 @@ import com.ssafy.nolmung.board.Repository.BoardRepository;
 import com.ssafy.nolmung.board.domain.BoardImage;
 import com.ssafy.nolmung.global.util.Util;
 import com.ssafy.nolmung.image.ImageRepository;
-import com.ssafy.nolmung.landMarkBoard.domain.LandMarkBoard;
-import com.ssafy.nolmung.landMarkBoard.repository.LandMarkBoardRepository;
+import com.ssafy.nolmung.landMark.domain.LandMarkBoard;
+import com.ssafy.nolmung.landMark.repository.LandMarkBoardRepository;
 import com.ssafy.nolmung.puppy.domain.Puppy;
 import com.ssafy.nolmung.puppy.repository.PuppyRepository;
+import com.ssafy.nolmung.user.domain.User;
+import com.ssafy.nolmung.user.repository.UserRepository;
 import com.ssafy.nolmung.walk.domain.Walk;
 import com.ssafy.nolmung.walk.repository.WalkRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ImageServiceImpl implements ImageService {
 
     @Autowired
@@ -31,6 +36,8 @@ public class ImageServiceImpl implements ImageService {
 
     @Autowired
     PuppyRepository puppyRepository;
+
+    private final UserRepository userRepository;
 
     @Autowired
     LandMarkBoardRepository landMarkBoardRepository;
@@ -55,6 +62,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Transactional
     public void deleteBoardImages(List<String> imageUrls) {
         for (String url : imageUrls) {
             imageUtil.deleteImage(url);
@@ -79,6 +87,17 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Transactional
+    public String uploadUserImage(int userId, MultipartFile file){
+        String imageUrl = uploadImage("user", file);
+        User user = userRepository.findById(userId).get();
+        user.changeUserImage(imageUrl);
+        userRepository.save(user);
+        return user.getUserImg();
+    }
+
+    @Override
+    @Transactional
     public String uploadlandmarkBoardImage(int landmarkBoardId, MultipartFile file) {
         String imageUrl = uploadImage("landmarkBoard", file);
         LandMarkBoard landMarkBoard = landMarkBoardRepository.findById(landmarkBoardId).get();
@@ -88,12 +107,13 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Transactional
     public String uploadWalkImage(int walkId, MultipartFile file) {
         String imageUrl = uploadImage("walk", file);
         Walk walk = walkRepository.findById(walkId).get();
         walk.changeWalkImage(imageUrl);
         walkRepository.save(walk);
-        return walk.getWalkImg();
+        return walk.getWalkUserImg();
     }
 
 }

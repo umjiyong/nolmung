@@ -61,10 +61,18 @@ public class BoardServiceImpl implements BoardService {
         List<Board> boards = boardRepository.findAll();
         List<BoardResponse> result = new ArrayList<>();
 
+        System.out.println("!!!!!!!!!!!!!!!!!"+ result.size());
+
         for (Board board: boards) {
             result.add(board.toBoardResponse());
         }
         // 게시물이 존재하지 않으면 빈 리스트 반환
+        return result;
+    }
+
+    @Override
+    public long countUserBoard(int userId) {
+        long result = boardRepository.countByUser_UserId(userId);
         return result;
     }
 

@@ -42,7 +42,7 @@ public class PuppyServiceImpl implements PuppyService{
     }
 
     @Override
-    public void insertPuppy(PuppyInfoRequestDto puppyInfoRequestDto) {
+    public int insertPuppy(PuppyInfoRequestDto puppyInfoRequestDto) {
         User user = userRepository.findById(puppyInfoRequestDto.getUserId()).get();
         Breed breed = breedRepository.findById(puppyInfoRequestDto.getBreedId()).get();
 
@@ -82,7 +82,11 @@ public class PuppyServiceImpl implements PuppyService{
                 .build();
 
         sharePuppyRepository.save(connectUserAndPuppy);
-        puppyRepository.save(puppy);
+        Puppy newPuppy = puppyRepository.save(puppy);
+
+        if(newPuppy==null) {
+            return -1;
+        } else return newPuppy.getPuppyId();
     }
 
     @Override
