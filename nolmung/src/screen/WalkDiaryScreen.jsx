@@ -3,6 +3,9 @@ import {View, Text, TouchableOpacity, Button, StyleSheet} from 'react-native';
 import Header from '../components/Header';
 import MyWalkRecord from '../components/MyWalkRecord';
 import WalkStatistic from '../components/WalkStatistic';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 function WalkDiaryScreen({navigation}) {
   const [select, setSelect] = useState('myWalk');
   const onPressMyWalk = () => {

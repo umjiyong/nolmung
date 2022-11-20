@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import Modal from 'react-native-modal';
-
+import getWalkRecordDetail from '../api/Walk'
 const MyWalkRecordInfo = Props => {
   const km = Props.Props.walkDistance;
   const hour = Props.Props.walkTime.hour;
@@ -20,7 +21,7 @@ const MyWalkRecordInfo = Props => {
     setModalVisible(!isModalVisible);
     console.log(isModalVisible);
   };
-
+  const [walkRecordList, setWalkRecordList] = useState()
   const getWalkRecordDetailFunc = async walkId => {
     try {
       await getWalkRecordDetail(
@@ -31,16 +32,19 @@ const MyWalkRecordInfo = Props => {
           console.log(response.data);
           setWalkRecordList(response.data);
         },
-        err => {
-          console.log('산책 상세 조회 에러', err);
-        },
+        // err => {
+        //   console.log('산책 상세 조회 에러', err);
+        // },
       );
     } catch (error) {
-      console.log(err);
+      console.log(error);
       console.log('산책 상세 조회 에러');
     }
   };
-
+  useEffect(()=>{
+    getWalkRecordDetailFunc()
+  },[])
+  console.log('!!!',walkRecordList)
   return (
     <>
       <TouchableWithoutFeedback onPress={toggleModal}>

@@ -3,12 +3,13 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import MiddleHeader from '../components/MiddleHeader';
 import {registWalkImage, addNewWalkRecord} from '../api/Walk';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker/src';
-
+import { useNavigation } from '@react-navigation/native';
 const EndWalkScreen = ({navigation: {navigate}, route}) => {
+  const navi = useNavigation()
   const [response, setResponse] = useState();
   const [imgBody, setimgBody] = useState();
-  console.log('!!!', route);
-
+  console.log('!!!', route.params.requestData);
+  console.log(route)
   const addNewWalkRecordFunc = async route => {
     try {
       await addNewWalkRecord(
@@ -87,16 +88,18 @@ const EndWalkScreen = ({navigation: {navigate}, route}) => {
 
       <Pressable onPress={onSelectImage}>
         {response ? (
-          <Image
-            source={{uri: response?.assets[0]?.uri}}
-            resizeMode="contain"
-            style={{
-              marginTop: 150,
-              width: 80,
-              height: 80,
-              borderRadius: 100,
-            }}
-          />
+          <View style={{alignItems:'center',}}> 
+            <Image
+              source={{uri: response?.assets[0]?.uri}}
+              resizeMode="contain"
+              style={{
+                marginTop: 150,
+                width: 200,
+                height: 100,
+                // borderRadius: 100,
+              }}
+            />
+          </View>
         ) : (
           <View
             style={{
@@ -132,8 +135,7 @@ const EndWalkScreen = ({navigation: {navigate}, route}) => {
             산책한 거리
           </Text>
           <Text style={{color: '#FF772F', fontSize: 18, textAlign: 'center'}}>
-            {' '}
-            100M{' '}
+           {route.params.requestData.walkDistance}
           </Text>
         </View>
         <View style={Styles.box}>
@@ -141,19 +143,10 @@ const EndWalkScreen = ({navigation: {navigate}, route}) => {
             산책한 시간
           </Text>
           <Text style={{color: '#FF772F', fontSize: 18, textAlign: 'center'}}>
-            {' '}
-            10분{' '}
+            {route.params.requestData.min}분 {route.params.requestData.sec}초
           </Text>
         </View>
-        <View style={Styles.box}>
-          <Text style={{color: '#282828', fontSize: 16, textAlign: 'center'}}>
-            산책 달성률
-          </Text>
-          <Text style={{color: '#FF772F', fontSize: 18, textAlign: 'center'}}>
-            {' '}
-            80%{' '}
-          </Text>
-        </View>
+      
       </View>
       <View
         style={{
@@ -186,6 +179,7 @@ const EndWalkScreen = ({navigation: {navigate}, route}) => {
         <Pressable
           onPress={() => {
             addNewWalkRecordFunc(route);
+            navi.goBack()
           }}
           style={{
             paddingVertical: 13,
