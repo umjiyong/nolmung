@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {apiInstance, apiLoginInstance} from './Index';
+import {apiInstance, apiLoginInstance,imageInstance} from './Index';
 
 const nonLoginApi = apiLoginInstance();
+const imageApi = imageInstance();
 const api = apiInstance();
 api.interceptors.request.use(async config => {
   if (!config.headers) {
@@ -67,3 +68,10 @@ export const getLandmarkVisitor = async (response, success, fail) => {
         .catch(fail);
     };
 
+
+  export const registLandmarkImage = async (response, success, fail) => {
+      // await AsyncStorage.getItem('userId', (err, res) => {
+        console.log('이미지 업로드쪽', response);
+        imageApi.post(`/image/landmarkBoard/${response.landmarkBoardId}`, response.data).then(success).catch(fail);
+      // });
+    };

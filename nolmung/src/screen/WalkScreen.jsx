@@ -67,7 +67,12 @@ async function requestPermission2() {
 }
 
 function WalkScreen({navigation}) {
-  let [curlocation, setCurlocation] = useState([]);
+  let [curlocation, setCurlocation] = useState([
+    {
+      latitude: 0,
+      longitude: 0,
+    },
+  ]);
   let [circleLocation, setCircleLocation] = useState([
     {
       latitude: 0,
@@ -108,20 +113,17 @@ function WalkScreen({navigation}) {
     try {
       await getNearLandmarkMarkerList(
         {
-          userLat: 37.5012767241426,
-          userLon: 127.039600248343,
+          userLat: userLat,
+          userLon: userLon,
         },
         response => {
           // console.log('!!!!', response.data);
           setLandmark(response.data.landmarkList);
         },
-        err => {
-          console.log('랜드마크 목록 에러', err);
-        },
       );
     } catch (error) {
       // console.log(err);
-      console.log('랜드마크 목록 조회 에러');
+      // console.log('랜드마크 목록 조회 에러');
     }
   };
 
@@ -199,10 +201,7 @@ function WalkScreen({navigation}) {
       if (result === 'granted') {
         requestPermission2();
         console.log('실행');
-        getNearLandmarkMarkerListFunc(
-          curlocation[curlocation.length - 1],
-          curlocation[curlocation.length - 2],
-        );
+
         Geolocation.getCurrentPosition(
           position => {
             const latitude = position.coords.latitude;
@@ -258,6 +257,13 @@ function WalkScreen({navigation}) {
     }
     console.log(flag);
   }
+
+  useEffect(() => {
+    getNearLandmarkMarkerListFunc(
+      curlocation[curlocation.length - 1].latitude,
+      curlocation[curlocation.length - 1].longitude,
+    );
+  }, [curlocation]);
 
   // 위,경도 좌표 2개 사이의 거리를 구하는 메서드
   function getDistanceFromLatLonInKm(lat1, lng1, lat2, lng2) {
@@ -326,8 +332,9 @@ function WalkScreen({navigation}) {
                   onPress={() => {
                     // console.log(landmark.landmarkId, '번 랜드마크');
                     if (getLandmarkAccessibility(landmark)) {
-                      
-                      navigation.push('LandmarkScreen', {landmarkId: landmark.landmarkId})
+                      navigation.push('LandmarkScreen', {
+                        landmarkId: landmark.landmarkId,
+                      });
                     } else {
                       alert('접근할 수 없는 거리에 위치한 랜드마크입니다.');
                     }

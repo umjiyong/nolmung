@@ -84,6 +84,7 @@ function MyProfileScreen({navigation}) {
         getUserInfo(
           {id},
           response => {
+            console.log(response.data);
             setUserData(response.data);
           },
           err => {
@@ -164,6 +165,7 @@ function MyProfileScreen({navigation}) {
 
   const user_image_upload_func = async data => {
     try {
+      console.log('유저이미지는?', data);
       await registUserImage(
         data,
         response => {
@@ -266,10 +268,10 @@ function MyProfileScreen({navigation}) {
               <Text
                 style={{
                   color: '#282828',
-                  fontSize: 18,
+                  fontSize: 15,
                   fontFamily: 'NotoSansKR-Medium',
                 }}>
-                {userData.userAddressText}
+                ({userData.userAddressText})
               </Text>
             </View>
             <TouchableOpacity

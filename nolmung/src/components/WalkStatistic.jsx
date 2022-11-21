@@ -94,6 +94,7 @@ const WalkStatistic = () => {
         <ScrollView
           showsHorizontalScrollIndicator={false}
           horizontal={true}
+          contentContainerStyle={{paddingHorizontal: 20}}
           style={Styles.DogContainer}>
           {puppyList?.length > 0 ? (
             <>
