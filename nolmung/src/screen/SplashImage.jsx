@@ -17,7 +17,7 @@ const SplashImage = ({navigation}) => {
         navigation.replace(res == null ? 'Login' : 'BottomTabs');
         // navigation.navigate('Login');
 
-        // // navigation.replace(res == null ? 'Login' : 'BottomTabs');
+        // navigation.replace(res == null ? 'Login' : 'BottomTabs');
         // navigation.replace('BottomTabs')
 
       });

@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {apiInstance, apiLoginInstance} from './Index';
+import {apiInstance, apiLoginInstance, imageInstance} from './Index';
 
 const nonLoginApi = apiLoginInstance();
 const api = apiInstance();
+const imageApi = imageInstance();
 api.interceptors.request.use(async config => {
   if (!config.headers) {
     return config;
@@ -42,4 +43,17 @@ export const puppy_breed_info = async (success, fail) => {
 export const puppy_Modify = async (data, success, fail) => {
   console.log('강아지 정보 수정', data);
   return await api.put(`/puppy/modify`, data).then(success).catch(fail);
+};
+
+export const registPuppyImage = async (data, success, fail) => {
+  console.log(
+    '강아지 정보 아이디',
+    data.puppyId,
+    '강아지 데이터 폼',
+    data.form,
+  );
+  await imageApi
+    .post(`/image/puppy/${data.puppyId}`, data.form)
+    .then(success)
+    .catch(fail);
 };

@@ -33,6 +33,7 @@ function CommunityScreen() {
   const [articleFriend, setArticleFriend] = useState([]);
   const [articleQna, setArticleQna] = useState([]);
   const [articleRegion, setArticleRegion] = useState([]);
+  
   const getArticle_all_func = async () => {
     try {
       await getArticles_all(response => {

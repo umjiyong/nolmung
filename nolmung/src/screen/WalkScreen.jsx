@@ -136,13 +136,11 @@ function WalkScreen({navigation}) {
           // console.log('!!!!', response.data);
           setLandmark(response.data.landmarkList);
         },
-        err => {
-          console.log('랜드마크 목록 에러', err);
-        },
+
       );
     } catch (error) {
       // console.log(err);
-      console.log('랜드마크 목록 조회 에러');
+      // console.log('랜드마크 목록 조회 에러');
     }
   };
 

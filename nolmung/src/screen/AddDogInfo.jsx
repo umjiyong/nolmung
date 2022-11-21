@@ -14,7 +14,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import MiddleHeader from '../components/MiddleHeader';
 import Modal from 'react-native-modal';
-import {puppy_breed_info} from '../api/Puppy';
+import {puppy_breed_info, registPuppyImage} from '../api/Puppy';
 import {Pressable} from 'react-native';
 import {registPuppyInfo} from '../api/Puppy';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -87,9 +87,24 @@ const AddDogInfo = () => {
     }
   };
 
+  const petImageRegist = async puppyId => {
+    try {
+      await registPuppyImage(
+        {puppyId: puppyId, form: formdata},
+        res => {
+          console.log('강아지 이미지 등록 성공', res);
+        },
+        err => {
+          console.log('강아지 이미지 등록 실패', err);
+        },
+      );
+    } catch (err) {
+      console.log('강아지 이미지 아예 에러', err);
+    }
+  };
+
   const petInfoRegist = async () => {
     const birth = year + '-' + month + '-' + date;
-    console.log('강아지 정보 등록하기', birth);
     try {
       await AsyncStorage.getItem('userId', (err, getId) => {
         registPuppyInfo(
@@ -105,33 +120,93 @@ const AddDogInfo = () => {
             breedId: breed,
           },
           res => {
-            console.log('강아지 정보 등록 성공', res);
+            console.log('강아지 정보 등록 성공', res.data);
+            // registPuppyImage(
+            //   {puppyId: res.data.puppyId, form: formdata},
+            //   res => {
+            //     console.log('강아지 이미지 등록 성공', res);
+            //   },
+            //   err => {
+            //     console.log('강아지 이미지 등록 실패', err);
+            //   },
+            // );
+            if (formdata != null && formdata != '')
+              petImageRegist(res.data.puppyId);
           },
         );
       });
     } catch (err) {
       console.log('완전 실패', err);
     }
+    navi.push('MyProfileScreen');
   };
+
   const [breedName, setBreedName] = useState('견종을 입력하세요');
   useEffect(() => {
     getBreed_List_Func();
   }, []);
+
+  const [image, setImage] = useState();
+  const [formdata, setFormdata] = useState();
+  const onSelectImage = async () => {
+    try {
+      launchImageLibrary(
+        {
+          mediaType: 'photo',
+          maxWidth: 512,
+          maxHeight: 512,
+          includeBase64: Platform.OS === 'android',
+        },
+        res => {
+          console.log('이미지 고르고 이벤트', res);
+          if (res.didCancel) return;
+          setImage(res);
+
+          var body = new FormData();
+          body.append('files', {
+            uri: res.assets[0].uri,
+            type: 'image/jpeg',
+            name: `${res.assets[0].fileName}`,
+          });
+
+          setFormdata(body);
+          // user_image_upload_func(body);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
   //   console.log(allBreedList);
   return (
     <>
       <MiddleHeader header="강아지 등록" />
       <ScrollView style={Styles.DogContainer}>
         <View style={Styles.DogImage}>
-          <Image
-            source={require('../assets/image/Dog1.jpg')}
-            resizeMode="contain"
-            style={{
-              width: 102,
-              height: 102,
-              borderRadius: 50,
-            }}
-          />
+          <Pressable onPress={onSelectImage}>
+            {image ? (
+              <Image
+                source={{uri: image?.assets[0]?.uri}}
+                resizeMode="contain"
+                style={{
+                  width: 102,
+                  height: 102,
+                  borderRadius: 50,
+                }}
+              />
+            ) : (
+              <Image
+                source={require('../assets/image/Dog1.jpg')}
+                resizeMode="contain"
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 100,
+                }}
+              />
+            )}
+          </Pressable>
           <Text style={{color: '#282828', marginTop: 6, fontSize: 14}}>
             강아지 프로필
           </Text>
