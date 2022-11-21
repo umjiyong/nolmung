@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const now = new Date();
 const year = now.getFullYear();
@@ -12,12 +13,29 @@ const Time = year + '.' + month + '.' + date + ' ' + hours + ':' + minutes;
 
 const NotiName = '내가 올린 게시글에 댓글이 달렸어요.';
 
-const NotiItem = () => {
+const NotiItem = Props => {
+  const navigation = useNavigation();
   return (
     <View style={Styles.Container}>
-      <TouchableOpacity>
-        <Text style={Styles.NotiName}>{NotiName}</Text>
-        <Text style={Styles.NotiTime}>{Time}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          console.log('Alarm: ' + JSON.stringify(Props.alarm));
+          console.log('inAppAlarmLink:' + Props.alarm.inAppAlarmLink);
+          isNaN(Props.alarm.inAppAlarmLink)
+            ? navigation.navigate(Props.alarm.inAppAlarmLink)
+            : navigation.navigate('ArticleItemDetail', {
+                boardId: Props.alarm.inAppAlarmLink,
+              });
+        }}>
+        <Text
+          style={
+            Props.alarm.inAppAlarmIsCheck
+              ? Styles.ReadNotiName
+              : Styles.NotiName
+          }>
+          {Props.alarm.inAppAlarmContent}
+        </Text>
+        <Text style={Styles.NotiTime}>{Props.alarm.inAppAlarmUpdateDate}</Text>
       </TouchableOpacity>
       <View style={Styles.NotiHr}></View>
     </View>
@@ -35,6 +53,13 @@ const Styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'NotoSansKR-Bold',
     color: '#282828',
+    letterSpacing: -1,
+  },
+  ReadNotiName: {
+    marginTop: -15,
+    fontSize: 17,
+    fontFamily: 'NotoSansKR-Bold',
+    color: '#959595',
     letterSpacing: -1,
   },
   NotiTime: {

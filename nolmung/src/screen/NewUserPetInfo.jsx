@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ScrollView,
   TextInput,
@@ -11,51 +11,68 @@ import {
   TouchableOpacity,
   Button,
   Touchable,
-  Pressable
+  Pressable,
 } from 'react-native';
 import DogListItem from '../components/DogListItem';
 import {useNavigation} from '@react-navigation/native';
 import MiddleHeader from '../components/MiddleHeader';
-<<<<<<< HEAD
-import Modal from "react-native-modal"
-import {puppy_breed_info , registPuppyInfo} from '../api/Puppy';
-=======
-import { registPuppyInfo } from '../api/Puppy';
->>>>>>> d13e982 (update: 신규 로그인시 강아지 등록)
+import Modal from 'react-native-modal';
+import {getBreedInfo, registPuppyInfo} from '../api/Puppy';
+import SearchDogList from '../components/SearchDogList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NewUserPetInfo = () => {
   const navi = useNavigation();
+  const backdropOpacity = 0.3;
   const [DogName, setDogName] = useState('');
+  const [DogSeed, setDogSeed] = useState('');
   const [year, setYear] = useState('');
   const [month, setMonth] = useState('');
   const [date, setDate] = useState('');
-  const [DogSeed, setDogSeed] = useState('');
-  const [dogWeight, setDogWeight] = useState('3');
+  const [hasDog, setHasDog] = useState();
+  const [text, setText] = useState('');
+  const [search, setSearch] = useState(false);
+  const [dogWeight, setDogWeight] = useState('');
   const [dogChar, setDogChar] = useState('성격을 입력해주세요');
   const [selectSex, setSelectSex] = useState();
   const [selectNeut, setSelectNeut] = useState();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [dogImg, setDogImg] = useState("");
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [allBreedList, setAllBreedList] = useState();
+  const [selectBreed, setSelectBreed] =
+    useState('터치해서 견종을 선택해주세요');
+  const [breedId, setBreedId] = useState();
+  const [isModalVisibleBreed, setModalVisibleBreed] = useState(false);
+  const [isModalVisibleTwo, setModalVisibleTwo] = useState(false);
 
-  const petInfoRegist = async() => {
-    const birth = year+"-"+month+"-"+date;
-    try{
-      AsyncStorage.getItem("userId", (err, getId) => {
+  const petInfoRegist = async () => {
+    const birth = year + '-' + month + '-' + date;
+    console.log('강아지 정보 등록하기', birth);
+    try {
+      await AsyncStorage.getItem('userId', (err, getId) => {
         registPuppyInfo(
-          {puppyBirth: birth, puppyImg: dogImg, puppyIsNeutered: selectNeut, puppyName: DogName, puppySex: selectSex, puppyWeight: dogWeight, userId: getId},
+          {
+            puppyBirth: birth,
+            // puppyImg: dogImg,
+            puppyIsNeutered: selectNeut,
+            puppyCharacter: dogChar,
+            puppyName: DogName,
+            puppySex: selectSex,
+            puppyWeight: dogWeight,
+            userId: getId,
+            breedId: breedId,
+          },
           res => {
-            console.log("강아지 정보 등록 성공", res);
+            console.log('강아지 정보 등록 성공', res);
           },
           err => {
-            console.log("정보 등록 실패", err)
-          }
-        )
-      })
-    } catch(err) {
-      console.log("완전 실패", err);
+            console.log('정보 등록 실패', err);
+          },
+        );
+      });
+    } catch (err) {
+      console.log('완전 실패', err);
     }
-  }
+  };
 
   const onChangeText = event => {
     setDogName(event);
@@ -75,73 +92,164 @@ const NewUserPetInfo = () => {
     setDate(event);
   };
 
+  const HasDog = () => {
+    setHasDog(true);
+    setModalVisible(false);
+    toggleModalTwo();
+  };
+  const NoHasDog = () => {
+    setHasDog(false);
+  };
+  const searchDog = () => {
+    setSearch(!search);
+    console.log(search);
+  };
   const onChangeWeight = event => {
     setDogWeight(event);
   };
-
   const onChangeDogChar = e => {
     setDogChar(e);
   };
-  
   const onChangeMan = () => {
-    setSelectSex('man');
+    setSelectSex(0);
   };
   const onChangeWoman = () => {
-    setSelectSex('woman');
+    setSelectSex(1);
   };
   const onChangeO = () => {
-    setSelectNeut('O');
+    setSelectNeut(true);
   };
   const onChangeX = () => {
-    setSelectNeut('X');
+    setSelectNeut(false);
+  };
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+    console.log(isModalVisible);
   };
 
-  const [allBreedList, setAllBreedList] = useState()
-
-  const [selectBreed, setSelectBreed] = useState('터치해서 견종을 선택해주세요')
-
-  const [isModalVisibleBreed, setModalVisibleBreed] = useState(false)
   const toggleModalBreed = () => {
     setModalVisibleBreed(!isModalVisibleBreed);
+  };
+  const toggleModalTwo = () => {
+    setModalVisibleTwo(!isModalVisibleTwo);
+  };
 
-  }
-
+  const clearState = () => {
+    setDogName('');
+    setDogSeed('');
+    setYear();
+    setMonth();
+    setDate();
+    setDogWeight();
+    setSelectSex();
+    setSelectNeut();
+    setDogChar('성격을 입력해주세요');
+    setSelectBreed('터치해서 견종을 선택해주세요');
+  };
   const getBreed_List_Func = async () => {
     try {
-      await puppy_breed_info(
-        (response) => {
-          setAllBreedList(response.data);
-        },
-      );
+      await getBreedInfo(response => {
+        setAllBreedList(response.data);
+      });
     } catch (err) {
       console.log(err);
-      console.log("심각한 에러;;");
+      console.log('심각한 에러;;');
     }
   };
 
-  const backdropOpacity = 0.3
-  
   useEffect(() => {
-    getBreed_List_Func()
+    getBreed_List_Func();
   }, []);
   // console.log(allBreedList.breedList)
+
   return (
     <>
       {/*  */}
       <MiddleHeader header="강아지 정보 등록" />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <ScrollView horizontal={true} style={Styles.DogList}>
           <TouchableOpacity
-            onPress={() => {
-              navi.push('AddDogInfo');
-            }}>
+            // onPress={() => {
+            //   navi.push('AddDogInfo');
+            // }}>
+            onPress={toggleModal}>
             <View style={Styles.plusDog}>
               <Text style={{fontSize: 40, fontWeight: '500', color: '#fff'}}>
                 +
               </Text>
             </View>
           </TouchableOpacity>
-          
+
+          <Modal
+            isVisible={isModalVisible}
+            onBackdropPress={toggleModal}
+            backdropOpacity={backdropOpacity}>
+            <View
+              style={{
+                backgroundColor: 'white',
+                flex: 0.2,
+                borderRadius: 30,
+                justifyContent: 'space-around',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{color: '#282828', fontSize: 16, textAlign: 'center'}}>
+                이미 강아지가 있으신가요?
+              </Text>
+              <View style={{flexDirection: 'row'}}>
+                <Pressable onPress={HasDog} style={{marginRight: 40}}>
+                  <Text style={{fontSize: 15, color: '#FF772F'}}>예</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    navi.navigate('AddDogInfo');
+                    NoHasDog;
+                  }}>
+                  <Text style={{fontSize: 15, color: '#959595'}}>아니요</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+
+          <Modal
+            isVisible={isModalVisibleTwo}
+            onBackdropPress={toggleModalTwo}
+            backdropOpacity={backdropOpacity}>
+            <View style={Styles.modal}>
+              <Text style={Styles.ModalText}>강아지 코드 입력</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TextInput
+                  onChangeText={e => setText(e)}
+                  value={text}
+                  style={Styles.ModalInput}
+                />
+                <TouchableWithoutFeedback onPress={searchDog}>
+                  <View>
+                    <Image
+                      source={require('../assets/icons/search.png')}
+                      resizeMode="contain"
+                      style={{
+                        width: 20,
+                        height: 20,
+                        marginTop: 13,
+                        marginLeft: 10,
+                        tintColor: '#FF772F',
+                      }}
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+              {search ? (
+                <View>
+                  <SearchDogList />
+                </View>
+              ) : null}
+            </View>
+          </Modal>
+
+          <DogListItem />
+          <DogListItem />
+          <DogListItem />
         </ScrollView>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -193,41 +301,58 @@ const NewUserPetInfo = () => {
               견종
             </Text>
             <Pressable onPress={toggleModalBreed}>
-            <Text style={{
-                color: '#282828',
-                borderBottomColor: 'gray',
-                borderBottomWidth: 1,
-                paddingHorizontal:5,
-                paddingVertical:3,
+              <Text
+                style={{
+                  color: '#282828',
+                  borderBottomColor: 'gray',
+                  borderBottomWidth: 1,
+                  paddingHorizontal: 5,
+                  paddingVertical: 3,
                 }}>
-                  {selectBreed}
-            </Text>
-          </Pressable>
-          <Modal
-            isVisible={isModalVisibleBreed}
-            onBackdropPress={toggleModalBreed}
-            backdropOpacity = {backdropOpacity}    
-        >
-            <ScrollView showsVerticalScrollIndicator={false} style={{paddingVertical:20,paddingHorizontal:10,backgroundColor:'white', flex: 0.5, borderRadius: 30,}}>
-              {allBreedList!== undefined ? 
-                (
+                {selectBreed}
+              </Text>
+            </Pressable>
+            <Modal
+              isVisible={isModalVisibleBreed}
+              onBackdropPress={toggleModalBreed}
+              backdropOpacity={backdropOpacity}>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{
+                  paddingVertical: 20,
+                  paddingHorizontal: 10,
+                  backgroundColor: 'white',
+                  flex: 0.5,
+                  borderRadius: 30,
+                }}>
+                {allBreedList !== undefined ? (
                   // {console.log(allBreedList.breedList)}
                   <>
-                    {(allBreedList.breedList).map((item)=>{
+                    {allBreedList.breedList.map(item => {
                       return (
-                          <TouchableOpacity onPress={()=>{setSelectBreed(item.breedName); toggleModalBreed();}} style={{alignItems:'center', marginVertical:20,}} key={item.breedId}>
-                            <Text style={{color:'#282828', fontSize: 16, fontWeight: '500',}}>{item.breedName}</Text>
-                          </TouchableOpacity> 
-                      )
+                        <TouchableOpacity
+                          onPress={() => {
+                            setSelectBreed(item.breedName);
+                            setBreedId(item.breedId);
+                            toggleModalBreed();
+                          }}
+                          style={{alignItems: 'center', marginVertical: 20}}
+                          key={item.breedId}>
+                          <Text
+                            style={{
+                              color: '#282828',
+                              fontSize: 16,
+                              fontWeight: '500',
+                            }}>
+                            {item.breedName}
+                          </Text>
+                        </TouchableOpacity>
+                      );
                     })}
                   </>
-                )
-              :null}
-          
-            </ScrollView>
-        </Modal>      
-           
-       
+                ) : null}
+              </ScrollView>
+            </Modal>
           </View>
           <View>
             <Text
@@ -339,12 +464,10 @@ const NewUserPetInfo = () => {
               {/*  */}
               <TouchableWithoutFeedback onPress={onChangeMan}>
                 <View
-                  style={
-                    selectSex == 'man' ? Styles.SelectsexBtn : Styles.sexBtn
-                  }>
+                  style={selectSex == 0 ? Styles.SelectsexBtn : Styles.sexBtn}>
                   <Text
                     style={
-                      selectSex == 'man' ? Styles.SelectBtnText : Styles.BtnText
+                      selectSex == 0 ? Styles.SelectBtnText : Styles.BtnText
                     }>
                     남성
                   </Text>
@@ -352,14 +475,10 @@ const NewUserPetInfo = () => {
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback onPress={onChangeWoman}>
                 <View
-                  style={
-                    selectSex == 'woman' ? Styles.SelectsexBtn : Styles.sexBtn
-                  }>
+                  style={selectSex == 1 ? Styles.SelectsexBtn : Styles.sexBtn}>
                   <Text
                     style={
-                      selectSex == 'woman'
-                        ? Styles.SelectBtnText
-                        : Styles.BtnText
+                      selectSex == 1 ? Styles.SelectBtnText : Styles.BtnText
                     }>
                     여성
                   </Text>
@@ -383,11 +502,11 @@ const NewUserPetInfo = () => {
               <TouchableWithoutFeedback onPress={onChangeO}>
                 <View
                   style={
-                    selectNeut == 'O' ? Styles.SelectNeutBtn : Styles.NeutBtn
+                    selectNeut == true ? Styles.SelectNeutBtn : Styles.NeutBtn
                   }>
                   <Text
                     style={
-                      selectNeut == 'O' ? Styles.SelectBtnText : Styles.BtnText
+                      selectNeut == true ? Styles.SelectBtnText : Styles.BtnText
                     }>
                     O
                   </Text>
@@ -396,11 +515,13 @@ const NewUserPetInfo = () => {
               <TouchableWithoutFeedback onPress={onChangeX}>
                 <View
                   style={
-                    selectNeut == 'X' ? Styles.SelectNeutBtn : Styles.NeutBtn
+                    selectNeut == false ? Styles.SelectNeutBtn : Styles.NeutBtn
                   }>
                   <Text
                     style={
-                      selectNeut == 'X' ? Styles.SelectBtnText : Styles.BtnText
+                      selectNeut == false
+                        ? Styles.SelectBtnText
+                        : Styles.BtnText
                     }>
                     X
                   </Text>
@@ -420,6 +541,7 @@ const NewUserPetInfo = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
+              onPress={clearState}
               style={{
                 backgroundColor: '#D9D9D9',
                 paddingVertical: 8,
@@ -531,5 +653,35 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FF772F',
+  },
+  modal: {
+    flex: 0.5,
+    marginHorizontal: -20,
+    height: '50%',
+    backgroundColor: '#fff',
+    marginTop: 'auto',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    alignItems: 'center',
+    paddingTop: 15,
+    marginBottom: -20,
+  },
+  ModalText: {
+    color: '#282828',
+    fontWeight: '600',
+    fontSize: 18,
+  },
+  ModalInput: {
+    borderWidth: 0.5,
+    borderColor: '#525252',
+    width: '80%',
+    height: 40,
+    marginTop: 15,
+    borderRadius: 5,
+    color: '#282828',
+    paddingHorizontal: 20,
+    textAlign: 'center',
   },
 });

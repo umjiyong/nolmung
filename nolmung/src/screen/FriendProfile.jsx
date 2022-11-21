@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {
   View,
@@ -13,26 +13,99 @@ import {
 } from 'react-native';
 import Header from '../components/Header';
 import MyDog from '../components/MyDog';
-import Modal from "react-native-modal";
+import Modal from 'react-native-modal';
 import LandMark from '../components/LandMark';
+import {useNavigation} from '@react-navigation/native';
+import {getUserInfo} from '../api/User';
+import {getUserPuppyInfo} from '../api/Puppy';
+import {user_friend_post} from '../api/Friend';
 
-function MyProfileScreen({navigation}) {
+function FriendProfile({navigation: {navigate}, route}) {
+  console.log('파람확인', route.params);
+  const navigation = useNavigation();
 
   const Friend = 1;
   const Post = 1;
-  const FriendName = '미이';
-  const FriendAddress = '서울 종로구 난계로';
-  const friendCode = '#E1VH64';
-  const [intro, setIntro] = useState('소개글이 없습니다');
+  const [userdata, setuserdata] = useState([]);
+  const FriendName = userdata.userNickName;
+  const FriendAddress = userdata.userAddressText;
+  const friendCode = userdata.userCode;
+
+  const intro = userdata.userIntroduction;
   const introText = {
     // text: '있습니다.'
   };
-  const backdropOpacity = 0.5
+  const backdropOpacity = 0.5;
   const [isModalVisible, setModalVisible] = useState(false);
-  const [text, setText] = useState('')
+  const [text, setText] = useState('');
+  const [puppyinfo, setpuppyinfo] = useState([]);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-    console.log(isModalVisible)
+    console.log(isModalVisible);
+  };
+
+  const user_info_func = async id => {
+    try {
+      await getUserInfo(
+        {id},
+        response => {
+          setuserdata(response.data);
+        },
+        err => {
+          console.log('아티클질문 에러', err);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
+  };
+
+  const user_puppy_info_func = async Id => {
+    try {
+      await getUserPuppyInfo(
+        {id: Id},
+        response => {
+          setpuppyinfo(response.data);
+          console.log('친구 강아지', puppyinfo);
+        },
+        err => {
+          console.log('강아지정보 에러', err);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+      //되는 코드입니다.//
+    }
+  };
+
+  useEffect(() => {
+    user_info_func(route.params.userId);
+    user_puppy_info_func(route.params.userId);
+
+    console.log('유저값', userdata);
+  }, []);
+
+  console.log(userdata);
+
+  const user_friend_post_func = async () => {
+    try {
+      await user_friend_post(
+        {fromUserId: 1, toUserId: route.params.userId}, // 이부분은 프롭스 받은것도 아니라서 네비게이션으로 id받아야댐
+
+        response => {
+          console.log('보내기 성공');
+        },
+        err => {
+          console.log('아티클질문 에러', err);
+          setfriendId(null);
+        },
+      );
+    } catch (err) {
+      console.log(err);
+      console.log('심각한 에러;;');
+    }
   };
 
   return (
@@ -52,9 +125,17 @@ function MyProfileScreen({navigation}) {
               height: 80,
             }}
           />
-          <TouchableOpacity onPress={toggleModal}>
-            <View style={{ paddingVertical:5, paddingHorizontal:15, backgroundColor:'#fff',borderRadius: 15, shadowColor:'#959595', elevation:3}}>
-                <Text style={{fontSize: 16, color: '#FF772F'}}>친구 신청</Text>
+          <TouchableOpacity onPress={user_friend_post_func}>
+            <View
+              style={{
+                paddingVertical: 5,
+                paddingHorizontal: 15,
+                backgroundColor: '#fff',
+                borderRadius: 15,
+                shadowColor: '#959595',
+                elevation: 3,
+              }}>
+              <Text style={{fontSize: 16, color: '#FF772F'}}>친구 신청</Text>
             </View>
           </TouchableOpacity>
           {/* <TouchableOpacity onPress={toggleModal}>
@@ -68,44 +149,45 @@ function MyProfileScreen({navigation}) {
             </View>
           </TouchableOpacity> */}
           {/* 친구신청모달 시작 */}
-          
-          
-          
-          
-          <Modal 
+
+          <Modal
             isVisible={isModalVisible}
             onBackdropPress={toggleModal}
-            backdropOpacity = {backdropOpacity}
-            
-          >
+            backdropOpacity={backdropOpacity}>
             <View style={Styles.modalStyle}>
-                
-                <Text style={Styles.modalText}>친구 신청</Text>
-                <TextInput multiline={true} style={Styles.modalInput} value={text} onChangeText={(e)=>{setText(e)}}/>
-        
-                <View style={{flexDirection:'row',justifyContent:'space-between', marginTop:'auto', marginBottom: 30}}>
-                    <TouchableOpacity style={{marginHorizontal:80,}} onPress={toggleModal}>
-                        <View>
-                            <Text style={{color: '#282828', fontSize: 20,}}>
-                                취소
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+              <Text style={Styles.modalText}>친구 신청</Text>
+              <TextInput
+                multiline={true}
+                style={Styles.modalInput}
+                value={text}
+                onChangeText={e => {
+                  setText(e);
+                }}
+              />
 
-                    <TouchableOpacity style={{marginHorizontal:80,}}>
-                        <View>
-                            <Text style={{color: '#282828', fontSize: 20,}}>
-                                전송
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 'auto',
+                  marginBottom: 30,
+                }}>
+                <TouchableOpacity
+                  style={{marginHorizontal: 80}}
+                  onPress={toggleModal}>
+                  <View>
+                    <Text style={{color: '#282828', fontSize: 20}}>취소</Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{marginHorizontal: 80}}>
+                  <View>
+                    <Text style={{color: '#282828', fontSize: 20}}>전송</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           </Modal>
-
-
-
-
         </View>
         <View style={Styles.profileInfo}>
           <View style={Styles.infoBox}>
@@ -128,7 +210,6 @@ function MyProfileScreen({navigation}) {
                 ({FriendAddress})
               </Text>
             </View>
-            
           </View>
           <View
             style={{
@@ -171,14 +252,26 @@ function MyProfileScreen({navigation}) {
           </View>
         </View>
         {/* Dog component */}
-        <MyDog />
-        <MyDog />
-        <MyDog />
-        <MyDog />
-        <MyDog />
-        <MyDog />
+        {puppyinfo.myPuppyList ? (
+          <>
+            {puppyinfo.myPuppyList.map((item, index) => {
+              return (
+                <MyDog
+                  key={index}
+                  puppyId={item.puppyInfo.puppyId}
+                  puppyImg={item.puppyInfo.puppyImg}
+                  puppyName={item.puppyInfo.puppyName}
+                  puppyAge={item.puppyInfo.puppyAge}
+                  breedName={item.puppyInfo.breedName}
+                />
+              );
+            })}
+          </>
+        ) : (
+          <Text style={{textAlign: 'center'}}>반려견을 추가해주세요</Text>
+        )}
         {/* End Dog Component */}
-        <TouchableOpacity style={{...Styles.MyPost}}>
+        {/* <TouchableOpacity style={{...Styles.MyPost}}>
           <View style={Styles.MyPostBtn}>
             <Text style={Styles.MyPostText}>게시글</Text>
             <Image
@@ -191,8 +284,8 @@ function MyProfileScreen({navigation}) {
               }}
             />
           </View>
-        </TouchableOpacity>
-        <View style={Styles.Landmark}>
+        </TouchableOpacity> */}
+        {/* <View style={Styles.Landmark}>
             <Text style={Styles.LandmarkHeader}>자주 가는 랜드마크 </Text>
         </View>
         <ScrollView horizontal={true} style={{marginBottom:30,}} showsHorizontalScrollIndicator={false}>
@@ -205,13 +298,13 @@ function MyProfileScreen({navigation}) {
               <LandMark name="태경이형 방"/>
               <LandMark name="태경이형 화장실"/>
               
-        </ScrollView>
+        </ScrollView> */}
       </ScrollView>
     </>
   );
 }
 
-export default MyProfileScreen;
+export default FriendProfile;
 
 const Styles = StyleSheet.create({
   container: {
@@ -315,19 +408,16 @@ const Styles = StyleSheet.create({
   },
   MyPost: {
     marginHorizontal: 20,
-    
   },
   MyPostText: {
     fontSize: 18,
     color: '#282828',
     fontFamily: 'NotoSansKR-Bold',
-    
   },
   MyPostBtn: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    
   },
   Setting: {
     marginHorizontal: 20,
@@ -344,22 +434,22 @@ const Styles = StyleSheet.create({
     fontFamily: 'NotoSansKR-Bold',
   },
   modalStyle: {
-    flex:0.5,
+    flex: 0.5,
     marginHorizontal: -20,
-    height: '50%', 
-    backgroundColor: '#fff', 
-    marginTop:'auto',
-    borderTopLeftRadius:15,
-    borderTopRightRadius:15,
-    borderBottomLeftRadius:0,
-    borderBottomRightRadius:0,
-    alignItems:'center',
+    height: '50%',
+    backgroundColor: '#fff',
+    marginTop: 'auto',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    alignItems: 'center',
     paddingTop: 15,
     marginBottom: -20,
   },
   modalText: {
     color: '#282828',
-    fontWeight:'600',
+    fontWeight: '600',
     fontSize: 18,
   },
   modalInput: {
@@ -371,14 +461,14 @@ const Styles = StyleSheet.create({
     borderRadius: 15,
     color: '#282828',
     paddingHorizontal: 20,
-    textAlign:'center'
+    textAlign: 'center',
   },
-  Landmark:{
-    marginHorizontal:20,
+  Landmark: {
+    marginHorizontal: 20,
   },
-  LandmarkHeader:{
+  LandmarkHeader: {
     fontSize: 18,
     color: '#282828',
     fontFamily: 'NotoSansKR-Bold',
-  }
+  },
 });

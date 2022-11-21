@@ -8,48 +8,56 @@ import {
   View,
   TouchableOpacity,
   Button,
-  Pressable
+  Pressable,
 } from 'react-native';
-import Postcode from "@actbase/react-daum-postcode";
-import Modal from "react-native-modal"
+import Postcode from '@actbase/react-daum-postcode';
+import Modal from 'react-native-modal';
 import { registUserInfo } from '../api/User';
+
 const NewUserInfo = () => {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [address, setAddress] = useState();
+  const [introduce, setIntroduce] = useState('');
+  const [nickName, setNickName] = useState('닉네임을 입력하세요');
+  const [sendAddress, setSendAddress] = useState();
 
   const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-        console.log(isModalVisible)
-    };
-  const backdropOpacity = 0.3
+    setModalVisible(!isModalVisible);
+    console.log(isModalVisible);
+  };
+  const backdropOpacity = 0.3;
   const Navigation = useNavigation();
-  const [nickName, setNickName] = useState('닉네임을 입력하세요');
+  
   const onChangeText = event => {
     setNickName(event);
   };
-
-  const [introduce, setIntroduce] = useState('');
+  
   const onChangeIntro = event => {
     setIntroduce(event);
   };
 
-  const pushUserData =() => {
-    try{
+  const pushUserData = () => {
+    try {
       registUserInfo(
-        {"userAddressText" : address, "userIntroduction" : introduce, "userNickname" : nickName},
+        {
+          userAddressText: sendAddress,
+          userIntroduction: introduce,
+          userNickName: nickName,
+        },
         res => {
-          console.log("유저정보 등록 성공");
+          console.log('유저정보 등록 성공');
         },
         err => {
-          console.log("유저정보 등록 실패");
-        }
-      )
+          console.log('유저정보 등록 실패');
+        },
+      );
     } catch (err) {
-      console.log("잘못된 요청");
+      console.log('잘못된 요청');
     }
     Navigation.push('NewUserPetInfo');
-  }
+  };
+
   return (
     <>
       <View style={{flex: 1}}>
@@ -94,16 +102,14 @@ const NewUserInfo = () => {
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={{color: '#282828'}}>{address}</Text>
               <Pressable onPress={toggleModal}>
-                <Text style={Styles.changeBtn}>변경</Text>      
+                <Text style={Styles.changeBtn}>변경</Text>
               </Pressable>
             </View>
             <View style={Styles.addressBottom} />
           </View>
         </View>
         <View style={{alignItems: 'center'}}>
-          <TouchableOpacity
-            style={Styles.completeBtn}
-            onPress={pushUserData}>
+          <TouchableOpacity style={Styles.completeBtn} onPress={pushUserData}>
             <Text style={{color: '#fff', fontWeight: '500'}}>다음</Text>
           </TouchableOpacity>
         </View>
@@ -111,20 +117,24 @@ const NewUserInfo = () => {
         <Modal
           isVisible={isModalVisible}
           onBackdropPress={toggleModal}
-          backdropOpacity = {backdropOpacity}    
-        >
-              
+          backdropOpacity={backdropOpacity}>
           <Postcode
-              style={{ flex: 1}}
-              jsOptions={{ animation: true, hideMapBtn: true }}
-              onSelected={data => {
-                  console.log(JSON.stringify(data.roadAddress))
-                  setAddress(data.roadAddress.replace(/\"/gi, ""))
-                  toggleModal()
-              }}
+            style={{flex: 1}}
+            jsOptions={{
+              animation: true,
+              hideMapBtn: true,
+              autoMapping: false,
+              showMoreHName: true,
+            }}
+            onSelected={data => {
+              console.log(JSON.stringify(data));
+              setAddress(data.roadAddress.replace(/\"/gi, ''));
+              if (data.hname !== "") setSendAddress(data.hname)
+              else setSendAddress(data.bname)
+              toggleModal();
+            }}
           />
-        
-        </Modal>        
+        </Modal>
       </View>
     </>
   );
