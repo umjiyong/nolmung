@@ -71,9 +71,13 @@ public class FriendService {
             friendIdList.add(f.getSubUserId());
         }
 
+        int count = 0;
+
         Random r = new Random();
 
-        while (recommendList.size()<3) {
+        while (recommendList.size()<3 && count < 30) {
+
+            count ++;
           int temp = r.nextInt(userRepository.findAll().size()-1);
 
           int tempId = userRepository.findAll().get(temp).getUserId();
