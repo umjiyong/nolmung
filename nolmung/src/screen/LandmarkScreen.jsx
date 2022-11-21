@@ -69,8 +69,7 @@ function LandmarkScreen({navigation: {navigate}, route}) {
         getLandmark(
           {
             landmarkId: route.params.landmarkId,
-            userId: id, // userid 1 로 되있다면 어싱크로 바꿔야
-
+            userId: 1 // userid 1 로 되있다면 어싱크로 바꿔야
           },
           response => {
             setlandmarkInfo(response.data);

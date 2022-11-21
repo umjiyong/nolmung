@@ -27,6 +27,9 @@ import {getNearLandmarkMarkerList, getMyPuppyList} from '../api/Walk.js';
 import WalkPuppyList from '../components/WalkPuppyList.jsx';
 import moment, {min} from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 async function requestPermission() {
   try {
