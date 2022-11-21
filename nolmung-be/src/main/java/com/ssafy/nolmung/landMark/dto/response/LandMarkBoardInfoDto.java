@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,10 +17,10 @@ public class LandMarkBoardInfoDto {
       String userImageUrl;
       String boardImageUrl;
       String content;
-      LocalDateTime createTime;
+      LocalDate createTime;
 
       @Builder
-      public LandMarkBoardInfoDto(int landmarkBoardId, int userId, String nickname, String userImageUrl, String boardImageUrl, String content, LocalDateTime createTime){
+      public LandMarkBoardInfoDto(int landmarkBoardId, int userId, String nickname, String userImageUrl, String boardImageUrl, String content, LocalDate createTime){
           this.landmarkBoardId = landmarkBoardId;
           this.userId = userId;
           this.nickname = nickname;
