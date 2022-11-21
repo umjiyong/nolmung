@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,10 +15,10 @@ public class LandMarkBoardListDto {
     String content;
     String nickname;
     String boardImage;
-    LocalDateTime createDate;
+    LocalDate createDate;
 
     @Builder
-    public LandMarkBoardListDto(int landmarkBoardId, String content, String nickname, String boardImage, LocalDateTime createDate){
+    public LandMarkBoardListDto(int landmarkBoardId, String content, String nickname, String boardImage, LocalDate createDate){
         this.landmarkBoardId = landmarkBoardId;
         this.content = content;
         this.nickname = nickname;

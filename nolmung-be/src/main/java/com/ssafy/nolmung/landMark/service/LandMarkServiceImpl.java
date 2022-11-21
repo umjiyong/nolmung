@@ -92,7 +92,7 @@ public class LandMarkServiceImpl implements LandMarkService{
             LandMarkBoardListDto boardInfo = LandMarkBoardListDto.builder()
                     .boardImage(board.getLandMarkBoardImg())
                     .content(board.getLandMarkBoardContent())
-                    .createDate(board.getLandMarkBoardUpdateDate())
+                    .createDate(board.getLandMarkBoardUpdateDate().toLocalDate())
                     .nickname(board.getUser().getUserNickname())
                     .build();
             landMarkBoardList.add(boardInfo);

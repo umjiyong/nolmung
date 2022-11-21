@@ -56,7 +56,7 @@ public class LandMarkBoardServiceImpl implements LandMarkBoardService{
                 .userImageUrl(board.getUser().getUserImg())
                 .content(board.getLandMarkBoardContent())
                 .userId(board.getUser().getUserId())
-                .createTime(board.getLandMarkBoardUpdateDate())
+                .createTime(board.getLandMarkBoardUpdateDate().toLocalDate())
                 .nickname(board.getUser().getUserNickname())
                 .build();
 
