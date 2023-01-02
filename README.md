@@ -1,7 +1,4 @@
 <div align="center">
-  <br />
-![image](/uploads/7c4b59aaede721dff708efe7a5740c4d/image.png)
-  <br />
   <h1>놀면 멍하개!</h1>
   <br />
 </div>
