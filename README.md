@@ -194,12 +194,12 @@
 
 |                            Jira BurnDown Chart                      |
 | :---------------------------------------------------------------------------: |
-| ![번다운](/readme.asset/burndown.PNG) |
+| ![번다운](/readme.asset/burndown.png) |
 
 |                            Notion                      |
 | :---------------------------------------------------------------------------: |
-|![노션1](/readme.asset/notion1.PNG)
-![노션2](/readme.asset/notion2.PNG)|
+|![노션1](/readme.asset/notion1.png)
+![노션2](/readme.asset/notion2.png)|
 
 <br />
 
