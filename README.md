@@ -1,6 +1,9 @@
 <div align="center">
   <h1>놀면 멍하개!</h1>
   <br />
+   <br />
+![프로필 이미지](/readme.asset/profile.jpg)
+  <br />
 </div>
 
 ## 목차
