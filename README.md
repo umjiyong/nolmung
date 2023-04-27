@@ -130,8 +130,7 @@
 
 |                        회원 가입 화면                    |
 | :---------------------------------------------------------------------------: |
-|  <img src="/readme.asset/gaibsa.PNG" alt="회원 가입 사람" />
-<img src="/readme.asset/gaib.PNG" alt="회원 가입" />|
+|<img src="/readme.asset/gaib0.PNG" alt="회원 가입" />|
 
 
 |                        친구 추천 시스템                    |
