@@ -209,7 +209,7 @@
 <table>
     <tr>
         <td height="140px" align="center">
-           ![이동희](/readme.asset/dong.png)> <br><br> 👑 이동희 <br>(Front-End) </a> <br></td>
+           ![이동희](/readme.asset/dong.png) <br><br> 👑 이동희 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="">
             <img src="/uploads/a2b6ca65124a2b1597ebc73820dfa71b/image.png" width="140px" height="140px"/> <br><br> 🙂 이지영 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/pch8349">
