@@ -144,11 +144,11 @@
 
 |                        산책 시스템                    | 
 | :---------------------------------------------------------------------------: |
-|  <img src="/uploads/1116f289f15409f3ef28a18b9942b7df/image.png" alt="산책 시스템" />  |
+|  <img src="/readme.asset/sanchaek.png" alt="산책 시스템" />  |
 
 |                        산책량 권장                    |
 | :---------------------------------------------------------------------------: |
-|  <img src="/uploads/db15c4b24c1d5ee0933b431a30b6af37/image.png" alt="산책량 권장" />  |
+|  <img src="/readme.asset/sanchaekryang.png" alt="산책량 권장" />  |
 
 
 
