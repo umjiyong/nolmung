@@ -208,8 +208,8 @@
 ## 👪 개발 멤버 소개 
 <table>
     <tr>
-        <td height="140px" align="center"> <a href="">
-            <img src="/uploads/0b23c8d1fa4a643e06d3a8064c001718/image.png" width="140px" height="140px"/> <br><br> 👑 이동희 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center">
+           ![이동희](/readme.asset/dong.png)> <br><br> 👑 이동희 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="">
             <img src="/uploads/a2b6ca65124a2b1597ebc73820dfa71b/image.png" width="140px" height="140px"/> <br><br> 🙂 이지영 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/pch8349">
