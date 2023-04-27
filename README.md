@@ -209,16 +209,16 @@
 <table>
         <td height="140px" align="center">
             <img src="/readme.asset/dong.png" width="140px" height="140px"/> <br><br> 👑 이동희 <br>(Front-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="">
-            <img src="/uploads/a2b6ca65124a2b1597ebc73820dfa71b/image.png" width="140px" height="140px"/> <br><br> 🙂 이지영 <br>(Back-End) </a> <br></td>
+        <td height="140px" align="center"> 
+            <img src="/readme.asset/jig.png" width="140px" height="140px"/> <br><br> 🙂 이지영 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/pch8349">
-            <img src="/uploads/7f1abc04dff4d6972c9fb5433ea6df34/image.png" width="140px" height="140px"/> <br><br> 😆 박찬혁 <br>(Back-End) </a> <br></td>
+            <img src="/readme.asset/chan.png" width="140px" height="140px"/> <br><br> 😆 박찬혁 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/rlaxorud180">
-            <img src="/uploads/b48846d500fb735839081aa6b5b675cf/image.png" width="140px" height="140px"/> <br><br> 😁 강태경 <br>(Front-End) </a> <br></td>
+            <img src="/readme.asset/tae.png" width="140px" height="140px"/> <br><br> 😁 강태경 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="">
-            <img src="/uploads/59626f4e076bcb4ac35603aae55811c1/캡처.JPG" width="140px" height="140px"/> <br><br> 🙄 엄지용 <br>(Back-End) </a> <br></td>
+            <img src="/readme.asset/jib.JPG" width="140px" height="140px"/> <br><br> 🙄 엄지용 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="">
-            <img src="/uploads/84c9ef5f78d646a1d45e08b5de69ae4a/image.png" width="140px" height="140px"/> <br><br> 😶 박세원 <br>(Back-End) </a> <br></td>
+            <img src="/readme.asset/se.png" width="140px" height="140px"/> <br><br> 😶 박세원 <br>(Back-End) </a> <br></td>
     </tr>
     <tr>
         <td align="center">UI/UX<br/>React Native<br/></td>
