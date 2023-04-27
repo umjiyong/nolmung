@@ -207,17 +207,17 @@
 
 ## 👪 개발 멤버 소개 
 <table>
-        <td height="140px" align="center">
+        <td height="140px" align="center"> <a href="https://https://github.com/Haru-arp">
             <img src="/readme.asset/dong.png" width="140px" height="140px"/> <br><br> 👑 이동희 <br>(Front-End) </a> <br></td>
-        <td height="140px" align="center"> 
+        <td height="140px" align="center"> <a href="https://github.com/gorapaduckoo">
             <img src="/readme.asset/jig.png" width="140px" height="140px"/> <br><br> 🙂 이지영 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/pch8349">
             <img src="/readme.asset/chan.png" width="140px" height="140px"/> <br><br> 😆 박찬혁 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/rlaxorud180">
             <img src="/readme.asset/tae.png" width="140px" height="140px"/> <br><br> 😁 강태경 <br>(Front-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="">
+        <td height="140px" align="center"> <a href="https://https://github.com/umjiyong">
             <img src="/readme.asset/jib.JPG" width="140px" height="140px"/> <br><br> 🙄 엄지용 <br>(Back-End) </a> <br></td>
-        <td height="140px" align="center"> <a href="">
+        <td height="140px" align="center"> <a href="https://https://github.com/parksewon">
             <img src="/readme.asset/se.png" width="140px" height="140px"/> <br><br> 😶 박세원 <br>(Back-End) </a> <br></td>
     </tr>
     <tr>
